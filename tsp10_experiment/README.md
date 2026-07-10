@@ -11,7 +11,8 @@ küçük kapsamda anlamak ve doğrulamak için hazırlanmıştır.
 - 10 nokta küçük olduğu için brute-force kesin optimum,
 - rota geçerlilik ve gerçek Öklid mesafesi kontrolleri.
 
-Zero-shot adımı ayrıca çalıştırılır; API anahtarı kaynak koda yazılmaz.
+Zero-shot adımı Gemini API ile ayrıca çalıştırılır; API anahtarı kaynak koda
+yazılmaz. Bu çalışma, makaledeki GPT-4o yönteminin Gemini uyarlamasıdır.
 
 ## Kurulum
 
@@ -56,27 +57,59 @@ python run_baseline.py --seed 42 --ortools-time-limit 120
 pytest -q
 ```
 
-## Zero-shot deneyi
+## Gemini zero-shot deneyi
 
-Önce baseline çalışmış ve `output/points.png` oluşmuş olmalıdır. OpenAI API
-anahtarını güvenli bir ortam değişkeni olarak ayarlayın.
+Önce baseline çalışmış ve `output/points.png` oluşmuş olmalıdır. Gemini API
+anahtarını Google AI Studio'dan alın ve güvenli bir ortam değişkeni olarak
+ayarlayın.
 
 Windows PowerShell, yalnızca açık terminal oturumu için:
 
 ```powershell
-$env:OPENAI_API_KEY="API_ANAHTARINIZ"
-python run_zero_shot.py
+$env:GEMINI_API_KEY="GEMINI_API_ANAHTARINIZ"
+python run_gemini_zero_shot.py
 ```
 
 macOS/Linux:
 
 ```bash
-export OPENAI_API_KEY="API_ANAHTARINIZ"
-python run_zero_shot.py
+export GEMINI_API_KEY="GEMINI_API_ANAHTARINIZ"
+python run_gemini_zero_shot.py
 ```
 
-Kod, makaleyle karşılaştırılabilirlik için `gpt-4o`, sıcaklık `0.0` ve Chat
-Completions kullanır. Ham model cevabı da sonuç JSON'una kaydedilir.
+Kod `gemini-2.5-flash` ve sıcaklık `0.0` kullanır. Modele koordinatlar değil,
+yalnızca nokta görseli gönderilir. Ham model cevabı da sonuç JSON'una
+kaydedilir.
+
+## Gemini Multi-Agent 2
+
+Zero-shot sonucu hazırlandıktan sonra ilk olarak tek eleştirmen iterasyonu:
+
+```powershell
+python run_gemini_multi_agent2.py --iterations 1
+```
+
+Eleştirmen mevcut rota görselini inceler ve sıcaklık `0.7` ile yeni bir rota
+önerir. Kod son iterasyon ile bütün iterasyonlar içinde bulunan en iyi geçerli
+rotayı ayrı ayrı saklar. İlk çağrı doğrulandıktan sonra sırasıyla 3 ve 10
+iterasyon denenebilir:
+
+```powershell
+python run_gemini_multi_agent2.py --iterations 3
+python run_gemini_multi_agent2.py --iterations 10 --delay-seconds 13
+```
+
+Ücretsiz `gemini-2.5-flash` katmanında dakika başına istek sınırı bulunduğu
+için final deneyinde çağrılar arasına 13 saniye konur. Her başarılı iterasyon
+`gemini_multi_agent2_checkpoint.json` dosyasına hemen kaydedilir; olası kota
+veya ağ hatalarında önceki sonuçlar kaybolmaz.
+
+Kota nedeniyle deney yarıda kalırsa, kota yenilendikten sonra önceki çağrıları
+tekrarlamadan checkpoint'ten devam edilir:
+
+```powershell
+python run_gemini_multi_agent2.py --iterations 10 --delay-seconds 13 --resume
+```
 
 ## Neden kesin optimum da var?
 

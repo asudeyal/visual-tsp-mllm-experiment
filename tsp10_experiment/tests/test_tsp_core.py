@@ -6,7 +6,13 @@ from src.tsp_core import (
     solve_ortools_tsp,
     validate_tsp_route,
 )
-from src.llm_routes import RouteParseError, parse_single_salesman_route
+from src.llm_routes import (
+    RouteParseError,
+    critic_prompt,
+    image_mime_type,
+    initializer_prompt,
+    parse_single_salesman_route,
+)
 
 
 def test_validate_tsp_route_accepts_complete_closed_route() -> None:
@@ -63,3 +69,16 @@ def test_parse_route_rejects_unstructured_text() -> None:
         assert "<<start>>" in str(exc)
     else:
         raise AssertionError("Biçimsiz cevap RouteParseError oluşturmalıydı.")
+
+
+def test_image_mime_type() -> None:
+    from pathlib import Path
+
+    assert image_mime_type(Path("points.png")) == "image/png"
+    assert image_mime_type(Path("points.jpg")) == "image/jpeg"
+
+
+def test_initializer_and_critic_prompts_have_distinct_roles() -> None:
+    assert "current route" not in initializer_prompt().lower()
+    assert "current route" in critic_prompt().lower()
+    assert "improve" in critic_prompt().lower()

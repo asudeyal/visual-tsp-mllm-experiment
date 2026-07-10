@@ -14,7 +14,8 @@ from typing import Sequence
 
 import matplotlib
 
-# Grafikleri ekranda açmadan doğrudan PNG dosyasına kaydeder.
+# Deney yalnızca PNG dosyaları üretir; masaüstü penceresine ihtiyaç duymaz.
+# Agg backend'i Windows'ta eksik/bozuk Tcl-Tk kurulumlarından etkilenmez.
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
