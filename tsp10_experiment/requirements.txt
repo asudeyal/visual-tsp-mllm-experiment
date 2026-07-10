@@ -1,0 +1,5 @@
+matplotlib>=3.8,<4
+numpy>=1.26,<3
+openai>=2,<3
+ortools>=9.10,<10
+pytest>=8,<9
