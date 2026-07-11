@@ -111,6 +111,63 @@ tekrarlamadan checkpoint'ten devam edilir:
 python run_gemini_multi_agent2.py --iterations 10 --delay-seconds 13 --resume
 ```
 
+## Gemini Multi-Agent 1
+
+Multi-Agent 1, makaledeki üç rolü kullanır:
+
+1. Daha önce üretilen zero-shot rota initializer çözümü olarak alınır.
+2. Critic, sıcaklık `0.7` ile tek Gemini çağrısında yedi farklı rota adayı
+   üretir (`candidate_count=7`).
+3. Yedi aday ayrı ayrı çizilir.
+4. Scorer, yedi görseli aynı Gemini çağrısında inceler ve sıcaklık `0.0` ile
+   en iyi gördüğü adayı seçer.
+5. Seçilen rota bir sonraki iterasyonun critic girdisi olur.
+
+Bu yöntem yalnız görsel akıl yürütme koşulunu korur. Scorer'a koordinatlar,
+mesafe matrisi veya Python tarafından hesaplanan rota uzunlukları gönderilmez.
+Python tarafındaki gerçek mesafe ve gap hesapları yalnız deney
+değerlendirmesinde kullanılır.
+
+Kodun girdilerini ve planını **Gemini API çağrısı yapmadan** doğrulamak için:
+
+```powershell
+python run_gemini_multi_agent1.py --iterations 1 --validate-only
+```
+
+Bu komut API anahtarı istemez ve kota kullanmaz. Gerçek API deneyi için önce
+tek iterasyon çalıştırılmalıdır:
+
+```powershell
+python run_gemini_multi_agent1.py --iterations 1 --candidate-count 7 --delay-seconds 13
+```
+
+Bir tam Multi-Agent 1 iterasyonu iki Gemini isteği kullanır: bir critic isteği
+tek seferde yedi aday üretir, bir scorer isteği yedi görseli birlikte puanlar.
+Gemini bazı çağrılarda istenenden az aday döndürürse kod mevcut adaylarla devam
+eder ve `returned_candidate_count` alanına gerçek sayıyı yazar. Makaleyle tam
+uyumlu bir final iterasyonu kabul etmek için bu alanın `7` olduğu kontrol
+edilmelidir.
+İlk iterasyon doğrulandıktan sonra final hedefi 10 iterasyondur:
+
+```powershell
+python run_gemini_multi_agent1.py --iterations 10 --candidate-count 7 --delay-seconds 13 --resume
+```
+
+Her critic çağrısından hemen sonra aday rotalar ve görseller
+`gemini_multi_agent1_checkpoint.json` dosyasına kaydedilir. Kota scorer
+aşamasında dolarsa `--resume`, yedi critic adayını yeniden üretmeden yalnız
+scorer çağrısından devam eder. Sonuçlar
+`gemini_multi_agent1_results.json` dosyasına yazılır.
+
+Sonuç JSON'unda üç farklı kayıt özellikle ayrılır:
+
+- `final_solution`: son scorer seçimi,
+- `best_valid_solution`: initializer ve scorer seçimleri içindeki en kısa
+  geçerli sistem çıktısı,
+- `best_critic_candidate_oracle`: Python mesafesine göre bütün critic adayları
+  arasındaki en iyi geçerli aday. Bu alan scorer performansını sonradan analiz
+  etmek içindir; scorer'a gösterilmez.
+
 ## Neden kesin optimum da var?
 
 Makaledeki OR-Tools ayarları sezgiseldir ve teorik optimum garantisi vermez.

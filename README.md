@@ -26,7 +26,7 @@ Combinatorial Challenges* çalışmasındaki görsel rota oluşturma yönteminin
 | Google OR-Tools | SAVINGS ve GUIDED_LOCAL_SEARCH ile referans rota üretir |
 | Gemini zero-shot | Nokta görselinden tek çağrıda rota üretir |
 | Gemini Multi-Agent 2 | Başlatıcı ve eleştirmen ajanlarla rotayı iteratif olarak düzenler |
-| Gemini Multi-Agent 1 | Başlatıcı, eleştirmen ve puanlayıcı ajanlar; planlanan sonraki aşama |
+| Gemini Multi-Agent 1 | Başlatıcı, yedi eleştirmen adayı ve görsel puanlayıcı; kod hazır, API deneyi bekliyor |
 
 ## Mevcut durum
 
@@ -36,7 +36,7 @@ Combinatorial Challenges* çalışmasındaki görsel rota oluşturma yönteminin
 | OR-Tools ve kesin optimum | Tamamlandı |
 | Gemini zero-shot | Tamamlandı |
 | Gemini Multi-Agent 2 | 8/10 iterasyon tamamlandı; günlük API kotası sonrası checkpoint'ten devam edecek |
-| Gemini Multi-Agent 1 | Planlandı |
+| Gemini Multi-Agent 1 | Kod ve çevrimdışı testler tamamlandı; gerçek API deneyi henüz çalıştırılmadı |
 
 ### İlk problem örneğinin ön sonuçları
 
@@ -71,6 +71,7 @@ kalite artışı sağlamadığını göstermektedir.
     ├── output/
     ├── run_baseline.py
     ├── run_gemini_zero_shot.py
+    ├── run_gemini_multi_agent1.py
     ├── run_gemini_multi_agent2.py
     ├── requirements.txt
     └── README.md
@@ -102,6 +103,19 @@ Kota nedeniyle yarıda kalan Multi-Agent 2 deneyi checkpoint'ten sürdürülür:
 
 ```powershell
 python run_gemini_multi_agent2.py --iterations 10 --delay-seconds 13 --resume
+```
+
+Multi-Agent 1 planı kota kullanmadan doğrulanabilir:
+
+```powershell
+python run_gemini_multi_agent1.py --iterations 1 --validate-only
+```
+
+Gerçek ilk Multi-Agent 1 iterasyonu, makaledeki gibi tek critic çağrısında
+yedi aday ve ardından bir görsel scorer çağrısı kullanır:
+
+```powershell
+python run_gemini_multi_agent1.py --iterations 1 --candidate-count 7 --delay-seconds 13
 ```
 
 ## Güvenlik
