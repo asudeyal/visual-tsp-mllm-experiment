@@ -1,0 +1,406 @@
+{
+  "experiment": "gemini_visual_multi_agent_2_tsp",
+  "model": "gemini-2.5-flash",
+  "num_locations_including_depot": 10,
+  "num_salesmen": 1,
+  "requested_iterations": 10,
+  "completed_iterations": 10,
+  "delay_seconds_between_requests": 13.0,
+  "initializer": {
+    "source": "output\\gemini_zero_shot_results.json",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "critic_iterations": [
+    {
+      "iteration": 1,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_zero_shot_route.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        4,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 2,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_01.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 3,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_02.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 16.313341275152723,
+      "gap_to_or_tools_percent": 23.339228263479608,
+      "gap_to_exact_percent": 23.339228263479608
+    },
+    {
+      "iteration": 4,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_03.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-7-8-9-1-3-6-5-2-Depot\n<<end>>",
+      "route": [
+        0,
+        4,
+        7,
+        8,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 18.132449638797556,
+      "gap_to_or_tools_percent": 37.092843658097436,
+      "gap_to_exact_percent": 37.092843658097436
+    },
+    {
+      "iteration": 5,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_04.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 16.313341275152723,
+      "gap_to_or_tools_percent": 23.339228263479608,
+      "gap_to_exact_percent": 23.339228263479608
+    },
+    {
+      "iteration": 6,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_05.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 16.313341275152723,
+      "gap_to_or_tools_percent": 23.339228263479608,
+      "gap_to_exact_percent": 23.339228263479608
+    },
+    {
+      "iteration": 7,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_06.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 8,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_07.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        4,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 9,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_08.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        4,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 10,
+      "temperature": 0.7,
+      "input_image": "output\\gemini_ma2_iteration_09.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+      "route": [
+        0,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        4,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    }
+  ],
+  "final_solution": {
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "best_valid_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "errors": []
+}

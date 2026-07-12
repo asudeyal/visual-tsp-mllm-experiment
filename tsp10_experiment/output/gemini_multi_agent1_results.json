@@ -1,0 +1,3004 @@
+{
+  "experiment": "gemini_visual_multi_agent_1_tsp",
+  "model": "gemini-2.5-flash",
+  "num_locations_including_depot": 10,
+  "num_salesmen": 1,
+  "requested_iterations": 10,
+  "completed_iterations": 10,
+  "critic_candidates_per_iteration": 7,
+  "critic_temperature": 0.7,
+  "scorer_temperature": 0.0,
+  "delay_seconds_between_requests": 13.0,
+  "initializer": {
+    "source": "output\\gemini_zero_shot_results.json",
+    "coordinates_sent_to_model": false,
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_zero_shot_route.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_01_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_01_candidate_01.png",
+          "output\\gemini_ma1_iteration_01_candidate_02.png",
+          "output\\gemini_ma1_iteration_01_candidate_03.png",
+          "output\\gemini_ma1_iteration_01_candidate_04.png",
+          "output\\gemini_ma1_iteration_01_candidate_05.png",
+          "output\\gemini_ma1_iteration_01_candidate_06.png",
+          "output\\gemini_ma1_iteration_01_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 100, image2: 100, image3: 100, image4: 100, image5: 100, image6: 100, image7: 100>>\n<<the best route: 1>>",
+        "scores": {
+          "1": 100.0,
+          "2": 100.0,
+          "3": 100.0,
+          "4": 100.0,
+          "5": 100.0,
+          "6": 100.0,
+          "7": 100.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 1,
+        "candidate_id": 1,
+        "scorer_score": 100.0,
+        "image": "output\\gemini_ma1_iteration_01_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 2,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_01_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_02_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_02_candidate_01.png",
+          "output\\gemini_ma1_iteration_02_candidate_02.png",
+          "output\\gemini_ma1_iteration_02_candidate_03.png",
+          "output\\gemini_ma1_iteration_02_candidate_04.png",
+          "output\\gemini_ma1_iteration_02_candidate_05.png",
+          "output\\gemini_ma1_iteration_02_candidate_06.png",
+          "output\\gemini_ma1_iteration_02_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6:",
+            "parse_error_type": "ScorerParseError",
+            "parse_error": "Puanlayıcı cevabında en iyi rota kimliği bulunamadı."
+          },
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 2,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\gemini_ma1_iteration_02_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 3,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_02_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_03_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_03_candidate_01.png",
+          "output\\gemini_ma1_iteration_03_candidate_02.png",
+          "output\\gemini_ma1_iteration_03_candidate_03.png",
+          "output\\gemini_ma1_iteration_03_candidate_04.png",
+          "output\\gemini_ma1_iteration_03_candidate_05.png",
+          "output\\gemini_ma1_iteration_03_candidate_06.png",
+          "output\\gemini_ma1_iteration_03_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 100, image2: 100, image3: 100, image4: 100, image5: 100, image6: 100, image7: 100>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 100, image2: 100, image3: 100, image4: 100, image5: 100, image6: 100, image7: 100>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 100.0,
+          "2": 100.0,
+          "3": 100.0,
+          "4": 100.0,
+          "5": 100.0,
+          "6": 100.0,
+          "7": 100.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 3,
+        "candidate_id": 1,
+        "scorer_score": 100.0,
+        "image": "output\\gemini_ma1_iteration_03_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 4,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_03_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_01.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_04_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_04_candidate_01.png",
+          "output\\gemini_ma1_iteration_04_candidate_02.png",
+          "output\\gemini_ma1_iteration_04_candidate_03.png",
+          "output\\gemini_ma1_iteration_04_candidate_04.png",
+          "output\\gemini_ma1_iteration_04_candidate_05.png",
+          "output\\gemini_ma1_iteration_04_candidate_06.png",
+          "output\\gemini_ma1_iteration_04_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 1, image2: 1, image3: 1, image4: 1, image5: 1, image6: 1, image7: 1>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 1, image2: 1, image3: 1, image4: 1, image5: 1, image6: 1, image7: 1>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 1.0,
+          "2": 1.0,
+          "3": 1.0,
+          "4": 1.0,
+          "5": 1.0,
+          "6": 1.0,
+          "7": 1.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 4,
+        "candidate_id": 1,
+        "scorer_score": 1.0,
+        "image": "output\\gemini_ma1_iteration_04_selected.png",
+        "route": [
+          0,
+          8,
+          7,
+          4,
+          2,
+          5,
+          6,
+          3,
+          1,
+          9,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 5,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_04_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_05.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_05_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_05_candidate_01.png",
+          "output\\gemini_ma1_iteration_05_candidate_02.png",
+          "output\\gemini_ma1_iteration_05_candidate_03.png",
+          "output\\gemini_ma1_iteration_05_candidate_04.png",
+          "output\\gemini_ma1_iteration_05_candidate_05.png",
+          "output\\gemini_ma1_iteration_05_candidate_06.png",
+          "output\\gemini_ma1_iteration_05_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 4, image2: 4, image3: 4, image4: 4, image5: 4, image6: 4, image7: 4>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 4, image2: 4, image3: 4, image4: 4, image5: 4, image6: 4, image7: 4>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 4.0,
+          "2": 4.0,
+          "3": 4.0,
+          "4": 4.0,
+          "5": 4.0,
+          "6": 4.0,
+          "7": 4.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 5,
+        "candidate_id": 1,
+        "scorer_score": 4.0,
+        "image": "output\\gemini_ma1_iteration_05_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 6,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_05_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-4-7-8-9-1-3-6-5-2-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-4-7-8-9-1-3-6-5-2-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_02.png",
+            "route": [
+              0,
+              4,
+              7,
+              8,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 18.132449638797556,
+            "gap_to_or_tools_percent": 37.092843658097436,
+            "gap_to_exact_percent": 37.092843658097436
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_05.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_06_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_06_candidate_01.png",
+          "output\\gemini_ma1_iteration_06_candidate_02.png",
+          "output\\gemini_ma1_iteration_06_candidate_03.png",
+          "output\\gemini_ma1_iteration_06_candidate_04.png",
+          "output\\gemini_ma1_iteration_06_candidate_05.png",
+          "output\\gemini_ma1_iteration_06_candidate_06.png",
+          "output\\gemini_ma1_iteration_06_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 20, image2: 16, image3: 20, image4: 20, image5: 20, image6: 20, image7: 20>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 20, image2: 16, image3: 20, image4: 20, image5: 20, image6: 20, image7: 20>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 20.0,
+          "2": 16.0,
+          "3": 20.0,
+          "4": 20.0,
+          "5": 20.0,
+          "6": 20.0,
+          "7": 20.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 6,
+        "candidate_id": 1,
+        "scorer_score": 20.0,
+        "image": "output\\gemini_ma1_iteration_06_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 7,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_06_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_01.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_02.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_06.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_07_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_07_candidate_01.png",
+          "output\\gemini_ma1_iteration_07_candidate_02.png",
+          "output\\gemini_ma1_iteration_07_candidate_03.png",
+          "output\\gemini_ma1_iteration_07_candidate_04.png",
+          "output\\gemini_ma1_iteration_07_candidate_05.png",
+          "output\\gemini_ma1_iteration_07_candidate_06.png",
+          "output\\gemini_ma1_iteration_07_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 7,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\gemini_ma1_iteration_07_selected.png",
+        "route": [
+          0,
+          8,
+          7,
+          4,
+          2,
+          5,
+          6,
+          3,
+          1,
+          9,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 8,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_07_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_08_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_08_candidate_01.png",
+          "output\\gemini_ma1_iteration_08_candidate_02.png",
+          "output\\gemini_ma1_iteration_08_candidate_03.png",
+          "output\\gemini_ma1_iteration_08_candidate_04.png",
+          "output\\gemini_ma1_iteration_08_candidate_05.png",
+          "output\\gemini_ma1_iteration_08_candidate_06.png",
+          "output\\gemini_ma1_iteration_08_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 8,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\gemini_ma1_iteration_08_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 9,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_08_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_01.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_04.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_05.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_06.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_09_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_09_candidate_01.png",
+          "output\\gemini_ma1_iteration_09_candidate_02.png",
+          "output\\gemini_ma1_iteration_09_candidate_03.png",
+          "output\\gemini_ma1_iteration_09_candidate_04.png",
+          "output\\gemini_ma1_iteration_09_candidate_05.png",
+          "output\\gemini_ma1_iteration_09_candidate_06.png",
+          "output\\gemini_ma1_iteration_09_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 5, image2: 5, image3: 5, image4: 5, image5: 5, image6: 5, image7: 5>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 5, image2: 5, image3: 5, image4: 5, image5: 5, image6: 5, image7: 5>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 5.0,
+          "2": 5.0,
+          "3": 5.0,
+          "4": 5.0,
+          "5": 5.0,
+          "6": 5.0,
+          "7": 5.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 9,
+        "candidate_id": 1,
+        "scorer_score": 5.0,
+        "image": "output\\gemini_ma1_iteration_09_selected.png",
+        "route": [
+          0,
+          8,
+          7,
+          4,
+          2,
+          5,
+          6,
+          3,
+          1,
+          9,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    },
+    {
+      "iteration": 10,
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\gemini_ma1_iteration_09_selected.png",
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-1-9-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_01.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_02.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_03.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-1-9-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_04.png",
+            "route": [
+              0,
+              1,
+              9,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.76743989765542,
+            "gap_to_or_tools_percent": 4.090595758394756,
+            "gap_to_exact_percent": 4.090595758394756
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_05.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_06.png",
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\gemini_ma1_iteration_10_candidate_07.png",
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\gemini_ma1_iteration_10_candidate_01.png",
+          "output\\gemini_ma1_iteration_10_candidate_02.png",
+          "output\\gemini_ma1_iteration_10_candidate_03.png",
+          "output\\gemini_ma1_iteration_10_candidate_04.png",
+          "output\\gemini_ma1_iteration_10_candidate_05.png",
+          "output\\gemini_ma1_iteration_10_candidate_06.png",
+          "output\\gemini_ma1_iteration_10_candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 8, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 8, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>"
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 8.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 10,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\gemini_ma1_iteration_10_selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      }
+    }
+  ],
+  "pending_iteration": null,
+  "final_solution": {
+    "source": "scorer",
+    "iteration": 10,
+    "candidate_id": 1,
+    "scorer_score": 10.0,
+    "image": "output\\gemini_ma1_iteration_10_selected.png",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "best_valid_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "image": "output\\gemini_zero_shot_route.png",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "best_critic_candidate_oracle": {
+    "source": "critic_candidate_oracle",
+    "iteration": 1,
+    "candidate_id": 1,
+    "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+    "image": "output\\gemini_ma1_iteration_01_candidate_01.png",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "errors": [
+    {
+      "iteration": 2,
+      "phase": "scorer",
+      "type": "ScorerParseError",
+      "message": "Puanlayıcı cevabında görsel skorları bulunamadı."
+    },
+    {
+      "iteration": 2,
+      "phase": "scorer",
+      "type": "ScorerParseError",
+      "message": "Puanlayıcı cevabında en iyi rota kimliği bulunamadı."
+    },
+    {
+      "iteration": 9,
+      "phase": "scorer",
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 27.408038069s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '27s'}]}}"
+    },
+    {
+      "iteration": 9,
+      "phase": "scorer",
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 45.416756966s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '45s'}]}}"
+    }
+  ]
+}
