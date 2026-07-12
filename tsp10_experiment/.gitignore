@@ -2,5 +2,12 @@
 __pycache__/
 .pytest_cache/
 .env
+
+# Varsayılan olarak üretilen çıktı dosyalarını dışarıda tut.
 output/*.json
 output/*.png
+
+# Tamamlanan deney sonuçlarını yeniden üretilebilirlik için GitHub'a ekle.
+!output/gemini_zero_shot_results.json
+!output/gemini_multi_agent2_results.json
+!output/gemini_multi_agent1_results.json
