@@ -1,0 +1,426 @@
+{
+  "experiment": "gemini_visual_multi_agent_1_tsp",
+  "summary_type": "compact",
+  "source_results": "output\\runs\\seed42_timing_run_02\\multi_agent1\\gemini_multi_agent1_results.json",
+  "run_id": "seed42_timing_run_02",
+  "model": "gemini-2.5-flash",
+  "status": "completed",
+  "requested_iterations": 10,
+  "completed_iterations": 10,
+  "pending_iteration": null,
+  "quality_summary": {
+    "total_critic_candidates": 70,
+    "valid_critic_candidates": 70,
+    "valid_candidate_rate_percent": 100.0,
+    "optimal_critic_candidates": 67,
+    "optimal_candidate_rate_percent": 95.71428571428571,
+    "scorer_selections": 10,
+    "optimal_scorer_selections": 10,
+    "optimal_scorer_selection_rate_percent": 100.0
+  },
+  "api_summary": {
+    "started_at_utc": "2026-07-19T12:03:18.210138+00:00",
+    "finished_at_utc_before_result_write": "2026-07-19T12:03:46.515514+00:00",
+    "session_wall_seconds_before_result_write": 28.30537539999932,
+    "api_call_count": 22,
+    "successful_api_call_count": 20,
+    "failed_api_call_count": 2,
+    "total_api_call_wall_seconds": 112.97676709992811,
+    "total_request_preparation_seconds": 12.22766289988067,
+    "total_gemini_request_wall_seconds": 125.20513569994364,
+    "total_token_count": 97578
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 12.728574299952015,
+        "request_total_wall_seconds": 13.859994299942628,
+        "total_token_count": 7127
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 4.456858400022611,
+        "total_token_count": 2637
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 19.51132549997419
+    },
+    {
+      "iteration": 2,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 6.164840699988417,
+        "request_total_wall_seconds": 7.241350699914619,
+        "total_token_count": 7133
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.507701199967414,
+        "total_token_count": 2607
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 11.94877809996251
+    },
+    {
+      "iteration": 3,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 5,
+        "nonoptimal_candidate_ids": [
+          3,
+          6
+        ],
+        "api_call_wall_seconds": 9.920416199951433,
+        "request_total_wall_seconds": 10.189997300039977,
+        "total_token_count": 7129
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 7.32483699999284,
+        "total_token_count": 2667
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 18.648308699950576
+    },
+    {
+      "iteration": 4,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 6.317526899976656,
+        "request_total_wall_seconds": 6.607018499984406,
+        "total_token_count": 7130
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.301106399972923,
+        "total_token_count": 2595
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 11.056355000007898
+    },
+    {
+      "iteration": 5,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 6.930348300025798,
+        "request_total_wall_seconds": 7.193935499992222,
+        "total_token_count": 7132
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.2706453000428155,
+        "total_token_count": 2556
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 13.465110599878244
+    },
+    {
+      "iteration": 6,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 6,
+        "nonoptimal_candidate_ids": [
+          1
+        ],
+        "api_call_wall_seconds": 7.108678799937479,
+        "request_total_wall_seconds": 7.489774099900387,
+        "total_token_count": 7128
+      },
+      "scorer": {
+        "selected_candidate_id": 2,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.8919617000501603,
+        "total_token_count": 2674
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 13.197567900060676
+    },
+    {
+      "iteration": 7,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 5.955358100007288,
+        "request_total_wall_seconds": 6.3255351999541745,
+        "total_token_count": 7130
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.0879873000085354,
+        "total_token_count": 2615
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 11.241955899982713
+    },
+    {
+      "iteration": 8,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 5.654086000053212,
+        "request_total_wall_seconds": 6.289849000051618,
+        "total_token_count": 7132
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 4.4029406000627205,
+        "total_token_count": 2612
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 13.821812000009231
+    },
+    {
+      "iteration": 9,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 5.378423999994993,
+        "request_total_wall_seconds": 5.769702600082383,
+        "total_token_count": 7133
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.6755139000015333,
+        "total_token_count": 2655
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 11.1497472000774
+    },
+    {
+      "iteration": 10,
+      "critic": {
+        "candidate_count": 7,
+        "valid_candidate_count": 7,
+        "optimal_candidate_count": 7,
+        "nonoptimal_candidate_ids": [],
+        "api_call_wall_seconds": 5.832182599930093,
+        "request_total_wall_seconds": 6.18759880005382,
+        "total_token_count": 7136
+      },
+      "scorer": {
+        "selected_candidate_id": 1,
+        "selected_is_oracle_best": true,
+        "selection_regret_percent": 0.0,
+        "api_call_wall_seconds": 3.2841097000055015,
+        "total_token_count": 2650
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "distance": 13.226401287596719,
+        "gap_to_exact_percent": 0.0
+      },
+      "logical_iteration_measured_seconds": 11.06565049989149
+    }
+  ],
+  "errors": [
+    {
+      "iteration": 5,
+      "phase": "scorer",
+      "type": "ClientError",
+      "status_code": 429,
+      "api_call_wall_seconds": 0.3663186999037862
+    },
+    {
+      "iteration": 8,
+      "phase": "scorer",
+      "type": "ClientError",
+      "status_code": 429,
+      "api_call_wall_seconds": 0.4163510000798851
+    }
+  ]
+}

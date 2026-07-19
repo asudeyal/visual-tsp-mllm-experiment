@@ -1,0 +1,51 @@
+{
+  "experiment": "gemini_visual_zero_shot_tsp",
+  "summary_type": "compact",
+  "source_results": "output\\runs\\seed42_timing_run_02\\zero_shot\\gemini_zero_shot_results.json",
+  "status": "completed",
+  "run_id": "seed42_timing_run_02",
+  "model": "gemini-2.5-flash",
+  "temperature": 0.0,
+  "coordinates_sent_to_model": false,
+  "solution": {
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "is_valid": true,
+    "missing_nodes": [],
+    "repeated_nodes": [],
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "api_summary": {
+    "api_call_count": 1,
+    "successful_api_call_count": 1,
+    "failed_api_call_count": 0,
+    "total_api_call_wall_seconds": 5.850591800059192,
+    "total_request_preparation_seconds": 1.128761800006032,
+    "total_gemini_request_wall_seconds": 6.9793929000152275,
+    "total_token_count": 1373
+  },
+  "timing": {
+    "input_loading_seconds": 0.00016359996516257524,
+    "request_preparation_seconds": 1.128761800006032,
+    "api_call_wall_seconds": 5.850591800059192,
+    "response_parsing_seconds": 0.00030529999639838934,
+    "validation_and_metrics_seconds": 0.00012159999459981918,
+    "route_rendering_seconds": 0.12256609997712076,
+    "unaccounted_seconds": 0.0020047000143676996,
+    "total_wall_seconds_before_result_write": 7.104514900012873
+  },
+  "errors": []
+}

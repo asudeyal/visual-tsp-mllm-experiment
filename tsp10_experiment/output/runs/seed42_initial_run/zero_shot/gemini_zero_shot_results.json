@@ -6,7 +6,7 @@
   "num_locations_including_depot": 10,
   "num_salesmen": 1,
   "model_input": {
-    "image": "output\\points.png",
+    "image": "output\\runs\\seed42_initial_run\\baseline\\images\\points.png",
     "coordinates_sent_to_model": false
   },
   "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",

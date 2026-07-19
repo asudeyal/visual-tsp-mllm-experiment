@@ -4,8 +4,17 @@ from __future__ import annotations
 
 import os
 import re
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Sequence
+
+from src.experiment_metrics import (
+    build_api_call_record,
+    elapsed_seconds,
+    extract_usage_metadata,
+    start_timer,
+    utc_now_iso,
+)
 
 
 GEMINI_MODEL = "gemini-2.5-flash"
@@ -17,6 +26,22 @@ class RouteParseError(ValueError):
 
 class ScorerParseError(ValueError):
     """Puanlayıcı cevabı beklenen görsel puanlama biçimine uymadığında oluşur."""
+
+
+@dataclass(frozen=True)
+class GeminiTextResult:
+    """Tek metinli Gemini yanıtı ve ölçülen API çağrısı."""
+
+    text: str
+    api_call: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class GeminiCandidatesResult:
+    """Çok adaylı Gemini yanıtı ve ölçülen API çağrısı."""
+
+    texts: list[str]
+    api_call: dict[str, Any]
 
 
 def initializer_prompt() -> str:
@@ -204,14 +229,91 @@ def image_mime_type(image_path: Path) -> str:
     return mime
 
 
-def request_gemini_route(
+def _generate_content_observed(
+    *,
+    client: object,
+    model: str,
+    contents: list[object],
+    config: object,
+    phase: str,
+    temperature: float,
+    input_image_bytes: int,
+    input_image_count: int,
+    request_started_timer: float | None = None,
+    request_preparation_seconds: float = 0.0,
+) -> tuple[object, dict[str, Any]]:
+    """Gemini çağrısının uçtan uca duvar süresini ve tokenlarını ölçer."""
+
+    started_at_utc = utc_now_iso()
+    timer = start_timer()
+    try:
+        response = client.models.generate_content(
+            model=model,
+            contents=contents,
+            config=config,
+        )
+    except Exception as exc:
+        api_call = build_api_call_record(
+            phase=phase,
+            model=model,
+            temperature=temperature,
+            started_at_utc=started_at_utc,
+            finished_at_utc=utc_now_iso(),
+            wall_seconds=elapsed_seconds(timer),
+            success=False,
+            input_image_count=input_image_count,
+            input_image_bytes=input_image_bytes,
+        )
+        api_call["request_preparation_seconds"] = request_preparation_seconds
+        api_call["request_total_wall_seconds"] = (
+            elapsed_seconds(request_started_timer)
+            if request_started_timer is not None
+            else api_call["api_call_wall_seconds"]
+        )
+        # Üst katman hata türünü değiştirmeden başarısız çağrı süresini kaydeder.
+        try:
+            setattr(exc, "gemini_call_record", api_call)
+        except Exception:
+            pass
+        raise
+
+    api_call = build_api_call_record(
+        phase=phase,
+        model=model,
+        temperature=temperature,
+        started_at_utc=started_at_utc,
+        finished_at_utc=utc_now_iso(),
+        wall_seconds=elapsed_seconds(timer),
+        success=True,
+        input_image_count=input_image_count,
+        input_image_bytes=input_image_bytes,
+        usage=extract_usage_metadata(response),
+    )
+    api_call["request_preparation_seconds"] = request_preparation_seconds
+    api_call["request_total_wall_seconds"] = (
+        elapsed_seconds(request_started_timer)
+        if request_started_timer is not None
+        else api_call["api_call_wall_seconds"]
+    )
+    return response, api_call
+
+
+def _raise_response_error(message: str, api_call: dict[str, Any]) -> None:
+    """API tamamlandığı halde kullanılamayan cevaba çağrı ölçümünü ekler."""
+
+    exc = RuntimeError(message)
+    exc.gemini_call_record = api_call
+    raise exc
+
+
+def request_gemini_route_detailed(
     image_path: Path,
     *,
     prompt: str,
     model: str = GEMINI_MODEL,
     temperature: float = 0.0,
-) -> str:
-    """Bir görsel ve istemi Gemini'ye gönderip ham rota metnini döndürür.
+) -> GeminiTextResult:
+    """Bir görsel ve istemi Gemini'ye gönderip metin ile ölçümü döndürür.
 
     API anahtarı yalnızca ``GEMINI_API_KEY`` ortam değişkeninden okunur. Bu
     fonksiyon koordinatları modele göndermez; model yalnızca istemi ve görseli
@@ -224,40 +326,71 @@ def request_gemini_route(
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY ortam değişkeni tanımlı değil.")
 
+    request_timer = start_timer()
     # Import burada yapılır; rota ayrıştırma testleri API çağrısı yapmadan çalışır.
     from google import genai
     from google.genai import types
 
+    image_data = image_path.read_bytes()
     client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(
-        model=model,
-        contents=[
-            prompt,
-            types.Part.from_bytes(
-                data=image_path.read_bytes(),
-                mime_type=image_mime_type(image_path),
-            ),
-        ],
-        config=types.GenerateContentConfig(
-            temperature=temperature,
-            max_output_tokens=1000,
+    contents = [
+        prompt,
+        types.Part.from_bytes(
+            data=image_data,
+            mime_type=image_mime_type(image_path),
         ),
+    ]
+    config = types.GenerateContentConfig(
+        temperature=temperature,
+        max_output_tokens=1000,
+    )
+    request_preparation_seconds = elapsed_seconds(request_timer)
+    response, api_call = _generate_content_observed(
+        client=client,
+        model=model,
+        contents=contents,
+        config=config,
+        phase="route_generation",
+        temperature=temperature,
+        input_image_count=1,
+        input_image_bytes=len(image_data),
+        request_started_timer=request_timer,
+        request_preparation_seconds=request_preparation_seconds,
     )
 
     if not response.text or not response.text.strip():
-        raise RuntimeError("Gemini boş veya metin içermeyen bir cevap döndürdü.")
-    return response.text.strip()
+        _raise_response_error(
+            "Gemini boş veya metin içermeyen bir cevap döndürdü.", api_call
+        )
+    return GeminiTextResult(text=response.text.strip(), api_call=api_call)
 
 
-def request_gemini_route_candidates(
+def request_gemini_route(
+    image_path: Path,
+    *,
+    prompt: str,
+    model: str = GEMINI_MODEL,
+    temperature: float = 0.0,
+) -> str:
+    """Geriye uyumlu olarak yalnızca ham rota metnini döndürür."""
+
+    return request_gemini_route_detailed(
+        image_path,
+        prompt=prompt,
+        model=model,
+        temperature=temperature,
+    ).text
+
+
+def request_gemini_route_candidates_detailed(
     image_path: Path,
     *,
     prompt: str,
     candidate_count: int,
     model: str = GEMINI_MODEL,
     temperature: float = 0.7,
-) -> list[str]:
-    """Tek bir Gemini çağrısında birden fazla rota adayı üretir.
+) -> GeminiCandidatesResult:
+    """Tek çağrıda rota adaylarını ve API ölçümünü birlikte üretir.
 
     Makaledeki Multi-Agent 1 self-ensemble adımı, sıcaklık 0.7 ve yedi adayla
     çalışır. ``candidate_count`` geliştirme testleri için daha küçük verilebilir.
@@ -271,24 +404,36 @@ def request_gemini_route_candidates(
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY ortam değişkeni tanımlı değil.")
 
+    request_timer = start_timer()
     from google import genai
     from google.genai import types
 
+    image_data = image_path.read_bytes()
     client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(
-        model=model,
-        contents=[
-            prompt,
-            types.Part.from_bytes(
-                data=image_path.read_bytes(),
-                mime_type=image_mime_type(image_path),
-            ),
-        ],
-        config=types.GenerateContentConfig(
-            temperature=temperature,
-            candidate_count=candidate_count,
-            max_output_tokens=1000,
+    contents = [
+        prompt,
+        types.Part.from_bytes(
+            data=image_data,
+            mime_type=image_mime_type(image_path),
         ),
+    ]
+    config = types.GenerateContentConfig(
+        temperature=temperature,
+        candidate_count=candidate_count,
+        max_output_tokens=1000,
+    )
+    request_preparation_seconds = elapsed_seconds(request_timer)
+    response, api_call = _generate_content_observed(
+        client=client,
+        model=model,
+        contents=contents,
+        config=config,
+        phase="critic_candidate_generation",
+        temperature=temperature,
+        input_image_count=1,
+        input_image_bytes=len(image_data),
+        request_started_timer=request_timer,
+        request_preparation_seconds=request_preparation_seconds,
     )
 
     texts: list[str] = []
@@ -305,20 +450,40 @@ def request_gemini_route_candidates(
             texts.append(candidate_text)
 
     if not texts:
-        raise RuntimeError(
-            "Gemini critic çağrısı metin içeren hiçbir aday döndürmedi."
+        _raise_response_error(
+            "Gemini critic çağrısı metin içeren hiçbir aday döndürmedi.",
+            api_call,
         )
-    return texts
+    return GeminiCandidatesResult(texts=texts, api_call=api_call)
 
 
-def request_gemini_scorer(
+def request_gemini_route_candidates(
+    image_path: Path,
+    *,
+    prompt: str,
+    candidate_count: int,
+    model: str = GEMINI_MODEL,
+    temperature: float = 0.7,
+) -> list[str]:
+    """Geriye uyumlu olarak yalnızca critic aday metinlerini döndürür."""
+
+    return request_gemini_route_candidates_detailed(
+        image_path,
+        prompt=prompt,
+        candidate_count=candidate_count,
+        model=model,
+        temperature=temperature,
+    ).texts
+
+
+def request_gemini_scorer_detailed(
     image_paths: Sequence[Path],
     *,
     image_ids: Sequence[int] | None = None,
     model: str = GEMINI_MODEL,
     temperature: float = 0.0,
-) -> str:
-    """Aday rota görsellerini tek çağrıda Gemini puanlayıcıya gönderir."""
+) -> GeminiTextResult:
+    """Aday görsellerini puanlatır; metin ile API ölçümünü döndürür."""
 
     paths = [Path(path) for path in image_paths]
     ids = (
@@ -338,35 +503,67 @@ def request_gemini_scorer(
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY ortam değişkeni tanımlı değil.")
 
+    request_timer = start_timer()
     from google import genai
     from google.genai import types
 
     contents: list[object] = [scorer_prompt(ids)]
+    total_image_bytes = 0
     for image_id, path in zip(ids, paths):
+        image_data = path.read_bytes()
+        total_image_bytes += len(image_data)
         contents.append(f"Image {image_id}:")
         contents.append(
             types.Part.from_bytes(
-                data=path.read_bytes(),
+                data=image_data,
                 mime_type=image_mime_type(path),
             )
         )
 
     client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(
+    config = types.GenerateContentConfig(
+        temperature=temperature,
+        # Gemini 2.5 Flash düşünme tokenlarını da çıktı bütçesinden
+        # kullanabilir. Yedi görseli puanlarken görünür cevabın yarıda
+        # kesilmemesi için makaledeki 4000 token sınırı kullanılır.
+        max_output_tokens=4000,
+        thinking_config=types.ThinkingConfig(thinking_budget=512),
+    )
+    request_preparation_seconds = elapsed_seconds(request_timer)
+    response, api_call = _generate_content_observed(
+        client=client,
         model=model,
         contents=contents,
-        config=types.GenerateContentConfig(
-            temperature=temperature,
-            # Gemini 2.5 Flash düşünme tokenlarını da çıktı bütçesinden
-            # kullanabilir. Yedi görseli puanlarken görünür cevabın yarıda
-            # kesilmemesi için makaledeki 4000 token sınırı kullanılır.
-            max_output_tokens=4000,
-            thinking_config=types.ThinkingConfig(thinking_budget=512),
-        ),
+        config=config,
+        phase="visual_scorer",
+        temperature=temperature,
+        input_image_count=len(paths),
+        input_image_bytes=total_image_bytes,
+        request_started_timer=request_timer,
+        request_preparation_seconds=request_preparation_seconds,
     )
     if not response.text or not response.text.strip():
-        raise RuntimeError("Gemini puanlayıcı boş veya metin içermeyen cevap döndürdü.")
-    return response.text.strip()
+        _raise_response_error(
+            "Gemini puanlayıcı boş veya metin içermeyen cevap döndürdü.", api_call
+        )
+    return GeminiTextResult(text=response.text.strip(), api_call=api_call)
+
+
+def request_gemini_scorer(
+    image_paths: Sequence[Path],
+    *,
+    image_ids: Sequence[int] | None = None,
+    model: str = GEMINI_MODEL,
+    temperature: float = 0.0,
+) -> str:
+    """Geriye uyumlu olarak yalnızca puanlayıcı metnini döndürür."""
+
+    return request_gemini_scorer_detailed(
+        image_paths,
+        image_ids=image_ids,
+        model=model,
+        temperature=temperature,
+    ).text
 
 
 def request_gemini_zero_shot_route(
@@ -385,6 +582,24 @@ def request_gemini_zero_shot_route(
     )
 
 
+def request_gemini_zero_shot_route_detailed(
+    image_path: Path,
+    *,
+    model: str = GEMINI_MODEL,
+    temperature: float = 0.0,
+) -> GeminiTextResult:
+    """Zero-shot rota metniyle birlikte API ölçümünü döndürür."""
+
+    result = request_gemini_route_detailed(
+        image_path,
+        prompt=initializer_prompt(),
+        model=model,
+        temperature=temperature,
+    )
+    result.api_call["phase"] = "zero_shot_initializer"
+    return result
+
+
 def request_gemini_critic_route(
     image_path: Path,
     *,
@@ -401,6 +616,24 @@ def request_gemini_critic_route(
     )
 
 
+def request_gemini_critic_route_detailed(
+    image_path: Path,
+    *,
+    model: str = GEMINI_MODEL,
+    temperature: float = 0.7,
+) -> GeminiTextResult:
+    """Critic rota metniyle birlikte API ölçümünü döndürür."""
+
+    result = request_gemini_route_detailed(
+        image_path,
+        prompt=critic_prompt(),
+        model=model,
+        temperature=temperature,
+    )
+    result.api_call["phase"] = "critic_route_revision"
+    return result
+
+
 def request_gemini_critic_candidates(
     image_path: Path,
     *,
@@ -411,6 +644,24 @@ def request_gemini_critic_candidates(
     """Multi-Agent 1 için critic self-ensemble rota adaylarını ister."""
 
     return request_gemini_route_candidates(
+        image_path,
+        prompt=critic_prompt(),
+        candidate_count=candidate_count,
+        model=model,
+        temperature=temperature,
+    )
+
+
+def request_gemini_critic_candidates_detailed(
+    image_path: Path,
+    *,
+    candidate_count: int = 7,
+    model: str = GEMINI_MODEL,
+    temperature: float = 0.7,
+) -> GeminiCandidatesResult:
+    """Critic adaylarıyla birlikte tek API çağrısının ölçümünü döndürür."""
+
+    return request_gemini_route_candidates_detailed(
         image_path,
         prompt=critic_prompt(),
         candidate_count=candidate_count,
