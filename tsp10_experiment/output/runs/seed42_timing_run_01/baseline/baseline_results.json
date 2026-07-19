@@ -1,0 +1,118 @@
+{
+  "experiment": {
+    "run_id": "seed42_timing_run_01",
+    "num_locations_including_depot": 10,
+    "num_salesmen": 1,
+    "seed": 42,
+    "coordinate_distribution": "uniform[0, 5)",
+    "ortools_time_limit_seconds": 2
+  },
+  "locations": [
+    [
+      3.8697802427798167,
+      2.1943921987602617
+    ],
+    [
+      4.292989599556912,
+      3.4868401452968194
+    ],
+    [
+      0.47088673943824766,
+      4.878111758183779
+    ],
+    [
+      3.805698509951765,
+      3.930321526384769
+    ],
+    [
+      0.6405681633777294,
+      2.251929689477836
+    ],
+    [
+      1.8539901211629062,
+      4.633824944243009
+    ],
+    [
+      3.2193256004033226,
+      4.113808066354149
+    ],
+    [
+      2.2170709941366558,
+      1.1361936089238844
+    ],
+    [
+      2.772923935079174,
+      0.3190862805208766
+    ],
+    [
+      4.13815585996291,
+      3.1583219956103243
+    ]
+  ],
+  "solutions": {
+    "or_tools": {
+      "method": "or_tools",
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "distance": 13.226401287596719,
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      }
+    },
+    "exact": {
+      "method": "exact_brute_force",
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "distance": 13.226401287596719,
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      }
+    }
+  },
+  "metrics": {
+    "or_tools_gap_to_exact_percent": 0.0
+  },
+  "timing": {
+    "started_at_utc": "2026-07-17T17:41:43.581068+00:00",
+    "finished_at_utc_before_result_write": "2026-07-17T17:41:46.598872+00:00",
+    "problem_generation_seconds": 0.010700299986638129,
+    "or_tools_seconds": 2.009970000013709,
+    "exact_brute_force_seconds": 0.6515925999265164,
+    "problem_plot_seconds": 0.11367450002580881,
+    "or_tools_plot_seconds": 0.11327700002584606,
+    "exact_plot_seconds": 0.11807139997836202,
+    "total_wall_seconds_before_result_write": 3.0178044999483973
+  }
+}

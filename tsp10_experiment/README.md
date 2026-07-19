@@ -144,10 +144,63 @@ python run_baseline.py --seed 42 --ortools-time-limit 120
 
 | Dosya | İçerik |
 |---|---|
-| `output/points.png` | Gemini’ye gönderilecek 10 düğümlü problem görseli |
-| `output/or_tools_route.png` | OR-Tools rotası |
-| `output/exact_route.png` | Kesin optimum rota |
-| `output/baseline_results.json` | Koordinatlar, rotalar, mesafeler ve gap değerleri |
+| `output/runs/default/baseline/images/points.png` | Gemini’ye gönderilecek 10 düğümlü problem görseli |
+| `output/runs/default/baseline/images/or_tools_route.png` | OR-Tools rotası |
+| `output/runs/default/baseline/images/exact_route.png` | Kesin optimum rota |
+| `output/runs/default/baseline/baseline_results.json` | Koordinatlar, rotalar, mesafeler ve gap değerleri |
+
+### Ayrı çalıştırma klasörü kullanma
+
+Önceki sonuçların üzerine yazılmaması için dört yöntemde de aynı `--run-id`
+değeri kullanılabilir:
+
+```powershell
+python run_baseline.py --seed 42 --ortools-time-limit 2 --run-id seed42_timing_run_01
+python run_gemini_zero_shot.py --run-id seed42_timing_run_01
+python run_gemini_multi_agent2.py --iterations 10 --run-id seed42_timing_run_01
+python run_gemini_multi_agent1.py --iterations 10 --candidate-count 7 --run-id seed42_timing_run_01
+```
+
+Bu komutlar dosyaları şu yapıda saklar:
+
+```text
+output/runs/seed42_timing_run_01/
+├── baseline/
+│   └── images/
+├── zero_shot/
+│   └── images/
+├── multi_agent1/
+│   └── images/
+│       ├── iteration_01/
+│       └── ...
+└── multi_agent2/
+    └── images/
+```
+
+`--run-id` verilmezse sonuçlar düzenli biçimde `output/runs/default/` altında
+saklanır. Checkpoint dosyaları geçici dosyalardır ve Git tarafından izlenmez.
+
+Eski düz `output/` dosyalarını ve yöntem klasörlerindeki PNG dosyalarını yeni
+yapıya taşımadan önce işlem planı görüntülenebilir:
+
+```powershell
+python organize_output.py --dry-run
+```
+
+Plan kontrol edildikten sonra taşıma ve JSON yol güncellemeleri uygulanır:
+
+```powershell
+python organize_output.py --apply
+```
+
+Bu işlem API çağrısı yapmaz ve deneyleri yeniden çalıştırmaz. Kök dizindeki
+eski çıktılar varsayılan olarak `output/runs/seed42_initial_run/` altına
+taşınır.
+
+Sonuç JSON'larında API çağrı süresi, yerel ayrıştırma, doğrulama, çizim,
+token kullanımı ve başarısız çağrı bilgileri ilgili yöntem ve iterasyonun
+altında saklanır. `api_call_wall_seconds`, ağ ve SDK süresini de içeren uçtan
+uca çağrı süresidir; yalnızca modelin sunucu içi çıkarım süresi değildir.
 
 ### Kesin optimum neden hesaplanıyor?
 
@@ -195,7 +248,8 @@ Yeni terminal açıldığında ortam değişkeninin yeniden tanımlanması gerek
 
 ## 3. Gemini zero-shot deneyi
 
-Zero-shot deneyinden önce baseline çalıştırılmış ve `output/points.png`
+Zero-shot deneyinden önce baseline çalıştırılmış ve
+`output/runs/default/baseline/images/points.png`
 oluşturulmuş olmalıdır.
 
 ```powershell
@@ -215,7 +269,7 @@ Bu deneyde:
 Sonuç dosyası:
 
 ```text
-output/gemini_zero_shot_results.json
+output/runs/default/zero_shot/gemini_zero_shot_results.json
 ```
 
 ## 4. Gemini Multi-Agent 2
@@ -245,19 +299,18 @@ python run_gemini_multi_agent2.py --iterations 3
 
 ```powershell
 python run_gemini_multi_agent2.py `
-    --iterations 10 `
-    --delay-seconds 13
+    --iterations 10
 ```
 
-Ücretsiz Gemini katmanındaki dakika başına istek sınırını aşmamak için
-çağrılar arasına bekleme süresi eklenmiştir.
+Deney sürelerini yapay olarak büyütmemek için kod çağrılar arasında bekleme
+uygulamaz. Kota hataları süre ve hata türüyle sonuç JSON'una yazılır.
 
 ### Checkpoint’ten devam etme
 
 Her başarılı critic iterasyonu aşağıdaki checkpoint dosyasına kaydedilir:
 
 ```text
-output/gemini_multi_agent2_checkpoint.json
+output/runs/default/multi_agent2/gemini_multi_agent2_checkpoint.json
 ```
 
 Kota veya ağ hatası nedeniyle deney yarıda kalırsa önceki çağrıları
@@ -266,14 +319,13 @@ tekrarlamadan devam edilebilir:
 ```powershell
 python run_gemini_multi_agent2.py `
     --iterations 10 `
-    --delay-seconds 13 `
     --resume
 ```
 
 Final sonuç dosyası:
 
 ```text
-output/gemini_multi_agent2_results.json
+output/runs/default/multi_agent2/gemini_multi_agent2_results.json
 ```
 
 ## 5. Gemini Multi-Agent 1
@@ -327,8 +379,7 @@ Bu komut:
 ```powershell
 python run_gemini_multi_agent1.py `
     --iterations 1 `
-    --candidate-count 7 `
-    --delay-seconds 13
+    --candidate-count 7
 ```
 
 ### On iterasyonluk tam deney
@@ -336,8 +387,7 @@ python run_gemini_multi_agent1.py `
 ```powershell
 python run_gemini_multi_agent1.py `
     --iterations 10 `
-    --candidate-count 7 `
-    --delay-seconds 13
+    --candidate-count 7
 ```
 
 Bir tam Multi-Agent 1 iterasyonu iki Gemini isteği kullanır:
@@ -355,7 +405,7 @@ Critic çağrısı tamamlandığında aday rotalar ve aday görselleri hemen
 checkpoint’e kaydedilir:
 
 ```text
-output/gemini_multi_agent1_checkpoint.json
+output/runs/default/multi_agent1/gemini_multi_agent1_checkpoint.json
 ```
 
 Scorer aşaması kota veya ağ hatası nedeniyle tamamlanamazsa critic adayları
@@ -366,14 +416,13 @@ eksik scorer aşamasından devam edilir:
 python run_gemini_multi_agent1.py `
     --iterations 10 `
     --candidate-count 7 `
-    --delay-seconds 13 `
     --resume
 ```
 
 Final sonuç dosyası:
 
 ```text
-output/gemini_multi_agent1_results.json
+output/runs/default/multi_agent1/gemini_multi_agent1_results.json
 ```
 
 ### Sonuç JSON alanları
@@ -568,7 +617,6 @@ Checkpoint bulunan deneylerde devam komutu kullanılmalıdır:
 python run_gemini_multi_agent1.py `
     --iterations 10 `
     --candidate-count 7 `
-    --delay-seconds 13 `
     --resume
 ```
 
@@ -630,8 +678,7 @@ python -c "import ortools; print('OR-Tools hazır:', ortools.__version__)"
 Sonuç dosyalarında hassas bilgi bulunmadığını kontrol etmek için:
 
 ```powershell
-Select-String `
-    -Path .\output\*.json `
+Get-ChildItem .\output -Recurse -Filter *.json | Select-String `
     -Pattern "AIza|GEMINI_API_KEY|api[_-]?key|secret" `
     -CaseSensitive:$false
 ```
@@ -644,9 +691,9 @@ Yeniden üretilebilirlik amacıyla aşağıdaki tamamlanmış sonuç dosyaların
 GitHub’da tutulması önerilir:
 
 ```text
-output/gemini_zero_shot_results.json
-output/gemini_multi_agent2_results.json
-output/gemini_multi_agent1_results.json
+output/runs/<run-id>/zero_shot/gemini_zero_shot_results.json
+output/runs/<run-id>/multi_agent2/gemini_multi_agent2_results.json
+output/runs/<run-id>/multi_agent1/gemini_multi_agent1_results.json
 ```
 
 Checkpoint dosyaları, geçici görseller ve sanal ortam GitHub’a gönderilmez.

@@ -1,0 +1,4270 @@
+{
+  "experiment": "gemini_visual_multi_agent_1_tsp",
+  "run_id": "seed42_timing_run_02",
+  "model": "gemini-2.5-flash",
+  "num_locations_including_depot": 10,
+  "num_salesmen": 1,
+  "requested_iterations": 10,
+  "completed_iterations": 10,
+  "critic_candidates_per_iteration": 7,
+  "critic_temperature": 0.7,
+  "scorer_temperature": 0.0,
+  "artificial_delay_enabled": false,
+  "initializer": {
+    "source": "output\\runs\\seed42_timing_run_02\\zero_shot\\gemini_zero_shot_results.json",
+    "coordinates_sent_to_model": false,
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\zero_shot\\images\\gemini_zero_shot_route.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-17T18:17:42.853479+00:00",
+          "finished_at_utc": "2026-07-17T18:17:55.582046+00:00",
+          "api_call_wall_seconds": 12.728574299952015,
+          "input_image_count": 1,
+          "input_image_bytes": 90638,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6697,
+            "cached_content_token_count": null,
+            "total_token_count": 7127
+          },
+          "request_preparation_seconds": 1.1313887999858707,
+          "request_total_wall_seconds": 13.859994299942628
+        },
+        "timing": {
+          "request_preparation_seconds": 1.1313887999858707,
+          "api_call_wall_seconds": 12.728574299952015,
+          "candidate_parsing_seconds": 0.0005777003243565559,
+          "candidate_evaluation_seconds": 0.000820199609734118,
+          "candidate_rendering_seconds": 0.7863159002736211,
+          "checkpoint_write_seconds": 0.000555400038138032,
+          "phase_wall_seconds_before_checkpoint": 14.651903499965556,
+          "phase_total_wall_seconds": 14.652468099957332
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 0.00020070001482963562,
+              "validation_and_metrics_seconds": 0.00013239996042102575,
+              "route_rendering_seconds": 0.15160420001484454
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 2.8199981898069382e-05,
+              "validation_and_metrics_seconds": 0.00013429997488856316,
+              "route_rendering_seconds": 0.11069010000210255
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 8.350005373358727e-05,
+              "validation_and_metrics_seconds": 0.00015599990729242563,
+              "route_rendering_seconds": 0.10810070007573813
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 3.9100064896047115e-05,
+              "validation_and_metrics_seconds": 0.00011019990779459476,
+              "route_rendering_seconds": 0.10191690002102405
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 3.820005804300308e-05,
+              "validation_and_metrics_seconds": 7.509998977184296e-05,
+              "route_rendering_seconds": 0.10358039999846369
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 8.770008571445942e-05,
+              "validation_and_metrics_seconds": 0.00013109995052218437,
+              "route_rendering_seconds": 0.10539460007566959
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 0.00010030006524175406,
+              "validation_and_metrics_seconds": 8.109991904348135e-05,
+              "route_rendering_seconds": 0.10502900008577853
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-17T18:17:56.674368+00:00",
+              "finished_at_utc": "2026-07-17T18:18:01.131223+00:00",
+              "api_call_wall_seconds": 4.456858400022611,
+              "input_image_count": 7,
+              "input_image_bytes": 624631,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 59,
+                "thoughts_token_count": 463,
+                "cached_content_token_count": null,
+                "total_token_count": 2637
+              },
+              "request_preparation_seconds": 0.29898329998832196,
+              "request_total_wall_seconds": 4.755875700036995
+            },
+            "response_parsing_seconds": 0.001379300025291741
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-17T18:17:56.674368+00:00",
+            "finished_at_utc": "2026-07-17T18:18:01.131223+00:00",
+            "api_call_wall_seconds": 4.456858400022611,
+            "input_image_count": 7,
+            "input_image_bytes": 624631,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 59,
+              "thoughts_token_count": 463,
+              "cached_content_token_count": null,
+              "total_token_count": 2637
+            },
+            "request_preparation_seconds": 0.29898329998832196,
+            "request_total_wall_seconds": 4.755875700036995
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.29898329998832196,
+          "api_call_wall_seconds": 4.456858400022611,
+          "response_parsing_seconds": 0.001379300025291741,
+          "selected_route_rendering_seconds": 0.09882790001574904,
+          "selection_evaluation_seconds": 1.950003206729889e-05,
+          "phase_wall_seconds_this_session": 4.858854599995539
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 1,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 14.652468099957332,
+        "scorer_phase_measured_seconds": 4.858857400016859,
+        "logical_iteration_measured_seconds": 19.51132549997419
+      }
+    },
+    {
+      "iteration": 2,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-17T18:22:53.453588+00:00",
+          "finished_at_utc": "2026-07-17T18:22:59.618431+00:00",
+          "api_call_wall_seconds": 6.164840699988417,
+          "input_image_count": 1,
+          "input_image_bytes": 88917,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6703,
+            "cached_content_token_count": 292,
+            "total_token_count": 7133
+          },
+          "request_preparation_seconds": 1.0764689999632537,
+          "request_total_wall_seconds": 7.241350699914619
+        },
+        "timing": {
+          "request_preparation_seconds": 1.0764689999632537,
+          "api_call_wall_seconds": 6.164840699988417,
+          "candidate_parsing_seconds": 0.0003394000232219696,
+          "candidate_evaluation_seconds": 0.0008763001533225179,
+          "candidate_rendering_seconds": 0.7901781996479258,
+          "checkpoint_write_seconds": 0.0006206999532878399,
+          "phase_wall_seconds_before_checkpoint": 8.036198299960233,
+          "phase_total_wall_seconds": 8.036828799988143
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 0.00015430001076310873,
+              "validation_and_metrics_seconds": 9.430001955479383e-05,
+              "route_rendering_seconds": 0.15031309996265918
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 3.430002834647894e-05,
+              "validation_and_metrics_seconds": 0.00022660009562969208,
+              "route_rendering_seconds": 0.11047769989818335
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 2.989999484270811e-05,
+              "validation_and_metrics_seconds": 0.0001246000174432993,
+              "route_rendering_seconds": 0.10339559998828918
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 3.190001007169485e-05,
+              "validation_and_metrics_seconds": 0.00010920001659542322,
+              "route_rendering_seconds": 0.10623009991832078
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 2.8199981898069382e-05,
+              "validation_and_metrics_seconds": 0.00011259992606937885,
+              "route_rendering_seconds": 0.10109849995933473
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 3.2400013878941536e-05,
+              "validation_and_metrics_seconds": 0.00011020002420991659,
+              "route_rendering_seconds": 0.11498329997994006
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 2.8399983420968056e-05,
+              "validation_and_metrics_seconds": 9.8800053820014e-05,
+              "route_rendering_seconds": 0.10367989994119853
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-17T18:23:00.716562+00:00",
+              "finished_at_utc": "2026-07-17T18:23:04.224260+00:00",
+              "api_call_wall_seconds": 3.507701199967414,
+              "input_image_count": 7,
+              "input_image_bytes": 624802,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 59,
+                "thoughts_token_count": 433,
+                "cached_content_token_count": null,
+                "total_token_count": 2607
+              },
+              "request_preparation_seconds": 0.30201009998563677,
+              "request_total_wall_seconds": 3.8097455999813974
+            },
+            "response_parsing_seconds": 0.0011604001047089696
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-17T18:23:00.716562+00:00",
+            "finished_at_utc": "2026-07-17T18:23:04.224260+00:00",
+            "api_call_wall_seconds": 3.507701199967414,
+            "input_image_count": 7,
+            "input_image_bytes": 624802,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 59,
+              "thoughts_token_count": 433,
+              "cached_content_token_count": null,
+              "total_token_count": 2607
+            },
+            "request_preparation_seconds": 0.30201009998563677,
+            "request_total_wall_seconds": 3.8097455999813974
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.30201009998563677,
+          "api_call_wall_seconds": 3.507701199967414,
+          "response_parsing_seconds": 0.0011604001047089696,
+          "selected_route_rendering_seconds": 0.098827000008896,
+          "selection_evaluation_seconds": 1.4099990949034691e-05,
+          "phase_wall_seconds_this_session": 3.9119462999515235
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 2,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 8.036828799988143,
+        "scorer_phase_measured_seconds": 3.911949299974367,
+        "logical_iteration_measured_seconds": 11.94877809996251
+      }
+    },
+    {
+      "iteration": 3,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_02\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-17T18:23:04.597467+00:00",
+          "finished_at_utc": "2026-07-17T18:23:14.517876+00:00",
+          "api_call_wall_seconds": 9.920416199951433,
+          "input_image_count": 1,
+          "input_image_bytes": 88964,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6699,
+            "cached_content_token_count": null,
+            "total_token_count": 7129
+          },
+          "request_preparation_seconds": 0.26955299999099225,
+          "request_total_wall_seconds": 10.189997300039977
+        },
+        "timing": {
+          "request_preparation_seconds": 0.26955299999099225,
+          "api_call_wall_seconds": 9.920416199951433,
+          "candidate_parsing_seconds": 0.0002921000123023987,
+          "candidate_evaluation_seconds": 0.0010849999962374568,
+          "candidate_rendering_seconds": 0.7383608999662101,
+          "checkpoint_write_seconds": 0.0008706999942660332,
+          "phase_wall_seconds_before_checkpoint": 10.93291119998321,
+          "phase_total_wall_seconds": 10.933790200040676
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-8-7-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-4-7-8-9-1-3-6-5-2-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 5.350005812942982e-05,
+              "validation_and_metrics_seconds": 0.00023729994427412748,
+              "route_rendering_seconds": 0.10318560001906008
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 4.2899977415800095e-05,
+              "validation_and_metrics_seconds": 0.00010870001278817654,
+              "route_rendering_seconds": 0.11041729990392923
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-8-7-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 2.6999972760677338e-05,
+              "validation_and_metrics_seconds": 0.00011699995957314968,
+              "route_rendering_seconds": 0.10342290007974952
+            },
+            "route": [
+              0,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              8,
+              7,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 16.4644990101149,
+            "gap_to_or_tools_percent": 24.48207681067987,
+            "gap_to_exact_percent": 24.48207681067987
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 5.200004670768976e-05,
+              "validation_and_metrics_seconds": 0.00022679998073726892,
+              "route_rendering_seconds": 0.10885950003284961
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 3.699993249028921e-05,
+              "validation_and_metrics_seconds": 8.110003545880318e-05,
+              "route_rendering_seconds": 0.1022942999843508
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-4-7-8-9-1-3-6-5-2-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 2.52000754699111e-05,
+              "validation_and_metrics_seconds": 0.00010820000898092985,
+              "route_rendering_seconds": 0.10173440002836287
+            },
+            "route": [
+              0,
+              4,
+              7,
+              8,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 18.132449638797556,
+            "gap_to_or_tools_percent": 37.092843658097436,
+            "gap_to_exact_percent": 37.092843658097436
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 5.449994932860136e-05,
+              "validation_and_metrics_seconds": 0.00020590005442500114,
+              "route_rendering_seconds": 0.10844689991790801
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 12, image2: 12, image3: 9, image4: 12, image5: 12, image6: 9, image7: 12>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 12, image2: 12, image3: 9, image4: 12, image5: 12, image6: 9, image7: 12>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-17T18:23:15.550402+00:00",
+              "finished_at_utc": "2026-07-17T18:23:22.875236+00:00",
+              "api_call_wall_seconds": 7.32483699999284,
+              "input_image_count": 7,
+              "input_image_bytes": 641048,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 57,
+                "thoughts_token_count": 495,
+                "cached_content_token_count": null,
+                "total_token_count": 2667
+              },
+              "request_preparation_seconds": 0.2878451000433415,
+              "request_total_wall_seconds": 7.61271619994659
+            },
+            "response_parsing_seconds": 8.020002860575914e-05
+          }
+        ],
+        "scores": {
+          "1": 12.0,
+          "2": 12.0,
+          "3": 9.0,
+          "4": 12.0,
+          "5": 12.0,
+          "6": 9.0,
+          "7": 12.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-17T18:23:15.550402+00:00",
+            "finished_at_utc": "2026-07-17T18:23:22.875236+00:00",
+            "api_call_wall_seconds": 7.32483699999284,
+            "input_image_count": 7,
+            "input_image_bytes": 641048,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 57,
+              "thoughts_token_count": 495,
+              "cached_content_token_count": null,
+              "total_token_count": 2667
+            },
+            "request_preparation_seconds": 0.2878451000433415,
+            "request_total_wall_seconds": 7.61271619994659
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.2878451000433415,
+          "api_call_wall_seconds": 7.32483699999284,
+          "response_parsing_seconds": 8.020002860575914e-05,
+          "selected_route_rendering_seconds": 0.09903959999792278,
+          "selection_evaluation_seconds": 2.6999972760677338e-05,
+          "phase_wall_seconds_this_session": 7.714515700004995
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 3,
+        "candidate_id": 1,
+        "scorer_score": 12.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 10.933790200040676,
+        "scorer_phase_measured_seconds": 7.7145184999099,
+        "logical_iteration_measured_seconds": 18.648308699950576
+      }
+    },
+    {
+      "iteration": 4,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_03\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-17T18:23:23.267337+00:00",
+          "finished_at_utc": "2026-07-17T18:23:29.584862+00:00",
+          "api_call_wall_seconds": 6.317526899976656,
+          "input_image_count": 1,
+          "input_image_bytes": 89009,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6700,
+            "cached_content_token_count": null,
+            "total_token_count": 7130
+          },
+          "request_preparation_seconds": 0.2894615000113845,
+          "request_total_wall_seconds": 6.607018499984406
+        },
+        "timing": {
+          "request_preparation_seconds": 0.2894615000113845,
+          "api_call_wall_seconds": 6.317526899976656,
+          "candidate_parsing_seconds": 0.0003016000846400857,
+          "candidate_evaluation_seconds": 0.0008679999737069011,
+          "candidate_rendering_seconds": 0.7447701999917626,
+          "checkpoint_write_seconds": 0.0011625000042840838,
+          "phase_wall_seconds_before_checkpoint": 7.356118900002912,
+          "phase_total_wall_seconds": 7.357290599960834
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 3.77000542357564e-05,
+              "validation_and_metrics_seconds": 0.00019170006271451712,
+              "route_rendering_seconds": 0.10884260002058
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 3.6899931728839874e-05,
+              "validation_and_metrics_seconds": 0.00010770000517368317,
+              "route_rendering_seconds": 0.10854459996335208
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 4.2899977415800095e-05,
+              "validation_and_metrics_seconds": 0.00014220003504306078,
+              "route_rendering_seconds": 0.10645650001242757
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 2.8600101359188557e-05,
+              "validation_and_metrics_seconds": 0.00014029990416020155,
+              "route_rendering_seconds": 0.10417529998812824
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 7.950002327561378e-05,
+              "validation_and_metrics_seconds": 9.730004239827394e-05,
+              "route_rendering_seconds": 0.10063580004498363
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 2.8999987989664078e-05,
+              "validation_and_metrics_seconds": 8.929998148232698e-05,
+              "route_rendering_seconds": 0.10418709996156394
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 4.700000863522291e-05,
+              "validation_and_metrics_seconds": 9.949994273483753e-05,
+              "route_rendering_seconds": 0.11192830000072718
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 1, image2: 1, image3: 1, image4: 1, image5: 1, image6: 1, image7: 1>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 1, image2: 1, image3: 1, image4: 1, image5: 1, image6: 1, image7: 1>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-17T18:23:30.629404+00:00",
+              "finished_at_utc": "2026-07-17T18:23:33.930499+00:00",
+              "api_call_wall_seconds": 3.301106399972923,
+              "input_image_count": 7,
+              "input_image_bytes": 624885,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 52,
+                "thoughts_token_count": 428,
+                "cached_content_token_count": null,
+                "total_token_count": 2595
+              },
+              "request_preparation_seconds": 0.2936583999544382,
+              "request_total_wall_seconds": 3.5947932999115437
+            },
+            "response_parsing_seconds": 7.319997530430555e-05
+          }
+        ],
+        "scores": {
+          "1": 1.0,
+          "2": 1.0,
+          "3": 1.0,
+          "4": 1.0,
+          "5": 1.0,
+          "6": 1.0,
+          "7": 1.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-17T18:23:30.629404+00:00",
+            "finished_at_utc": "2026-07-17T18:23:33.930499+00:00",
+            "api_call_wall_seconds": 3.301106399972923,
+            "input_image_count": 7,
+            "input_image_bytes": 624885,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 428,
+              "cached_content_token_count": null,
+              "total_token_count": 2595
+            },
+            "request_preparation_seconds": 0.2936583999544382,
+            "request_total_wall_seconds": 3.5947932999115437
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.2936583999544382,
+          "api_call_wall_seconds": 3.301106399972923,
+          "response_parsing_seconds": 7.319997530430555e-05,
+          "selected_route_rendering_seconds": 0.10168869991321117,
+          "selection_evaluation_seconds": 1.200009137392044e-05,
+          "phase_wall_seconds_this_session": 3.699061500024982
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 4,
+        "candidate_id": 1,
+        "scorer_score": 1.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 7.357290599960834,
+        "scorer_phase_measured_seconds": 3.699064400047064,
+        "logical_iteration_measured_seconds": 11.056355000007898
+      }
+    },
+    {
+      "iteration": 5,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_04\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-17T18:23:34.299030+00:00",
+          "finished_at_utc": "2026-07-17T18:23:41.229376+00:00",
+          "api_call_wall_seconds": 6.930348300025798,
+          "input_image_count": 1,
+          "input_image_bytes": 88956,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6702,
+            "cached_content_token_count": null,
+            "total_token_count": 7132
+          },
+          "request_preparation_seconds": 0.2635572999715805,
+          "request_total_wall_seconds": 7.193935499992222
+        },
+        "timing": {
+          "request_preparation_seconds": 0.2635572999715805,
+          "api_call_wall_seconds": 6.930348300025798,
+          "candidate_parsing_seconds": 0.00022489996626973152,
+          "candidate_evaluation_seconds": 0.000897900084964931,
+          "candidate_rendering_seconds": 0.7367789000272751,
+          "checkpoint_write_seconds": 0.0011196999112144113,
+          "phase_wall_seconds_before_checkpoint": 7.934643500018865,
+          "phase_total_wall_seconds": 7.935770799987949
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 3.560003824532032e-05,
+              "validation_and_metrics_seconds": 0.0001778999576345086,
+              "route_rendering_seconds": 0.10348059993702918
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 2.6699970476329327e-05,
+              "validation_and_metrics_seconds": 7.479998748749495e-05,
+              "route_rendering_seconds": 0.10671780002303421
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 3.7800054997205734e-05,
+              "validation_and_metrics_seconds": 0.00015360000543296337,
+              "route_rendering_seconds": 0.10125100007280707
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 4.409998655319214e-05,
+              "validation_and_metrics_seconds": 0.00015279999934136868,
+              "route_rendering_seconds": 0.10244050004985183
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 2.629996743053198e-05,
+              "validation_and_metrics_seconds": 7.800001185387373e-05,
+              "route_rendering_seconds": 0.11004589998628944
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 2.789997961372137e-05,
+              "validation_and_metrics_seconds": 0.00011740007903426886,
+              "route_rendering_seconds": 0.10379449999891222
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 2.6499968953430653e-05,
+              "validation_and_metrics_seconds": 0.00014340004418045282,
+              "route_rendering_seconds": 0.10904859995935112
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-19T11:58:03.341634+00:00",
+              "finished_at_utc": "2026-07-19T11:58:06.612274+00:00",
+              "api_call_wall_seconds": 3.2706453000428155,
+              "input_image_count": 7,
+              "input_image_bytes": 624818,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 59,
+                "thoughts_token_count": 382,
+                "cached_content_token_count": null,
+                "total_token_count": 2556
+              },
+              "request_preparation_seconds": 1.9707448999397457,
+              "request_total_wall_seconds": 5.24142330000177
+            },
+            "response_parsing_seconds": 0.0016584000550210476
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-19T11:58:03.341634+00:00",
+            "finished_at_utc": "2026-07-19T11:58:06.612274+00:00",
+            "api_call_wall_seconds": 3.2706453000428155,
+            "input_image_count": 7,
+            "input_image_bytes": 624818,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 59,
+              "thoughts_token_count": 382,
+              "cached_content_token_count": null,
+              "total_token_count": 2556
+            },
+            "request_preparation_seconds": 1.9707448999397457,
+            "request_total_wall_seconds": 5.24142330000177
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 1.9707448999397457,
+          "api_call_wall_seconds": 3.2706453000428155,
+          "response_parsing_seconds": 0.0016584000550210476,
+          "selected_route_rendering_seconds": 0.28364510007668287,
+          "selection_evaluation_seconds": 1.680001150816679e-05,
+          "phase_wall_seconds_this_session": 5.529336099978536
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 5,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 7.935770799987949,
+        "scorer_phase_measured_seconds": 5.529339799890295,
+        "logical_iteration_measured_seconds": 13.465110599878244
+      }
+    },
+    {
+      "iteration": 6,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_05\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-19T11:58:07.281705+00:00",
+          "finished_at_utc": "2026-07-19T11:58:14.390382+00:00",
+          "api_call_wall_seconds": 7.108678799937479,
+          "input_image_count": 1,
+          "input_image_bytes": 88957,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6698,
+            "cached_content_token_count": null,
+            "total_token_count": 7128
+          },
+          "request_preparation_seconds": 0.381059099920094,
+          "request_total_wall_seconds": 7.489774099900387
+        },
+        "timing": {
+          "request_preparation_seconds": 0.381059099920094,
+          "api_call_wall_seconds": 7.108678799937479,
+          "candidate_parsing_seconds": 0.0007110000587999821,
+          "candidate_evaluation_seconds": 0.001024500117637217,
+          "candidate_rendering_seconds": 1.1389101000968367,
+          "checkpoint_write_seconds": 0.0012400000123307109,
+          "phase_wall_seconds_before_checkpoint": 8.633746900013648,
+          "phase_total_wall_seconds": 8.635001300019212
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 0.0004999000811949372,
+              "validation_and_metrics_seconds": 0.00024330010637640953,
+              "route_rendering_seconds": 0.1732853000285104
+            },
+            "route": [
+              0,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 16.313341275152723,
+            "gap_to_or_tools_percent": 23.339228263479608,
+            "gap_to_exact_percent": 23.339228263479608
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 3.66999302059412e-05,
+              "validation_and_metrics_seconds": 0.00010170007590204477,
+              "route_rendering_seconds": 0.15705610008444637
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 3.1800009310245514e-05,
+              "validation_and_metrics_seconds": 9.400001727044582e-05,
+              "route_rendering_seconds": 0.15475580003112555
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 3.4400029107928276e-05,
+              "validation_and_metrics_seconds": 0.00010750000365078449,
+              "route_rendering_seconds": 0.1599489999935031
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 4.469999112188816e-05,
+              "validation_and_metrics_seconds": 0.00016629998572170734,
+              "route_rendering_seconds": 0.16397749993484467
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 3.42000275850296e-05,
+              "validation_and_metrics_seconds": 0.0001039999770000577,
+              "route_rendering_seconds": 0.16243480006232858
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 2.929999027401209e-05,
+              "validation_and_metrics_seconds": 0.00020769995171576738,
+              "route_rendering_seconds": 0.16745159996207803
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 7, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 2>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 7, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 2>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-19T11:58:16.027910+00:00",
+              "finished_at_utc": "2026-07-19T11:58:19.919868+00:00",
+              "api_call_wall_seconds": 3.8919617000501603,
+              "input_image_count": 7,
+              "input_image_bytes": 626636,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 58,
+                "thoughts_token_count": 501,
+                "cached_content_token_count": null,
+                "total_token_count": 2674
+              },
+              "request_preparation_seconds": 0.49158200004603714,
+              "request_total_wall_seconds": 4.383580900030211
+            },
+            "response_parsing_seconds": 9.529991075396538e-05
+          }
+        ],
+        "scores": {
+          "1": 7.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 2,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-19T11:58:16.027910+00:00",
+            "finished_at_utc": "2026-07-19T11:58:19.919868+00:00",
+            "api_call_wall_seconds": 3.8919617000501603,
+            "input_image_count": 7,
+            "input_image_bytes": 626636,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 58,
+              "thoughts_token_count": 501,
+              "cached_content_token_count": null,
+              "total_token_count": 2674
+            },
+            "request_preparation_seconds": 0.49158200004603714,
+            "request_total_wall_seconds": 4.383580900030211
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.49158200004603714,
+          "api_call_wall_seconds": 3.8919617000501603,
+          "response_parsing_seconds": 9.529991075396538e-05,
+          "selected_route_rendering_seconds": 0.17639940010849386,
+          "selection_evaluation_seconds": 1.95999164134264e-05,
+          "phase_wall_seconds_this_session": 4.5625627000117674
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 6,
+        "candidate_id": 2,
+        "scorer_score": 10.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 8.635001300019212,
+        "scorer_phase_measured_seconds": 4.562566600041464,
+        "logical_iteration_measured_seconds": 13.197567900060676
+      }
+    },
+    {
+      "iteration": 7,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_06\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-19T11:58:20.470338+00:00",
+          "finished_at_utc": "2026-07-19T11:58:26.425702+00:00",
+          "api_call_wall_seconds": 5.955358100007288,
+          "input_image_count": 1,
+          "input_image_bytes": 88993,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6700,
+            "cached_content_token_count": null,
+            "total_token_count": 7130
+          },
+          "request_preparation_seconds": 0.37014769995585084,
+          "request_total_wall_seconds": 6.3255351999541745
+        },
+        "timing": {
+          "request_preparation_seconds": 0.37014769995585084,
+          "api_call_wall_seconds": 5.955358100007288,
+          "candidate_parsing_seconds": 0.00032950006425380707,
+          "candidate_evaluation_seconds": 0.0010484999511390924,
+          "candidate_rendering_seconds": 1.0976328001124784,
+          "checkpoint_write_seconds": 0.0015520999440923333,
+          "phase_wall_seconds_before_checkpoint": 7.427120400010608,
+          "phase_total_wall_seconds": 7.428683800040744
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 2.759997732937336e-05,
+              "validation_and_metrics_seconds": 0.00012149999383836985,
+              "route_rendering_seconds": 0.15613359992858022
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 7.730000652372837e-05,
+              "validation_and_metrics_seconds": 0.00014939997345209122,
+              "route_rendering_seconds": 0.15604580007493496
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 3.5100034438073635e-05,
+              "validation_and_metrics_seconds": 0.00015139998868107796,
+              "route_rendering_seconds": 0.16407159995287657
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 4.67000063508749e-05,
+              "validation_and_metrics_seconds": 0.00015249999705702066,
+              "route_rendering_seconds": 0.15609639999456704
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 4.4199987314641476e-05,
+              "validation_and_metrics_seconds": 0.00018450000789016485,
+              "route_rendering_seconds": 0.15232570003718138
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 6.150000263005495e-05,
+              "validation_and_metrics_seconds": 0.0001626999583095312,
+              "route_rendering_seconds": 0.16052190004847944
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 3.7100049667060375e-05,
+              "validation_and_metrics_seconds": 0.0001265000319108367,
+              "route_rendering_seconds": 0.15243780007585883
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-19T11:58:27.975398+00:00",
+              "finished_at_utc": "2026-07-19T11:58:31.063381+00:00",
+              "api_call_wall_seconds": 3.0879873000085354,
+              "input_image_count": 7,
+              "input_image_bytes": 626023,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 59,
+                "thoughts_token_count": 441,
+                "cached_content_token_count": null,
+                "total_token_count": 2615
+              },
+              "request_preparation_seconds": 0.44570000004023314,
+              "request_total_wall_seconds": 3.533715800032951
+            },
+            "response_parsing_seconds": 7.160007953643799e-05
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-19T11:58:27.975398+00:00",
+            "finished_at_utc": "2026-07-19T11:58:31.063381+00:00",
+            "api_call_wall_seconds": 3.0879873000085354,
+            "input_image_count": 7,
+            "input_image_bytes": 626023,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 59,
+              "thoughts_token_count": 441,
+              "cached_content_token_count": null,
+              "total_token_count": 2615
+            },
+            "request_preparation_seconds": 0.44570000004023314,
+            "request_total_wall_seconds": 3.533715800032951
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.44570000004023314,
+          "api_call_wall_seconds": 3.0879873000085354,
+          "response_parsing_seconds": 7.160007953643799e-05,
+          "selected_route_rendering_seconds": 0.276991100050509,
+          "selection_evaluation_seconds": 2.4699955247342587e-05,
+          "phase_wall_seconds_this_session": 3.8132672000210732
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 7,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 7.428683800040744,
+        "scorer_phase_measured_seconds": 3.813272099941969,
+        "logical_iteration_measured_seconds": 11.241955899982713
+      }
+    },
+    {
+      "iteration": 8,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_07\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-19T11:58:31.981547+00:00",
+          "finished_at_utc": "2026-07-19T11:58:37.635629+00:00",
+          "api_call_wall_seconds": 5.654086000053212,
+          "input_image_count": 1,
+          "input_image_bytes": 89161,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6702,
+            "cached_content_token_count": null,
+            "total_token_count": 7132
+          },
+          "request_preparation_seconds": 0.6357180000049993,
+          "request_total_wall_seconds": 6.289849000051618
+        },
+        "timing": {
+          "request_preparation_seconds": 0.6357180000049993,
+          "api_call_wall_seconds": 5.654086000053212,
+          "candidate_parsing_seconds": 0.00028849998489022255,
+          "candidate_evaluation_seconds": 0.0010781000601127744,
+          "candidate_rendering_seconds": 1.46067110018339,
+          "checkpoint_write_seconds": 0.0018665000097826123,
+          "phase_wall_seconds_before_checkpoint": 7.757212999975309,
+          "phase_total_wall_seconds": 7.759090000065044
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 5.349994171410799e-05,
+              "validation_and_metrics_seconds": 0.0002764000091701746,
+              "route_rendering_seconds": 0.30952919996343553
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 6.630003917962313e-05,
+              "validation_and_metrics_seconds": 0.0002183000324293971,
+              "route_rendering_seconds": 0.27494240005034953
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 3.620004281401634e-05,
+              "validation_and_metrics_seconds": 0.00011069991160184145,
+              "route_rendering_seconds": 0.16751380008645356
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 3.170000854879618e-05,
+              "validation_and_metrics_seconds": 9.80000477284193e-05,
+              "route_rendering_seconds": 0.21530879999045283
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 3.170000854879618e-05,
+              "validation_and_metrics_seconds": 9.870005305856466e-05,
+              "route_rendering_seconds": 0.15394590003415942
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 3.400002606213093e-05,
+              "validation_and_metrics_seconds": 0.00016199995297938585,
+              "route_rendering_seconds": 0.17610580008476973
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 3.509991802275181e-05,
+              "validation_and_metrics_seconds": 0.0001140000531449914,
+              "route_rendering_seconds": 0.16332519997376949
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 7, image2: 7, image3: 7, image4: 7, image5: 7, image6: 7, image7: 7>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 7, image2: 7, image3: 7, image4: 7, image5: 7, image6: 7, image7: 7>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-19T12:03:19.646364+00:00",
+              "finished_at_utc": "2026-07-19T12:03:24.049299+00:00",
+              "api_call_wall_seconds": 4.4029406000627205,
+              "input_image_count": 7,
+              "input_image_bytes": 628632,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 52,
+                "thoughts_token_count": 445,
+                "cached_content_token_count": null,
+                "total_token_count": 2612
+              },
+              "request_preparation_seconds": 1.4143792000832036,
+              "request_total_wall_seconds": 5.817353600054048
+            },
+            "response_parsing_seconds": 0.0016534000169485807
+          }
+        ],
+        "scores": {
+          "1": 7.0,
+          "2": 7.0,
+          "3": 7.0,
+          "4": 7.0,
+          "5": 7.0,
+          "6": 7.0,
+          "7": 7.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-19T12:03:19.646364+00:00",
+            "finished_at_utc": "2026-07-19T12:03:24.049299+00:00",
+            "api_call_wall_seconds": 4.4029406000627205,
+            "input_image_count": 7,
+            "input_image_bytes": 628632,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 445,
+              "cached_content_token_count": null,
+              "total_token_count": 2612
+            },
+            "request_preparation_seconds": 1.4143792000832036,
+            "request_total_wall_seconds": 5.817353600054048
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 1.4143792000832036,
+          "api_call_wall_seconds": 4.4029406000627205,
+          "response_parsing_seconds": 0.0016534000169485807,
+          "selected_route_rendering_seconds": 0.24088619998656213,
+          "selection_evaluation_seconds": 1.4499993994832039e-05,
+          "phase_wall_seconds_this_session": 6.062719199922867
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 8,
+        "candidate_id": 1,
+        "scorer_score": 7.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 7.759090000065044,
+        "scorer_phase_measured_seconds": 6.062721999944188,
+        "logical_iteration_measured_seconds": 13.821812000009231
+      }
+    },
+    {
+      "iteration": 9,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_08\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-19T12:03:24.687121+00:00",
+          "finished_at_utc": "2026-07-19T12:03:30.065545+00:00",
+          "api_call_wall_seconds": 5.378423999994993,
+          "input_image_count": 1,
+          "input_image_bytes": 89510,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6703,
+            "cached_content_token_count": null,
+            "total_token_count": 7133
+          },
+          "request_preparation_seconds": 0.3912439000559971,
+          "request_total_wall_seconds": 5.769702600082383
+        },
+        "timing": {
+          "request_preparation_seconds": 0.3912439000559971,
+          "api_call_wall_seconds": 5.378423999994993,
+          "candidate_parsing_seconds": 0.0006901000160723925,
+          "candidate_evaluation_seconds": 0.0012036999687552452,
+          "candidate_rendering_seconds": 1.130961099988781,
+          "checkpoint_write_seconds": 0.0013471998972818255,
+          "phase_wall_seconds_before_checkpoint": 6.905719200032763,
+          "phase_total_wall_seconds": 6.907075499999337
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 0.0004597000079229474,
+              "validation_and_metrics_seconds": 0.00034390005748718977,
+              "route_rendering_seconds": 0.1639687999850139
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 4.409998655319214e-05,
+              "validation_and_metrics_seconds": 0.00012550002429634333,
+              "route_rendering_seconds": 0.1650225999765098
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 3.0499999411404133e-05,
+              "validation_and_metrics_seconds": 0.0001976999919861555,
+              "route_rendering_seconds": 0.16680010000709444
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 3.47999157384038e-05,
+              "validation_and_metrics_seconds": 0.00015860004350543022,
+              "route_rendering_seconds": 0.16108969994820654
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 3.870006185024977e-05,
+              "validation_and_metrics_seconds": 0.0001183999702334404,
+              "route_rendering_seconds": 0.20187450002413243
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 3.42000275850296e-05,
+              "validation_and_metrics_seconds": 0.00011429993901401758,
+              "route_rendering_seconds": 0.13625159999355674
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 4.810001701116562e-05,
+              "validation_and_metrics_seconds": 0.0001452999422326684,
+              "route_rendering_seconds": 0.13595380005426705
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 5, image2: 5, image3: 5, image4: 5, image5: 5, image6: 5, image7: 5>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 5, image2: 5, image3: 5, image4: 5, image5: 5, image6: 5, image7: 5>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-19T12:03:31.634772+00:00",
+              "finished_at_utc": "2026-07-19T12:03:35.310282+00:00",
+              "api_call_wall_seconds": 3.6755139000015333,
+              "input_image_count": 7,
+              "input_image_bytes": 628438,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 52,
+                "thoughts_token_count": 488,
+                "cached_content_token_count": null,
+                "total_token_count": 2655
+              },
+              "request_preparation_seconds": 0.4312724000774324,
+              "request_total_wall_seconds": 4.106813600054011
+            },
+            "response_parsing_seconds": 7.319997530430555e-05
+          }
+        ],
+        "scores": {
+          "1": 5.0,
+          "2": 5.0,
+          "3": 5.0,
+          "4": 5.0,
+          "5": 5.0,
+          "6": 5.0,
+          "7": 5.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-19T12:03:31.634772+00:00",
+            "finished_at_utc": "2026-07-19T12:03:35.310282+00:00",
+            "api_call_wall_seconds": 3.6755139000015333,
+            "input_image_count": 7,
+            "input_image_bytes": 628438,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 488,
+              "cached_content_token_count": null,
+              "total_token_count": 2655
+            },
+            "request_preparation_seconds": 0.4312724000774324,
+            "request_total_wall_seconds": 4.106813600054011
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.4312724000774324,
+          "api_call_wall_seconds": 3.6755139000015333,
+          "response_parsing_seconds": 7.319997530430555e-05,
+          "selected_route_rendering_seconds": 0.13364440004806966,
+          "selection_evaluation_seconds": 1.6999896615743637e-05,
+          "phase_wall_seconds_this_session": 4.242668600054458
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 9,
+        "candidate_id": 1,
+        "scorer_score": 5.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 6.907075499999337,
+        "scorer_phase_measured_seconds": 4.242671700078063,
+        "logical_iteration_measured_seconds": 11.1497472000774
+      }
+    },
+    {
+      "iteration": 10,
+      "iteration_type": "critic_candidates_and_visual_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_09\\selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-07-19T12:03:35.803204+00:00",
+          "finished_at_utc": "2026-07-19T12:03:41.635386+00:00",
+          "api_call_wall_seconds": 5.832182599930093,
+          "input_image_count": 1,
+          "input_image_bytes": 89494,
+          "usage": {
+            "prompt_token_count": 396,
+            "candidates_token_count": 34,
+            "thoughts_token_count": 6706,
+            "cached_content_token_count": null,
+            "total_token_count": 7136
+          },
+          "request_preparation_seconds": 0.35538339999038726,
+          "request_total_wall_seconds": 6.18759880005382
+        },
+        "timing": {
+          "request_preparation_seconds": 0.35538339999038726,
+          "api_call_wall_seconds": 5.832182599930093,
+          "candidate_parsing_seconds": 0.00031180004589259624,
+          "candidate_evaluation_seconds": 0.001101499772630632,
+          "candidate_rendering_seconds": 1.07265629991889,
+          "checkpoint_write_seconds": 0.0015158000169321895,
+          "phase_wall_seconds_before_checkpoint": 7.264983500004746,
+          "phase_total_wall_seconds": 7.266507099964656
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_01.png",
+            "timing": {
+              "response_parsing_seconds": 4.2899977415800095e-05,
+              "validation_and_metrics_seconds": 0.0003068000078201294,
+              "route_rendering_seconds": 0.1662536000367254
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_02.png",
+            "timing": {
+              "response_parsing_seconds": 3.4800032153725624e-05,
+              "validation_and_metrics_seconds": 0.00011579995043575764,
+              "route_rendering_seconds": 0.17049479996785522
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_03.png",
+            "timing": {
+              "response_parsing_seconds": 4.710000939667225e-05,
+              "validation_and_metrics_seconds": 0.00020379992201924324,
+              "route_rendering_seconds": 0.16023209993727505
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_04.png",
+            "timing": {
+              "response_parsing_seconds": 4.6200002543628216e-05,
+              "validation_and_metrics_seconds": 0.00010950001887977123,
+              "route_rendering_seconds": 0.17109630000777543
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_05.png",
+            "timing": {
+              "response_parsing_seconds": 8.110003545880318e-05,
+              "validation_and_metrics_seconds": 0.00012729992158710957,
+              "route_rendering_seconds": 0.13338090002071112
+            },
+            "route": [
+              0,
+              8,
+              7,
+              4,
+              2,
+              5,
+              6,
+              3,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_06.png",
+            "timing": {
+              "response_parsing_seconds": 3.490003291517496e-05,
+              "validation_and_metrics_seconds": 0.00016059994231909513,
+              "route_rendering_seconds": 0.1260049999691546
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+            "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_07.png",
+            "timing": {
+              "response_parsing_seconds": 2.4799956008791924e-05,
+              "validation_and_metrics_seconds": 7.770000956952572e-05,
+              "route_rendering_seconds": 0.14519359997939318
+            },
+            "route": [
+              0,
+              9,
+              1,
+              3,
+              6,
+              5,
+              2,
+              4,
+              7,
+              8,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 13.226401287596719,
+            "gap_to_or_tools_percent": 0.0,
+            "gap_to_exact_percent": 0.0
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "input_images": [
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_01.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_02.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_03.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_04.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_05.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_06.png",
+          "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\candidate_07.png"
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "attempts": [
+          {
+            "raw_response": "<<image1: 10, image2: 10, image3: 10, image4: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+            "api_call": {
+              "phase": "visual_scorer",
+              "model": "gemini-2.5-flash",
+              "temperature": 0.0,
+              "success": true,
+              "started_at_utc": "2026-07-19T12:03:43.087224+00:00",
+              "finished_at_utc": "2026-07-19T12:03:46.371318+00:00",
+              "api_call_wall_seconds": 3.2841097000055015,
+              "input_image_count": 7,
+              "input_image_bytes": 628375,
+              "usage": {
+                "prompt_token_count": 2115,
+                "candidates_token_count": 59,
+                "thoughts_token_count": 476,
+                "cached_content_token_count": null,
+                "total_token_count": 2650
+              },
+              "request_preparation_seconds": 0.3723549999995157,
+              "request_total_wall_seconds": 3.656496600015089
+            },
+            "response_parsing_seconds": 8.050003089010715e-05
+          }
+        ],
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "4": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "best_valid_candidate_distance_after_evaluation": 13.226401287596719,
+        "selected_is_oracle_best_after_evaluation": true,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-07-19T12:03:43.087224+00:00",
+            "finished_at_utc": "2026-07-19T12:03:46.371318+00:00",
+            "api_call_wall_seconds": 3.2841097000055015,
+            "input_image_count": 7,
+            "input_image_bytes": 628375,
+            "usage": {
+              "prompt_token_count": 2115,
+              "candidates_token_count": 59,
+              "thoughts_token_count": 476,
+              "cached_content_token_count": null,
+              "total_token_count": 2650
+            },
+            "request_preparation_seconds": 0.3723549999995157,
+            "request_total_wall_seconds": 3.656496600015089
+          }
+        ],
+        "timing": {
+          "request_preparation_seconds": 0.3723549999995157,
+          "api_call_wall_seconds": 3.2841097000055015,
+          "response_parsing_seconds": 8.050003089010715e-05,
+          "selected_route_rendering_seconds": 0.14019349997397512,
+          "selection_evaluation_seconds": 1.550000160932541e-05,
+          "phase_wall_seconds_this_session": 3.79914070002269
+        }
+      },
+      "selected_solution": {
+        "source": "scorer",
+        "iteration": 10,
+        "candidate_id": 1,
+        "scorer_score": 10.0,
+        "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\selected.png",
+        "route": [
+          0,
+          9,
+          1,
+          3,
+          6,
+          5,
+          2,
+          4,
+          7,
+          8,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 13.226401287596719,
+        "gap_to_or_tools_percent": 0.0,
+        "gap_to_exact_percent": 0.0
+      },
+      "timing": {
+        "critic_phase_measured_seconds": 7.266507099964656,
+        "scorer_phase_measured_seconds": 3.799143399926834,
+        "logical_iteration_measured_seconds": 11.06565049989149
+      }
+    }
+  ],
+  "pending_iteration": null,
+  "final_solution": {
+    "source": "scorer",
+    "iteration": 10,
+    "candidate_id": 1,
+    "scorer_score": 10.0,
+    "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_10\\selected.png",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "best_valid_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "image": "output\\runs\\seed42_timing_run_02\\zero_shot\\images\\gemini_zero_shot_route.png",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "best_critic_candidate_oracle": {
+    "source": "critic_candidate_oracle",
+    "iteration": 1,
+    "candidate_id": 1,
+    "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+    "image": "output\\runs\\seed42_timing_run_02\\multi_agent1\\images\\iteration_01\\candidate_01.png",
+    "timing": {
+      "response_parsing_seconds": 0.00020070001482963562,
+      "validation_and_metrics_seconds": 0.00013239996042102575,
+      "route_rendering_seconds": 0.15160420001484454
+    },
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "errors": [
+    {
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 17.979453603s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '17s'}]}}",
+      "iteration": 5,
+      "phase": "scorer",
+      "api_call": {
+        "phase": "visual_scorer",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.0,
+        "success": false,
+        "started_at_utc": "2026-07-17T18:23:42.260926+00:00",
+        "finished_at_utc": "2026-07-17T18:23:42.627235+00:00",
+        "api_call_wall_seconds": 0.3663186999037862,
+        "input_image_count": 7,
+        "input_image_bytes": 624818,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null
+        },
+        "request_preparation_seconds": 0.28876119991764426,
+        "request_total_wall_seconds": 0.6551005999790505
+      }
+    },
+    {
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash\\nPlease retry in 20.057086627s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '20s'}]}}",
+      "iteration": 8,
+      "phase": "scorer",
+      "api_call": {
+        "phase": "visual_scorer",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.0,
+        "success": false,
+        "started_at_utc": "2026-07-19T11:58:39.571894+00:00",
+        "finished_at_utc": "2026-07-19T11:58:39.988239+00:00",
+        "api_call_wall_seconds": 0.4163510000798851,
+        "input_image_count": 7,
+        "input_image_bytes": 628632,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null
+        },
+        "request_preparation_seconds": 0.4663895999547094,
+        "request_total_wall_seconds": 0.8827644999837503
+      }
+    }
+  ],
+  "run_summary": {
+    "started_at_utc": "2026-07-19T12:03:18.210138+00:00",
+    "finished_at_utc_before_result_write": "2026-07-19T12:03:46.515514+00:00",
+    "session_wall_seconds_before_result_write": 28.30537539999932,
+    "api_call_count": 22,
+    "successful_api_call_count": 20,
+    "failed_api_call_count": 2,
+    "total_api_call_wall_seconds": 112.97676709992811,
+    "total_request_preparation_seconds": 12.22766289988067,
+    "total_gemini_request_wall_seconds": 125.20513569994364,
+    "total_token_count": 97578
+  }
+}

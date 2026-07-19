@@ -5,3 +5,4 @@ __pycache__/
 
 # Geçici devam dosyaları
 output/*_checkpoint.json
+output/**/*_checkpoint.json

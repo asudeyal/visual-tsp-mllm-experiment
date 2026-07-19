@@ -5,17 +5,24 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import time
 from pathlib import Path
 from typing import Any
 
+from src.experiment_metrics import (
+    elapsed_seconds,
+    error_record as build_error_record,
+    start_timer,
+    summarize_api_calls,
+    utc_now_iso,
+)
 from src.llm_routes import (
     GEMINI_MODEL,
     parse_scorer_response,
     parse_single_salesman_route,
-    request_gemini_critic_candidates,
-    request_gemini_scorer,
+    request_gemini_critic_candidates_detailed,
+    request_gemini_scorer_detailed,
 )
+from src.output_paths import build_experiment_paths
 from src.tsp_core import (
     TSPSolution,
     percentage_gap,
@@ -30,14 +37,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--baseline",
         type=Path,
-        default=Path("output/baseline_results.json"),
+        default=None,
+        help="Varsayılan: seçilen run-id içindeki baseline sonucu.",
     )
     parser.add_argument(
         "--zero-shot",
         type=Path,
-        default=Path("output/gemini_zero_shot_results.json"),
+        default=None,
+        help="Varsayılan: seçilen run-id içindeki zero-shot sonucu.",
     )
     parser.add_argument("--output-dir", type=Path, default=Path("output"))
+    parser.add_argument(
+        "--run-id",
+        help=(
+            "Aynı deney çalıştırmasını adlandırır. Verilirse sonuçlar "
+            "output/runs/<run-id>/multi_agent1 klasörüne yazılır."
+        ),
+    )
     parser.add_argument("--model", default=GEMINI_MODEL)
     parser.add_argument(
         "--iterations",
@@ -55,12 +71,6 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
-        "--delay-seconds",
-        type=float,
-        default=13.0,
-        help="Ardışık Gemini API istekleri arasındaki en az bekleme süresi.",
-    )
-    parser.add_argument(
         "--resume",
         action="store_true",
         help=(
@@ -72,6 +82,14 @@ def parse_args() -> argparse.Namespace:
         "--validate-only",
         action="store_true",
         help="Girdileri ve deney planını API çağrısı yapmadan doğrular.",
+    )
+    parser.add_argument(
+        "--summary-only",
+        action="store_true",
+        help=(
+            "Mevcut sonuç JSON'undan kısa özet üretir; API anahtarı istemez "
+            "ve Gemini çağrısı yapmaz."
+        ),
     )
     return parser.parse_args()
 
@@ -115,26 +133,6 @@ def better_valid_solution(
     return current
 
 
-class RequestPacer:
-    """Aynı süreç içindeki Gemini istekleri arasında minimum aralık uygular."""
-
-    def __init__(self, delay_seconds: float) -> None:
-        self.delay_seconds = delay_seconds
-        self.last_request_at: float | None = None
-
-    def before_request(self) -> None:
-        if self.last_request_at is not None and self.delay_seconds > 0:
-            elapsed = time.monotonic() - self.last_request_at
-            remaining = self.delay_seconds - elapsed
-            if remaining > 0:
-                print(
-                    f"\nKota sınırını aşmamak için {remaining:.1f} saniye "
-                    "bekleniyor..."
-                )
-                time.sleep(remaining)
-        self.last_request_at = time.monotonic()
-
-
 def write_json(path: Path, data: dict[str, Any]) -> None:
     path.write_text(
         json.dumps(data, indent=2, ensure_ascii=False),
@@ -157,6 +155,7 @@ def build_state(
 ) -> dict[str, Any]:
     return {
         "experiment": experiment,
+        "run_id": args.run_id,
         "model": args.model,
         "num_locations_including_depot": num_locations,
         "num_salesmen": 1,
@@ -165,7 +164,7 @@ def build_state(
         "critic_candidates_per_iteration": args.candidate_count,
         "critic_temperature": 0.7,
         "scorer_temperature": 0.0,
-        "delay_seconds_between_requests": args.delay_seconds,
+        "artificial_delay_enabled": False,
         "initializer": initializer,
         "iterations": iterations,
         "pending_iteration": pending_iteration,
@@ -176,13 +175,199 @@ def build_state(
     }
 
 
-def error_record(iteration: int, phase: str, exc: Exception) -> dict[str, Any]:
+def _percent(numerator: int, denominator: int) -> float | None:
+    if denominator == 0:
+        return None
+    return 100.0 * numerator / denominator
+
+
+def _known_token_sum(api_calls: list[dict[str, Any]]) -> int | None:
+    values = [
+        call.get("usage", {}).get("total_token_count") for call in api_calls
+    ]
+    known = [int(value) for value in values if value is not None]
+    return sum(known) if known else None
+
+
+def build_multi_agent1_summary(
+    result: dict[str, Any],
+    *,
+    source_results: Path,
+) -> dict[str, Any]:
+    """Ayrıntılı Multi-Agent 1 sonucundan insan okunur kısa özet üretir."""
+
+    iterations = list(result.get("iterations", []))
+    all_candidates = [
+        candidate
+        for iteration in iterations
+        for candidate in iteration.get("critic", {}).get("candidates", [])
+    ]
+    pending = result.get("pending_iteration")
+    if pending is not None:
+        all_candidates.extend(pending.get("critic", {}).get("candidates", []))
+
+    valid_candidates = [
+        candidate
+        for candidate in all_candidates
+        if candidate.get("validation", {}).get("is_valid")
+    ]
+    optimal_candidates = [
+        candidate
+        for candidate in valid_candidates
+        if candidate.get("gap_to_exact_percent") is not None
+        and abs(float(candidate["gap_to_exact_percent"])) < 1e-9
+    ]
+    selected_solutions = [
+        iteration.get("selected_solution", {}) for iteration in iterations
+    ]
+    optimal_selections = [
+        selected
+        for selected in selected_solutions
+        if selected.get("validation", {}).get("is_valid")
+        and selected.get("gap_to_exact_percent") is not None
+        and abs(float(selected["gap_to_exact_percent"])) < 1e-9
+    ]
+
+    iteration_summaries: list[dict[str, Any]] = []
+    for iteration in iterations:
+        candidates = list(iteration.get("critic", {}).get("candidates", []))
+        valid = [
+            candidate
+            for candidate in candidates
+            if candidate.get("validation", {}).get("is_valid")
+        ]
+        optimal = [
+            candidate
+            for candidate in valid
+            if candidate.get("gap_to_exact_percent") is not None
+            and abs(float(candidate["gap_to_exact_percent"])) < 1e-9
+        ]
+        nonoptimal_ids = [
+            int(candidate["candidate_id"])
+            for candidate in valid
+            if candidate.get("gap_to_exact_percent") is not None
+            and abs(float(candidate["gap_to_exact_percent"])) >= 1e-9
+        ]
+        critic = iteration.get("critic", {})
+        critic_call = critic.get("api_call", {})
+        scorer = iteration.get("scorer", {})
+        scorer_calls = [
+            call for call in scorer.get("api_calls", []) if isinstance(call, dict)
+        ]
+        selected = iteration.get("selected_solution", {})
+        iteration_summaries.append(
+            {
+                "iteration": int(iteration["iteration"]),
+                "critic": {
+                    "candidate_count": len(candidates),
+                    "valid_candidate_count": len(valid),
+                    "optimal_candidate_count": len(optimal),
+                    "nonoptimal_candidate_ids": nonoptimal_ids,
+                    "api_call_wall_seconds": critic_call.get(
+                        "api_call_wall_seconds"
+                    ),
+                    "request_total_wall_seconds": critic_call.get(
+                        "request_total_wall_seconds"
+                    ),
+                    "total_token_count": critic_call.get("usage", {}).get(
+                        "total_token_count"
+                    ),
+                },
+                "scorer": {
+                    "selected_candidate_id": scorer.get("best_candidate_id"),
+                    "selected_is_oracle_best": scorer.get(
+                        "selected_is_oracle_best_after_evaluation"
+                    ),
+                    "selection_regret_percent": scorer.get(
+                        "selection_regret_percent_after_evaluation"
+                    ),
+                    "api_call_wall_seconds": sum(
+                        float(call.get("api_call_wall_seconds", 0.0))
+                        for call in scorer_calls
+                    ),
+                    "total_token_count": _known_token_sum(scorer_calls),
+                },
+                "selected_solution": {
+                    "route": selected.get("route"),
+                    "distance": selected.get("distance"),
+                    "gap_to_exact_percent": selected.get(
+                        "gap_to_exact_percent"
+                    ),
+                },
+                "logical_iteration_measured_seconds": iteration.get(
+                    "timing", {}
+                ).get("logical_iteration_measured_seconds"),
+            }
+        )
+
+    error_summaries: list[dict[str, Any]] = []
+    for error in result.get("errors", []):
+        api_call = error.get("api_call", {})
+        status_code = error.get("status_code")
+        if status_code is None:
+            message_prefix = str(error.get("message", "")).split(maxsplit=1)
+            if message_prefix and message_prefix[0].isdigit():
+                status_code = int(message_prefix[0])
+        error_summaries.append(
+            {
+                "iteration": error.get("iteration"),
+                "phase": error.get("phase"),
+                "type": error.get("type"),
+                "status_code": status_code,
+                "api_call_wall_seconds": api_call.get("api_call_wall_seconds"),
+            }
+        )
+
+    requested = int(result.get("requested_iterations", 0))
+    completed = int(result.get("completed_iterations", len(iterations)))
     return {
-        "iteration": iteration,
-        "phase": phase,
-        "type": type(exc).__name__,
-        "message": str(exc),
+        "experiment": result.get("experiment"),
+        "summary_type": "compact",
+        "source_results": str(source_results),
+        "run_id": result.get("run_id"),
+        "model": result.get("model"),
+        "status": (
+            "completed"
+            if completed >= requested and pending is None
+            else "partial"
+        ),
+        "requested_iterations": requested,
+        "completed_iterations": completed,
+        "pending_iteration": (
+            {
+                "iteration": pending.get("iteration"),
+                "phase": "scorer",
+                "critic_candidate_count": len(
+                    pending.get("critic", {}).get("candidates", [])
+                ),
+            }
+            if pending is not None
+            else None
+        ),
+        "quality_summary": {
+            "total_critic_candidates": len(all_candidates),
+            "valid_critic_candidates": len(valid_candidates),
+            "valid_candidate_rate_percent": _percent(
+                len(valid_candidates), len(all_candidates)
+            ),
+            "optimal_critic_candidates": len(optimal_candidates),
+            "optimal_candidate_rate_percent": _percent(
+                len(optimal_candidates), len(all_candidates)
+            ),
+            "scorer_selections": len(selected_solutions),
+            "optimal_scorer_selections": len(optimal_selections),
+            "optimal_scorer_selection_rate_percent": _percent(
+                len(optimal_selections), len(selected_solutions)
+            ),
+        },
+        "api_summary": result.get("run_summary", {}),
+        "iterations": iteration_summaries,
+        "errors": error_summaries,
     }
+
+
+def error_record(iteration: int, phase: str, exc: Exception) -> dict[str, Any]:
+    return build_error_record(exc, iteration=iteration, phase=phase)
 
 
 def validate_resume_compatibility(
@@ -224,10 +409,11 @@ def finalize_pending_iteration(
     pending: dict[str, Any],
     locations: list[tuple[float, float]],
     args: argparse.Namespace,
-    pacer: RequestPacer,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Hazır critic adaylarını scorer'a verir ve seçilen çözümü döndürür."""
 
+    scorer_phase_timer = start_timer()
+    scorer_parse_seconds = 0.0
     candidates = list(pending["critic"]["candidates"])
     image_ids = [int(candidate["candidate_id"]) for candidate in candidates]
     image_paths = [Path(candidate["image"]) for candidate in candidates]
@@ -249,11 +435,14 @@ def finalize_pending_iteration(
         if not stored_response:
             continue
         try:
+            parse_timer = start_timer()
             stored_scores, stored_best = parse_scorer_response(
                 stored_response,
                 expected_image_ids=image_ids,
             )
+            scorer_parse_seconds += elapsed_seconds(parse_timer)
         except Exception:
+            scorer_parse_seconds += elapsed_seconds(parse_timer)
             continue
         raw_scorer_response = str(stored_response)
         scores = stored_scores
@@ -263,23 +452,31 @@ def finalize_pending_iteration(
         break
 
     if scores is None or best_candidate_id is None:
-        pacer.before_request()
-        raw_scorer_response = request_gemini_scorer(
+        gemini_result = request_gemini_scorer_detailed(
             image_paths,
             image_ids=image_ids,
             model=args.model,
             temperature=0.0,
         )
+        raw_scorer_response = gemini_result.text
         attempt_record: dict[str, Any] = {
             "raw_response": raw_scorer_response,
+            "api_call": gemini_result.api_call,
         }
         scorer_attempts.append(attempt_record)
         try:
+            parse_timer = start_timer()
             scores, best_candidate_id = parse_scorer_response(
                 raw_scorer_response,
                 expected_image_ids=image_ids,
             )
+            parse_duration = elapsed_seconds(parse_timer)
+            scorer_parse_seconds += parse_duration
+            attempt_record["response_parsing_seconds"] = parse_duration
         except Exception as exc:
+            parse_duration = elapsed_seconds(parse_timer)
+            scorer_parse_seconds += parse_duration
+            attempt_record["response_parsing_seconds"] = parse_duration
             attempt_record["parse_error_type"] = type(exc).__name__
             attempt_record["parse_error"] = str(exc)
             raise
@@ -291,15 +488,19 @@ def finalize_pending_iteration(
     )
 
     iteration = int(pending["iteration"])
-    selected_image = (
-        args.output_dir / f"gemini_ma1_iteration_{iteration:02d}_selected.png"
-    )
+    iteration_image_dir = args.output_dir / f"iteration_{iteration:02d}"
+    iteration_image_dir.mkdir(parents=True, exist_ok=True)
+    selected_image = iteration_image_dir / "selected.png"
+    render_timer = start_timer()
     plot_evaluation(
         locations,
         selected_candidate,
         method=f"{args.model}_ma1_selected_{iteration}",
         output_path=selected_image,
     )
+    selected_route_rendering_seconds = elapsed_seconds(render_timer)
+
+    evaluation_timer = start_timer()
     selected_solution = {
         "source": "scorer",
         "iteration": iteration,
@@ -337,9 +538,20 @@ def finalize_pending_iteration(
             best_candidate_distance,
         )
         selected_is_oracle_best = abs(scorer_regret_percent) < 1e-9
+    scorer_evaluation_seconds = elapsed_seconds(evaluation_timer)
+
+    scorer_api_calls = [
+        attempt["api_call"]
+        for attempt in scorer_attempts
+        if isinstance(attempt.get("api_call"), dict)
+    ]
+    scorer_api_seconds = sum(
+        float(call.get("api_call_wall_seconds", 0.0)) for call in scorer_api_calls
+    )
 
     completed = {
         "iteration": iteration,
+        "iteration_type": "critic_candidates_and_visual_scorer",
         "critic": pending["critic"],
         "scorer": {
             "temperature": 0.0,
@@ -351,28 +563,97 @@ def finalize_pending_iteration(
             "best_valid_candidate_distance_after_evaluation": best_candidate_distance,
             "selected_is_oracle_best_after_evaluation": selected_is_oracle_best,
             "selection_regret_percent_after_evaluation": scorer_regret_percent,
+            "api_calls": scorer_api_calls,
+            "timing": {
+                "request_preparation_seconds": sum(
+                    float(call.get("request_preparation_seconds", 0.0))
+                    for call in scorer_api_calls
+                ),
+                "api_call_wall_seconds": scorer_api_seconds,
+                "response_parsing_seconds": scorer_parse_seconds,
+                "selected_route_rendering_seconds": (
+                    selected_route_rendering_seconds
+                ),
+                "selection_evaluation_seconds": scorer_evaluation_seconds,
+                "phase_wall_seconds_this_session": elapsed_seconds(
+                    scorer_phase_timer
+                ),
+            },
         },
         "selected_solution": selected_solution,
+    }
+    critic_timing = pending["critic"].get("timing", {})
+    critic_total = float(
+        critic_timing.get(
+            "phase_total_wall_seconds",
+            critic_timing.get("phase_wall_seconds_before_checkpoint", 0.0),
+        )
+    )
+    scorer_total = elapsed_seconds(scorer_phase_timer)
+    completed["timing"] = {
+        "critic_phase_measured_seconds": critic_total,
+        "scorer_phase_measured_seconds": scorer_total,
+        "logical_iteration_measured_seconds": critic_total + scorer_total,
     }
     return completed, selected_solution
 
 
 def main() -> None:
     args = parse_args()
+    run_started_at_utc = utc_now_iso()
+    run_timer = start_timer()
+    try:
+        paths = build_experiment_paths(args.output_dir, args.run_id)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
+    baseline_path = args.baseline or paths.baseline / "baseline_results.json"
+    zero_shot_path = (
+        args.zero_shot or paths.zero_shot / "gemini_zero_shot_results.json"
+    )
+    if args.baseline is None and args.run_id is None and not baseline_path.exists():
+        legacy_baseline = args.output_dir / "baseline_results.json"
+        if legacy_baseline.exists():
+            baseline_path = legacy_baseline
+    if args.zero_shot is None and args.run_id is None and not zero_shot_path.exists():
+        legacy_zero_shot = args.output_dir / "gemini_zero_shot_results.json"
+        if legacy_zero_shot.exists():
+            zero_shot_path = legacy_zero_shot
+    method_output_dir = paths.multi_agent1
+    method_output_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_path = method_output_dir / "gemini_multi_agent1_checkpoint.json"
+    result_path = method_output_dir / "gemini_multi_agent1_results.json"
+    summary_path = method_output_dir / "gemini_multi_agent1_summary.json"
+
+    if args.summary_only:
+        if not result_path.exists():
+            raise SystemExit(
+                f"Özetlenecek Multi-Agent 1 sonuç dosyası bulunamadı: {result_path}"
+            )
+        existing_result = json.loads(result_path.read_text(encoding="utf-8"))
+        summary = build_multi_agent1_summary(
+            existing_result,
+            source_results=result_path,
+        )
+        write_json(summary_path, summary)
+        print("Multi-Agent 1 kısa özeti oluşturuldu; API çağrısı yapılmadı.")
+        print(f"Özet dosyası: {summary_path}")
+        return
+
+    image_dir = method_output_dir / "images"
+    image_dir.mkdir(parents=True, exist_ok=True)
+
     if args.iterations < 1:
         raise SystemExit("--iterations en az 1 olmalıdır.")
     if not 1 <= args.candidate_count <= 7:
         raise SystemExit("--candidate-count 1 ile 7 arasında olmalıdır.")
-    if args.delay_seconds < 0:
-        raise SystemExit("--delay-seconds negatif olamaz.")
-    if not args.baseline.exists() or not args.zero_shot.exists():
+    if not baseline_path.exists() or not zero_shot_path.exists():
         raise SystemExit(
             "Baseline veya Gemini zero-shot sonucu bulunamadı. Önce "
             "run_baseline.py ve run_gemini_zero_shot.py çalıştırılmalıdır."
         )
 
-    baseline = json.loads(args.baseline.read_text(encoding="utf-8"))
-    zero_shot = json.loads(args.zero_shot.read_text(encoding="utf-8"))
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    zero_shot = json.loads(zero_shot_path.read_text(encoding="utf-8"))
     locations = [tuple(point) for point in baseline["locations"]]
     or_tools_distance = float(baseline["solutions"]["or_tools"]["distance"])
     exact_distance = float(baseline["solutions"]["exact"]["distance"])
@@ -387,10 +668,15 @@ def main() -> None:
     if not initial_evaluation["legal_node_ids"]:
         raise SystemExit("Zero-shot rotasında görselleştirilemeyen düğüm numarası var.")
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    checkpoint_path = args.output_dir / "gemini_multi_agent1_checkpoint.json"
-    result_path = args.output_dir / "gemini_multi_agent1_results.json"
-    current_image = args.output_dir / "gemini_zero_shot_route.png"
+    current_image = paths.zero_shot / "images" / "gemini_zero_shot_route.png"
+    if not current_image.exists():
+        old_method_image = paths.zero_shot / "gemini_zero_shot_route.png"
+        legacy_flat_image = args.output_dir / "gemini_zero_shot_route.png"
+        if old_method_image.exists():
+            current_image = old_method_image
+        elif args.run_id is None and legacy_flat_image.exists():
+            current_image = legacy_flat_image
+    args.output_dir = image_dir
     if not current_image.exists():
         plot_evaluation(
             locations,
@@ -400,7 +686,7 @@ def main() -> None:
         )
 
     initializer = {
-        "source": str(args.zero_shot),
+        "source": str(zero_shot_path),
         "coordinates_sent_to_model": False,
         **initial_evaluation,
     }
@@ -419,12 +705,15 @@ def main() -> None:
     errors: list[dict[str, Any]] = []
 
     if args.resume:
-        resume_path = checkpoint_path if checkpoint_path.exists() else result_path
-        if not resume_path.exists():
+        resume_candidates = [
+            path for path in (checkpoint_path, result_path) if path.exists()
+        ]
+        if not resume_candidates:
             raise SystemExit(
                 "--resume istendi ancak Multi-Agent 1 checkpoint veya sonuç "
                 "dosyası bulunamadı."
             )
+        resume_path = max(resume_candidates, key=lambda path: path.stat().st_mtime_ns)
         previous = json.loads(resume_path.read_text(encoding="utf-8"))
         validate_resume_compatibility(previous, args)
         iterations = list(previous.get("iterations", []))
@@ -466,9 +755,7 @@ def main() -> None:
         )
         return
 
-    pacer = RequestPacer(args.delay_seconds)
-
-    def save_checkpoint() -> None:
+    def save_checkpoint() -> float:
         state = build_state(
             experiment="gemini_visual_multi_agent_1_tsp_checkpoint",
             args=args,
@@ -481,7 +768,9 @@ def main() -> None:
             best_candidate_oracle=best_candidate_oracle,
             errors=errors,
         )
+        checkpoint_timer = start_timer()
         write_json(checkpoint_path, state)
+        return elapsed_seconds(checkpoint_timer)
 
     if pending_iteration is not None:
         pending_number = int(pending_iteration["iteration"])
@@ -494,7 +783,6 @@ def main() -> None:
                 pending=pending_iteration,
                 locations=locations,
                 args=args,
-                pacer=pacer,
             )
             iterations.append(completed)
             final_solution = selected
@@ -522,13 +810,14 @@ def main() -> None:
                 f"\n=== Multi-Agent 1 iterasyon {iteration}: "
                 f"{args.candidate_count} critic adayı ==="
             )
-            pacer.before_request()
-            raw_candidates = request_gemini_critic_candidates(
+            critic_phase_timer = start_timer()
+            gemini_result = request_gemini_critic_candidates_detailed(
                 current_image,
                 candidate_count=args.candidate_count,
                 model=args.model,
                 temperature=0.7,
             )
+            raw_candidates = gemini_result.texts
             if len(raw_candidates) != args.candidate_count:
                 print(
                     "UYARI: Gemini istenen aday sayısından farklı sayıda "
@@ -538,28 +827,40 @@ def main() -> None:
                 )
 
             candidate_records: list[dict[str, Any]] = []
+            iteration_image_dir = args.output_dir / f"iteration_{iteration:02d}"
+            iteration_image_dir.mkdir(parents=True, exist_ok=True)
+            candidate_parsing_seconds = 0.0
+            candidate_evaluation_seconds = 0.0
+            candidate_rendering_seconds = 0.0
             for candidate_id, raw_response in enumerate(raw_candidates, start=1):
                 try:
+                    parse_timer = start_timer()
                     route = parse_single_salesman_route(raw_response)
+                    parsing_seconds = elapsed_seconds(parse_timer)
+                    candidate_parsing_seconds += parsing_seconds
                 except Exception as exc:
+                    candidate_parsing_seconds += elapsed_seconds(parse_timer)
                     raise ValueError(
                         f"Critic adayı {candidate_id} ayrıştırılamadı. "
                         f"Ham cevap={raw_response!r}"
                     ) from exc
+                evaluation_timer = start_timer()
                 evaluation = evaluate_route(
                     locations,
                     route,
                     or_tools_distance=or_tools_distance,
                     exact_distance=exact_distance,
                 )
+                evaluation_seconds = elapsed_seconds(evaluation_timer)
+                candidate_evaluation_seconds += evaluation_seconds
                 if not evaluation["legal_node_ids"] or len(route) < 2:
                     raise ValueError(
                         f"Critic adayı {candidate_id} çizilemeyen düğüm içeriyor."
                     )
-                candidate_image = args.output_dir / (
-                    f"gemini_ma1_iteration_{iteration:02d}_"
-                    f"candidate_{candidate_id:02d}.png"
+                candidate_image = (
+                    iteration_image_dir / f"candidate_{candidate_id:02d}.png"
                 )
+                render_timer = start_timer()
                 plot_evaluation(
                     locations,
                     evaluation,
@@ -569,10 +870,17 @@ def main() -> None:
                     ),
                     output_path=candidate_image,
                 )
+                rendering_seconds = elapsed_seconds(render_timer)
+                candidate_rendering_seconds += rendering_seconds
                 candidate_record = {
                     "candidate_id": candidate_id,
                     "raw_response": raw_response,
                     "image": str(candidate_image),
+                    "timing": {
+                        "response_parsing_seconds": parsing_seconds,
+                        "validation_and_metrics_seconds": evaluation_seconds,
+                        "route_rendering_seconds": rendering_seconds,
+                    },
                     **evaluation,
                 }
                 candidate_records.append(candidate_record)
@@ -599,10 +907,34 @@ def main() -> None:
                     "requested_candidate_count": args.candidate_count,
                     "returned_candidate_count": len(candidate_records),
                     "input_image": str(current_image),
+                    "api_call": gemini_result.api_call,
+                    "timing": {
+                        "request_preparation_seconds": gemini_result.api_call.get(
+                            "request_preparation_seconds", 0.0
+                        ),
+                        "api_call_wall_seconds": gemini_result.api_call[
+                            "api_call_wall_seconds"
+                        ],
+                        "candidate_parsing_seconds": candidate_parsing_seconds,
+                        "candidate_evaluation_seconds": (
+                            candidate_evaluation_seconds
+                        ),
+                        "candidate_rendering_seconds": candidate_rendering_seconds,
+                        "checkpoint_write_seconds": 0.0,
+                        "phase_wall_seconds_before_checkpoint": elapsed_seconds(
+                            critic_phase_timer
+                        ),
+                    },
                     "candidates": candidate_records,
                 },
             }
-            save_checkpoint()
+            checkpoint_seconds = save_checkpoint()
+            pending_iteration["critic"]["timing"][
+                "checkpoint_write_seconds"
+            ] = checkpoint_seconds
+            pending_iteration["critic"]["timing"][
+                "phase_total_wall_seconds"
+            ] = elapsed_seconds(critic_phase_timer)
         except Exception as exc:
             record = error_record(iteration, "critic", exc)
             errors.append(record)
@@ -617,7 +949,6 @@ def main() -> None:
                 pending=pending_iteration,
                 locations=locations,
                 args=args,
-                pacer=pacer,
             )
             iterations.append(completed)
             final_solution = selected
@@ -659,7 +990,39 @@ def main() -> None:
         best_candidate_oracle=best_candidate_oracle,
         errors=errors,
     )
+    api_calls: list[dict[str, Any]] = []
+    for completed_iteration in iterations:
+        critic_call = completed_iteration.get("critic", {}).get("api_call")
+        if isinstance(critic_call, dict):
+            api_calls.append(critic_call)
+        api_calls.extend(
+            call
+            for call in completed_iteration.get("scorer", {}).get("api_calls", [])
+            if isinstance(call, dict)
+        )
+    if pending_iteration is not None:
+        critic_call = pending_iteration.get("critic", {}).get("api_call")
+        if isinstance(critic_call, dict):
+            api_calls.append(critic_call)
+        api_calls.extend(
+            attempt["api_call"]
+            for attempt in pending_iteration.get("scorer_attempts", [])
+            if isinstance(attempt.get("api_call"), dict)
+        )
+    api_calls.extend(
+        failure["api_call"]
+        for failure in errors
+        if isinstance(failure.get("api_call"), dict)
+    )
+    result["run_summary"] = {
+        "started_at_utc": run_started_at_utc,
+        "finished_at_utc_before_result_write": utc_now_iso(),
+        "session_wall_seconds_before_result_write": elapsed_seconds(run_timer),
+        **summarize_api_calls(api_calls),
+    }
     write_json(result_path, result)
+    summary = build_multi_agent1_summary(result, source_results=result_path)
+    write_json(summary_path, summary)
 
     print("\nGemini Multi-Agent 1 deneyi durumu kaydedildi.")
     print(f"Tamamlanan tam iterasyon: {len(iterations)}")
@@ -684,6 +1047,7 @@ def main() -> None:
             f"mesafe {best_candidate_oracle['distance']}"
         )
     print(f"Sonuç dosyası: {result_path}")
+    print(f"Kısa özet dosyası: {summary_path}")
 
 
 if __name__ == "__main__":

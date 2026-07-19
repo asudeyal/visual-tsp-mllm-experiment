@@ -7,6 +7,7 @@ import pytest
 import run_gemini_multi_agent1 as ma1
 from run_gemini_multi_agent1 import better_valid_solution, main
 from src.llm_routes import (
+    GeminiTextResult,
     ScorerParseError,
     parse_scorer_response,
     request_gemini_route_candidates,
@@ -156,7 +157,14 @@ def test_validate_only_checks_plan_without_api_key(
     output = capsys.readouterr().out
     assert "API çağrısı yapılmadı" in output
     assert "Tahmini kalan Gemini isteği: 6" in output
-    assert (output_dir / "gemini_zero_shot_route.png").exists()
+    assert (
+        output_dir
+        / "runs"
+        / "default"
+        / "zero_shot"
+        / "images"
+        / "gemini_zero_shot_route.png"
+    ).exists()
 
 
 def test_candidate_request_uses_one_call_with_requested_candidate_count(
@@ -298,14 +306,24 @@ def test_failed_scorer_response_is_preserved_in_pending_checkpoint(
     image_path = tmp_path / "candidate.png"
     image_path.write_bytes(b"image")
     pending = _pending_scorer_fixture(image_path)
-    monkeypatch.setattr(ma1, "request_gemini_scorer", lambda *args, **kwargs: "bad format")
+    monkeypatch.setattr(
+        ma1,
+        "request_gemini_scorer_detailed",
+        lambda *args, **kwargs: GeminiTextResult(
+            text="bad format",
+            api_call={
+                "success": True,
+                "api_call_wall_seconds": 0.01,
+                "usage": {"total_token_count": 10},
+            },
+        ),
+    )
 
     with pytest.raises(ScorerParseError):
         ma1.finalize_pending_iteration(
             pending=pending,
             locations=[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],
             args=SimpleNamespace(model="test", output_dir=tmp_path),
-            pacer=ma1.RequestPacer(0),
         )
 
     assert pending["scorer_attempts"][0]["raw_response"] == "bad format"
@@ -328,7 +346,7 @@ def test_parseable_stored_scorer_response_avoids_new_api_call(
     ]
     monkeypatch.setattr(
         ma1,
-        "request_gemini_scorer",
+        "request_gemini_scorer_detailed",
         lambda *args, **kwargs: pytest.fail("API yeniden çağrılmamalı"),
     )
     monkeypatch.setattr(ma1, "plot_evaluation", lambda *args, **kwargs: None)
@@ -337,7 +355,6 @@ def test_parseable_stored_scorer_response_avoids_new_api_call(
         pending=pending,
         locations=[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)],
         args=SimpleNamespace(model="test", output_dir=tmp_path),
-        pacer=ma1.RequestPacer(0),
     )
 
     assert selected["candidate_id"] == 1

@@ -1,0 +1,750 @@
+{
+  "experiment": "gemini_visual_multi_agent_2_tsp",
+  "run_id": "seed42_timing_run_02",
+  "model": "gemini-2.5-flash",
+  "num_locations_including_depot": 10,
+  "num_salesmen": 1,
+  "requested_iterations": 10,
+  "completed_iterations": 10,
+  "artificial_delay_enabled": false,
+  "initializer": {
+    "source": "output\\runs\\seed42_timing_run_02\\zero_shot\\gemini_zero_shot_results.json",
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "critic_iterations": [
+    {
+      "iteration": 1,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\zero_shot\\images\\gemini_zero_shot_route.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:05:56.063101+00:00",
+        "finished_at_utc": "2026-07-17T18:06:02.080436+00:00",
+        "api_call_wall_seconds": 6.0173371999990195,
+        "input_image_count": 1,
+        "input_image_bytes": 90638,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 958,
+          "cached_content_token_count": null,
+          "total_token_count": 1388
+        },
+        "request_preparation_seconds": 1.1316767999669537,
+        "request_total_wall_seconds": 7.149050100008026
+      },
+      "timing": {
+        "request_preparation_seconds": 1.1316767999669537,
+        "api_call_wall_seconds": 6.0173371999990195,
+        "response_parsing_seconds": 0.00047039997298270464,
+        "validation_and_metrics_seconds": 0.0002305000089108944,
+        "route_rendering_seconds": 0.13596729992423207,
+        "checkpoint_write_seconds": 0.0004146000137552619,
+        "iteration_total_wall_seconds": 7.289622899959795
+      },
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 2,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_01.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:09:52.949670+00:00",
+        "finished_at_utc": "2026-07-17T18:09:59.159252+00:00",
+        "api_call_wall_seconds": 6.2095779000082985,
+        "input_image_count": 1,
+        "input_image_bytes": 88813,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 957,
+          "cached_content_token_count": null,
+          "total_token_count": 1387
+        },
+        "request_preparation_seconds": 1.1069488999200985,
+        "request_total_wall_seconds": 7.316559399943799
+      },
+      "timing": {
+        "request_preparation_seconds": 1.1069488999200985,
+        "api_call_wall_seconds": 6.2095779000082985,
+        "response_parsing_seconds": 0.00021970004308968782,
+        "validation_and_metrics_seconds": 0.00012049998622387648,
+        "route_rendering_seconds": 0.13591810001526028,
+        "checkpoint_write_seconds": 0.00042449997272342443,
+        "iteration_total_wall_seconds": 7.454608500003815
+      },
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 3,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_02.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:09:59.581042+00:00",
+        "finished_at_utc": "2026-07-17T18:10:05.147454+00:00",
+        "api_call_wall_seconds": 5.566413799999282,
+        "input_image_count": 1,
+        "input_image_bytes": 88819,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 958,
+          "cached_content_token_count": null,
+          "total_token_count": 1388
+        },
+        "request_preparation_seconds": 0.28369959990959615,
+        "request_total_wall_seconds": 5.850151699967682
+      },
+      "timing": {
+        "request_preparation_seconds": 0.28369959990959615,
+        "api_call_wall_seconds": 5.566413799999282,
+        "response_parsing_seconds": 6.240000948309898e-05,
+        "validation_and_metrics_seconds": 0.0002429999876767397,
+        "route_rendering_seconds": 0.17034850001800805,
+        "checkpoint_write_seconds": 0.0003603999502956867,
+        "iteration_total_wall_seconds": 6.024738900014199
+      },
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 4,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_03.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:10:05.575806+00:00",
+        "finished_at_utc": "2026-07-17T18:10:11.388946+00:00",
+        "api_call_wall_seconds": 5.8131456999108195,
+        "input_image_count": 1,
+        "input_image_bytes": 88842,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 958,
+          "cached_content_token_count": null,
+          "total_token_count": 1388
+        },
+        "request_preparation_seconds": 0.2537209000438452,
+        "request_total_wall_seconds": 6.066897500073537
+      },
+      "timing": {
+        "request_preparation_seconds": 0.2537209000438452,
+        "api_call_wall_seconds": 5.8131456999108195,
+        "response_parsing_seconds": 7.54999928176403e-05,
+        "validation_and_metrics_seconds": 0.0002921000123023987,
+        "route_rendering_seconds": 0.12299440009519458,
+        "checkpoint_write_seconds": 0.0005321999778971076,
+        "iteration_total_wall_seconds": 6.1942051000660285
+      },
+      "route": [
+        0,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        4,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 5,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_04.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-9-1-3-6-5-2-4-7-8-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:10:11.792122+00:00",
+        "finished_at_utc": "2026-07-17T18:10:17.444672+00:00",
+        "api_call_wall_seconds": 5.6525551999220625,
+        "input_image_count": 1,
+        "input_image_bytes": 88823,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 959,
+          "cached_content_token_count": null,
+          "total_token_count": 1389
+        },
+        "request_preparation_seconds": 0.2758428000379354,
+        "request_total_wall_seconds": 5.92843410000205
+      },
+      "timing": {
+        "request_preparation_seconds": 0.2758428000379354,
+        "api_call_wall_seconds": 5.6525551999220625,
+        "response_parsing_seconds": 5.310005508363247e-05,
+        "validation_and_metrics_seconds": 0.00022409996017813683,
+        "route_rendering_seconds": 0.10624200000893325,
+        "checkpoint_write_seconds": 0.0005187999922782183,
+        "iteration_total_wall_seconds": 6.038986900006421
+      },
+      "route": [
+        0,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        4,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    },
+    {
+      "iteration": 6,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_05.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-7-8-9-1-3-6-5-2-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:10:17.804899+00:00",
+        "finished_at_utc": "2026-07-17T18:10:23.463797+00:00",
+        "api_call_wall_seconds": 5.658898700028658,
+        "input_image_count": 1,
+        "input_image_bytes": 88870,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 956,
+          "cached_content_token_count": null,
+          "total_token_count": 1386
+        },
+        "request_preparation_seconds": 0.24955599999520928,
+        "request_total_wall_seconds": 5.908474800060503
+      },
+      "timing": {
+        "request_preparation_seconds": 0.24955599999520928,
+        "api_call_wall_seconds": 5.658898700028658,
+        "response_parsing_seconds": 2.6899971999228e-05,
+        "validation_and_metrics_seconds": 0.00015780003741383553,
+        "route_rendering_seconds": 0.10640930000226945,
+        "checkpoint_write_seconds": 0.0004827000666409731,
+        "iteration_total_wall_seconds": 6.017478900030255
+      },
+      "route": [
+        0,
+        4,
+        7,
+        8,
+        9,
+        1,
+        3,
+        6,
+        5,
+        2,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 18.132449638797556,
+      "gap_to_or_tools_percent": 37.092843658097436,
+      "gap_to_exact_percent": 37.092843658097436
+    },
+    {
+      "iteration": 7,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_06.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-8-7-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:10:23.832335+00:00",
+        "finished_at_utc": "2026-07-17T18:10:30.345392+00:00",
+        "api_call_wall_seconds": 6.513068999978714,
+        "input_image_count": 1,
+        "input_image_bytes": 104305,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 956,
+          "cached_content_token_count": null,
+          "total_token_count": 1386
+        },
+        "request_preparation_seconds": 0.25956640008371323,
+        "request_total_wall_seconds": 6.772664100048132
+      },
+      "timing": {
+        "request_preparation_seconds": 0.25956640008371323,
+        "api_call_wall_seconds": 6.513068999978714,
+        "response_parsing_seconds": 5.359994247555733e-05,
+        "validation_and_metrics_seconds": 0.00023440003860741854,
+        "route_rendering_seconds": 0.11603499995544553,
+        "checkpoint_write_seconds": 0.0005371998995542526,
+        "iteration_total_wall_seconds": 6.892338000005111
+      },
+      "route": [
+        0,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        8,
+        7,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 16.4644990101149,
+      "gap_to_or_tools_percent": 24.48207681067987,
+      "gap_to_exact_percent": 24.48207681067987
+    },
+    {
+      "iteration": 8,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_07.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-0-7-8-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:10:30.720939+00:00",
+        "finished_at_utc": "2026-07-17T18:10:36.243141+00:00",
+        "api_call_wall_seconds": 5.522209099959582,
+        "input_image_count": 1,
+        "input_image_bytes": 89154,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 36,
+          "thoughts_token_count": 959,
+          "cached_content_token_count": null,
+          "total_token_count": 1391
+        },
+        "request_preparation_seconds": 0.25585219997446984,
+        "request_total_wall_seconds": 5.778142899973318
+      },
+      "timing": {
+        "request_preparation_seconds": 0.25585219997446984,
+        "api_call_wall_seconds": 5.522209099959582,
+        "response_parsing_seconds": 5.039991810917854e-05,
+        "validation_and_metrics_seconds": 0.00023630005307495594,
+        "route_rendering_seconds": 0.11124120000749826,
+        "checkpoint_write_seconds": 0.0006685999687761068,
+        "iteration_total_wall_seconds": 5.892614100011997
+      },
+      "route": [
+        0,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": false,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": [
+          0
+        ]
+      },
+      "legal_node_ids": true,
+      "distance": 16.48720169313549,
+      "gap_to_or_tools_percent": 24.653723523394387,
+      "gap_to_exact_percent": 24.653723523394387
+    },
+    {
+      "iteration": 9,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_08.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-4-2-5-6-3-1-9-7-8-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:10:36.608155+00:00",
+        "finished_at_utc": "2026-07-17T18:10:42.248702+00:00",
+        "api_call_wall_seconds": 5.640552600030787,
+        "input_image_count": 1,
+        "input_image_bytes": 89559,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 958,
+          "cached_content_token_count": null,
+          "total_token_count": 1388
+        },
+        "request_preparation_seconds": 0.2504368000663817,
+        "request_total_wall_seconds": 5.891014700056985
+      },
+      "timing": {
+        "request_preparation_seconds": 0.2504368000663817,
+        "api_call_wall_seconds": 5.640552600030787,
+        "response_parsing_seconds": 3.7800054997205734e-05,
+        "validation_and_metrics_seconds": 0.00019079993944615126,
+        "route_rendering_seconds": 0.10221679997630417,
+        "checkpoint_write_seconds": 0.0005471999756991863,
+        "iteration_total_wall_seconds": 5.996162800001912
+      },
+      "route": [
+        0,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        7,
+        8,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 16.313341275152723,
+      "gap_to_or_tools_percent": 23.339228263479608,
+      "gap_to_exact_percent": 23.339228263479608
+    },
+    {
+      "iteration": 10,
+      "iteration_type": "critic_route_revision",
+      "temperature": 0.7,
+      "input_image": "output\\runs\\seed42_timing_run_02\\multi_agent2\\images\\iteration_09.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-7-4-2-5-6-3-1-9-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-17T18:13:53.498527+00:00",
+        "finished_at_utc": "2026-07-17T18:13:58.659799+00:00",
+        "api_call_wall_seconds": 5.161293500103056,
+        "input_image_count": 1,
+        "input_image_bytes": 91091,
+        "usage": {
+          "prompt_token_count": 396,
+          "candidates_token_count": 34,
+          "thoughts_token_count": 958,
+          "cached_content_token_count": null,
+          "total_token_count": 1388
+        },
+        "request_preparation_seconds": 1.0935321000870317,
+        "request_total_wall_seconds": 6.254881100030616
+      },
+      "timing": {
+        "request_preparation_seconds": 1.0935321000870317,
+        "api_call_wall_seconds": 5.161293500103056,
+        "response_parsing_seconds": 0.00048539997078478336,
+        "validation_and_metrics_seconds": 0.00022739998530596495,
+        "route_rendering_seconds": 0.13046170002780855,
+        "checkpoint_write_seconds": 0.0005817000055685639,
+        "iteration_total_wall_seconds": 6.388950600055978
+      },
+      "route": [
+        0,
+        8,
+        7,
+        4,
+        2,
+        5,
+        6,
+        3,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 13.226401287596719,
+      "gap_to_or_tools_percent": 0.0,
+      "gap_to_exact_percent": 0.0
+    }
+  ],
+  "final_solution": {
+    "route": [
+      0,
+      8,
+      7,
+      4,
+      2,
+      5,
+      6,
+      3,
+      1,
+      9,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "best_valid_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "route": [
+      0,
+      9,
+      1,
+      3,
+      6,
+      5,
+      2,
+      4,
+      7,
+      8,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 13.226401287596719,
+    "gap_to_or_tools_percent": 0.0,
+    "gap_to_exact_percent": 0.0
+  },
+  "errors": [
+    {
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash\\nPlease retry in 17.728601887s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '17s'}]}}",
+      "iteration": 10,
+      "phase": "critic",
+      "api_call": {
+        "phase": "route_generation",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-17T18:10:42.601229+00:00",
+        "finished_at_utc": "2026-07-17T18:10:42.873262+00:00",
+        "api_call_wall_seconds": 0.2720439999829978,
+        "input_image_count": 1,
+        "input_image_bytes": 91091,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null
+        },
+        "request_preparation_seconds": 0.24735169997438788,
+        "request_total_wall_seconds": 0.5194184998981655
+      },
+      "iteration_wall_seconds": 0.5195375999901444
+    }
+  ],
+  "run_summary": {
+    "started_at_utc": "2026-07-17T18:13:52.403491+00:00",
+    "finished_at_utc_before_result_write": "2026-07-17T18:13:58.793852+00:00",
+    "total_wall_seconds_before_result_write": 6.390364299993962,
+    "api_call_count": 11,
+    "successful_api_call_count": 10,
+    "failed_api_call_count": 1,
+    "total_api_call_wall_seconds": 58.02709669992328,
+    "total_request_preparation_seconds": 5.4081842000596225,
+    "total_gemini_request_wall_seconds": 63.435688900062814,
+    "total_token_count": 13879
+  }
+}

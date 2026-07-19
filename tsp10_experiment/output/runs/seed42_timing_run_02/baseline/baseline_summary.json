@@ -1,0 +1,55 @@
+{
+  "experiment": "tsp_baseline",
+  "summary_type": "compact",
+  "source_results": "output\\runs\\seed42_timing_run_02\\baseline\\baseline_results.json",
+  "status": "completed",
+  "run_id": "seed42_timing_run_02",
+  "seed": 42,
+  "num_locations_including_depot": 10,
+  "or_tools": {
+    "route": [
+      0,
+      8,
+      7,
+      4,
+      2,
+      5,
+      6,
+      3,
+      1,
+      9,
+      0
+    ],
+    "distance": 13.226401287596719,
+    "is_valid": true,
+    "gap_to_exact_percent": 0.0
+  },
+  "exact_brute_force": {
+    "route": [
+      0,
+      8,
+      7,
+      4,
+      2,
+      5,
+      6,
+      3,
+      1,
+      9,
+      0
+    ],
+    "distance": 13.226401287596719,
+    "is_valid": true
+  },
+  "timing": {
+    "started_at_utc": "2026-07-17T18:03:12.345085+00:00",
+    "finished_at_utc_before_result_write": "2026-07-17T18:03:15.287089+00:00",
+    "problem_generation_seconds": 0.0130322000477463,
+    "or_tools_seconds": 2.010668499977328,
+    "exact_brute_force_seconds": 0.601844200049527,
+    "problem_plot_seconds": 0.10778479999862611,
+    "or_tools_plot_seconds": 0.09917730011511594,
+    "exact_plot_seconds": 0.10911190009210259,
+    "total_wall_seconds_before_result_write": 2.942005299963057
+  }
+}
