@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+output/runs/*/multi_agent1/*_checkpoint.json
+output/runs/*/multi_agent2/*_checkpoint.json
