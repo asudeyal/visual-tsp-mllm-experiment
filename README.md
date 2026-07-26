@@ -14,12 +14,14 @@ GPT-4o kullanılmıştır; bu depodaki deneyler Gemini 2.5 Flash uyarlamasıdır
 |---|---|
 | `tsp10_experiment/` | `seed=42` ile oluşturulan sabit 10 düğümlü ilk deney; kesin brute-force, OR-Tools, Zero-shot, Multi-Agent 1 ve Multi-Agent 2 sonuçlarını korur |
 | `dynamic_tsp_experiment/` | Rastgele `N` düğümlü veya TSPLIB `EUC_2D` girdili güncel ve genellenebilir deney sistemi |
-| `MTSP_GPT.ipynb` ve diğer özgün dosyalar | Makalenin kaynak deposundan gelen referans çalışmalar |
+| [`upstream_reference/`](upstream_reference/) | Fork alınan özgün depodaki Multi-Agent klasörleri, notebooklar ve açıklama PDF'i |
 
 Yeni deneyler için
 [`dynamic_tsp_experiment/README.md`](dynamic_tsp_experiment/README.md)
 dosyasındaki akış kullanılmalıdır. İlk 10 düğümlü çalışmanın ayrıntıları
 [`tsp10_experiment/README.md`](tsp10_experiment/README.md) dosyasındadır.
+Makalenin özgün uygulama dosyaları karşılaştırma ve kaynak geçmişini korumak
+amacıyla `upstream_reference/` klasöründe değiştirilmeden saklanır.
 
 ## Güncel dinamik sistem
 
