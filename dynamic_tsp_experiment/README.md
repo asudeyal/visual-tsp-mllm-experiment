@@ -8,6 +8,36 @@ yalnızca problem ve rota görselleri gönderilir.
 > Özgün makalede GPT-4o kullanılmıştır. Bu çalışma yöntemin Gemini'ye
 > uyarlanmış deneysel bir uygulamasıdır; birebir model replikasyonu değildir.
 
+## Terminali hazırlama
+
+Repo daha önce kurulmuşsa yeni bir PowerShell terminalinde:
+
+```powershell
+cd "D:\visual-tsp-mllm-experiment\visual-tsp-mllm-experiment\dynamic_tsp_experiment"
+
+Set-ExecutionPolicy `
+    -Scope Process `
+    -ExecutionPolicy Bypass
+
+.\.venv\Scripts\Activate.ps1
+```
+
+İlk kurulumda sanal ortam ve bağımlılıklar:
+
+```powershell
+cd "D:\visual-tsp-mllm-experiment\visual-tsp-mllm-experiment\dynamic_tsp_experiment"
+
+py -3.13 -m venv .venv
+
+Set-ExecutionPolicy `
+    -Scope Process `
+    -ExecutionPolicy Bypass
+
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m pytest -q
+```
+
 ## Desteklenen girdiler
 
 İki giriş biçimi vardır:
@@ -78,6 +108,16 @@ $env:GEMINI_API_KEY="YENI_GEMINI_API_ANAHTARINIZ"
 Başka bir Gemini anahtarı kullanmak için aynı değişkene yeni değer atamak
 yeterlidir. Anahtar kaynak kodda, sonuç JSON'larında veya checkpoint'lerde
 tutulmaz.
+
+Anahtarı ekrana yazdırmadan tanımlı olup olmadığını kontrol etmek için:
+
+```powershell
+if ($env:GEMINI_API_KEY) {
+    "Gemini API anahtarı tanımlı."
+} else {
+    "Gemini API anahtarı eksik."
+}
+```
 
 ## API kullanmadan doğrulama
 
@@ -204,6 +244,79 @@ python run_analysis.py `
 
 Komut terminalde önce yöntem özetini, ardından Multi-Agent 1 ve 2'nin bütün
 iterasyonlarını satır satır gösterir.
+
+### Analizi daha sonra tekrar görüntüleme
+
+Analiz komutu istenen her zaman yeniden çalıştırılabilir:
+
+```powershell
+python run_analysis.py `
+    --run-id eil51_run_02
+```
+
+Bu komut:
+
+- Gemini API çağrısı yapmaz,
+- API anahtarı veya internet bağlantısı gerektirmez,
+- mevcut ayrıntılı sonuç JSON'larını yeniden okur,
+- terminalde yöntem özetini ve iterasyonları tekrar gösterir,
+- aynı `experiment_analysis_summary.json` dosyasını günceller.
+
+Sonuçlar değişmediyse hesaplanan metrikler de değişmez; yalnız
+`generated_at_utc` alanı komutun yeniden çalıştırıldığı zamanı gösterir.
+Multi-Agent 1 henüz bitmediyse yöntem durumu `partial` olur ve yalnız
+tamamlanan iterasyonlar gösterilir. Bütün yöntemlerin tamamlandığını zorunlu
+kılmak için `--require-complete` kullanılır.
+
+### Analiz JSON'unu PowerShell'de inceleme
+
+```powershell
+$a = Get-Content `
+    .\output\runs\eil51_run_02\analysis\experiment_analysis_summary.json `
+    -Raw |
+ConvertFrom-Json
+```
+
+Tamamlanma durumları ve genel karşılaştırma:
+
+```powershell
+$a.completion | Format-List
+
+$a.comparison.method_ranking_by_valid_distance |
+Format-Table
+
+$a.comparison.best_valid_mllm_solution |
+Format-List
+```
+
+Multi-Agent 2 iterasyonları:
+
+```powershell
+$a.methods.multi_agent_2.iterations |
+Select-Object `
+    iteration,
+    is_valid,
+    distance,
+    gap_to_reference_percent,
+    total_token_count |
+Format-Table
+```
+
+Multi-Agent 1 iterasyonları:
+
+```powershell
+$a.methods.multi_agent_1.iterations |
+Select-Object `
+    iteration,
+    returned_candidate_count,
+    valid_candidate_count,
+    selection_mode,
+    selected_candidate_id,
+    selected_distance,
+    selected_gap_to_reference_percent,
+    selection_regret_percent |
+Format-Table
+```
 
 ## Çıktı yapısı
 
