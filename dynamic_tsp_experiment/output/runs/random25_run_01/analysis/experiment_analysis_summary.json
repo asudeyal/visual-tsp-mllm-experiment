@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "experiment": "dynamic_tsp_comparative_analysis",
   "run_id": "random25_run_01",
-  "generated_at_utc": "2026-07-28T10:17:06.582564+00:00",
+  "generated_at_utc": "2026-07-28T11:06:07.768728+00:00",
   "problem": {
     "name": "random_n25_seed42",
     "source_type": "random",
@@ -1737,11 +1737,11 @@
             },
             "critic_temperature": 0.7
           },
-          "requested_iterations": 1,
-          "completed_iterations": 1,
-          "valid_iteration_count": 0,
-          "invalid_iteration_count": 1,
-          "best_valid_iteration": null,
+          "requested_iterations": 10,
+          "completed_iterations": 10,
+          "valid_iteration_count": 7,
+          "invalid_iteration_count": 3,
+          "best_valid_iteration": 6,
           "initializer": {
             "source": "zero_shot",
             "iteration": 0,
@@ -1753,21 +1753,21 @@
           },
           "final_solution": {
             "source": "critic",
-            "iteration": 1,
+            "iteration": 10,
             "candidate_id": null,
             "is_valid": false,
-            "distance": 29.68804721231107,
+            "distance": 27.86153433571933,
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null
           },
           "best_valid_solution": {
-            "source": "zero_shot",
-            "iteration": 0,
+            "source": "critic",
+            "iteration": 6,
             "candidate_id": null,
             "is_valid": true,
-            "distance": 26.353286582428108,
+            "distance": 22.716601565371455,
             "reference_distance": 17.564560227642477,
-            "gap_to_reference_percent": 50.03670026963867
+            "gap_to_reference_percent": 29.332025800571305
           },
           "iterations": [
             {
@@ -1782,22 +1782,230 @@
                 "evaluation": 8.859997615218163e-05,
                 "rendering": 0.3694772000890225,
                 "checkpoint": 0.0011410999577492476,
-                "total": 1.4295118998270482
+                "total": 1.4280295998323709
               },
               "total_token_count": 1591
+            },
+            {
+              "iteration": 2,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 29.006068017586333,
+              "gap_to_reference_percent": 65.13973388264864,
+              "timing_seconds": {
+                "api": 0.8798695001751184,
+                "parsing": 0.0003402000293135643,
+                "evaluation": 8.099991828203201e-05,
+                "rendering": 0.21327890013344586,
+                "checkpoint": 0.0006759001407772303,
+                "total": 1.2367731998674572
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 3,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 25.30348154814084,
+              "gap_to_reference_percent": 44.05986384059378,
+              "timing_seconds": {
+                "api": 1.0224575998727232,
+                "parsing": 0.0004390000831335783,
+                "evaluation": 8.319993503391743e-05,
+                "rendering": 0.22873700014315546,
+                "checkpoint": 0.0008756001479923725,
+                "total": 1.3691845999564976
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 4,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 24.51389900964723,
+              "gap_to_reference_percent": 39.56454754311543,
+              "timing_seconds": {
+                "api": 0.8273989001754671,
+                "parsing": 0.0002962998114526272,
+                "evaluation": 7.280008867383003e-05,
+                "rendering": 0.20907209999859333,
+                "checkpoint": 0.0007336998824030161,
+                "total": 1.151694499887526
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 5,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 33.984652366158386,
+              "gap_to_reference_percent": 93.48422007557328,
+              "timing_seconds": {
+                "api": 1.0136623000726104,
+                "parsing": 0.00011600018478929996,
+                "evaluation": 8.369982242584229e-05,
+                "rendering": 0.2064082999713719,
+                "checkpoint": 0.0011847000569105148,
+                "total": 1.3347781000193208
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 6,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 22.716601565371455,
+              "gap_to_reference_percent": 29.332025800571305,
+              "timing_seconds": {
+                "api": 0.7032571998424828,
+                "parsing": 0.00038960017263889313,
+                "evaluation": 0.00011689984239637852,
+                "rendering": 0.21987130003981292,
+                "checkpoint": 0.0009377000387758017,
+                "total": 1.0395359001122415
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 7,
+              "status": "completed",
+              "is_valid": false,
+              "distance": 27.092946457120345,
+              "gap_to_reference_percent": null,
+              "timing_seconds": {
+                "api": 1.0317824000958353,
+                "parsing": 0.00012400001287460327,
+                "evaluation": 8.33999365568161e-05,
+                "rendering": 0.21042719995602965,
+                "checkpoint": 0.0010639999527484179,
+                "total": 1.3629022999666631
+              },
+              "total_token_count": 1607
+            },
+            {
+              "iteration": 8,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 25.880561727412857,
+              "gap_to_reference_percent": 47.345344215808794,
+              "timing_seconds": {
+                "api": 0.6890706000849605,
+                "parsing": 0.0002866999711841345,
+                "evaluation": 6.960006430745125e-05,
+                "rendering": 0.2085545000154525,
+                "checkpoint": 0.0010625000577419996,
+                "total": 1.0158431001473218
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 9,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 31.683381393661367,
+              "gap_to_reference_percent": 80.3824347608726,
+              "timing_seconds": {
+                "api": 0.6910494000185281,
+                "parsing": 7.420009933412075e-05,
+                "evaluation": 6.400002166628838e-05,
+                "rendering": 0.1987568000331521,
+                "checkpoint": 0.0009880999568849802,
+                "total": 1.0122738999780267
+              },
+              "total_token_count": 1589
+            },
+            {
+              "iteration": 10,
+              "status": "completed",
+              "is_valid": false,
+              "distance": 27.86153433571933,
+              "gap_to_reference_percent": null,
+              "timing_seconds": {
+                "api": 0.6979884998872876,
+                "parsing": 0.00031340005807578564,
+                "evaluation": 9.009987115859985e-05,
+                "rendering": 0.21083650016225874,
+                "checkpoint": 0.0009494000114500523,
+                "total": 1.0268709999509156
+              },
+              "total_token_count": 1587
             }
           ],
           "run_summary": {
-            "api_call_count": 1,
-            "successful_api_call_count": 1,
-            "failed_api_call_count": 0,
-            "total_api_call_wall_seconds": 0.8227548999711871,
-            "total_token_count": 1591,
-            "manifest_and_input_loading_seconds": 0.0022452999837696552,
-            "accumulated_completed_iteration_wall_seconds": 1.4295118998270482,
-            "current_invocation_wall_seconds_before_result_write": 1.4308198001235723
+            "api_call_count": 17,
+            "successful_api_call_count": 10,
+            "failed_api_call_count": 7,
+            "total_api_call_wall_seconds": 10.679234300274402,
+            "total_token_count": 17494,
+            "manifest_and_input_loading_seconds": 0.0013274000957608223,
+            "accumulated_completed_iteration_wall_seconds": 11.977886199718341,
+            "current_invocation_wall_seconds_before_result_write": 1.0452710001263767
           },
-          "errors": []
+          "errors": [
+            {
+              "phase": "critic_route_revision",
+              "iteration": 3,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 4852, Requested 3653. Please try again in 3.7875s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.2658382998779416,
+              "failed_stage_wall_seconds": null
+            },
+            {
+              "phase": "response_parsing",
+              "iteration": 3,
+              "error_type": "RouteParseError",
+              "message": "Salesman1 rota satırı bulunamadı.",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.8521283001173288,
+              "failed_stage_wall_seconds": null
+            },
+            {
+              "phase": "critic_route_revision",
+              "iteration": 4,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7202, Requested 2706. Please try again in 14.309999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.23570739990100265,
+              "failed_stage_wall_seconds": null
+            },
+            {
+              "phase": "critic_route_revision",
+              "iteration": 6,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7922, Requested 2706. Please try again in 19.71s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.24647370004095137,
+              "failed_stage_wall_seconds": null
+            },
+            {
+              "phase": "critic_route_revision",
+              "iteration": 8,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7685, Requested 2709. Please try again in 17.955s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.20537100010551512,
+              "failed_stage_wall_seconds": null
+            },
+            {
+              "phase": "critic_route_revision",
+              "iteration": 10,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7709, Requested 2709. Please try again in 18.135s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.23982200003229082,
+              "failed_stage_wall_seconds": null
+            },
+            {
+              "phase": "critic_route_revision",
+              "iteration": 10,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 5662, Requested 2709. Please try again in 2.782499999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.25460230000317097,
+              "failed_stage_wall_seconds": null
+            }
+          ]
         }
       }
     },
@@ -2445,14 +2653,14 @@
         "model_alias": "qwen/qwen3.6-27b",
         "method": "multi_agent_2",
         "status": "completed",
-        "completed_iterations": 1,
+        "completed_iterations": 10,
         "is_valid": true,
-        "distance": 26.353286582428108,
-        "gap_to_reference_percent": 50.03670026963867,
-        "api_call_count": 1,
-        "api_wall_seconds": 0.8227548999711871,
-        "total_token_count": 1591,
-        "error_count": 0
+        "distance": 22.716601565371455,
+        "gap_to_reference_percent": 29.332025800571305,
+        "api_call_count": 17,
+        "api_wall_seconds": 10.679234300274402,
+        "total_token_count": 17494,
+        "error_count": 7
       },
       {
         "provider": "openrouter",

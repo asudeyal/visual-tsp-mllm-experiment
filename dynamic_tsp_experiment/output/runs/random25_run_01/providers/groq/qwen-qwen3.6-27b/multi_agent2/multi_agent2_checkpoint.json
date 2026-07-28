@@ -158,12 +158,996 @@
         "checkpoint_write_seconds": 0.0011410999577492476,
         "iteration_total_wall_seconds": 1.4280295998323709
       }
+    },
+    {
+      "iteration": 2,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_01.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-10-12-13-8-24-20-5-15-6-3-22-11-1-9-21-7-17-23-16-19-14-4-18-2-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:00:50.549076+00:00",
+        "finished_at_utc": "2026-07-28T11:00:51.428961+00:00",
+        "api_call_wall_seconds": 0.8798695001751184,
+        "input_image_count": 1,
+        "input_image_bytes": 87474,
+        "input_image_original_bytes": 165110,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 165110,
+            "uploaded_bytes": 87474,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.274869012,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.122520522,
+            "completion_tokens": 80,
+            "completion_time": 0.197692845,
+            "total_tokens": 1589,
+            "total_time": 0.320213367
+          }
+        }
+      },
+      "route": [
+        0,
+        10,
+        12,
+        13,
+        8,
+        24,
+        20,
+        5,
+        15,
+        6,
+        3,
+        22,
+        11,
+        1,
+        9,
+        21,
+        7,
+        17,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 29.006068017586333,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 65.13973388264864,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_02.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 4.8999907448887825e-05,
+        "api_call_wall_seconds": 0.8798695001751184,
+        "response_parsing_seconds": 0.0003402000293135643,
+        "validation_and_metrics_seconds": 8.099991828203201e-05,
+        "route_rendering_seconds": 0.21327890013344586,
+        "checkpoint_write_seconds": 0.0006759001407772303,
+        "iteration_total_wall_seconds": 1.2367731998674572
+      }
+    },
+    {
+      "iteration": 3,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_02.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-21-20-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:01:40.316358+00:00",
+        "finished_at_utc": "2026-07-28T11:01:41.338833+00:00",
+        "api_call_wall_seconds": 1.0224575998727232,
+        "input_image_count": 1,
+        "input_image_bytes": 90554,
+        "input_image_original_bytes": 176883,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 176883,
+            "uploaded_bytes": 90554,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.247812103,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.108287389,
+            "completion_tokens": 80,
+            "completion_time": 0.152112821,
+            "total_tokens": 1589,
+            "total_time": 0.26040021
+          }
+        }
+      },
+      "route": [
+        0,
+        10,
+        12,
+        24,
+        8,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        5,
+        15,
+        6,
+        3,
+        22,
+        11,
+        1,
+        9,
+        21,
+        20,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 25.30348154814084,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 44.05986384059378,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_03.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 1.9700033590197563e-05,
+        "api_call_wall_seconds": 1.0224575998727232,
+        "response_parsing_seconds": 0.0004390000831335783,
+        "validation_and_metrics_seconds": 8.319993503391743e-05,
+        "route_rendering_seconds": 0.22873700014315546,
+        "checkpoint_write_seconds": 0.0008756001479923725,
+        "iteration_total_wall_seconds": 1.3691845999564976
+      }
+    },
+    {
+      "iteration": 4,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_03.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-20-21-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:02:44.812555+00:00",
+        "finished_at_utc": "2026-07-28T11:02:45.639975+00:00",
+        "api_call_wall_seconds": 0.8273989001754671,
+        "input_image_count": 1,
+        "input_image_bytes": 81035,
+        "input_image_original_bytes": 154414,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 154414,
+            "uploaded_bytes": 81035,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.235239827,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.122665599,
+            "completion_tokens": 80,
+            "completion_time": 0.195133888,
+            "total_tokens": 1589,
+            "total_time": 0.317799487
+          }
+        }
+      },
+      "route": [
+        0,
+        20,
+        21,
+        10,
+        12,
+        24,
+        8,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        5,
+        15,
+        6,
+        3,
+        22,
+        11,
+        1,
+        9,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 24.51389900964723,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 39.56454754311543,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_04.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 1.9799917936325073e-05,
+        "api_call_wall_seconds": 0.8273989001754671,
+        "response_parsing_seconds": 0.0002962998114526272,
+        "validation_and_metrics_seconds": 7.280008867383003e-05,
+        "route_rendering_seconds": 0.20907209999859333,
+        "checkpoint_write_seconds": 0.0007336998824030161,
+        "iteration_total_wall_seconds": 1.151694499887526
+      }
+    },
+    {
+      "iteration": 5,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_04.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-21-10-12-24-13-17-7-23-16-19-14-18-4-8-2-3-6-15-5-11-1-9-20-22-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:02:45.963482+00:00",
+        "finished_at_utc": "2026-07-28T11:02:46.977162+00:00",
+        "api_call_wall_seconds": 1.0136623000726104,
+        "input_image_count": 1,
+        "input_image_bytes": 79423,
+        "input_image_original_bytes": 151093,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 151093,
+            "uploaded_bytes": 79423,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.434897758,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.127532888,
+            "completion_tokens": 80,
+            "completion_time": 0.207688797,
+            "total_tokens": 1589,
+            "total_time": 0.335221685
+          }
+        }
+      },
+      "route": [
+        0,
+        21,
+        10,
+        12,
+        24,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        18,
+        4,
+        8,
+        2,
+        3,
+        6,
+        15,
+        5,
+        11,
+        1,
+        9,
+        20,
+        22,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 33.984652366158386,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 93.48422007557328,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_05.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 3.269989974796772e-05,
+        "api_call_wall_seconds": 1.0136623000726104,
+        "response_parsing_seconds": 0.00011600018478929996,
+        "validation_and_metrics_seconds": 8.369982242584229e-05,
+        "route_rendering_seconds": 0.2064082999713719,
+        "checkpoint_write_seconds": 0.0011847000569105148,
+        "iteration_total_wall_seconds": 1.3347781000193208
+      }
+    },
+    {
+      "iteration": 6,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_05.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-21-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-11-1-9-22-3-6-20-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:04:29.323396+00:00",
+        "finished_at_utc": "2026-07-28T11:04:30.026691+00:00",
+        "api_call_wall_seconds": 0.7032571998424828,
+        "input_image_count": 1,
+        "input_image_bytes": 96399,
+        "input_image_original_bytes": 185556,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 185556,
+            "uploaded_bytes": 96399,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.15850501,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.125846203,
+            "completion_tokens": 80,
+            "completion_time": 0.15689214,
+            "total_tokens": 1589,
+            "total_time": 0.282738343
+          }
+        }
+      },
+      "route": [
+        0,
+        21,
+        10,
+        12,
+        24,
+        8,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        5,
+        15,
+        11,
+        1,
+        9,
+        22,
+        3,
+        6,
+        20,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 22.716601565371455,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 29.332025800571305,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_06.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 2.100015990436077e-05,
+        "api_call_wall_seconds": 0.7032571998424828,
+        "response_parsing_seconds": 0.00038960017263889313,
+        "validation_and_metrics_seconds": 0.00011689984239637852,
+        "route_rendering_seconds": 0.21987130003981292,
+        "checkpoint_write_seconds": 0.0009377000387758017,
+        "iteration_total_wall_seconds": 1.0395359001122415
+      }
+    },
+    {
+      "iteration": 7,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_06.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-21-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-11-1-9-22-3-6-20-7-17-13-8-24-12-10-0\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:04:30.367564+00:00",
+        "finished_at_utc": "2026-07-28T11:04:31.399370+00:00",
+        "api_call_wall_seconds": 1.0317824000958353,
+        "input_image_count": 1,
+        "input_image_bytes": 74084,
+        "input_image_original_bytes": 138164,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 138164,
+            "uploaded_bytes": 74084,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 98,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1607,
+          "raw": {
+            "queue_time": 0.430107619,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.122578881,
+            "completion_tokens": 98,
+            "completion_time": 0.239724544,
+            "total_tokens": 1607,
+            "total_time": 0.362303425
+          }
+        }
+      },
+      "route": [
+        0,
+        21,
+        10,
+        12,
+        24,
+        8,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        5,
+        15,
+        11,
+        1,
+        9,
+        22,
+        3,
+        6,
+        20,
+        7,
+        17,
+        13,
+        8,
+        24,
+        12,
+        10,
+        0
+      ],
+      "validation": {
+        "is_valid": false,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [
+          7,
+          8,
+          10,
+          12,
+          13,
+          17,
+          24
+        ],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 27.092946457120345,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": null,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_07.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 2.2300053387880325e-05,
+        "api_call_wall_seconds": 1.0317824000958353,
+        "response_parsing_seconds": 0.00012400001287460327,
+        "validation_and_metrics_seconds": 8.33999365568161e-05,
+        "route_rendering_seconds": 0.21042719995602965,
+        "checkpoint_write_seconds": 0.0010639999527484179,
+        "iteration_total_wall_seconds": 1.3629022999666631
+      }
+    },
+    {
+      "iteration": 8,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_07.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-24-13-17-7-23-16-19-14-4-18-2-5-15-11-1-9-22-3-6-20-21-10-12-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:05:31.215749+00:00",
+        "finished_at_utc": "2026-07-28T11:05:31.904851+00:00",
+        "api_call_wall_seconds": 0.6890706000849605,
+        "input_image_count": 1,
+        "input_image_bytes": 71178,
+        "input_image_original_bytes": 130698,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 130698,
+            "uploaded_bytes": 71178,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.182862337,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.111851125,
+            "completion_tokens": 80,
+            "completion_time": 0.152828599,
+            "total_tokens": 1589,
+            "total_time": 0.264679724
+          }
+        }
+      },
+      "route": [
+        0,
+        8,
+        24,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        5,
+        15,
+        11,
+        1,
+        9,
+        22,
+        3,
+        6,
+        20,
+        21,
+        10,
+        12,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 25.880561727412857,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 47.345344215808794,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_08.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 5.91999851167202e-05,
+        "api_call_wall_seconds": 0.6890706000849605,
+        "response_parsing_seconds": 0.0002866999711841345,
+        "validation_and_metrics_seconds": 6.960006430745125e-05,
+        "route_rendering_seconds": 0.2085545000154525,
+        "checkpoint_write_seconds": 0.0010625000577419996,
+        "iteration_total_wall_seconds": 1.0158431001473218
+      }
+    },
+    {
+      "iteration": 9,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_08.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-8-24-6-21-10-12-7-17-13-23-16-19-14-4-18-2-5-15-11-1-9-22-3-20-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:05:32.236299+00:00",
+        "finished_at_utc": "2026-07-28T11:05:32.927364+00:00",
+        "api_call_wall_seconds": 0.6910494000185281,
+        "input_image_count": 1,
+        "input_image_bytes": 78471,
+        "input_image_original_bytes": 145817,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 145817,
+            "uploaded_bytes": 78471,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 80,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1589,
+          "raw": {
+            "queue_time": 0.182224557,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.108002064,
+            "completion_tokens": 80,
+            "completion_time": 0.152550103,
+            "total_tokens": 1589,
+            "total_time": 0.260552167
+          }
+        }
+      },
+      "route": [
+        0,
+        8,
+        24,
+        6,
+        21,
+        10,
+        12,
+        7,
+        17,
+        13,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        5,
+        15,
+        11,
+        1,
+        9,
+        22,
+        3,
+        20,
+        0
+      ],
+      "validation": {
+        "is_valid": true,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [],
+        "repeated_nodes": [],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 31.683381393661367,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": 80.3824347608726,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_09.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 3.3499905839562416e-05,
+        "api_call_wall_seconds": 0.6910494000185281,
+        "response_parsing_seconds": 7.420009933412075e-05,
+        "validation_and_metrics_seconds": 6.400002166628838e-05,
+        "route_rendering_seconds": 0.1987568000331521,
+        "checkpoint_write_seconds": 0.0009880999568849802,
+        "iteration_total_wall_seconds": 1.0122738999780267
+      }
+    },
+    {
+      "iteration": 10,
+      "iteration_type": "critic_route_revision",
+      "status": "completed",
+      "temperature": 0.7,
+      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_09.png",
+      "raw_response": "<<start>>\nSalesman1: Depot-21-6-20-5-15-11-22-1-9-12-10-0-24-13-17-7-23-16-19-14-4-18-2-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-07-28T11:06:00.519609+00:00",
+        "finished_at_utc": "2026-07-28T11:06:01.217641+00:00",
+        "api_call_wall_seconds": 0.6979884998872876,
+        "input_image_count": 1,
+        "input_image_bytes": 88985,
+        "input_image_original_bytes": 163039,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 163039,
+            "uploaded_bytes": 88985,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 78,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1587,
+          "raw": {
+            "queue_time": 0.185996484,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.104539417,
+            "completion_tokens": 78,
+            "completion_time": 0.14880515,
+            "total_tokens": 1587,
+            "total_time": 0.253344567
+          }
+        }
+      },
+      "route": [
+        0,
+        21,
+        6,
+        20,
+        5,
+        15,
+        11,
+        22,
+        1,
+        9,
+        12,
+        10,
+        0,
+        24,
+        13,
+        17,
+        7,
+        23,
+        16,
+        19,
+        14,
+        4,
+        18,
+        2,
+        0
+      ],
+      "validation": {
+        "is_valid": false,
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "missing_nodes": [
+          3,
+          8
+        ],
+        "repeated_nodes": [
+          0
+        ],
+        "unexpected_nodes": []
+      },
+      "legal_node_ids": true,
+      "distance": 27.86153433571933,
+      "reference_distance": 17.564560227642477,
+      "gap_to_reference_percent": null,
+      "artifacts": {
+        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_10.png"
+      },
+      "timing": {
+        "prompt_preparation_seconds": 2.3899832740426064e-05,
+        "api_call_wall_seconds": 0.6979884998872876,
+        "response_parsing_seconds": 0.00031340005807578564,
+        "validation_and_metrics_seconds": 9.009987115859985e-05,
+        "route_rendering_seconds": 0.21083650016225874,
+        "checkpoint_write_seconds": 0.0009494000114500523,
+        "iteration_total_wall_seconds": 1.0258286001626402
+      }
     }
   ],
   "current_route": [
     0,
     21,
-    8,
+    6,
+    20,
+    5,
+    15,
+    11,
+    22,
+    1,
+    9,
+    12,
+    10,
+    0,
+    24,
     13,
     17,
     7,
@@ -174,21 +1158,355 @@
     4,
     18,
     2,
-    5,
-    15,
-    6,
-    3,
-    22,
-    11,
-    1,
-    9,
-    12,
-    0,
-    10,
-    20,
-    24,
     0
   ],
-  "current_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_01.png",
-  "errors": []
+  "current_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_10.png",
+  "errors": [
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 4852, Requested 3653. Please try again in 3.7875s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "critic_route_revision",
+      "iteration": 3,
+      "status_code": 429,
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:00:51.781790+00:00",
+        "finished_at_utc": "2026-07-28T11:00:52.047627+00:00",
+        "api_call_wall_seconds": 0.2658382998779416,
+        "input_image_count": 1,
+        "input_image_bytes": 90554,
+        "input_image_original_bytes": 176883,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 176883,
+            "uploaded_bytes": 90554,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "attempt": 1,
+      "timing": {
+        "prompt_preparation_seconds": 2.310005947947502e-05,
+        "failed_attempt_wall_seconds": 0.4025643998757005
+      }
+    },
+    {
+      "type": "RouteParseError",
+      "message": "Salesman1 rota satırı bulunamadı.",
+      "phase": "response_parsing",
+      "iteration": 3,
+      "raw_response": "<<start>>\nDepot-10-12-24-8-13-17-7-23-16-19-14-4-18-21-20-5-15-6-3-22-11-1-9-2-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "response_model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:01:15.793035+00:00",
+        "finished_at_utc": "2026-07-28T11:01:16.645180+00:00",
+        "api_call_wall_seconds": 0.8521283001173288,
+        "input_image_count": 1,
+        "input_image_bytes": 90554,
+        "input_image_original_bytes": 176883,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 176883,
+            "uploaded_bytes": 90554,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 1509,
+          "candidates_token_count": 77,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 1586,
+          "raw": {
+            "queue_time": 0.257832341,
+            "prompt_tokens": 1509,
+            "prompt_time": 0.126591648,
+            "completion_tokens": 77,
+            "completion_time": 0.204133341,
+            "total_tokens": 1586,
+            "total_time": 0.330724989
+          }
+        }
+      },
+      "attempt": 2,
+      "timing": {
+        "prompt_preparation_seconds": 5.370005965232849e-05,
+        "failed_attempt_wall_seconds": 0.9791854000650346
+      }
+    },
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7202, Requested 2706. Please try again in 14.309999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "critic_route_revision",
+      "iteration": 4,
+      "status_code": 429,
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:01:41.694271+00:00",
+        "finished_at_utc": "2026-07-28T11:01:41.929984+00:00",
+        "api_call_wall_seconds": 0.23570739990100265,
+        "input_image_count": 1,
+        "input_image_bytes": 81035,
+        "input_image_original_bytes": 154414,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 154414,
+            "uploaded_bytes": 81035,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "attempt": 1,
+      "timing": {
+        "prompt_preparation_seconds": 4.75000124424696e-05,
+        "failed_attempt_wall_seconds": 0.35863619996234775
+      }
+    },
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7922, Requested 2706. Please try again in 19.71s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "critic_route_revision",
+      "iteration": 6,
+      "status_code": 429,
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:02:47.318299+00:00",
+        "finished_at_utc": "2026-07-28T11:02:47.564778+00:00",
+        "api_call_wall_seconds": 0.24647370004095137,
+        "input_image_count": 1,
+        "input_image_bytes": 96399,
+        "input_image_original_bytes": 185556,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 185556,
+            "uploaded_bytes": 96399,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "attempt": 1,
+      "timing": {
+        "prompt_preparation_seconds": 2.4900073185563087e-05,
+        "failed_attempt_wall_seconds": 0.37748940009623766
+      }
+    },
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7685, Requested 2709. Please try again in 17.955s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "critic_route_revision",
+      "iteration": 8,
+      "status_code": 429,
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:04:31.724391+00:00",
+        "finished_at_utc": "2026-07-28T11:04:31.929763+00:00",
+        "api_call_wall_seconds": 0.20537100010551512,
+        "input_image_count": 1,
+        "input_image_bytes": 71178,
+        "input_image_original_bytes": 130698,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 130698,
+            "uploaded_bytes": 71178,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "attempt": 1,
+      "timing": {
+        "prompt_preparation_seconds": 2.1700048819184303e-05,
+        "failed_attempt_wall_seconds": 0.31645039981231093
+      }
+    },
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7709, Requested 2709. Please try again in 18.135s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "critic_route_revision",
+      "iteration": 10,
+      "status_code": 429,
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:05:33.245414+00:00",
+        "finished_at_utc": "2026-07-28T11:05:33.485239+00:00",
+        "api_call_wall_seconds": 0.23982200003229082,
+        "input_image_count": 1,
+        "input_image_bytes": 88985,
+        "input_image_original_bytes": 163039,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 163039,
+            "uploaded_bytes": 88985,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "attempt": 1,
+      "timing": {
+        "prompt_preparation_seconds": 2.1899817511439323e-05,
+        "failed_attempt_wall_seconds": 0.35534800007008016
+      }
+    },
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 5662, Requested 2709. Please try again in 2.782499999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "critic_route_revision",
+      "iteration": 10,
+      "status_code": 429,
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-07-28T11:05:48.581715+00:00",
+        "finished_at_utc": "2026-07-28T11:05:48.836322+00:00",
+        "api_call_wall_seconds": 0.25460230000317097,
+        "input_image_count": 1,
+        "input_image_bytes": 88985,
+        "input_image_original_bytes": 163039,
+        "input_image_max_dimension": 768,
+        "input_images": [
+          {
+            "original_bytes": 163039,
+            "uploaded_bytes": 88985,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 768,
+            "uploaded_height": 768,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 4096,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "attempt": 2,
+      "timing": {
+        "prompt_preparation_seconds": 2.4099834263324738e-05,
+        "failed_attempt_wall_seconds": 0.3688604000490159
+      }
+    }
+  ]
 }
