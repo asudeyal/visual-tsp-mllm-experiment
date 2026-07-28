@@ -1,0 +1,113 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_tsp_baseline",
+  "run_id": "random25_run_01",
+  "method": "baseline",
+  "problem": {
+    "name": "random_n25_seed42",
+    "source_type": "random",
+    "dimension": 25,
+    "depot_id": 0,
+    "edge_weight_type": "EUC_2D_FLOAT",
+    "fingerprint_sha256": "fef8c0c196b445a04330bd53fd1534404bcf12d016d102fb69eed4127659a75b"
+  },
+  "reference_solution": {
+    "type": "or_tools_heuristic",
+    "distance": 17.564560227642477,
+    "is_proven_optimal": false,
+    "route": [
+      0,
+      10,
+      21,
+      12,
+      24,
+      8,
+      13,
+      17,
+      7,
+      23,
+      16,
+      4,
+      18,
+      19,
+      14,
+      2,
+      5,
+      20,
+      6,
+      15,
+      11,
+      22,
+      3,
+      1,
+      9,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    }
+  },
+  "or_tools": {
+    "method": "or_tools_savings_guided_local_search",
+    "route": [
+      0,
+      10,
+      21,
+      12,
+      24,
+      8,
+      13,
+      17,
+      7,
+      23,
+      16,
+      4,
+      18,
+      19,
+      14,
+      2,
+      5,
+      20,
+      6,
+      15,
+      11,
+      22,
+      3,
+      1,
+      9,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 17.564560227642477,
+    "reference_distance": 17.564560227642477,
+    "gap_to_reference_percent": 0.0,
+    "gap_to_known_optimum_percent": 0.0
+  },
+  "artifacts": {
+    "run_manifest": "run_manifest.json",
+    "points_image": "baseline/images/points.png",
+    "or_tools_route_image": "baseline/images/or_tools_route.png",
+    "reference_route_image": null
+  },
+  "timing": {
+    "problem_loading_seconds": 0.009724000003188848,
+    "or_tools_wall_seconds": 30.04232050012797,
+    "reference_preparation_seconds": 0.00014859996736049652,
+    "route_rendering_seconds": 0.4043964999727905,
+    "manifest_write_seconds": 0.0011863000690937042,
+    "total_wall_seconds_before_result_write": 30.458663100143895
+  }
+}

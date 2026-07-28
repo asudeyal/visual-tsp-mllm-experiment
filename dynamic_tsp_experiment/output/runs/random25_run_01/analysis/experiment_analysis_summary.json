@@ -1,0 +1,666 @@
+{
+  "schema_version": "1.0",
+  "experiment": "dynamic_tsp_comparative_analysis",
+  "run_id": "random25_run_01",
+  "generated_at_utc": "2026-07-28T07:25:44.197533+00:00",
+  "problem": {
+    "name": "random_n25_seed42",
+    "source_type": "random",
+    "dimension": 25,
+    "depot_id": 0,
+    "edge_weight_type": "EUC_2D_FLOAT",
+    "fingerprint_sha256": "fef8c0c196b445a04330bd53fd1534404bcf12d016d102fb69eed4127659a75b",
+    "reference": {
+      "type": "or_tools_heuristic",
+      "distance": 17.564560227642477,
+      "is_proven_optimal": false
+    }
+  },
+  "completion": {
+    "methods": {
+      "baseline": "completed",
+      "zero_shot": "completed",
+      "multi_agent_1": "completed",
+      "multi_agent_2": "completed"
+    },
+    "all_methods_completed": true
+  },
+  "methods": {
+    "baseline": {
+      "status": "completed",
+      "or_tools": {
+        "source": null,
+        "iteration": null,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 17.564560227642477,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 0.0
+      },
+      "timing_seconds": {
+        "problem_loading": 0.009724000003188848,
+        "or_tools": 30.04232050012797,
+        "rendering": 0.4043964999727905,
+        "total": 30.458663100143895
+      }
+    },
+    "zero_shot": {
+      "status": "completed",
+      "model": {
+        "provider": "google_gemini",
+        "name": "gemini-2.5-flash",
+        "temperature": 0.0
+      },
+      "solution": {
+        "source": null,
+        "iteration": null,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 26.039795902767526,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 48.2519093292585
+      },
+      "timing_seconds": {
+        "api": 12.362203000113368,
+        "parsing": 0.00027190009132027626,
+        "evaluation": 7.459986954927444e-05,
+        "rendering": 0.23577890009619296,
+        "total": 14.535311399959028
+      },
+      "api_call_count": 1,
+      "total_token_count": 2202,
+      "errors": []
+    },
+    "multi_agent_1": {
+      "status": "completed",
+      "model": {
+        "provider": "google_gemini",
+        "name": "gemini-2.5-flash",
+        "critic_temperature": 0.7,
+        "scorer_temperature": 0.0
+      },
+      "candidate_count_requested": 7,
+      "requested_iterations": 10,
+      "completed_iterations": 10,
+      "total_candidate_count": 70,
+      "valid_candidate_count": 67,
+      "invalid_candidate_count": 3,
+      "initializer": {
+        "source": "zero_shot",
+        "iteration": 0,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 26.039795902767526,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 48.2519093292585
+      },
+      "final_solution": {
+        "source": "scorer_selection",
+        "iteration": 10,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 19.975993582550835,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 13.728970857541482
+      },
+      "best_valid_solution": {
+        "source": "scorer_selection",
+        "iteration": 9,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 18.136287245082553,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 3.2550033136628818
+      },
+      "best_critic_candidate_oracle": {
+        "source": "critic_candidate_oracle",
+        "iteration": 6,
+        "candidate_id": 7,
+        "is_valid": true,
+        "distance": 18.136287245082553,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 3.2550033136628818
+      },
+      "iterations": [
+        {
+          "iteration": 1,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 6,
+          "invalid_candidate_count": 1,
+          "best_valid_candidate_distance": 20.188958866574936,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 7,
+          "selected_is_valid": true,
+          "selected_distance": 24.783273929779327,
+          "selected_gap_to_reference_percent": 41.0981750102476,
+          "selection_regret_percent": 22.756572508604147,
+          "timing_seconds": {
+            "critic_api": 10.7361169999931,
+            "critic_total": 14.616032100049779,
+            "scorer_api": 3.524485500063747,
+            "scorer_total": 4.198355499887839,
+            "checkpoint": 0.004123499849811196,
+            "total": 18.81851109978743
+          },
+          "token_count": {
+            "critic": 11336,
+            "scorer": 2318
+          }
+        },
+        {
+          "iteration": 2,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 20.108328040815465,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 5,
+          "selected_is_valid": true,
+          "selected_distance": 20.108328040815465,
+          "selected_gap_to_reference_percent": 14.482388287579763,
+          "selection_regret_percent": 0.0,
+          "timing_seconds": {
+            "critic_api": 9.971914599882439,
+            "critic_total": 13.710003699874505,
+            "scorer_api": 5.753466799855232,
+            "scorer_total": 6.4619428999722,
+            "checkpoint": 0.0029092999175190926,
+            "total": 20.174855899764225
+          },
+          "token_count": {
+            "critic": 11907,
+            "scorer": 2592
+          }
+        },
+        {
+          "iteration": 3,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 6,
+          "invalid_candidate_count": 1,
+          "best_valid_candidate_distance": 18.268621703347186,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 6,
+          "selected_is_valid": true,
+          "selected_distance": 20.770891441699415,
+          "selected_gap_to_reference_percent": 18.254548776068578,
+          "selection_regret_percent": 13.697090995615515,
+          "timing_seconds": {
+            "critic_api": 12.946379400091246,
+            "critic_total": 15.924028200097382,
+            "scorer_api": 3.811196500202641,
+            "scorer_total": 4.950167000060901,
+            "checkpoint": 0.004424999933689833,
+            "total": 20.878620200091973
+          },
+          "token_count": {
+            "critic": 12029,
+            "scorer": 2320
+          }
+        },
+        {
+          "iteration": 4,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 18.740007896441746,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 3,
+          "selected_is_valid": true,
+          "selected_distance": 21.520839114066206,
+          "selected_gap_to_reference_percent": 22.52421259142872,
+          "selection_regret_percent": 14.839007715426149,
+          "timing_seconds": {
+            "critic_api": 9.510126099921763,
+            "critic_total": 13.148910999996588,
+            "scorer_api": 3.9118654001504183,
+            "scorer_total": 5.02214329992421,
+            "checkpoint": 0.004789899801835418,
+            "total": 18.175844199722633
+          },
+          "token_count": {
+            "critic": 10320,
+            "scorer": 2592
+          }
+        },
+        {
+          "iteration": 5,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 18.740007896441746,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 5,
+          "selected_is_valid": true,
+          "selected_distance": 19.148221132856747,
+          "selected_gap_to_reference_percent": 9.01622861426363,
+          "selection_regret_percent": 2.178298102491785,
+          "timing_seconds": {
+            "critic_api": 10.21437199995853,
+            "critic_total": 14.077899400144815,
+            "scorer_api": 3.770098299952224,
+            "scorer_total": 5.233089699875563,
+            "checkpoint": 0.005610400112345815,
+            "total": 19.316599500132725
+          },
+          "token_count": {
+            "critic": 12047,
+            "scorer": 2593
+          }
+        },
+        {
+          "iteration": 6,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 18.136287245082553,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 1,
+          "selected_is_valid": true,
+          "selected_distance": 18.268621703347186,
+          "selected_gap_to_reference_percent": 4.0084207437011825,
+          "selection_regret_percent": 0.7296667530478957,
+          "timing_seconds": {
+            "critic_api": 10.030459600035101,
+            "critic_total": 13.606565400026739,
+            "scorer_api": 3.97975099994801,
+            "scorer_total": 5.150231899926439,
+            "checkpoint": 0.005828900029882789,
+            "total": 18.76262619998306
+          },
+          "token_count": {
+            "critic": 11183,
+            "scorer": 2564
+          }
+        },
+        {
+          "iteration": 7,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 18.268621703347186,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 5,
+          "selected_is_valid": true,
+          "selected_distance": 19.908690995870252,
+          "selected_gap_to_reference_percent": 13.345798231479005,
+          "selection_regret_percent": 8.97752068631741,
+          "timing_seconds": {
+            "critic_api": 9.811711399815977,
+            "critic_total": 13.411155299982056,
+            "scorer_api": 3.8894559999462217,
+            "scorer_total": 5.025996199809015,
+            "checkpoint": 0.005784100154414773,
+            "total": 18.442935599945486
+          },
+          "token_count": {
+            "critic": 11280,
+            "scorer": 2592
+          }
+        },
+        {
+          "iteration": 8,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 18.136287245082553,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 1,
+          "selected_is_valid": true,
+          "selected_distance": 19.908690995870252,
+          "selected_gap_to_reference_percent": 13.345798231479005,
+          "selection_regret_percent": 9.772693423061362,
+          "timing_seconds": {
+            "critic_api": 9.389062299858779,
+            "critic_total": 13.019423199817538,
+            "scorer_api": 4.772182499989867,
+            "scorer_total": 5.920103899901733,
+            "checkpoint": 0.0067316999193280935,
+            "total": 18.9462587996386
+          },
+          "token_count": {
+            "critic": 11210,
+            "scorer": 2606
+          }
+        },
+        {
+          "iteration": 9,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 6,
+          "invalid_candidate_count": 1,
+          "best_valid_candidate_distance": 18.136287245082553,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 6,
+          "selected_is_valid": true,
+          "selected_distance": 18.136287245082553,
+          "selected_gap_to_reference_percent": 3.2550033136628818,
+          "selection_regret_percent": 0.0,
+          "timing_seconds": {
+            "critic_api": 9.09358870005235,
+            "critic_total": 12.935282999882475,
+            "scorer_api": 4.697051499970257,
+            "scorer_total": 7.170876800082624,
+            "checkpoint": 0.006080699851736426,
+            "total": 20.112240499816835
+          },
+          "token_count": {
+            "critic": 10459,
+            "scorer": 2321
+          }
+        },
+        {
+          "iteration": 10,
+          "returned_candidate_count": 7,
+          "valid_candidate_count": 7,
+          "invalid_candidate_count": 0,
+          "best_valid_candidate_distance": 18.136287245082553,
+          "selection_mode": "visual_scorer_after_feasibility_filter",
+          "selected_candidate_id": 7,
+          "selected_is_valid": true,
+          "selected_distance": 19.975993582550835,
+          "selected_gap_to_reference_percent": 13.728970857541482,
+          "selection_regret_percent": 10.143786942760833,
+          "timing_seconds": {
+            "critic_api": 11.107005500001833,
+            "critic_total": 13.529113399796188,
+            "scorer_api": 4.012345100054517,
+            "scorer_total": 4.756614099955186,
+            "checkpoint": 0.004870899952948093,
+            "total": 18.290598399704322
+          },
+          "token_count": {
+            "critic": 11070,
+            "scorer": 2594
+          }
+        }
+      ],
+      "run_summary": {
+        "api_call_count": 21,
+        "successful_api_call_count": 20,
+        "failed_api_call_count": 1,
+        "total_api_call_wall_seconds": 145.32957909977995,
+        "total_token_count": 137933,
+        "manifest_and_input_loading_seconds": 0.006770099978893995,
+        "accumulated_completed_iteration_wall_seconds": 191.9190903985873,
+        "current_invocation_wall_seconds_before_result_write": 25.48681339994073
+      },
+      "errors": [
+        {
+          "phase": "visual_scorer",
+          "iteration": 9,
+          "error_type": "ClientError",
+          "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash\\nPlease retry in 12.814703721s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '12s'}]}}",
+          "api_call_success": false,
+          "api_call_wall_seconds": 0.39694390003569424,
+          "failed_stage_wall_seconds": 1.0836188001558185
+        }
+      ]
+    },
+    "multi_agent_2": {
+      "status": "completed",
+      "model": {
+        "provider": "google_gemini",
+        "name": "gemini-2.5-flash",
+        "critic_temperature": 0.7
+      },
+      "requested_iterations": 10,
+      "completed_iterations": 10,
+      "valid_iteration_count": 10,
+      "invalid_iteration_count": 0,
+      "best_valid_iteration": 7,
+      "initializer": {
+        "source": "zero_shot",
+        "iteration": 0,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 26.039795902767526,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 48.2519093292585
+      },
+      "final_solution": {
+        "source": "critic",
+        "iteration": 10,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 18.136287245082553,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 3.2550033136628818
+      },
+      "best_valid_solution": {
+        "source": "critic",
+        "iteration": 7,
+        "candidate_id": null,
+        "is_valid": true,
+        "distance": 18.136287245082553,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 3.2550033136628818
+      },
+      "iterations": [
+        {
+          "iteration": 1,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 21.943165344215895,
+          "gap_to_reference_percent": 24.928635045940553,
+          "timing_seconds": {
+            "api": 8.941779300104827,
+            "parsing": 0.0002671999391168356,
+            "evaluation": 6.480002775788307e-05,
+            "rendering": 0.21837959997355938,
+            "checkpoint": 0.0008696001023054123,
+            "total": 10.731676299823448
+          },
+          "total_token_count": 2255
+        },
+        {
+          "iteration": 2,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 19.304156650131336,
+          "gap_to_reference_percent": 9.90401353602434,
+          "timing_seconds": {
+            "api": 6.850287399953231,
+            "parsing": 0.00028849998489022255,
+            "evaluation": 6.38000201433897e-05,
+            "rendering": 0.23081610002554953,
+            "checkpoint": 0.0006240000948309898,
+            "total": 8.70111390016973
+          },
+          "total_token_count": 1799
+        },
+        {
+          "iteration": 3,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 19.304156650131336,
+          "gap_to_reference_percent": 9.90401353602434,
+          "timing_seconds": {
+            "api": 7.3417212998028845,
+            "parsing": 7.449998520314693e-05,
+            "evaluation": 6.389990448951721e-05,
+            "rendering": 0.21846110001206398,
+            "checkpoint": 0.0009659999050199986,
+            "total": 7.875840699998662
+          },
+          "total_token_count": 1869
+        },
+        {
+          "iteration": 4,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 19.843762462282967,
+          "gap_to_reference_percent": 12.976141759891961,
+          "timing_seconds": {
+            "api": 7.585550099844113,
+            "parsing": 5.929986946284771e-05,
+            "evaluation": 6.680004298686981e-05,
+            "rendering": 0.21207419992424548,
+            "checkpoint": 0.0008066999725997448,
+            "total": 8.131049900082871
+          },
+          "total_token_count": 1984
+        },
+        {
+          "iteration": 5,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 19.975993582550835,
+          "gap_to_reference_percent": 13.728970857541482,
+          "timing_seconds": {
+            "api": 7.5212181999813765,
+            "parsing": 5.879998207092285e-05,
+            "evaluation": 6.200000643730164e-05,
+            "rendering": 0.2081210999749601,
+            "checkpoint": 0.0006752999033778906,
+            "total": 8.0894849000033
+          },
+          "total_token_count": 1888
+        },
+        {
+          "iteration": 6,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 18.740007896441746,
+          "gap_to_reference_percent": 6.692155417300975,
+          "timing_seconds": {
+            "api": 7.53292250004597,
+            "parsing": 7.149996235966682e-05,
+            "evaluation": 7.670000195503235e-05,
+            "rendering": 0.21362859988585114,
+            "checkpoint": 0.0007434999570250511,
+            "total": 8.075902600074187
+          },
+          "total_token_count": 1886
+        },
+        {
+          "iteration": 7,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 18.136287245082553,
+          "gap_to_reference_percent": 3.2550033136628818,
+          "timing_seconds": {
+            "api": 8.832408100133762,
+            "parsing": 5.6900084018707275e-05,
+            "evaluation": 5.789985880255699e-05,
+            "rendering": 0.20712569984607399,
+            "checkpoint": 0.00083580007776618,
+            "total": 9.38132830010727
+          },
+          "total_token_count": 2264
+        },
+        {
+          "iteration": 8,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 18.136287245082553,
+          "gap_to_reference_percent": 3.2550033136628818,
+          "timing_seconds": {
+            "api": 8.246859299950302,
+            "parsing": 5.539995618164539e-05,
+            "evaluation": 5.550007335841656e-05,
+            "rendering": 0.20131839998066425,
+            "checkpoint": 0.0007825000211596489,
+            "total": 8.782514499966055
+          },
+          "total_token_count": 1981
+        },
+        {
+          "iteration": 9,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 18.136287245082553,
+          "gap_to_reference_percent": 3.2550033136628818,
+          "timing_seconds": {
+            "api": 6.80916399997659,
+            "parsing": 5.5800192058086395e-05,
+            "evaluation": 5.979998968541622e-05,
+            "rendering": 0.20360650005750358,
+            "checkpoint": 0.0008362999651581049,
+            "total": 7.345644599990919
+          },
+          "total_token_count": 1839
+        },
+        {
+          "iteration": 10,
+          "status": "completed",
+          "is_valid": true,
+          "distance": 18.136287245082553,
+          "gap_to_reference_percent": 3.2550033136628818,
+          "timing_seconds": {
+            "api": 8.520802199840546,
+            "parsing": 0.0003349999897181988,
+            "evaluation": 8.58998391777277e-05,
+            "rendering": 0.27117029996588826,
+            "checkpoint": 0.0008592000231146812,
+            "total": 11.038585300091654
+          },
+          "total_token_count": 1956
+        }
+      ],
+      "run_summary": {
+        "api_call_count": 12,
+        "successful_api_call_count": 10,
+        "failed_api_call_count": 2,
+        "total_api_call_wall_seconds": 78.74835149967112,
+        "total_token_count": 19721,
+        "manifest_and_input_loading_seconds": 0.0025718999095261097,
+        "accumulated_completed_iteration_wall_seconds": 88.1531410003081,
+        "current_invocation_wall_seconds_before_result_write": 11.055186899844557
+      },
+      "errors": [
+        {
+          "phase": "critic_route_revision",
+          "iteration": 10,
+          "error_type": "ClientError",
+          "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 17.322785943s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '17s'}]}}",
+          "api_call_success": false,
+          "api_call_wall_seconds": 0.2810932998545468,
+          "failed_stage_wall_seconds": null
+        },
+        {
+          "phase": "critic_route_revision",
+          "iteration": 10,
+          "error_type": "ClientError",
+          "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 82.441033ms.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '0s'}]}}",
+          "api_call_success": false,
+          "api_call_wall_seconds": 0.2845458001829684,
+          "failed_stage_wall_seconds": null
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "representative_solution_policy": {
+      "baseline": "or_tools",
+      "zero_shot": "single_solution",
+      "multi_agent_1": "best_valid_scorer_selection",
+      "multi_agent_2": "best_valid_critic_iteration"
+    },
+    "method_ranking_by_valid_distance": [
+      {
+        "method": "or_tools",
+        "distance": 17.564560227642477,
+        "gap_to_reference_percent": 0.0
+      },
+      {
+        "method": "multi_agent_1_best_valid",
+        "distance": 18.136287245082553,
+        "gap_to_reference_percent": 3.2550033136628818
+      },
+      {
+        "method": "multi_agent_2_best_valid",
+        "distance": 18.136287245082553,
+        "gap_to_reference_percent": 3.2550033136628818
+      },
+      {
+        "method": "zero_shot",
+        "distance": 26.039795902767526,
+        "gap_to_reference_percent": 48.2519093292585
+      }
+    ],
+    "best_valid_mllm_solution": {
+      "method": "multi_agent_1_best_valid",
+      "distance": 18.136287245082553,
+      "gap_to_reference_percent": 3.2550033136628818
+    }
+  }
+}
