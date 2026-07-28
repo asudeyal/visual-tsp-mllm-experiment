@@ -178,6 +178,21 @@ python run_zero_shot.py `
     --run-id random25_run_01
 ```
 
+Groq'a gönderilen görseller, sağlayıcının TPM sınırlarını aşmamak için yalnız
+HTTP isteği hazırlanırken bellekte küçültülür. Tek görselli zero-shot ve
+critic çağrılarında en uzun kenar `768`, çok görselli scorer çağrılarında
+`384` piksel kullanılır. `output/` altındaki özgün problem ve rota görselleri
+değiştirilmez. Genel Groq rota/critic çağrılarının azami çıktı sınırı `4096`,
+scorer çağrısının sınırı `2048` tokendır.
+
+`qwen/qwen3.6-27b`, varsayılan açık düşünme çıktısının rota satırından önce
+token sınırını tüketmesini önlemek için `reasoning_effort=none` ve en fazla
+`1024` çıktı tokenıyla çağrılır. Bu modele özgü ayar sonuç JSON'undaki
+`model.inference_settings` alanına; kullanılan yükleme boyutları, byte
+sayıları, reasoning ayarı ve etkin çıktı sınırı ise ilgili API çağrı kaydına
+yazılır. Parser başarısız olsa bile ham model cevabı sonuç veya hata kaydında
+korunur.
+
 Her komuta `--validate-only` eklenerek manifest, model, görsel ve prompt API
 çağrısı yapılmadan doğrulanabilir.
 

@@ -3,3 +3,4 @@ matplotlib>=3.8
 ortools>=9.10
 pytest>=8.0
 numpy>=1.26
+Pillow>=10.0

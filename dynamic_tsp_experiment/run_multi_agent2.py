@@ -498,6 +498,7 @@ def main() -> None:
         args.iterations + 1,
     ):
         iteration_timer = start_timer()
+        request = None
         print(
             f"\n--- Critic iterasyon {iteration_number} ---"
         )
@@ -650,6 +651,9 @@ def main() -> None:
                 phase=current_phase,
                 iteration=iteration_number,
             )
+            if request is not None:
+                failure["raw_response"] = request.text
+                failure.setdefault("api_call", request.api_call)
             previous_attempts = sum(
                 error.get("iteration") == iteration_number
                 for error in errors

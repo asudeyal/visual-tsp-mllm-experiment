@@ -171,6 +171,8 @@ def main() -> None:
             phase="route_generation",
         )
         calls.append(request.api_call)
+        # Parser başarısız olsa bile model cevabı deney kaydında korunur.
+        result["raw_response"] = request.text
 
         current_phase = "response_parsing"
         parsing_timer = start_timer()
@@ -202,7 +204,6 @@ def main() -> None:
 
         result.update(
             {
-                "raw_response": request.text,
                 **evaluation,
                 "artifacts": {
                     "route_image": _relative(

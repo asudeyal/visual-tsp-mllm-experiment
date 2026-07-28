@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "experiment": "dynamic_tsp_comparative_analysis",
   "run_id": "random25_run_01",
-  "generated_at_utc": "2026-07-28T08:02:00.121647+00:00",
+  "generated_at_utc": "2026-07-28T10:17:06.582564+00:00",
   "problem": {
     "name": "random_n25_seed42",
     "source_type": "random",
@@ -27,6 +27,16 @@
       {
         "provider": "gemini",
         "model_alias": "gemini-2.5-flash",
+        "methods": {
+          "zero_shot": "completed",
+          "multi_agent_1": "completed",
+          "multi_agent_2": "completed"
+        },
+        "all_methods_completed": true
+      },
+      {
+        "provider": "groq",
+        "model_alias": "qwen/qwen3.6-27b",
         "methods": {
           "zero_shot": "completed",
           "multi_agent_1": "completed",
@@ -1302,6 +1312,496 @@
       }
     },
     {
+      "provider": "groq",
+      "model_alias": "qwen/qwen3.6-27b",
+      "resolved_model": "qwen/qwen3.6-27b",
+      "layout": "unified_provider",
+      "methods": {
+        "zero_shot": {
+          "status": "completed",
+          "model": {
+            "provider": "groq",
+            "alias": "qwen/qwen3.6-27b",
+            "requested_name": "qwen/qwen3.6-27b",
+            "capabilities": {
+              "supports_vision": true,
+              "supports_multiple_images": true,
+              "supports_native_multiple_choices": false,
+              "max_images_per_request": 5,
+              "max_native_choices": 1
+            },
+            "inference_settings": {
+              "reasoning_effort": "none",
+              "route_max_completion_tokens": 1024,
+              "scorer_max_completion_tokens": 1024
+            },
+            "temperature": 0.0
+          },
+          "solution": {
+            "source": null,
+            "iteration": null,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 26.353286582428108,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 50.03670026963867
+          },
+          "timing_seconds": {
+            "api": 0.9816789999604225,
+            "parsing": 0.00045449985191226006,
+            "evaluation": 0.00018449989147484303,
+            "rendering": 0.3990134000778198,
+            "total": 1.5498059000819921
+          },
+          "api_call_count": 1,
+          "total_token_count": 1583,
+          "errors": []
+        },
+        "multi_agent_1": {
+          "status": "completed",
+          "model": {
+            "provider": "groq",
+            "alias": "qwen/qwen3.6-27b",
+            "requested_name": "qwen/qwen3.6-27b",
+            "capabilities": {
+              "supports_vision": true,
+              "supports_multiple_images": true,
+              "supports_native_multiple_choices": false,
+              "max_images_per_request": 5,
+              "max_native_choices": 1
+            },
+            "inference_settings": {
+              "reasoning_effort": "none",
+              "route_max_completion_tokens": 1024,
+              "scorer_max_completion_tokens": 1024
+            },
+            "critic_temperature": 0.7,
+            "scorer_temperature": 0.0
+          },
+          "candidate_count_requested": 2,
+          "requested_iterations": 10,
+          "completed_iterations": 10,
+          "total_candidate_count": 20,
+          "valid_candidate_count": 10,
+          "invalid_candidate_count": 10,
+          "valid_candidate_rate_percent": 50.0,
+          "scorer_evaluated_iteration_count": 2,
+          "scorer_best_candidate_selection_count": 1,
+          "scorer_best_candidate_selection_rate_percent": 50.0,
+          "initializer": {
+            "source": "zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 26.353286582428108,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 50.03670026963867
+          },
+          "final_solution": {
+            "source": "scorer_selection",
+            "iteration": 10,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 25.362204575424425,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 44.39419061292689
+          },
+          "best_valid_solution": {
+            "source": "scorer_selection",
+            "iteration": 9,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 25.099489959491414,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 42.898482137860384
+          },
+          "best_critic_candidate_oracle": {
+            "source": "critic_candidate_oracle",
+            "iteration": 10,
+            "candidate_id": 1,
+            "is_valid": true,
+            "distance": 24.652418262657992,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 40.353176755663355
+          },
+          "iterations": [
+            {
+              "iteration": 1,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 0,
+              "invalid_candidate_count": 2,
+              "best_valid_candidate_distance": null,
+              "selection_mode": "retain_previous_route_no_valid_candidate",
+              "selected_candidate_id": null,
+              "selected_is_valid": true,
+              "selected_distance": 26.353286582428108,
+              "selected_gap_to_reference_percent": 50.03670026963867,
+              "selection_regret_percent": null,
+              "selected_best_valid_candidate": null,
+              "timing_seconds": {
+                "critic_api": 1.5619842999149114,
+                "critic_total": 2.2714243000373244,
+                "scorer_api": 0.0,
+                "scorer_total": 0.20915109990164638,
+                "checkpoint": 0.0017471997998654842,
+                "total": 2.4823225997388363
+              },
+              "token_count": {
+                "critic": 3182,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 2,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 1,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 26.353286582428108,
+              "selection_mode": "single_valid_candidate_without_api",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 26.353286582428108,
+              "selected_gap_to_reference_percent": 50.03670026963867,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 2.549047800246626,
+                "critic_total": 3.231151699787006,
+                "scorer_api": 0.0,
+                "scorer_total": 0.20838019996881485,
+                "checkpoint": 0.0020179999992251396,
+                "total": 3.4415498997550458
+              },
+              "token_count": {
+                "critic": 3180,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 3,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 0,
+              "invalid_candidate_count": 2,
+              "best_valid_candidate_distance": null,
+              "selection_mode": "retain_previous_route_no_valid_candidate",
+              "selected_candidate_id": null,
+              "selected_is_valid": true,
+              "selected_distance": 26.353286582428108,
+              "selected_gap_to_reference_percent": 50.03670026963867,
+              "selection_regret_percent": null,
+              "selected_best_valid_candidate": null,
+              "timing_seconds": {
+                "critic_api": 1.5375818000175059,
+                "critic_total": 2.197355099953711,
+                "scorer_api": 0.0,
+                "scorer_total": 0.20285859983414412,
+                "checkpoint": 0.0018170999828726053,
+                "total": 2.4020307997707278
+              },
+              "token_count": {
+                "critic": 3174,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 4,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 1,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 26.80761938913679,
+              "selection_mode": "single_valid_candidate_without_api",
+              "selected_candidate_id": 2,
+              "selected_is_valid": true,
+              "selected_distance": 26.80761938913679,
+              "selected_gap_to_reference_percent": 52.62334520022833,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 3.6159818000160158,
+                "critic_total": 4.290177999995649,
+                "scorer_api": 0.0,
+                "scorer_total": 0.24765919987112284,
+                "checkpoint": 0.0021808999590575695,
+                "total": 4.540018099825829
+              },
+              "token_count": {
+                "critic": 3174,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 5,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 2,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 26.098829409828753,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 26.098829409828753,
+              "selected_gap_to_reference_percent": 48.58800375061681,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 2.722605599788949,
+                "critic_total": 3.358481800183654,
+                "scorer_api": 1.9563198999967426,
+                "scorer_total": 2.3106768000870943,
+                "checkpoint": 0.002236899919807911,
+                "total": 5.671395500190556
+              },
+              "token_count": {
+                "critic": 3178,
+                "scorer": 2773
+              }
+            },
+            {
+              "iteration": 6,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 1,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 25.302372250377555,
+              "selection_mode": "single_valid_candidate_without_api",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 25.302372250377555,
+              "selected_gap_to_reference_percent": 44.05354829526324,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 1.4165124997962266,
+                "critic_total": 2.094261599937454,
+                "scorer_api": 0.0,
+                "scorer_total": 0.22498370008543134,
+                "checkpoint": 0.002307299990206957,
+                "total": 2.321552600013092
+              },
+              "token_count": {
+                "critic": 3174,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 7,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 1,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 25.30348154814084,
+              "selection_mode": "single_valid_candidate_without_api",
+              "selected_candidate_id": 2,
+              "selected_is_valid": true,
+              "selected_distance": 25.30348154814084,
+              "selected_gap_to_reference_percent": 44.05986384059378,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 3.3275041999295354,
+                "critic_total": 3.9859096999280155,
+                "scorer_api": 0.0,
+                "scorer_total": 0.2093582998495549,
+                "checkpoint": 0.002569700125604868,
+                "total": 4.197837699903175
+              },
+              "token_count": {
+                "critic": 3180,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 8,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 1,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 25.35750729770289,
+              "selection_mode": "single_valid_candidate_without_api",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 25.35750729770289,
+              "selected_gap_to_reference_percent": 44.36744768477695,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 1.946898699970916,
+                "critic_total": 2.6099913001526147,
+                "scorer_api": 0.0,
+                "scorer_total": 0.21749280020594597,
+                "checkpoint": 0.0028617000207304955,
+                "total": 2.830345800379291
+              },
+              "token_count": {
+                "critic": 3177,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 9,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 1,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 25.099489959491414,
+              "selection_mode": "single_valid_candidate_without_api",
+              "selected_candidate_id": 2,
+              "selected_is_valid": true,
+              "selected_distance": 25.099489959491414,
+              "selected_gap_to_reference_percent": 42.898482137860384,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 2.6580737999174744,
+                "critic_total": 3.3030663998797536,
+                "scorer_api": 0.0,
+                "scorer_total": 0.20318289985880256,
+                "checkpoint": 0.0031568999402225018,
+                "total": 3.5094061996787786
+              },
+              "token_count": {
+                "critic": 3180,
+                "scorer": 0
+              }
+            },
+            {
+              "iteration": 10,
+              "returned_candidate_count": 2,
+              "valid_candidate_count": 2,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 24.652418262657992,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 2,
+              "selected_is_valid": true,
+              "selected_distance": 25.362204575424425,
+              "selected_gap_to_reference_percent": 44.39419061292689,
+              "selection_regret_percent": 2.8791751997879023,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 1.4436359000392258,
+                "critic_total": 2.1061762999743223,
+                "scorer_api": 0.7520670001395047,
+                "scorer_total": 1.2488076000008732,
+                "checkpoint": 0.0032738998997956514,
+                "total": 3.358257799874991
+              },
+              "token_count": {
+                "critic": 3178,
+                "scorer": 2773
+              }
+            }
+          ],
+          "run_summary": {
+            "api_call_count": 24,
+            "successful_api_call_count": 22,
+            "failed_api_call_count": 2,
+            "total_api_call_wall_seconds": 25.903310799971223,
+            "total_token_count": 37323,
+            "manifest_and_input_loading_seconds": 0.0014511998742818832,
+            "accumulated_completed_iteration_wall_seconds": 34.75471699913032,
+            "current_invocation_wall_seconds_before_result_write": 1.276005599880591
+          },
+          "errors": [
+            {
+              "phase": "visual_scorer",
+              "iteration": 5,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7557, Requested 5070. Please try again in 34.7025s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.2070248001255095,
+              "failed_stage_wall_seconds": 0.3470904999412596
+            },
+            {
+              "phase": "visual_scorer",
+              "iteration": 10,
+              "error_type": "GroqAPIError",
+              "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7703, Requested 5070. Please try again in 35.7975s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.2080727000720799,
+              "failed_stage_wall_seconds": 0.36915850010700524
+            }
+          ]
+        },
+        "multi_agent_2": {
+          "status": "completed",
+          "model": {
+            "provider": "groq",
+            "alias": "qwen/qwen3.6-27b",
+            "requested_name": "qwen/qwen3.6-27b",
+            "capabilities": {
+              "supports_vision": true,
+              "supports_multiple_images": true,
+              "supports_native_multiple_choices": false,
+              "max_images_per_request": 5,
+              "max_native_choices": 1
+            },
+            "inference_settings": {
+              "reasoning_effort": "none",
+              "route_max_completion_tokens": 1024,
+              "scorer_max_completion_tokens": 1024
+            },
+            "critic_temperature": 0.7
+          },
+          "requested_iterations": 1,
+          "completed_iterations": 1,
+          "valid_iteration_count": 0,
+          "invalid_iteration_count": 1,
+          "best_valid_iteration": null,
+          "initializer": {
+            "source": "zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 26.353286582428108,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 50.03670026963867
+          },
+          "final_solution": {
+            "source": "critic",
+            "iteration": 1,
+            "candidate_id": null,
+            "is_valid": false,
+            "distance": 29.68804721231107,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null
+          },
+          "best_valid_solution": {
+            "source": "zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 26.353286582428108,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 50.03670026963867
+          },
+          "iterations": [
+            {
+              "iteration": 1,
+              "status": "completed",
+              "is_valid": false,
+              "distance": 29.68804721231107,
+              "gap_to_reference_percent": null,
+              "timing_seconds": {
+                "api": 0.8227548999711871,
+                "parsing": 0.0004243999719619751,
+                "evaluation": 8.859997615218163e-05,
+                "rendering": 0.3694772000890225,
+                "checkpoint": 0.0011410999577492476,
+                "total": 1.4295118998270482
+              },
+              "total_token_count": 1591
+            }
+          ],
+          "run_summary": {
+            "api_call_count": 1,
+            "successful_api_call_count": 1,
+            "failed_api_call_count": 0,
+            "total_api_call_wall_seconds": 0.8227548999711871,
+            "total_token_count": 1591,
+            "manifest_and_input_loading_seconds": 0.0022452999837696552,
+            "accumulated_completed_iteration_wall_seconds": 1.4295118998270482,
+            "current_invocation_wall_seconds_before_result_write": 1.4308198001235723
+          },
+          "errors": []
+        }
+      }
+    },
+    {
       "provider": "openrouter",
       "model_alias": "gemma-4-26b-a4b-it",
       "resolved_model": "google/gemma-4-26b-a4b-it:free",
@@ -1911,6 +2411,48 @@
         "api_wall_seconds": 78.74835149967112,
         "total_token_count": 19721,
         "error_count": 2
+      },
+      {
+        "provider": "groq",
+        "model_alias": "qwen/qwen3.6-27b",
+        "method": "zero_shot",
+        "status": "completed",
+        "completed_iterations": null,
+        "is_valid": true,
+        "distance": 26.353286582428108,
+        "gap_to_reference_percent": 50.03670026963867,
+        "api_call_count": 1,
+        "api_wall_seconds": 0.9816789999604225,
+        "total_token_count": 1583,
+        "error_count": 0
+      },
+      {
+        "provider": "groq",
+        "model_alias": "qwen/qwen3.6-27b",
+        "method": "multi_agent_1",
+        "status": "completed",
+        "completed_iterations": 10,
+        "is_valid": true,
+        "distance": 25.099489959491414,
+        "gap_to_reference_percent": 42.898482137860384,
+        "api_call_count": 24,
+        "api_wall_seconds": 25.903310799971223,
+        "total_token_count": 37323,
+        "error_count": 2
+      },
+      {
+        "provider": "groq",
+        "model_alias": "qwen/qwen3.6-27b",
+        "method": "multi_agent_2",
+        "status": "completed",
+        "completed_iterations": 1,
+        "is_valid": true,
+        "distance": 26.353286582428108,
+        "gap_to_reference_percent": 50.03670026963867,
+        "api_call_count": 1,
+        "api_wall_seconds": 0.8227548999711871,
+        "total_token_count": 1591,
+        "error_count": 0
       },
       {
         "provider": "openrouter",
