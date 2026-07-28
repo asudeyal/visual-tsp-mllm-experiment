@@ -83,8 +83,25 @@ def error_record(
     if status_code is not None:
         result["status_code"] = status_code
     api_call = getattr(exc, "gemini_call_record", None)
+    if not isinstance(api_call, dict):
+        api_call = getattr(
+            exc,
+            "openrouter_call_record",
+            None,
+        )
     if isinstance(api_call, dict):
         result["api_call"] = api_call
+    api_calls = getattr(
+        exc,
+        "openrouter_call_records",
+        None,
+    )
+    if isinstance(api_calls, list):
+        result["api_calls"] = [
+            call
+            for call in api_calls
+            if isinstance(call, dict)
+        ]
     return result
 
 

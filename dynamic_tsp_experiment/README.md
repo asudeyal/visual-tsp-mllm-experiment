@@ -245,6 +245,198 @@ python run_analysis.py `
 Komut terminalde önce yöntem özetini, ardından Multi-Agent 1 ve 2'nin bütün
 iterasyonlarını satır satır gösterir.
 
+## OpenRouter vision model taraması
+
+Mevcut baseline görseli, Gemini sonuçlarının üzerine yazmadan dört sabit
+OpenRouter vision modeliyle zero-shot olarak karşılaştırılabilir:
+
+- `google/gemma-4-26b-a4b-it:free`
+- `google/gemma-4-31b-it:free`
+- `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`
+- `nvidia/nemotron-nano-12b-v2-vl:free`
+
+Groq/Qwen bu taramaya dahil değildir; ayrı sağlayıcı deneyi olarak
+çalıştırılmalıdır. Rastgele model seçen `openrouter/free` de tekrarlanabilir
+bir karşılaştırma sağlamadığı için kullanılmaz.
+
+Önce OpenRouter anahtarı yalnız açık PowerShell oturumunda tanımlanır:
+
+```powershell
+$env:OPENROUTER_API_KEY="YENI_OPENROUTER_API_ANAHTARINIZ"
+```
+
+Anahtarı ekrana yazdırmadan kontrol etmek için:
+
+```powershell
+if ($env:OPENROUTER_API_KEY) {
+    "OpenRouter API anahtarı tanımlı."
+} else {
+    "OpenRouter API anahtarı eksik."
+}
+```
+
+Dört modelin manifest, prompt ve görsel girdisini API kullanmadan doğrulama:
+
+```powershell
+python run_openrouter_zero_shot.py `
+    --run-id random25_run_01 `
+    --all-models `
+    --validate-only
+```
+
+Önce tek model çalıştırılması önerilir:
+
+```powershell
+python run_openrouter_zero_shot.py `
+    --run-id random25_run_01 `
+    --model gemma-4-26b-a4b-it
+```
+
+Başarılı kontrolden sonra dört model sırayla çalıştırılabilir:
+
+```powershell
+python run_openrouter_zero_shot.py `
+    --run-id random25_run_01 `
+    --all-models
+```
+
+Mevcut model sonuçları varsayılan olarak atlanır. Belirli bir modeli bilinçli
+olarak yeniden çağırmak için `--overwrite` kullanılır:
+
+```powershell
+python run_openrouter_zero_shot.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --overwrite
+```
+
+API çağrısı yapmadan mevcut sonuçlardan karşılaştırma JSON'unu yeniden
+oluşturmak ve tabloyu terminalde göstermek için:
+
+```powershell
+python run_openrouter_zero_shot.py `
+    --run-id random25_run_01 `
+    --summary-only
+```
+
+Her modelin ayrıntılı sonucu şu yapıda saklanır:
+
+```text
+output/runs/<run-id>/model_comparisons/openrouter/<model-alias>/
+├── zero_shot_results.json
+└── images/
+    └── route.png
+```
+
+Kompakt model karşılaştırması:
+
+```text
+output/runs/<run-id>/model_comparisons/openrouter/
+└── openrouter_model_comparison.json
+```
+
+Bütün modeller aynı baseline görselini, aynı promptu, `temperature=0.0` ve
+`reasoning_effort=none` ayarlarını kullanır. Koordinatlar, mesafe matrisi ve
+referans rota modellere gönderilmez. Format veya rota hatası da başarısız
+deney sonucu olarak saklanır; geçersiz rota kısa görünse bile sıralamaya
+alınmaz. Karşılaştırma ayrıca yanıtın istenen çıktı biçimine uyup uymadığını
+ve rotanın yalnızca artan düğüm kimliklerinden oluşup oluşmadığını raporlar.
+En iyi geçerli mesafe birden fazla modelde aynıysa tek bir kazanan ilan etmek
+yerine eşitlik açıkça gösterilir.
+
+### OpenRouter Multi-Agent 2
+
+Her model kendi OpenRouter zero-shot rotasını initializer olarak kullanır.
+Aynı model, `temperature=0.7` ile critic rolünde rotayı iteratif olarak
+yeniler. Gemini Multi-Agent 2 ile aynı prompt, doğrulama, timing, checkpoint
+ve `--resume` politikası uygulanır.
+
+Önce API kullanmadan doğrulama:
+
+```powershell
+python run_openrouter_multi_agent2.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --iterations 1 `
+    --validate-only
+```
+
+Ardından tek gerçek iterasyon:
+
+```powershell
+python run_openrouter_multi_agent2.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --iterations 1
+```
+
+Kontrolden sonra aynı model 10 iterasyona tamamlanabilir:
+
+```powershell
+python run_openrouter_multi_agent2.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --iterations 10 `
+    --resume
+```
+
+Sonuçlar modelin kendi klasöründeki `multi_agent2/` altında saklanır. Geçersiz
+bir zero-shot initializer engellenmez; critic'in kısıt hatasını düzeltebilme
+başarısı da deneyin bir parçası olarak ölçülür.
+
+### OpenRouter Multi-Agent 1
+
+Her model kendi zero-shot rotasını initializer olarak kullanır. Aynı model
+`temperature=0.7` ile yedi bağımsız critic çağrısında yedi rota adayı üretir.
+Bu strateji, bazı OpenRouter sağlayıcılarının `n=7` değerini yok sayarak tek
+çıktı döndürmesine karşı gerçek aday sayısını garanti eder. Python geçersiz
+adayları eler; aynı model kalan rota görsellerini
+`temperature=0.0` ile scorer rolünde değerlendirir. Koordinat, mesafe, gap ve
+hangi adayın sayısal olarak kısa olduğu scorer'a gönderilmez.
+
+Önce API kullanmadan doğrulama:
+
+```powershell
+python run_openrouter_multi_agent1.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --iterations 1 `
+    --candidate-count 7 `
+    --candidate-strategy independent_calls `
+    --validate-only
+```
+
+Ardından tek gerçek iterasyon:
+
+```powershell
+python run_openrouter_multi_agent1.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --iterations 1 `
+    --candidate-count 7 `
+    --candidate-strategy independent_calls
+```
+
+Kontrolden sonra:
+
+```powershell
+python run_openrouter_multi_agent1.py `
+    --run-id random25_run_01 `
+    --model nemotron-3-nano-omni `
+    --iterations 10 `
+    --candidate-count 7 `
+    --candidate-strategy independent_calls `
+    --resume
+```
+
+Varsayılan `independent_calls` stratejisinde bir iterasyon en fazla yedi
+critic ve bir scorer olmak üzere sekiz HTTP isteği kullanır. Deneysel
+karşılaştırma amacıyla `native_multiple_choices` seçeneği de vardır; bu
+seçenek `n=7` gönderir fakat sağlayıcı daha az çıktı döndürebilir. Scorer
+aşamasında kota veya sağlayıcı hatası oluşursa critic adayları checkpoint'te
+korunur ve `--resume` yalnız kalan scorer aşamasından devam eder. Sonuçlar
+model klasöründeki `multi_agent1/` altında saklanır.
+
 ### Analizi daha sonra tekrar görüntüleme
 
 Analiz komutu istenen her zaman yeniden çalıştırılabilir:

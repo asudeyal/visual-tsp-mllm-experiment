@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "experiment": "dynamic_openrouter_zero_shot_model_comparison",
+  "generated_at_utc": "2026-07-27T22:31:31.462831+00:00",
+  "run_id": "random25_run_01",
+  "problem": {
+    "name": "random_n25_seed42",
+    "dimension": 25,
+    "depot_id": 0,
+    "fingerprint_sha256": "fef8c0c196b445a04330bd53fd1534404bcf12d016d102fb69eed4127659a75b",
+    "reference": {
+      "type": "or_tools_heuristic",
+      "distance": 17.564560227642477,
+      "is_proven_optimal": false,
+      "route": [
+        0,
+        10,
+        21,
+        12,
+        24,
+        8,
+        13,
+        17,
+        7,
+        23,
+        16,
+        4,
+        18,
+        19,
+        14,
+        2,
+        5,
+        20,
+        6,
+        15,
+        11,
+        22,
+        3,
+        1,
+        9,
+        0
+      ],
+      "source_file": null
+    }
+  },
+  "common_configuration": {
+    "method": "zero_shot",
+    "temperature": 0.0,
+    "reasoning_effort": "none",
+    "coordinates_sent_to_model": false,
+    "distance_matrix_sent_to_model": false
+  },
+  "counts": {
+    "registered_model_count": 4,
+    "completed_result_count": 4,
+    "valid_route_count": 2,
+    "failed_result_count": 1
+  },
+  "models": [
+    {
+      "alias": "gemma-4-26b-a4b-it",
+      "model": "google/gemma-4-26b-a4b-it:free",
+      "status": "invalid",
+      "output_format_compliant": false,
+      "is_valid": false,
+      "is_ascending_node_id_route": false,
+      "distance": 25.487554848252614,
+      "gap_to_reference_percent": null,
+      "missing_nodes": [],
+      "repeated_nodes": [
+        22
+      ],
+      "unexpected_nodes": [],
+      "api_call_wall_seconds": 68.46626859996468,
+      "total_token_count": 1532,
+      "cost": 0,
+      "finish_reason": "length",
+      "error": null
+    },
+    {
+      "alias": "gemma-4-31b-it",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "failed",
+      "output_format_compliant": null,
+      "is_valid": null,
+      "is_ascending_node_id_route": null,
+      "distance": null,
+      "gap_to_reference_percent": null,
+      "missing_nodes": null,
+      "repeated_nodes": null,
+      "unexpected_nodes": null,
+      "api_call_wall_seconds": 0.4431523000821471,
+      "total_token_count": null,
+      "cost": null,
+      "finish_reason": null,
+      "error": {
+        "type": "OpenRouterAPIError",
+        "phase": "route_generation",
+        "message": "OpenRouter HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\"}},\"user_id\":\"user_3Ge56y1Q5XBbfEDOL9HAhFvwtki\"}"
+      }
+    },
+    {
+      "alias": "nemotron-3-nano-omni",
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "status": "valid",
+      "output_format_compliant": true,
+      "is_valid": true,
+      "is_ascending_node_id_route": true,
+      "distance": 61.92913675595523,
+      "gap_to_reference_percent": 252.58005867117225,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": [],
+      "api_call_wall_seconds": 1.5576571999117732,
+      "total_token_count": 3549,
+      "cost": 0,
+      "finish_reason": "stop",
+      "error": null
+    },
+    {
+      "alias": "nemotron-nano-12b-v2-vl",
+      "model": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "status": "valid",
+      "output_format_compliant": false,
+      "is_valid": true,
+      "is_ascending_node_id_route": true,
+      "distance": 61.92913675595523,
+      "gap_to_reference_percent": 252.58005867117225,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": [],
+      "api_call_wall_seconds": 3.094017199939117,
+      "total_token_count": 2846,
+      "cost": 0,
+      "finish_reason": "stop",
+      "error": null
+    }
+  ],
+  "ranking_by_valid_distance": [
+    {
+      "alias": "nemotron-3-nano-omni",
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "distance": 61.92913675595523,
+      "gap_to_reference_percent": 252.58005867117225
+    },
+    {
+      "alias": "nemotron-nano-12b-v2-vl",
+      "model": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "distance": 61.92913675595523,
+      "gap_to_reference_percent": 252.58005867117225
+    }
+  ],
+  "best_valid_model": {
+    "alias": "nemotron-3-nano-omni",
+    "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "distance": 61.92913675595523,
+    "gap_to_reference_percent": 252.58005867117225
+  },
+  "best_valid_models_at_same_distance": [
+    {
+      "alias": "nemotron-3-nano-omni",
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "distance": 61.92913675595523,
+      "gap_to_reference_percent": 252.58005867117225
+    },
+    {
+      "alias": "nemotron-nano-12b-v2-vl",
+      "model": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "distance": 61.92913675595523,
+      "gap_to_reference_percent": 252.58005867117225
+    }
+  ],
+  "best_distance_is_tied": true
+}
