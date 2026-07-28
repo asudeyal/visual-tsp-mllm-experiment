@@ -1,19 +1,21 @@
 # Dinamik Görsel TSP Deneyi
 
 Bu klasör, görsel TSP çözüm yaklaşımını farklı düğüm sayıları ve farklı
-TSPLIB `EUC_2D` problemleri üzerinde aynı deney akışıyla çalıştırır. Sistem
-Gemini 2.5 Flash kullanır; modele koordinatlar veya mesafe matrisi değil,
-yalnızca problem ve rota görselleri gönderilir.
+TSPLIB `EUC_2D` problemleri üzerinde aynı deney akışıyla çalıştırır. Ortak
+runner'lar Gemini, OpenRouter ve Groq vision modellerini destekler; modele
+koordinatlar veya mesafe matrisi değil, yalnızca problem ve rota görselleri
+gönderilir.
 
-> Özgün makalede GPT-4o kullanılmıştır. Bu çalışma yöntemin Gemini'ye
-> uyarlanmış deneysel bir uygulamasıdır; birebir model replikasyonu değildir.
+> Özgün makalede GPT-4o kullanılmıştır. Bu çalışma yöntemin farklı vision
+> modellere uyarlanmış deneysel bir uygulamasıdır; birebir model replikasyonu
+> değildir.
 
 ## Terminali hazırlama
 
 Repo daha önce kurulmuşsa yeni bir PowerShell terminalinde:
 
 ```powershell
-cd "D:\visual-tsp-mllm-experiment\visual-tsp-mllm-experiment\dynamic_tsp_experiment"
+cd "D:\Projects\visual-tsp-mllm-experiment\dynamic_tsp_experiment"
 
 Set-ExecutionPolicy `
     -Scope Process `
@@ -25,7 +27,7 @@ Set-ExecutionPolicy `
 İlk kurulumda sanal ortam ve bağımlılıklar:
 
 ```powershell
-cd "D:\visual-tsp-mllm-experiment\visual-tsp-mllm-experiment\dynamic_tsp_experiment"
+cd "D:\Projects\visual-tsp-mllm-experiment\dynamic_tsp_experiment"
 
 py -3.13 -m venv .venv
 
@@ -118,6 +120,129 @@ if ($env:GEMINI_API_KEY) {
     "Gemini API anahtarı eksik."
 }
 ```
+
+## Ortak sağlayıcı runner'ları
+
+Yeni deneylerde önerilen arayüz üç sağlayıcı için aynıdır:
+
+```text
+run_zero_shot.py
+run_multi_agent1.py
+run_multi_agent2.py
+```
+
+Yalnız `--provider` ve gerektiğinde `--model` değişir. Eski
+`run_gemini_*` ve `run_openrouter_*` komutları geçmiş deneyleri yeniden
+üretebilmek için korunur; yeni ortak komutlar bunların sonuçlarının üzerine
+yazmaz.
+
+### API anahtarları
+
+Gerekli anahtarlardan yalnız kullanılacak sağlayıcıya ait olanı tanımlayın:
+
+```powershell
+$env:GEMINI_API_KEY="YENI_GEMINI_API_ANAHTARINIZ"
+$env:OPENROUTER_API_KEY="YENI_OPENROUTER_API_ANAHTARINIZ"
+$env:GROQ_API_KEY="YENI_GROQ_API_ANAHTARINIZ"
+```
+
+Aynı sağlayıcıda başka anahtar kullanmak için ilgili ortam değişkenine yeni
+değeri atamak yeterlidir. Anahtarlar çıktı JSON'larına yazılmaz.
+
+### Zero-shot
+
+Gemini:
+
+```powershell
+python run_zero_shot.py `
+    --provider gemini `
+    --model gemini-2.5-flash `
+    --run-id random25_run_01
+```
+
+OpenRouter:
+
+```powershell
+python run_zero_shot.py `
+    --provider openrouter `
+    --model nemotron-3-nano-omni `
+    --run-id random25_run_01
+```
+
+Groq:
+
+```powershell
+python run_zero_shot.py `
+    --provider groq `
+    --model qwen/qwen3.6-27b `
+    --run-id random25_run_01
+```
+
+Her komuta `--validate-only` eklenerek manifest, model, görsel ve prompt API
+çağrısı yapılmadan doğrulanabilir.
+
+### Multi-Agent 2
+
+```powershell
+python run_multi_agent2.py `
+    --provider gemini `
+    --model gemini-2.5-flash `
+    --iterations 10 `
+    --run-id random25_run_01
+```
+
+OpenRouter veya Groq için yalnız sağlayıcı/model değiştirilir:
+
+```powershell
+python run_multi_agent2.py `
+    --provider groq `
+    --model qwen/qwen3.6-27b `
+    --iterations 10 `
+    --run-id random25_run_01
+```
+
+Yarım kalan aynı sağlayıcı/model deneyi `--resume` ile kendi checkpoint'inden
+devam eder.
+
+### Multi-Agent 1
+
+`--candidate-strategy auto` güvenli sağlayıcı varsayılanını seçer:
+
+- Gemini: tek istekte native çoklu aday,
+- OpenRouter: bağımsız critic istekleri,
+- Groq: bağımsız critic istekleri.
+
+Gemini/OpenRouter örneği:
+
+```powershell
+python run_multi_agent1.py `
+    --provider openrouter `
+    --model nemotron-3-nano-omni `
+    --iterations 10 `
+    --candidate-count 7 `
+    --candidate-strategy auto `
+    --run-id random25_run_01
+```
+
+Groq Chat Completions `n=1` kullandığı ve bir scorer isteğinde en fazla beş
+görsel kabul ettiği için Groq deneyinde aday sayısı en fazla `5` olmalıdır:
+
+```powershell
+python run_multi_agent1.py `
+    --provider groq `
+    --model qwen/qwen3.6-27b `
+    --iterations 10 `
+    --candidate-count 5 `
+    --candidate-strategy auto `
+    --run-id random25_run_01
+```
+
+Ortak komutlarda zero-shot initializer aynı `--provider` ve `--model` ile
+önceden oluşturulmuş olmalıdır. Uyumlu fingerprint ve model adı taşıyan eski
+Gemini/OpenRouter zero-shot sonucu varsa yeniden API çağrısı yapmadan
+initializer olarak kullanılabilir. Problem veya model eşleşmiyorsa açık hata
+verilir. Böylece farklı modellerin initializer, checkpoint, görsel ve
+sonuçları birbirine karışmaz.
 
 ## API kullanmadan doğrulama
 
@@ -220,8 +345,10 @@ output/runs/<run-id>/analysis/experiment_analysis_summary.json
 Bu dosya:
 
 - dört yöntemin durumunu ve temsilî çözümünü,
+- bulunan bütün sağlayıcı/model/yöntem kombinasyonlarını,
 - Multi-Agent 1 ve 2'nin her iterasyonunu,
 - her iterasyonun geçerlilik, mesafe, gap, süre ve token özetini,
+- Multi-Agent 1 scorer'ının en kısa geçerli adayı seçme oranını,
 - geçerli çözümlerin mesafeye göre sıralamasını
 
 içerir. Ham model cevaplarını, promptları, koordinatları, bütün rotaları ve
@@ -242,8 +369,9 @@ python run_analysis.py `
     --require-complete
 ```
 
-Komut terminalde önce yöntem özetini, ardından Multi-Agent 1 ve 2'nin bütün
-iterasyonlarını satır satır gösterir.
+Komut terminalde kutulu tablolar kullanır. Önce bütün sağlayıcı/model/yöntem
+sonuçlarını, ardından her model için Multi-Agent 1 ve 2 iterasyonlarını ve
+varsa kaydedilmiş hataları ayrı tablolar halinde gösterir.
 
 ## OpenRouter vision model taraması
 
@@ -448,10 +576,10 @@ python run_analysis.py `
 
 Bu komut:
 
-- Gemini API çağrısı yapmaz,
+- hiçbir model API'sine çağrı yapmaz,
 - API anahtarı veya internet bağlantısı gerektirmez,
 - mevcut ayrıntılı sonuç JSON'larını yeniden okur,
-- terminalde yöntem özetini ve iterasyonları tekrar gösterir,
+- terminalde sağlayıcı/model özetini ve iterasyon tablolarını tekrar gösterir,
 - aynı `experiment_analysis_summary.json` dosyasını günceller.
 
 Sonuçlar değişmediyse hesaplanan metrikler de değişmez; yalnız
@@ -532,9 +660,25 @@ output/
         │   ├── multi_agent2_results.json
         │   ├── multi_agent2_checkpoint.json
         │   └── images/
+        ├── providers/
+        │   ├── gemini/
+        │   │   └── <model>/
+        │   ├── openrouter/
+        │   │   └── <model>/
+        │   └── groq/
+        │       └── <model>/
+        │           ├── zero_shot/
+        │           ├── multi_agent1/
+        │           └── multi_agent2/
         └── analysis/
             └── experiment_analysis_summary.json
 ```
+
+Kök seviyedeki `zero_shot/`, `multi_agent1/` ve `multi_agent2/` klasörleri
+eski Gemini runner'larının tarihsel düzenidir. Yeni ortak runner'lar
+`providers/<provider>/<model>/` altında çalışır. Analiz aracı hem bu tarihsel
+düzeni, hem eski `model_comparisons/openrouter/` düzenini, hem de yeni ortak
+provider düzenini aynı raporda okuyabilir.
 
 Checkpoint dosyaları `.gitignore` kapsamındadır. Sonuçlar ve görseller,
 istenirse deney kanıtı olarak GitHub'a eklenebilir.
@@ -551,8 +695,9 @@ python -m pytest -q
 ```
 
 Testler dinamik problem yüklemeyi, TSPLIB doğrulamayı, manifest
-fingerprint'ini, Gemini ayrıştırıcılarını, checkpoint güvenliğini,
-Multi-Agent 1 geçerlilik filtresini ve analiz raporunu kapsar.
+fingerprint'ini, sağlayıcı adaptörlerini, ayrıştırıcıları, checkpoint
+güvenliğini, Multi-Agent 1 geçerlilik filtresini, terminal tablosunu ve
+birleşik analiz raporunu kapsar.
 
 ## Gap
 

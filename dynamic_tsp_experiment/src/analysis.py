@@ -9,7 +9,7 @@ from src.core import read_json
 from src.metrics import utc_now_iso
 
 
-ANALYSIS_SCHEMA_VERSION = "1.0"
+ANALYSIS_SCHEMA_VERSION = "2.0"
 
 
 def _load_optional(path: Path) -> dict[str, Any] | None:
@@ -271,17 +271,38 @@ def _ma1_iterations(
                 is True
             )
         ]
+        valid_distances = [
+            candidate["distance"]
+            for candidate in valid_candidates
+            if candidate.get("distance") is not None
+        ]
         best_valid_distance = (
-            min(
-                candidate["distance"]
-                for candidate in valid_candidates
-                if candidate.get("distance") is not None
-            )
-            if valid_candidates
+            min(valid_distances)
+            if valid_distances
             else None
         )
         selected = item.get("selected_solution") or {}
         selected_validation = selected.get("validation") or {}
+        selected_distance = selected.get("distance")
+        selection_regret = scorer.get(
+            "selection_regret_percent_after_evaluation"
+        )
+        if (
+            selection_regret is None
+            and best_valid_distance is not None
+            and selected_distance is not None
+            and best_valid_distance != 0
+        ):
+            selection_regret = (
+                100.0
+                * (selected_distance - best_valid_distance)
+                / best_valid_distance
+            )
+        selected_best = (
+            abs(float(selection_regret)) <= 1e-9
+            if selection_regret is not None
+            else None
+        )
         timing = item.get("timing") or {}
         critic_timing = critic.get("timing") or {}
         scorer_timing = scorer.get("timing") or {}
@@ -305,13 +326,12 @@ def _ma1_iterations(
                 "selected_is_valid": selected_validation.get(
                     "is_valid"
                 ),
-                "selected_distance": selected.get("distance"),
+                "selected_distance": selected_distance,
                 "selected_gap_to_reference_percent": selected.get(
                     "gap_to_reference_percent"
                 ),
-                "selection_regret_percent": scorer.get(
-                    "selection_regret_percent_after_evaluation"
-                ),
+                "selection_regret_percent": selection_regret,
+                "selected_best_valid_candidate": selected_best,
                 "timing_seconds": {
                     "critic_api": critic_timing.get(
                         "api_call_wall_seconds"
@@ -360,6 +380,16 @@ def _multi_agent1_section(
         item["valid_candidate_count"]
         for item in iterations
     )
+    scorer_iterations = [
+        item
+        for item in iterations
+        if item["selection_mode"]
+        == "visual_scorer_after_feasibility_filter"
+    ]
+    scorer_best = sum(
+        item["selected_best_valid_candidate"] is True
+        for item in scorer_iterations
+    )
     return {
         "status": status,
         "model": result.get("model"),
@@ -376,6 +406,20 @@ def _multi_agent1_section(
         "valid_candidate_count": valid_candidates,
         "invalid_candidate_count": (
             total_candidates - valid_candidates
+        ),
+        "valid_candidate_rate_percent": (
+            100.0 * valid_candidates / total_candidates
+            if total_candidates
+            else None
+        ),
+        "scorer_evaluated_iteration_count": len(
+            scorer_iterations
+        ),
+        "scorer_best_candidate_selection_count": scorer_best,
+        "scorer_best_candidate_selection_rate_percent": (
+            100.0 * scorer_best / len(scorer_iterations)
+            if scorer_iterations
+            else None
         ),
         "initializer": _compact_solution(
             result.get("initializer")
@@ -417,6 +461,327 @@ def _ranking_entry(
     }
 
 
+def _model_identity(
+    result: dict[str, Any] | None,
+    *,
+    fallback_provider: str,
+    fallback_alias: str,
+) -> tuple[str, str, str | None]:
+    model = (result or {}).get("model")
+    if isinstance(model, str):
+        return fallback_provider, fallback_alias or model, model
+    model = model or {}
+    provider = str(
+        model.get("provider") or fallback_provider
+    )
+    if provider == "google_gemini":
+        provider = "gemini"
+    alias = str(
+        model.get("alias")
+        or model.get("name")
+        or fallback_alias
+    )
+    resolved = (
+        model.get("requested_name")
+        or model.get("name")
+        or alias
+    )
+    return provider, alias, str(resolved) if resolved else None
+
+
+def _provider_result_sets(
+    run_dir: Path,
+    *,
+    legacy_results: dict[str, dict[str, Any] | None],
+) -> list[dict[str, Any]]:
+    """Yeni provider düzeniyle eski Gemini/OpenRouter düzenini keşfeder."""
+
+    discovered: list[dict[str, Any]] = []
+
+    # Eski dinamik Gemini sonuçları.
+    legacy_anchor = next(
+        (
+            legacy_results[name]
+            for name in (
+                "zero_shot",
+                "multi_agent_1",
+                "multi_agent_2",
+            )
+            if legacy_results.get(name) is not None
+        ),
+        None,
+    )
+    if legacy_anchor is not None:
+        provider, alias, resolved = _model_identity(
+            legacy_anchor,
+            fallback_provider="gemini",
+            fallback_alias="gemini",
+        )
+        discovered.append(
+            {
+                "provider": provider,
+                "model_alias": alias,
+                "resolved_model": resolved,
+                "layout": "legacy_gemini",
+                "paths": {
+                    "zero_shot": (
+                        run_dir
+                        / "zero_shot"
+                        / "zero_shot_results.json"
+                    ),
+                    "multi_agent_1": (
+                        run_dir
+                        / "multi_agent1"
+                        / "multi_agent1_results.json"
+                    ),
+                    "multi_agent_2": (
+                        run_dir
+                        / "multi_agent2"
+                        / "multi_agent2_results.json"
+                    ),
+                },
+            }
+        )
+
+    # Eski OpenRouter karşılaştırma sonuçları.
+    openrouter_root = (
+        run_dir / "model_comparisons" / "openrouter"
+    )
+    if openrouter_root.exists():
+        for model_dir in sorted(
+            path
+            for path in openrouter_root.iterdir()
+            if path.is_dir()
+        ):
+            paths = {
+                "zero_shot": (
+                    model_dir / "zero_shot_results.json"
+                ),
+                "multi_agent_1": (
+                    model_dir
+                    / "multi_agent1"
+                    / "multi_agent1_results.json"
+                ),
+                "multi_agent_2": (
+                    model_dir
+                    / "multi_agent2"
+                    / "multi_agent2_results.json"
+                ),
+            }
+            anchor = next(
+                (
+                    _load_optional(path)
+                    for path in paths.values()
+                    if path.exists()
+                ),
+                None,
+            )
+            provider, alias, resolved = _model_identity(
+                anchor,
+                fallback_provider="openrouter",
+                fallback_alias=model_dir.name,
+            )
+            discovered.append(
+                {
+                    "provider": provider,
+                    "model_alias": alias,
+                    "resolved_model": resolved,
+                    "layout": "legacy_openrouter",
+                    "paths": paths,
+                }
+            )
+
+    # Yeni ortak provider/model/method düzeni.
+    providers_root = run_dir / "providers"
+    if providers_root.exists():
+        for provider_dir in sorted(
+            path
+            for path in providers_root.iterdir()
+            if path.is_dir()
+        ):
+            for model_dir in sorted(
+                path
+                for path in provider_dir.iterdir()
+                if path.is_dir()
+            ):
+                paths = {
+                    "zero_shot": (
+                        model_dir
+                        / "zero_shot"
+                        / "zero_shot_results.json"
+                    ),
+                    "multi_agent_1": (
+                        model_dir
+                        / "multi_agent1"
+                        / "multi_agent1_results.json"
+                    ),
+                    "multi_agent_2": (
+                        model_dir
+                        / "multi_agent2"
+                        / "multi_agent2_results.json"
+                    ),
+                }
+                anchor = next(
+                    (
+                        _load_optional(path)
+                        for path in paths.values()
+                        if path.exists()
+                    ),
+                    None,
+                )
+                provider, alias, resolved = _model_identity(
+                    anchor,
+                    fallback_provider=provider_dir.name,
+                    fallback_alias=model_dir.name,
+                )
+                discovered.append(
+                    {
+                        "provider": provider,
+                        "model_alias": alias,
+                        "resolved_model": resolved,
+                        "layout": "unified_provider",
+                        "paths": paths,
+                    }
+                )
+    return discovered
+
+
+def _provider_models_section(
+    *,
+    run_dir: Path,
+    run_id: str,
+    fingerprint: str,
+    legacy_results: dict[str, dict[str, Any] | None],
+) -> list[dict[str, Any]]:
+    models: list[dict[str, Any]] = []
+    merged: dict[tuple[str, str], dict[str, Any]] = {}
+    for discovered in _provider_result_sets(
+        run_dir,
+        legacy_results=legacy_results,
+    ):
+        key = (
+            discovered["provider"],
+            discovered["model_alias"],
+        )
+        current = merged.get(key)
+        if current is None:
+            merged[key] = {
+                **discovered,
+                "paths": dict(discovered["paths"]),
+            }
+            continue
+        for method, path in discovered["paths"].items():
+            if path.exists():
+                current["paths"][method] = path
+        current["resolved_model"] = (
+            discovered["resolved_model"]
+            or current["resolved_model"]
+        )
+        current["layout"] = "mixed_legacy_and_unified"
+
+    for discovered in sorted(
+        merged.values(),
+        key=lambda item: (
+            item["provider"],
+            item["model_alias"],
+        ),
+    ):
+        paths = discovered["paths"]
+        results = {
+            name: _load_optional(path)
+            for name, path in paths.items()
+        }
+        for name, result in results.items():
+            _assert_identity(
+                result,
+                run_id=run_id,
+                fingerprint=fingerprint,
+                path=paths[name],
+            )
+        zero = _zero_shot_section(results["zero_shot"])
+        ma1 = _multi_agent1_section(results["multi_agent_1"])
+        ma2 = _multi_agent2_section(results["multi_agent_2"])
+        models.append(
+            {
+                "provider": discovered["provider"],
+                "model_alias": discovered["model_alias"],
+                "resolved_model": discovered["resolved_model"],
+                "layout": discovered["layout"],
+                "methods": {
+                    "zero_shot": zero,
+                    "multi_agent_1": ma1,
+                    "multi_agent_2": ma2,
+                },
+            }
+        )
+    return models
+
+
+def _provider_comparison_rows(
+    models: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for model in models:
+        methods = model["methods"]
+        values = (
+            (
+                "zero_shot",
+                methods["zero_shot"],
+                methods["zero_shot"].get("solution"),
+            ),
+            (
+                "multi_agent_1",
+                methods["multi_agent_1"],
+                methods["multi_agent_1"].get(
+                    "best_valid_solution"
+                ),
+            ),
+            (
+                "multi_agent_2",
+                methods["multi_agent_2"],
+                methods["multi_agent_2"].get(
+                    "best_valid_solution"
+                ),
+            ),
+        )
+        for method_name, section, solution in values:
+            run_summary = section.get("run_summary") or {}
+            rows.append(
+                {
+                    "provider": model["provider"],
+                    "model_alias": model["model_alias"],
+                    "method": method_name,
+                    "status": section.get("status"),
+                    "completed_iterations": section.get(
+                        "completed_iterations"
+                    ),
+                    "is_valid": (solution or {}).get("is_valid"),
+                    "distance": (solution or {}).get("distance"),
+                    "gap_to_reference_percent": (
+                        solution or {}
+                    ).get("gap_to_reference_percent"),
+                    "api_call_count": (
+                        section.get("api_call_count")
+                        or run_summary.get("api_call_count")
+                    ),
+                    "api_wall_seconds": (
+                        (section.get("timing_seconds") or {}).get(
+                            "api"
+                        )
+                        or run_summary.get(
+                            "total_api_call_wall_seconds"
+                        )
+                    ),
+                    "total_token_count": (
+                        section.get("total_token_count")
+                        or run_summary.get("total_token_count")
+                    ),
+                    "error_count": len(section.get("errors", [])),
+                }
+            )
+    return rows
+
+
 def build_analysis(
     *,
     run_dir: Path,
@@ -455,6 +820,21 @@ def build_analysis(
     zero = _zero_shot_section(results["zero_shot"])
     ma1 = _multi_agent1_section(results["multi_agent_1"])
     ma2 = _multi_agent2_section(results["multi_agent_2"])
+    provider_models = _provider_models_section(
+        run_dir=run_dir,
+        run_id=run_id,
+        fingerprint=fingerprint,
+        legacy_results=results,
+    )
+    provider_rows = _provider_comparison_rows(provider_models)
+    valid_provider_rows = [
+        row
+        for row in provider_rows
+        if (
+            row["is_valid"] is True
+            and row["distance"] is not None
+        )
+    ]
 
     candidates = [
         _ranking_entry("or_tools", baseline.get("or_tools")),
@@ -487,6 +867,29 @@ def build_analysis(
         "multi_agent_1": ma1["status"],
         "multi_agent_2": ma2["status"],
     }
+    provider_completion = [
+        {
+            "provider": model["provider"],
+            "model_alias": model["model_alias"],
+            "methods": {
+                name: section["status"]
+                for name, section in model["methods"].items()
+            },
+            "all_methods_completed": all(
+                section["status"] == "completed"
+                for section in model["methods"].values()
+            ),
+        }
+        for model in provider_models
+    ]
+    all_provider_models_completed = bool(provider_completion) and all(
+        item["all_methods_completed"]
+        for item in provider_completion
+    )
+    legacy_all_completed = all(
+        value == "completed"
+        for value in statuses.values()
+    )
     return {
         "schema_version": ANALYSIS_SCHEMA_VERSION,
         "experiment": "dynamic_tsp_comparative_analysis",
@@ -513,9 +916,13 @@ def build_analysis(
         },
         "completion": {
             "methods": statuses,
-            "all_methods_completed": all(
-                value == "completed"
-                for value in statuses.values()
+            "provider_models": provider_completion,
+            "all_provider_models_completed": (
+                all_provider_models_completed
+            ),
+            "all_methods_completed": (
+                legacy_all_completed
+                or all_provider_models_completed
             ),
         },
         "methods": {
@@ -524,6 +931,7 @@ def build_analysis(
             "multi_agent_1": ma1,
             "multi_agent_2": ma2,
         },
+        "provider_models": provider_models,
         "comparison": {
             "representative_solution_policy": {
                 "baseline": "or_tools",
@@ -535,6 +943,15 @@ def build_analysis(
             "best_valid_mllm_solution": (
                 mllm_ranking[0]
                 if mllm_ranking
+                else None
+            ),
+            "all_model_method_rows": provider_rows,
+            "best_valid_provider_model_method": (
+                min(
+                    valid_provider_rows,
+                    key=lambda item: item["distance"],
+                )
+                if valid_provider_rows
                 else None
             ),
         },

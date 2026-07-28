@@ -242,6 +242,14 @@ def test_analysis_contains_every_iteration_but_not_raw_payloads(
         ]
         == "multi_agent_1_best_valid"
     )
+    ma1_analysis = analysis["methods"]["multi_agent_1"]
+    assert ma1_analysis["valid_candidate_rate_percent"] == 50.0
+    assert ma1_analysis[
+        "scorer_best_candidate_selection_rate_percent"
+    ] == 100.0
+    assert ma1_analysis["iterations"][0][
+        "selected_best_valid_candidate"
+    ] is True
     encoded = json.dumps(analysis)
     assert "raw_response" not in encoded
     assert "coordinates" not in encoded
@@ -279,3 +287,135 @@ def test_analysis_rejects_fingerprint_mismatch(
             run_dir=run_dir,
             manifest=_manifest(),
         )
+
+
+def test_analysis_discovers_unified_provider_layout(
+    tmp_path: Path,
+) -> None:
+    run_dir = tmp_path / "runs" / "test_run"
+    baseline = {
+        **_identity("baseline"),
+        "or_tools": _evaluation(100.0),
+        "timing": {},
+    }
+    model = {
+        "provider": "groq",
+        "alias": "qwen/qwen3.6-27b",
+        "requested_name": "qwen/qwen3.6-27b",
+    }
+    zero = {
+        **_identity("zero_shot"),
+        "model": model,
+        **_evaluation(120.0),
+        "timing": {"api_call_wall_seconds": 2.0},
+        "run_summary": {
+            "api_call_count": 1,
+            "total_token_count": 10,
+        },
+        "errors": [],
+    }
+    ma2 = {
+        **_identity("multi_agent_2"),
+        "model": model,
+        "requested_iterations": 1,
+        "completed_iterations": 1,
+        "initializer": _evaluation(120.0),
+        "final_solution": _evaluation(110.0),
+        "best_valid_solution": _evaluation(110.0),
+        "iterations": [
+            {
+                "iteration": 1,
+                **_evaluation(110.0),
+                "timing": {
+                    "api_call_wall_seconds": 1.0,
+                    "iteration_total_wall_seconds": 1.2,
+                },
+            }
+        ],
+        "errors": [],
+    }
+    ma1 = {
+        **_identity("multi_agent_1"),
+        "model": model,
+        "candidate_count_requested": 2,
+        "requested_iterations": 1,
+        "completed_iterations": 1,
+        "pending_iteration": None,
+        "initializer": _evaluation(120.0),
+        "final_solution": _evaluation(105.0),
+        "best_valid_solution": _evaluation(105.0),
+        "best_critic_candidate_oracle": _evaluation(103.0),
+        "iterations": [
+            {
+                "iteration": 1,
+                "critic": {
+                    "returned_candidate_count": 2,
+                    "candidates": [
+                        {
+                            "candidate_id": 1,
+                            **_evaluation(103.0),
+                        },
+                        {
+                            "candidate_id": 2,
+                            **_evaluation(105.0),
+                        },
+                    ],
+                },
+                "scorer": {
+                    "selection_mode": (
+                        "visual_scorer_after_feasibility_filter"
+                    ),
+                    "best_candidate_id": 2,
+                },
+                "selected_solution": _evaluation(105.0),
+                "timing": {},
+            }
+        ],
+        "errors": [],
+    }
+    _write(
+        run_dir / "baseline" / "baseline_results.json",
+        baseline,
+    )
+    model_root = (
+        run_dir
+        / "providers"
+        / "groq"
+        / "qwen-qwen3.6-27b"
+    )
+    _write(
+        model_root / "zero_shot" / "zero_shot_results.json",
+        zero,
+    )
+    _write(
+        model_root / "multi_agent1" / "multi_agent1_results.json",
+        ma1,
+    )
+    _write(
+        model_root / "multi_agent2" / "multi_agent2_results.json",
+        ma2,
+    )
+
+    analysis = build_analysis(
+        run_dir=run_dir,
+        manifest=_manifest(),
+    )
+
+    assert analysis["completion"]["all_methods_completed"]
+    assert analysis["completion"][
+        "all_provider_models_completed"
+    ]
+    assert len(analysis["provider_models"]) == 1
+    provider = analysis["provider_models"][0]
+    assert provider["provider"] == "groq"
+    assert provider["model_alias"] == "qwen/qwen3.6-27b"
+    assert provider["layout"] == "unified_provider"
+    assert provider["methods"]["multi_agent_1"][
+        "scorer_best_candidate_selection_rate_percent"
+    ] == 0.0
+    rows = analysis["comparison"]["all_model_method_rows"]
+    assert {row["method"] for row in rows} == {
+        "zero_shot",
+        "multi_agent_1",
+        "multi_agent_2",
+    }

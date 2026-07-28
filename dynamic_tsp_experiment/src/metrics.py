@@ -89,6 +89,18 @@ def error_record(
             "openrouter_call_record",
             None,
         )
+    if not isinstance(api_call, dict):
+        api_call = getattr(
+            exc,
+            "provider_call_record",
+            None,
+        )
+    if not isinstance(api_call, dict):
+        api_call = getattr(
+            exc,
+            "groq_call_record",
+            None,
+        )
     if isinstance(api_call, dict):
         result["api_call"] = api_call
     api_calls = getattr(
@@ -96,6 +108,12 @@ def error_record(
         "openrouter_call_records",
         None,
     )
+    if not isinstance(api_calls, list):
+        api_calls = getattr(
+            exc,
+            "provider_call_records",
+            None,
+        )
     if isinstance(api_calls, list):
         result["api_calls"] = [
             call

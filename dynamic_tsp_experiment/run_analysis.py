@@ -9,6 +9,7 @@ from typing import Any
 from src.analysis import build_analysis
 from src.core import normalize_run_id, write_json
 from src.run_manifest import load_run_problem
+from src.terminal_report import compact_text, render_table
 
 
 ROOT = Path(__file__).resolve().parent
@@ -38,81 +39,226 @@ def _value(value: Any) -> str:
     return str(value)
 
 
+def _status(value: Any) -> str:
+    return {
+        "completed": "tamamlandı",
+        "partial": "kısmi",
+        "failed": "başarısız",
+        "not_run": "çalışmadı",
+        "legacy_or_incompatible": "uyumsuz",
+    }.get(str(value), str(value))
+
+
+def _method_name(value: str) -> str:
+    return {
+        "zero_shot": "Zero-shot",
+        "multi_agent_1": "Multi-Agent 1",
+        "multi_agent_2": "Multi-Agent 2",
+    }.get(value, value)
+
+
+def _selection_name(value: Any) -> str:
+    return {
+        "visual_scorer_after_feasibility_filter": "görsel scorer",
+        "single_valid_candidate_without_api": "tek geçerli aday",
+        "retain_previous_route_no_valid_candidate": "önceki rota",
+    }.get(str(value), compact_text(value, maximum=18))
+
+
 def _print_method_table(analysis: dict[str, Any]) -> None:
-    methods = analysis["methods"]
-    rows = [
-        (
+    baseline = analysis["methods"]["baseline"]
+    baseline_solution = baseline.get("or_tools") or {}
+    rows: list[list[Any]] = [
+        [
+            "baseline",
             "OR-Tools",
-            methods["baseline"].get("status"),
-            methods["baseline"].get("or_tools"),
-        ),
-        (
-            "Zero-shot",
-            methods["zero_shot"].get("status"),
-            methods["zero_shot"].get("solution"),
-        ),
-        (
-            "Multi-Agent 1",
-            methods["multi_agent_1"].get("status"),
-            methods["multi_agent_1"].get(
-                "best_valid_solution"
-            ),
-        ),
-        (
-            "Multi-Agent 2",
-            methods["multi_agent_2"].get("status"),
-            methods["multi_agent_2"].get(
-                "best_valid_solution"
-            ),
-        ),
+            "Referans",
+            _status(baseline.get("status")),
+            "-",
+            baseline_solution.get("is_valid"),
+            baseline_solution.get("distance"),
+            baseline_solution.get("gap_to_reference_percent"),
+            (baseline.get("timing_seconds") or {}).get("total"),
+            "-",
+            0,
+        ]
     ]
-    print("\nYöntem özeti")
-    print("Yöntem            Durum          Geçerli  Mesafe      Gap (%)")
-    print("-" * 66)
-    for name, status, solution in rows:
-        solution = solution or {}
-        print(
-            f"{name:<17} "
-            f"{str(status):<14} "
-            f"{_value(solution.get('is_valid')):<8} "
-            f"{_value(solution.get('distance')):<11} "
-            f"{_value(solution.get('gap_to_reference_percent'))}"
+    for item in analysis["comparison"].get(
+        "all_model_method_rows",
+        [],
+    ):
+        rows.append(
+            [
+                item["provider"],
+                item["model_alias"],
+                _method_name(item["method"]),
+                _status(item["status"]),
+                item["completed_iterations"],
+                item["is_valid"],
+                item["distance"],
+                item["gap_to_reference_percent"],
+                item["api_wall_seconds"],
+                item["total_token_count"],
+                item["error_count"],
+            ]
         )
+    print(
+        render_table(
+            "Tüm sağlayıcı ve model sonuçları",
+            [
+                "Provider",
+                "Model",
+                "Yöntem",
+                "Durum",
+                "İter.",
+                "Geçerli",
+                "Mesafe",
+                "Gap %",
+                "API/çözüm sn",
+                "Token",
+                "Hata",
+            ],
+            rows,
+            right_align={4, 6, 7, 8, 9, 10},
+            max_widths={1: 28, 3: 12},
+        )
+    )
 
 
 def _print_iterations(analysis: dict[str, Any]) -> None:
-    ma2 = analysis["methods"]["multi_agent_2"]
-    print("\nMulti-Agent 2 iterasyonları")
-    if not ma2.get("iterations"):
-        print("Kayıt yok.")
-    for item in ma2.get("iterations", []):
-        print(
-            f"İterasyon {item['iteration']:>2}: "
-            f"geçerli={item['is_valid']}, "
-            f"mesafe={_value(item['distance'])}, "
-            f"gap={_value(item['gap_to_reference_percent'])}%, "
-            "API="
-            f"{_value(item['timing_seconds']['api'])} sn, "
-            "toplam="
-            f"{_value(item['timing_seconds']['total'])} sn"
-        )
+    for model in analysis.get("provider_models", []):
+        label = f"{model['provider']} / {model['model_alias']}"
+        ma2 = model["methods"]["multi_agent_2"]
+        ma2_rows = [
+            [
+                item["iteration"],
+                _status(item["status"]),
+                item["is_valid"],
+                item["distance"],
+                item["gap_to_reference_percent"],
+                item["timing_seconds"]["api"],
+                item["timing_seconds"]["total"],
+                item["total_token_count"],
+            ]
+            for item in ma2.get("iterations", [])
+        ]
+        if ma2_rows:
+            print(
+                render_table(
+                    f"{label} — Multi-Agent 2 iterasyonları",
+                    [
+                        "İter.",
+                        "Durum",
+                        "Geçerli",
+                        "Mesafe",
+                        "Gap %",
+                        "API sn",
+                        "Toplam sn",
+                        "Token",
+                    ],
+                    ma2_rows,
+                    right_align={0, 3, 4, 5, 6, 7},
+                )
+            )
 
-    ma1 = analysis["methods"]["multi_agent_1"]
-    print("\nMulti-Agent 1 iterasyonları")
-    if not ma1.get("iterations"):
-        print("Kayıt yok.")
-    for item in ma1.get("iterations", []):
+        ma1 = model["methods"]["multi_agent_1"]
+        ma1_rows = [
+            [
+                item["iteration"],
+                (
+                    f"{item['valid_candidate_count']}/"
+                    f"{item['returned_candidate_count']}"
+                ),
+                _selection_name(item["selection_mode"]),
+                item["selected_candidate_id"],
+                item["selected_distance"],
+                item["best_valid_candidate_distance"],
+                item["selection_regret_percent"],
+                item["selected_best_valid_candidate"],
+                item["timing_seconds"]["total"],
+            ]
+            for item in ma1.get("iterations", [])
+        ]
+        if ma1_rows:
+            print(
+                render_table(
+                    f"{label} — Multi-Agent 1 iterasyonları",
+                    [
+                        "İter.",
+                        "Geçerli aday",
+                        "Seçim",
+                        "Aday",
+                        "Seçilen",
+                        "En iyi aday",
+                        "Regret %",
+                        "Doğru seçim",
+                        "Toplam sn",
+                    ],
+                    ma1_rows,
+                    right_align={0, 3, 4, 5, 6, 8},
+                    max_widths={2: 18},
+                )
+            )
+            print(
+                render_table(
+                    f"{label} — scorer performansı",
+                    [
+                        "Değerlendirilen",
+                        "En kısa aday seçimi",
+                        "Başarı %",
+                    ],
+                    [
+                        [
+                            ma1.get(
+                                "scorer_evaluated_iteration_count"
+                            ),
+                            ma1.get(
+                                "scorer_best_candidate_selection_count"
+                            ),
+                            ma1.get(
+                                "scorer_best_candidate_selection_rate_percent"
+                            ),
+                        ]
+                    ],
+                    right_align={0, 1, 2},
+                )
+            )
+
+
+def _print_errors(analysis: dict[str, Any]) -> None:
+    rows: list[list[Any]] = []
+    for model in analysis.get("provider_models", []):
+        for method_name, section in model["methods"].items():
+            for error in section.get("errors", []):
+                rows.append(
+                    [
+                        model["provider"],
+                        model["model_alias"],
+                        _method_name(method_name),
+                        error.get("iteration"),
+                        error.get("error_type"),
+                        compact_text(
+                            error.get("message"),
+                            maximum=56,
+                        ),
+                    ]
+                )
+    if rows:
         print(
-            f"İterasyon {item['iteration']:>2}: "
-            f"geçerli aday={item['valid_candidate_count']}/"
-            f"{item['returned_candidate_count']}, "
-            f"seçim={item['selection_mode']}, "
-            f"aday={_value(item['selected_candidate_id'])}, "
-            f"mesafe={_value(item['selected_distance'])}, "
-            "gap="
-            f"{_value(item['selected_gap_to_reference_percent'])}%, "
-            "toplam="
-            f"{_value(item['timing_seconds']['total'])} sn"
+            render_table(
+                "Kaydedilmiş API ve deney hataları",
+                [
+                    "Provider",
+                    "Model",
+                    "Yöntem",
+                    "İter.",
+                    "Hata",
+                    "Mesaj",
+                ],
+                rows,
+                right_align={3},
+                max_widths={1: 24, 5: 56},
+            )
         )
 
 
@@ -149,21 +295,34 @@ def main() -> None:
 
     problem = analysis["problem"]
     reference = problem["reference"]
-    print("Dinamik TSP analiz raporu oluşturuldu.")
-    print(f"Run ID: {run_id}")
     print(
-        f"Problem: {problem['name']} "
-        f"({problem['dimension']} düğüm)"
-    )
-    print(
-        "Referans: "
-        f"{reference['type']}, "
-        f"mesafe={_value(reference['distance'])}, "
-        "kanıtlanmış optimum="
-        f"{reference['is_proven_optimal']}"
+        render_table(
+            "Dinamik TSP analiz raporu",
+            [
+                "Run ID",
+                "Problem",
+                "Düğüm",
+                "Referans",
+                "Mesafe",
+                "Optimum kanıtlı",
+            ],
+            [
+                [
+                    run_id,
+                    problem["name"],
+                    problem["dimension"],
+                    reference["type"],
+                    reference["distance"],
+                    reference["is_proven_optimal"],
+                ]
+            ],
+            right_align={2, 4},
+            max_widths={0: 24, 1: 28, 3: 28},
+        )
     )
     _print_method_table(analysis)
     _print_iterations(analysis)
+    _print_errors(analysis)
     print(f"\nAnaliz dosyası: {output_path}")
 
 
