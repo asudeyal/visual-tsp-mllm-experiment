@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-import run_gemini_multi_agent2 as ma2
+import run_multi_agent2 as ma2
 
 
 def _evaluation(

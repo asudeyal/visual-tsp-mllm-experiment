@@ -4,3 +4,5 @@ __pycache__/
 .env
 output/runs/*/multi_agent1/*_checkpoint.json
 output/runs/*/multi_agent2/*_checkpoint.json
+output/runs/*/providers/*/*/multi_agent1/*_checkpoint.json
+output/runs/*/providers/*/*/multi_agent2/*_checkpoint.json

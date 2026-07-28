@@ -2,10 +2,14 @@ from pathlib import Path
 
 import pytest
 
-import run_openrouter_multi_agent1 as ma1
-import run_openrouter_multi_agent2 as ma2
+import run_multi_agent1 as ma1
+import run_multi_agent2 as ma2
 from src.core import write_json
 from src.problem_loader import generate_random_problem
+from src.providers.registry import (
+    create_provider,
+    provider_model_root,
+)
 
 
 ALIAS = "nemotron-3-nano-omni"
@@ -16,16 +20,23 @@ def _initializer_fixture(
     *,
     fingerprint: str,
 ) -> None:
-    model_root = ma2._model_root(run_dir, ALIAS)
-    image = model_root / "images" / "route.png"
+    provider = create_provider("openrouter", ALIAS)
+    model_root = provider_model_root(
+        run_dir,
+        provider.provider_id,
+        provider.model_alias,
+    )
+    zero_root = model_root / "zero_shot"
+    image = zero_root / "images" / "route.png"
     image.parent.mkdir(parents=True, exist_ok=True)
     image.write_bytes(b"png")
     write_json(
-        model_root / "zero_shot_results.json",
+        zero_root / "zero_shot_results.json",
         {
             "problem": {
                 "fingerprint_sha256": fingerprint,
             },
+            "model": provider.model_metadata,
             "route": [0, 1, 2, 3, 0],
             "artifacts": {
                 "route_image": image.relative_to(
@@ -36,30 +47,30 @@ def _initializer_fixture(
     )
 
 
-def test_openrouter_methods_use_model_specific_directories(
+def test_unified_methods_use_provider_model_directories(
     tmp_path: Path,
 ) -> None:
     run_dir = tmp_path / "runs" / "run1"
-
-    assert ma1._model_root(run_dir, ALIAS) == (
+    provider = create_provider("openrouter", ALIAS)
+    expected = (
         run_dir
-        / "model_comparisons"
+        / "providers"
         / "openrouter"
         / ALIAS
     )
-    assert ma2._model_root(run_dir, ALIAS) == (
-        run_dir
-        / "model_comparisons"
-        / "openrouter"
-        / ALIAS
-    )
+    assert provider_model_root(
+        run_dir,
+        provider.provider_id,
+        provider.model_alias,
+    ) == expected
 
 
-def test_both_methods_load_same_model_zero_shot_initializer(
+def test_both_methods_load_same_provider_zero_shot_initializer(
     tmp_path: Path,
 ) -> None:
     run_dir = tmp_path / "runs" / "run1"
     problem = generate_random_problem(4, seed=42)
+    provider = create_provider("openrouter", ALIAS)
     fingerprint = "same-problem"
     _initializer_fixture(
         run_dir,
@@ -68,13 +79,13 @@ def test_both_methods_load_same_model_zero_shot_initializer(
 
     initializer2, route2, image2 = ma2._load_initializer(
         run_dir=run_dir,
-        model_alias=ALIAS,
+        provider=provider,
         problem=problem,
         fingerprint=fingerprint,
     )
     initializer1, route1, image1 = ma1._load_initializer(
         run_dir=run_dir,
-        model_alias=ALIAS,
+        provider=provider,
         problem=problem,
         fingerprint=fingerprint,
     )
@@ -90,35 +101,42 @@ def test_invalid_initializer_is_preserved_for_critic_repair(
 ) -> None:
     run_dir = tmp_path / "runs" / "run1"
     problem = generate_random_problem(4, seed=42)
+    provider = create_provider("openrouter", ALIAS)
     fingerprint = "same-problem"
     _initializer_fixture(
         run_dir,
         fingerprint=fingerprint,
     )
+    model_root = provider_model_root(
+        run_dir,
+        provider.provider_id,
+        provider.model_alias,
+    )
     result_path = (
-        ma2._model_root(run_dir, ALIAS)
+        model_root
+        / "zero_shot"
         / "zero_shot_results.json"
     )
-    value = {
-        "problem": {
-            "fingerprint_sha256": fingerprint,
+    image = model_root / "zero_shot" / "images" / "route.png"
+    write_json(
+        result_path,
+        {
+            "problem": {
+                "fingerprint_sha256": fingerprint,
+            },
+            "model": provider.model_metadata,
+            "route": [0, 1, 2, 2, 3, 0],
+            "artifacts": {
+                "route_image": image.relative_to(
+                    run_dir
+                ).as_posix(),
+            },
         },
-        "route": [0, 1, 2, 2, 3, 0],
-        "artifacts": {
-            "route_image": (
-                ma2._model_root(run_dir, ALIAS)
-                / "images"
-                / "route.png"
-            )
-            .relative_to(run_dir)
-            .as_posix(),
-        },
-    }
-    write_json(result_path, value)
+    )
 
     initializer, route, _ = ma2._load_initializer(
         run_dir=run_dir,
-        model_alias=ALIAS,
+        provider=provider,
         problem=problem,
         fingerprint=fingerprint,
     )
