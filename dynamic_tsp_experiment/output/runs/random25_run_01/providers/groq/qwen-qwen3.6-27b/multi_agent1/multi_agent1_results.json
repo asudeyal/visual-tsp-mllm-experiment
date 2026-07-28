@@ -48,10 +48,10 @@
     "no_valid_candidate_action": "retain_previous_route"
   },
   "initializer": {
-    "source": "zero_shot",
+    "source": "providers/gemini/gemini-2.5-flash/zero_shot",
     "iteration": 0,
-    "source_file": "providers/groq/qwen-qwen3.6-27b/zero_shot/zero_shot_results.json",
-    "route_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png",
+    "source_file": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/zero_shot_results.json",
+    "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
     "route": [
       0,
       10,
@@ -102,7 +102,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -269,7 +269,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.0004094999749213457,
@@ -326,7 +326,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 9.189988486468792e-05,
@@ -402,8 +402,8 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 50.03670026963867,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/selected.png",
-          "retained_from_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/selected.png",
+          "retained_from_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/images/route.png"
         }
       },
       "timing": {
@@ -423,7 +423,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -587,7 +587,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 50.03670026963867,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.00028970022685825825,
@@ -644,7 +644,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 7.589999586343765e-05,
@@ -721,7 +721,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 50.03670026963867,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/selected.png"
         }
       },
       "timing": {
@@ -741,7 +741,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -906,7 +906,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.0003364000003784895,
@@ -964,7 +964,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 8.179992437362671e-05,
@@ -1040,8 +1040,8 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 50.03670026963867,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/selected.png",
-          "retained_from_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/selected.png",
+          "retained_from_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/selected.png"
         }
       },
       "timing": {
@@ -1061,7 +1061,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -1226,7 +1226,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.0004072999581694603,
@@ -1280,7 +1280,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 52.62334520022833,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 7.54999928176403e-05,
@@ -1357,7 +1357,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 52.62334520022833,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/selected.png"
         }
       },
       "timing": {
@@ -1377,7 +1377,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -1541,7 +1541,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 48.58800375061681,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.0003486999776214361,
@@ -1595,7 +1595,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 57.08429498358032,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 8.059991523623466e-05,
@@ -1728,7 +1728,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 48.58800375061681,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/selected.png"
         }
       },
       "timing": {
@@ -1748,7 +1748,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -1912,7 +1912,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 44.05354829526324,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_06/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.0003690000157803297,
@@ -1967,7 +1967,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_06/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 0.00012400001287460327,
@@ -2044,7 +2044,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 44.05354829526324,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_06/selected.png"
         }
       },
       "timing": {
@@ -2064,7 +2064,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_06/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -2231,7 +2231,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_07/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.00031940010376274586,
@@ -2285,7 +2285,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 44.05986384059378,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_07/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 0.00012610014528036118,
@@ -2362,7 +2362,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 44.05986384059378,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_07/selected.png"
         }
       },
       "timing": {
@@ -2382,7 +2382,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_07/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -2546,7 +2546,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 44.36744768477695,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_08/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.00028709997422993183,
@@ -2604,7 +2604,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_08/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 6.909994408488274e-05,
@@ -2681,7 +2681,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 44.36744768477695,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_08/selected.png"
         }
       },
       "timing": {
@@ -2701,7 +2701,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_08/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -2868,7 +2868,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": null,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_09/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.00037679984234273434,
@@ -2922,7 +2922,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 42.898482137860384,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_09/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 7.260008715093136e-05,
@@ -2999,7 +2999,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 42.898482137860384,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_09/selected.png"
         }
       },
       "timing": {
@@ -3019,7 +3019,7 @@
         "candidate_strategy": "independent_calls",
         "requested_candidate_count": 2,
         "returned_candidate_count": 2,
-        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/selected.png",
+        "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_09/selected.png",
         "api_call": {
           "phase": "critic_candidate_generation",
           "provider": "groq",
@@ -3183,7 +3183,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 40.353176755663355,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_10/candidate_01.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_10/candidate_01.png"
             },
             "timing": {
               "response_parsing_seconds": 0.0003206999972462654,
@@ -3237,7 +3237,7 @@
             "reference_distance": 17.564560227642477,
             "gap_to_reference_percent": 44.39419061292689,
             "artifacts": {
-              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_10/candidate_02.png"
+              "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_10/candidate_02.png"
             },
             "timing": {
               "response_parsing_seconds": 8.619995787739754e-05,
@@ -3370,7 +3370,7 @@
         "reference_distance": 17.564560227642477,
         "gap_to_reference_percent": 44.39419061292689,
         "artifacts": {
-          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_10/selected.png"
+          "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_10/selected.png"
         }
       },
       "timing": {

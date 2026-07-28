@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "experiment": "dynamic_tsp_comparative_analysis",
   "run_id": "eil51_run_02",
-  "generated_at_utc": "2026-07-27T10:50:48.537621+00:00",
+  "generated_at_utc": "2026-07-28T11:37:14.417971+00:00",
   "problem": {
     "name": "eil51",
     "source_type": "tsplib",
@@ -19,10 +19,23 @@
   "completion": {
     "methods": {
       "baseline": "completed",
-      "zero_shot": "completed",
-      "multi_agent_1": "completed",
-      "multi_agent_2": "completed"
+      "zero_shot": "not_run",
+      "multi_agent_1": "not_run",
+      "multi_agent_2": "not_run"
     },
+    "provider_models": [
+      {
+        "provider": "gemini",
+        "model_alias": "gemini-2.5-flash",
+        "methods": {
+          "zero_shot": "completed",
+          "multi_agent_1": "completed",
+          "multi_agent_2": "completed"
+        },
+        "all_methods_completed": true
+      }
+    ],
+    "all_provider_models_completed": true,
     "all_methods_completed": true
   },
   "methods": {
@@ -45,560 +58,594 @@
       }
     },
     "zero_shot": {
-      "status": "completed",
-      "model": {
-        "provider": "google_gemini",
-        "name": "gemini-2.5-flash",
-        "temperature": 0.0
-      },
-      "solution": {
-        "source": null,
-        "iteration": null,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 540,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 26.760563380281692
-      },
-      "timing_seconds": {
-        "api": 10.13585970015265,
-        "parsing": 0.00043729995377361774,
-        "evaluation": 0.00012580002658069134,
-        "rendering": 0.4721830999478698,
-        "total": 12.80597379989922
-      },
-      "api_call_count": 1,
-      "total_token_count": 2668,
+      "status": "not_run",
       "errors": []
     },
     "multi_agent_1": {
-      "status": "completed",
-      "model": {
-        "provider": "google_gemini",
-        "name": "gemini-2.5-flash",
-        "critic_temperature": 0.7,
-        "scorer_temperature": 0.0
-      },
-      "candidate_count_requested": 7,
-      "requested_iterations": 10,
-      "completed_iterations": 10,
-      "total_candidate_count": 70,
-      "valid_candidate_count": 57,
-      "invalid_candidate_count": 13,
-      "initializer": {
-        "source": "zero_shot",
-        "iteration": 0,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 540,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 26.760563380281692
-      },
-      "final_solution": {
-        "source": "scorer_selection",
-        "iteration": 10,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 511,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 19.953051643192488
-      },
-      "best_valid_solution": {
-        "source": "scorer_selection",
-        "iteration": 3,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 498,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 16.901408450704224
-      },
-      "best_critic_candidate_oracle": {
-        "source": "critic_candidate_oracle",
-        "iteration": 10,
-        "candidate_id": 1,
-        "is_valid": true,
-        "distance": 478,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 12.206572769953052
-      },
-      "iterations": [
-        {
-          "iteration": 1,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 4,
-          "invalid_candidate_count": 3,
-          "best_valid_candidate_distance": 509,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 7,
-          "selected_is_valid": true,
-          "selected_distance": 509,
-          "selected_gap_to_reference_percent": 19.483568075117372,
-          "selection_regret_percent": 0.0,
-          "timing_seconds": {
-            "critic_api": 9.808700500056148,
-            "critic_total": 15.138947899919003,
-            "scorer_api": 3.6371734999120235,
-            "scorer_total": 4.692158400081098,
-            "checkpoint": 0.0030422997660934925,
-            "total": 19.834148599766195
-          },
-          "token_count": {
-            "critic": 10989,
-            "scorer": 1767
-          }
-        },
-        {
-          "iteration": 2,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 5,
-          "invalid_candidate_count": 2,
-          "best_valid_candidate_distance": 501,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 7,
-          "selected_is_valid": true,
-          "selected_distance": 504,
-          "selected_gap_to_reference_percent": 18.309859154929576,
-          "selection_regret_percent": 0.5988023952095808,
-          "timing_seconds": {
-            "critic_api": 12.832379000028595,
-            "critic_total": 17.07684660004452,
-            "scorer_api": 3.720194000052288,
-            "scorer_total": 4.7530075998511165,
-            "checkpoint": 0.003697299864143133,
-            "total": 21.83355149975978
-          },
-          "token_count": {
-            "critic": 11048,
-            "scorer": 2039
-          }
-        },
-        {
-          "iteration": 3,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 6,
-          "invalid_candidate_count": 1,
-          "best_valid_candidate_distance": 498,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 2,
-          "selected_is_valid": true,
-          "selected_distance": 498,
-          "selected_gap_to_reference_percent": 16.901408450704224,
-          "selection_regret_percent": 0.0,
-          "timing_seconds": {
-            "critic_api": 10.43963269982487,
-            "critic_total": 14.834344299975783,
-            "scorer_api": 3.787640599999577,
-            "scorer_total": 4.874393800040707,
-            "checkpoint": 0.0038844000082463026,
-            "total": 19.712622500024736
-          },
-          "token_count": {
-            "critic": 12016,
-            "scorer": 2311
-          }
-        },
-        {
-          "iteration": 4,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 7,
-          "invalid_candidate_count": 0,
-          "best_valid_candidate_distance": 498,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 2,
-          "selected_is_valid": true,
-          "selected_distance": 531,
-          "selected_gap_to_reference_percent": 24.64788732394366,
-          "selection_regret_percent": 6.626506024096385,
-          "timing_seconds": {
-            "critic_api": 13.25302749988623,
-            "critic_total": 17.17061180016026,
-            "scorer_api": 6.184710100060329,
-            "scorer_total": 7.261552599957213,
-            "checkpoint": 0.003571599954739213,
-            "total": 24.43573600007221
-          },
-          "token_count": {
-            "critic": 12166,
-            "scorer": 2585
-          }
-        },
-        {
-          "iteration": 5,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 7,
-          "invalid_candidate_count": 0,
-          "best_valid_candidate_distance": 491,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 6,
-          "selected_is_valid": true,
-          "selected_distance": 518,
-          "selected_gap_to_reference_percent": 21.5962441314554,
-          "selection_regret_percent": 5.4989816700611,
-          "timing_seconds": {
-            "critic_api": 13.23669599997811,
-            "critic_total": 17.306413100101054,
-            "scorer_api": 4.927996599813923,
-            "scorer_total": 5.903799700085074,
-            "checkpoint": 0.004625400062650442,
-            "total": 23.214838200248778
-          },
-          "token_count": {
-            "critic": 10904,
-            "scorer": 2585
-          }
-        },
-        {
-          "iteration": 6,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 6,
-          "invalid_candidate_count": 1,
-          "best_valid_candidate_distance": 500,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 7,
-          "selected_is_valid": true,
-          "selected_distance": 524,
-          "selected_gap_to_reference_percent": 23.004694835680752,
-          "selection_regret_percent": 4.8,
-          "timing_seconds": {
-            "critic_api": 10.51867949985899,
-            "critic_total": 15.59871849999763,
-            "scorer_api": 4.435238899895921,
-            "scorer_total": 5.270334299886599,
-            "checkpoint": 0.004313299898058176,
-            "total": 20.873366099782288
-          },
-          "token_count": {
-            "critic": 11360,
-            "scorer": 2316
-          }
-        },
-        {
-          "iteration": 7,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 6,
-          "invalid_candidate_count": 1,
-          "best_valid_candidate_distance": 500,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 5,
-          "selected_is_valid": true,
-          "selected_distance": 500,
-          "selected_gap_to_reference_percent": 17.370892018779344,
-          "selection_regret_percent": 0.0,
-          "timing_seconds": {
-            "critic_api": 10.956156899919733,
-            "critic_total": 13.909471899969503,
-            "scorer_api": 5.686790500069037,
-            "scorer_total": 6.479223000118509,
-            "checkpoint": 0.004277199972420931,
-            "total": 20.392972100060433
-          },
-          "token_count": {
-            "critic": 11701,
-            "scorer": 2313
-          }
-        },
-        {
-          "iteration": 8,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 7,
-          "invalid_candidate_count": 0,
-          "best_valid_candidate_distance": 500,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 6,
-          "selected_is_valid": true,
-          "selected_distance": 505,
-          "selected_gap_to_reference_percent": 18.544600938967136,
-          "selection_regret_percent": 1.0,
-          "timing_seconds": {
-            "critic_api": 9.395920999813825,
-            "critic_total": 12.56012100004591,
-            "scorer_api": 4.045375699875876,
-            "scorer_total": 4.840828799875453,
-            "checkpoint": 0.004711099900305271,
-            "total": 17.40566089982167
-          },
-          "token_count": {
-            "critic": 10855,
-            "scorer": 2584
-          }
-        },
-        {
-          "iteration": 9,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 5,
-          "invalid_candidate_count": 2,
-          "best_valid_candidate_distance": 506,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 3,
-          "selected_is_valid": true,
-          "selected_distance": 515,
-          "selected_gap_to_reference_percent": 20.892018779342724,
-          "selection_regret_percent": 1.7786561264822134,
-          "timing_seconds": {
-            "critic_api": 11.020656799897552,
-            "critic_total": 13.921316100051627,
-            "scorer_api": 3.68024820019491,
-            "scorer_total": 4.518695400096476,
-            "checkpoint": 0.0047951999586075544,
-            "total": 18.44480670010671
-          },
-          "token_count": {
-            "critic": 12140,
-            "scorer": 2038
-          }
-        },
-        {
-          "iteration": 10,
-          "returned_candidate_count": 7,
-          "valid_candidate_count": 4,
-          "invalid_candidate_count": 3,
-          "best_valid_candidate_distance": 478,
-          "selection_mode": "visual_scorer_after_feasibility_filter",
-          "selected_candidate_id": 3,
-          "selected_is_valid": true,
-          "selected_distance": 511,
-          "selected_gap_to_reference_percent": 19.953051643192488,
-          "selection_regret_percent": 6.903765690376569,
-          "timing_seconds": {
-            "critic_api": 9.809336900012568,
-            "critic_total": 12.796356400009245,
-            "scorer_api": 3.7169832000508904,
-            "scorer_total": 4.4729792000725865,
-            "checkpoint": 0.005280700046569109,
-            "total": 17.2746163001284
-          },
-          "token_count": {
-            "critic": 11640,
-            "scorer": 1768
-          }
-        }
-      ],
-      "run_summary": {
-        "api_call_count": 20,
-        "successful_api_call_count": 20,
-        "failed_api_call_count": 0,
-        "total_api_call_wall_seconds": 155.0935380992014,
-        "total_token_count": 137125,
-        "manifest_and_input_loading_seconds": 0.002932499861344695,
-        "accumulated_completed_iteration_wall_seconds": 203.4223188997712,
-        "current_invocation_wall_seconds_before_result_write": 94.42502049985342
-      },
-      "errors": []
+      "status": "not_run"
     },
     "multi_agent_2": {
-      "status": "completed",
-      "model": {
-        "provider": "google_gemini",
-        "name": "gemini-2.5-flash",
-        "critic_temperature": 0.7
-      },
-      "requested_iterations": 10,
-      "completed_iterations": 10,
-      "valid_iteration_count": 7,
-      "invalid_iteration_count": 3,
-      "best_valid_iteration": 8,
-      "initializer": {
-        "source": "zero_shot",
-        "iteration": 0,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 540,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 26.760563380281692
-      },
-      "final_solution": {
-        "source": "critic",
-        "iteration": 10,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 500,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 17.370892018779344
-      },
-      "best_valid_solution": {
-        "source": "critic",
-        "iteration": 8,
-        "candidate_id": null,
-        "is_valid": true,
-        "distance": 468,
-        "reference_distance": 426.0,
-        "gap_to_reference_percent": 9.859154929577464
-      },
-      "iterations": [
-        {
-          "iteration": 1,
-          "status": "completed",
-          "is_valid": false,
-          "distance": 509,
-          "gap_to_reference_percent": null,
-          "timing_seconds": {
-            "api": 7.921854299958795,
-            "parsing": 0.0003643000964075327,
-            "evaluation": 9.169988334178925e-05,
-            "rendering": 0.4379581999965012,
-            "checkpoint": 0.0010162999387830496,
-            "total": 9.877185299992561
-          },
-          "total_token_count": 1924
-        },
-        {
-          "iteration": 2,
-          "status": "completed",
-          "is_valid": false,
-          "distance": 528,
-          "gap_to_reference_percent": null,
-          "timing_seconds": {
-            "api": 9.045471899909899,
-            "parsing": 0.00011279992759227753,
-            "evaluation": 8.759996853768826e-05,
-            "rendering": 0.3689143001101911,
-            "checkpoint": 0.0008768998086452484,
-            "total": 9.814469599863514
-          },
-          "total_token_count": 2248
-        },
-        {
-          "iteration": 3,
-          "status": "completed",
-          "is_valid": false,
-          "distance": 488,
-          "gap_to_reference_percent": null,
-          "timing_seconds": {
-            "api": 8.738510800059885,
-            "parsing": 0.00012199999764561653,
-            "evaluation": 0.00011259992606937885,
-            "rendering": 0.3935517999343574,
-            "checkpoint": 0.0009710998274385929,
-            "total": 9.519879200030118
-          },
-          "total_token_count": 2186
-        },
-        {
-          "iteration": 4,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 504,
-          "gap_to_reference_percent": 18.309859154929576,
-          "timing_seconds": {
-            "api": 7.382722900016233,
-            "parsing": 0.00010400009341537952,
-            "evaluation": 9.400001727044582e-05,
-            "rendering": 0.3725397000089288,
-            "checkpoint": 0.0009685999248176813,
-            "total": 8.198103399947286
-          },
-          "total_token_count": 1837
-        },
-        {
-          "iteration": 5,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 514,
-          "gap_to_reference_percent": 20.657276995305164,
-          "timing_seconds": {
-            "api": 9.193971499800682,
-            "parsing": 0.00011910009197890759,
-            "evaluation": 0.00010810000821948051,
-            "rendering": 0.37090650014579296,
-            "checkpoint": 0.0009817997924983501,
-            "total": 9.988502899883315
-          },
-          "total_token_count": 2278
-        },
-        {
-          "iteration": 6,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 512,
-          "gap_to_reference_percent": 20.187793427230048,
-          "timing_seconds": {
-            "api": 8.526085799792781,
-            "parsing": 0.00011030002497136593,
-            "evaluation": 0.00010089995339512825,
-            "rendering": 0.37246460001915693,
-            "checkpoint": 0.0010102000087499619,
-            "total": 9.287804499967024
-          },
-          "total_token_count": 2238
-        },
-        {
-          "iteration": 7,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 496,
-          "gap_to_reference_percent": 16.431924882629108,
-          "timing_seconds": {
-            "api": 8.014526500133798,
-            "parsing": 0.00010459986515343189,
-            "evaluation": 8.79999715834856e-05,
-            "rendering": 0.3799694001208991,
-            "checkpoint": 0.0009963000193238258,
-            "total": 8.780753999948502
-          },
-          "total_token_count": 1965
-        },
-        {
-          "iteration": 8,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 468,
-          "gap_to_reference_percent": 9.859154929577464,
-          "timing_seconds": {
-            "api": 9.741825399920344,
-            "parsing": 0.00011030002497136593,
-            "evaluation": 9.249988943338394e-05,
-            "rendering": 0.39696939988061786,
-            "checkpoint": 0.0011382999364286661,
-            "total": 10.559823299990967
-          },
-          "total_token_count": 2550
-        },
-        {
-          "iteration": 9,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 499,
-          "gap_to_reference_percent": 17.136150234741784,
-          "timing_seconds": {
-            "api": 8.599230600055307,
-            "parsing": 0.0001216998789459467,
-            "evaluation": 0.00010419986210763454,
-            "rendering": 0.402011499973014,
-            "checkpoint": 0.001286200014874339,
-            "total": 9.414666300173849
-          },
-          "total_token_count": 2125
-        },
-        {
-          "iteration": 10,
-          "status": "completed",
-          "is_valid": true,
-          "distance": 500,
-          "gap_to_reference_percent": 17.370892018779344,
-          "timing_seconds": {
-            "api": 8.801757199922577,
-            "parsing": 0.00011850008741021156,
-            "evaluation": 0.00010270019993185997,
-            "rendering": 0.38791950000450015,
-            "checkpoint": 0.0012266000267118216,
-            "total": 9.620767900021747
-          },
-          "total_token_count": 2082
-        }
-      ],
-      "run_summary": {
-        "api_call_count": 10,
-        "successful_api_call_count": 10,
-        "failed_api_call_count": 0,
-        "total_api_call_wall_seconds": 85.9659568995703,
-        "total_token_count": 21433,
-        "manifest_and_input_loading_seconds": 0.001987600000575185,
-        "accumulated_completed_iteration_wall_seconds": 95.06195639981888,
-        "current_invocation_wall_seconds_before_result_write": 95.06530759995803
-      },
-      "errors": []
+      "status": "not_run"
     }
   },
+  "provider_models": [
+    {
+      "provider": "gemini",
+      "model_alias": "gemini-2.5-flash",
+      "resolved_model": "gemini-2.5-flash",
+      "layout": "unified_provider",
+      "methods": {
+        "zero_shot": {
+          "status": "completed",
+          "model": {
+            "provider": "google_gemini",
+            "name": "gemini-2.5-flash",
+            "temperature": 0.0
+          },
+          "solution": {
+            "source": null,
+            "iteration": null,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 540,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 26.760563380281692
+          },
+          "timing_seconds": {
+            "api": 10.13585970015265,
+            "parsing": 0.00043729995377361774,
+            "evaluation": 0.00012580002658069134,
+            "rendering": 0.4721830999478698,
+            "total": 12.80597379989922
+          },
+          "api_call_count": 1,
+          "total_token_count": 2668,
+          "errors": []
+        },
+        "multi_agent_1": {
+          "status": "completed",
+          "model": {
+            "provider": "google_gemini",
+            "name": "gemini-2.5-flash",
+            "critic_temperature": 0.7,
+            "scorer_temperature": 0.0
+          },
+          "candidate_count_requested": 7,
+          "requested_iterations": 10,
+          "completed_iterations": 10,
+          "total_candidate_count": 70,
+          "valid_candidate_count": 57,
+          "invalid_candidate_count": 13,
+          "valid_candidate_rate_percent": 81.42857142857143,
+          "scorer_evaluated_iteration_count": 10,
+          "scorer_best_candidate_selection_count": 3,
+          "scorer_best_candidate_selection_rate_percent": 30.0,
+          "initializer": {
+            "source": "providers/gemini/gemini-2.5-flash/zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 540,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 26.760563380281692
+          },
+          "final_solution": {
+            "source": "scorer_selection",
+            "iteration": 10,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 511,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 19.953051643192488
+          },
+          "best_valid_solution": {
+            "source": "scorer_selection",
+            "iteration": 3,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 498,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 16.901408450704224
+          },
+          "best_critic_candidate_oracle": {
+            "source": "critic_candidate_oracle",
+            "iteration": 10,
+            "candidate_id": 1,
+            "is_valid": true,
+            "distance": 478,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 12.206572769953052
+          },
+          "iterations": [
+            {
+              "iteration": 1,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 4,
+              "invalid_candidate_count": 3,
+              "best_valid_candidate_distance": 509,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 7,
+              "selected_is_valid": true,
+              "selected_distance": 509,
+              "selected_gap_to_reference_percent": 19.483568075117372,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 9.808700500056148,
+                "critic_total": 15.138947899919003,
+                "scorer_api": 3.6371734999120235,
+                "scorer_total": 4.692158400081098,
+                "checkpoint": 0.0030422997660934925,
+                "total": 19.834148599766195
+              },
+              "token_count": {
+                "critic": 10989,
+                "scorer": 1767
+              }
+            },
+            {
+              "iteration": 2,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 5,
+              "invalid_candidate_count": 2,
+              "best_valid_candidate_distance": 501,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 7,
+              "selected_is_valid": true,
+              "selected_distance": 504,
+              "selected_gap_to_reference_percent": 18.309859154929576,
+              "selection_regret_percent": 0.5988023952095808,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 12.832379000028595,
+                "critic_total": 17.07684660004452,
+                "scorer_api": 3.720194000052288,
+                "scorer_total": 4.7530075998511165,
+                "checkpoint": 0.003697299864143133,
+                "total": 21.83355149975978
+              },
+              "token_count": {
+                "critic": 11048,
+                "scorer": 2039
+              }
+            },
+            {
+              "iteration": 3,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 6,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 498,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 2,
+              "selected_is_valid": true,
+              "selected_distance": 498,
+              "selected_gap_to_reference_percent": 16.901408450704224,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 10.43963269982487,
+                "critic_total": 14.834344299975783,
+                "scorer_api": 3.787640599999577,
+                "scorer_total": 4.874393800040707,
+                "checkpoint": 0.0038844000082463026,
+                "total": 19.712622500024736
+              },
+              "token_count": {
+                "critic": 12016,
+                "scorer": 2311
+              }
+            },
+            {
+              "iteration": 4,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 498,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 2,
+              "selected_is_valid": true,
+              "selected_distance": 531,
+              "selected_gap_to_reference_percent": 24.64788732394366,
+              "selection_regret_percent": 6.626506024096385,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 13.25302749988623,
+                "critic_total": 17.17061180016026,
+                "scorer_api": 6.184710100060329,
+                "scorer_total": 7.261552599957213,
+                "checkpoint": 0.003571599954739213,
+                "total": 24.43573600007221
+              },
+              "token_count": {
+                "critic": 12166,
+                "scorer": 2585
+              }
+            },
+            {
+              "iteration": 5,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 491,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 6,
+              "selected_is_valid": true,
+              "selected_distance": 518,
+              "selected_gap_to_reference_percent": 21.5962441314554,
+              "selection_regret_percent": 5.4989816700611,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 13.23669599997811,
+                "critic_total": 17.306413100101054,
+                "scorer_api": 4.927996599813923,
+                "scorer_total": 5.903799700085074,
+                "checkpoint": 0.004625400062650442,
+                "total": 23.214838200248778
+              },
+              "token_count": {
+                "critic": 10904,
+                "scorer": 2585
+              }
+            },
+            {
+              "iteration": 6,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 6,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 500,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 7,
+              "selected_is_valid": true,
+              "selected_distance": 524,
+              "selected_gap_to_reference_percent": 23.004694835680752,
+              "selection_regret_percent": 4.8,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 10.51867949985899,
+                "critic_total": 15.59871849999763,
+                "scorer_api": 4.435238899895921,
+                "scorer_total": 5.270334299886599,
+                "checkpoint": 0.004313299898058176,
+                "total": 20.873366099782288
+              },
+              "token_count": {
+                "critic": 11360,
+                "scorer": 2316
+              }
+            },
+            {
+              "iteration": 7,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 6,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 500,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 5,
+              "selected_is_valid": true,
+              "selected_distance": 500,
+              "selected_gap_to_reference_percent": 17.370892018779344,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 10.956156899919733,
+                "critic_total": 13.909471899969503,
+                "scorer_api": 5.686790500069037,
+                "scorer_total": 6.479223000118509,
+                "checkpoint": 0.004277199972420931,
+                "total": 20.392972100060433
+              },
+              "token_count": {
+                "critic": 11701,
+                "scorer": 2313
+              }
+            },
+            {
+              "iteration": 8,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 500,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 6,
+              "selected_is_valid": true,
+              "selected_distance": 505,
+              "selected_gap_to_reference_percent": 18.544600938967136,
+              "selection_regret_percent": 1.0,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 9.395920999813825,
+                "critic_total": 12.56012100004591,
+                "scorer_api": 4.045375699875876,
+                "scorer_total": 4.840828799875453,
+                "checkpoint": 0.004711099900305271,
+                "total": 17.40566089982167
+              },
+              "token_count": {
+                "critic": 10855,
+                "scorer": 2584
+              }
+            },
+            {
+              "iteration": 9,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 5,
+              "invalid_candidate_count": 2,
+              "best_valid_candidate_distance": 506,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 3,
+              "selected_is_valid": true,
+              "selected_distance": 515,
+              "selected_gap_to_reference_percent": 20.892018779342724,
+              "selection_regret_percent": 1.7786561264822134,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 11.020656799897552,
+                "critic_total": 13.921316100051627,
+                "scorer_api": 3.68024820019491,
+                "scorer_total": 4.518695400096476,
+                "checkpoint": 0.0047951999586075544,
+                "total": 18.44480670010671
+              },
+              "token_count": {
+                "critic": 12140,
+                "scorer": 2038
+              }
+            },
+            {
+              "iteration": 10,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 4,
+              "invalid_candidate_count": 3,
+              "best_valid_candidate_distance": 478,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 3,
+              "selected_is_valid": true,
+              "selected_distance": 511,
+              "selected_gap_to_reference_percent": 19.953051643192488,
+              "selection_regret_percent": 6.903765690376569,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 9.809336900012568,
+                "critic_total": 12.796356400009245,
+                "scorer_api": 3.7169832000508904,
+                "scorer_total": 4.4729792000725865,
+                "checkpoint": 0.005280700046569109,
+                "total": 17.2746163001284
+              },
+              "token_count": {
+                "critic": 11640,
+                "scorer": 1768
+              }
+            }
+          ],
+          "run_summary": {
+            "api_call_count": 20,
+            "successful_api_call_count": 20,
+            "failed_api_call_count": 0,
+            "total_api_call_wall_seconds": 155.0935380992014,
+            "total_token_count": 137125,
+            "manifest_and_input_loading_seconds": 0.002932499861344695,
+            "accumulated_completed_iteration_wall_seconds": 203.4223188997712,
+            "current_invocation_wall_seconds_before_result_write": 94.42502049985342
+          },
+          "errors": []
+        },
+        "multi_agent_2": {
+          "status": "completed",
+          "model": {
+            "provider": "google_gemini",
+            "name": "gemini-2.5-flash",
+            "critic_temperature": 0.7
+          },
+          "requested_iterations": 10,
+          "completed_iterations": 10,
+          "valid_iteration_count": 7,
+          "invalid_iteration_count": 3,
+          "best_valid_iteration": 8,
+          "initializer": {
+            "source": "providers/gemini/gemini-2.5-flash/zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 540,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 26.760563380281692
+          },
+          "final_solution": {
+            "source": "critic",
+            "iteration": 10,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 500,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 17.370892018779344
+          },
+          "best_valid_solution": {
+            "source": "critic",
+            "iteration": 8,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 468,
+            "reference_distance": 426.0,
+            "gap_to_reference_percent": 9.859154929577464
+          },
+          "iterations": [
+            {
+              "iteration": 1,
+              "status": "completed",
+              "is_valid": false,
+              "distance": 509,
+              "gap_to_reference_percent": null,
+              "timing_seconds": {
+                "api": 7.921854299958795,
+                "parsing": 0.0003643000964075327,
+                "evaluation": 9.169988334178925e-05,
+                "rendering": 0.4379581999965012,
+                "checkpoint": 0.0010162999387830496,
+                "total": 9.877185299992561
+              },
+              "total_token_count": 1924
+            },
+            {
+              "iteration": 2,
+              "status": "completed",
+              "is_valid": false,
+              "distance": 528,
+              "gap_to_reference_percent": null,
+              "timing_seconds": {
+                "api": 9.045471899909899,
+                "parsing": 0.00011279992759227753,
+                "evaluation": 8.759996853768826e-05,
+                "rendering": 0.3689143001101911,
+                "checkpoint": 0.0008768998086452484,
+                "total": 9.814469599863514
+              },
+              "total_token_count": 2248
+            },
+            {
+              "iteration": 3,
+              "status": "completed",
+              "is_valid": false,
+              "distance": 488,
+              "gap_to_reference_percent": null,
+              "timing_seconds": {
+                "api": 8.738510800059885,
+                "parsing": 0.00012199999764561653,
+                "evaluation": 0.00011259992606937885,
+                "rendering": 0.3935517999343574,
+                "checkpoint": 0.0009710998274385929,
+                "total": 9.519879200030118
+              },
+              "total_token_count": 2186
+            },
+            {
+              "iteration": 4,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 504,
+              "gap_to_reference_percent": 18.309859154929576,
+              "timing_seconds": {
+                "api": 7.382722900016233,
+                "parsing": 0.00010400009341537952,
+                "evaluation": 9.400001727044582e-05,
+                "rendering": 0.3725397000089288,
+                "checkpoint": 0.0009685999248176813,
+                "total": 8.198103399947286
+              },
+              "total_token_count": 1837
+            },
+            {
+              "iteration": 5,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 514,
+              "gap_to_reference_percent": 20.657276995305164,
+              "timing_seconds": {
+                "api": 9.193971499800682,
+                "parsing": 0.00011910009197890759,
+                "evaluation": 0.00010810000821948051,
+                "rendering": 0.37090650014579296,
+                "checkpoint": 0.0009817997924983501,
+                "total": 9.988502899883315
+              },
+              "total_token_count": 2278
+            },
+            {
+              "iteration": 6,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 512,
+              "gap_to_reference_percent": 20.187793427230048,
+              "timing_seconds": {
+                "api": 8.526085799792781,
+                "parsing": 0.00011030002497136593,
+                "evaluation": 0.00010089995339512825,
+                "rendering": 0.37246460001915693,
+                "checkpoint": 0.0010102000087499619,
+                "total": 9.287804499967024
+              },
+              "total_token_count": 2238
+            },
+            {
+              "iteration": 7,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 496,
+              "gap_to_reference_percent": 16.431924882629108,
+              "timing_seconds": {
+                "api": 8.014526500133798,
+                "parsing": 0.00010459986515343189,
+                "evaluation": 8.79999715834856e-05,
+                "rendering": 0.3799694001208991,
+                "checkpoint": 0.0009963000193238258,
+                "total": 8.780753999948502
+              },
+              "total_token_count": 1965
+            },
+            {
+              "iteration": 8,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 468,
+              "gap_to_reference_percent": 9.859154929577464,
+              "timing_seconds": {
+                "api": 9.741825399920344,
+                "parsing": 0.00011030002497136593,
+                "evaluation": 9.249988943338394e-05,
+                "rendering": 0.39696939988061786,
+                "checkpoint": 0.0011382999364286661,
+                "total": 10.559823299990967
+              },
+              "total_token_count": 2550
+            },
+            {
+              "iteration": 9,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 499,
+              "gap_to_reference_percent": 17.136150234741784,
+              "timing_seconds": {
+                "api": 8.599230600055307,
+                "parsing": 0.0001216998789459467,
+                "evaluation": 0.00010419986210763454,
+                "rendering": 0.402011499973014,
+                "checkpoint": 0.001286200014874339,
+                "total": 9.414666300173849
+              },
+              "total_token_count": 2125
+            },
+            {
+              "iteration": 10,
+              "status": "completed",
+              "is_valid": true,
+              "distance": 500,
+              "gap_to_reference_percent": 17.370892018779344,
+              "timing_seconds": {
+                "api": 8.801757199922577,
+                "parsing": 0.00011850008741021156,
+                "evaluation": 0.00010270019993185997,
+                "rendering": 0.38791950000450015,
+                "checkpoint": 0.0012266000267118216,
+                "total": 9.620767900021747
+              },
+              "total_token_count": 2082
+            }
+          ],
+          "run_summary": {
+            "api_call_count": 10,
+            "successful_api_call_count": 10,
+            "failed_api_call_count": 0,
+            "total_api_call_wall_seconds": 85.9659568995703,
+            "total_token_count": 21433,
+            "manifest_and_input_loading_seconds": 0.001987600000575185,
+            "accumulated_completed_iteration_wall_seconds": 95.06195639981888,
+            "current_invocation_wall_seconds_before_result_write": 95.06530759995803
+          },
+          "errors": []
+        }
+      }
+    }
+  ],
   "comparison": {
     "representative_solution_policy": {
       "baseline": "or_tools",
@@ -611,27 +658,66 @@
         "method": "or_tools",
         "distance": 426,
         "gap_to_reference_percent": 0.0
-      },
-      {
-        "method": "multi_agent_2_best_valid",
-        "distance": 468,
-        "gap_to_reference_percent": 9.859154929577464
-      },
-      {
-        "method": "multi_agent_1_best_valid",
-        "distance": 498,
-        "gap_to_reference_percent": 16.901408450704224
-      },
-      {
-        "method": "zero_shot",
-        "distance": 540,
-        "gap_to_reference_percent": 26.760563380281692
       }
     ],
-    "best_valid_mllm_solution": {
-      "method": "multi_agent_2_best_valid",
+    "best_valid_mllm_solution": null,
+    "all_model_method_rows": [
+      {
+        "provider": "gemini",
+        "model_alias": "gemini-2.5-flash",
+        "method": "zero_shot",
+        "status": "completed",
+        "completed_iterations": null,
+        "is_valid": true,
+        "distance": 540,
+        "gap_to_reference_percent": 26.760563380281692,
+        "api_call_count": 1,
+        "api_wall_seconds": 10.13585970015265,
+        "total_token_count": 2668,
+        "error_count": 0
+      },
+      {
+        "provider": "gemini",
+        "model_alias": "gemini-2.5-flash",
+        "method": "multi_agent_1",
+        "status": "completed",
+        "completed_iterations": 10,
+        "is_valid": true,
+        "distance": 498,
+        "gap_to_reference_percent": 16.901408450704224,
+        "api_call_count": 20,
+        "api_wall_seconds": 155.0935380992014,
+        "total_token_count": 137125,
+        "error_count": 0
+      },
+      {
+        "provider": "gemini",
+        "model_alias": "gemini-2.5-flash",
+        "method": "multi_agent_2",
+        "status": "completed",
+        "completed_iterations": 10,
+        "is_valid": true,
+        "distance": 468,
+        "gap_to_reference_percent": 9.859154929577464,
+        "api_call_count": 10,
+        "api_wall_seconds": 85.9659568995703,
+        "total_token_count": 21433,
+        "error_count": 0
+      }
+    ],
+    "best_valid_provider_model_method": {
+      "provider": "gemini",
+      "model_alias": "gemini-2.5-flash",
+      "method": "multi_agent_2",
+      "status": "completed",
+      "completed_iterations": 10,
+      "is_valid": true,
       "distance": 468,
-      "gap_to_reference_percent": 9.859154929577464
+      "gap_to_reference_percent": 9.859154929577464,
+      "api_call_count": 10,
+      "api_wall_seconds": 85.9659568995703,
+      "total_token_count": 21433,
+      "error_count": 0
     }
   }
 }
