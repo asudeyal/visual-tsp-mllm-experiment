@@ -24,6 +24,33 @@ def _cell(value: Any) -> str:
     return str(value)
 
 
+def render_summary(
+    fields: Sequence[tuple[str, Any]],
+    *,
+    label: str = "Özet",
+    fields_per_line: int = 4,
+) -> str:
+    """Kısa yöntem ölçümlerini tablo açmadan birkaç satırda gösterir."""
+    if fields_per_line < 1:
+        raise ValueError("Satır başına alan sayısı en az 1 olmalıdır.")
+    rendered = [
+        f"{name}={_cell(value)}"
+        for name, value in fields
+    ]
+    if not rendered:
+        return f"  {label}: kayıt yok."
+    lines: list[str] = []
+    for start in range(0, len(rendered), fields_per_line):
+        prefix = f"  {label}: " if start == 0 else " " * (len(label) + 4)
+        lines.append(
+            prefix
+            + " | ".join(
+                rendered[start : start + fields_per_line]
+            )
+        )
+    return "\n".join(lines)
+
+
 def render_table(
     title: str,
     headers: Sequence[str],

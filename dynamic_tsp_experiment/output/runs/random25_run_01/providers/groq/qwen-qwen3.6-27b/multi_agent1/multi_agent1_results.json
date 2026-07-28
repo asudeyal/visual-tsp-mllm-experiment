@@ -1,0 +1,3638 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_multi_agent_1_tsp",
+  "run_id": "random25_run_01",
+  "method": "multi_agent_1",
+  "problem": {
+    "name": "random_n25_seed42",
+    "dimension": 25,
+    "depot_id": 0,
+    "source_type": "random",
+    "fingerprint_sha256": "fef8c0c196b445a04330bd53fd1534404bcf12d016d102fb69eed4127659a75b",
+    "reference_type": "or_tools_heuristic",
+    "reference_is_proven_optimal": false
+  },
+  "model": {
+    "provider": "groq",
+    "alias": "qwen/qwen3.6-27b",
+    "requested_name": "qwen/qwen3.6-27b",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": false,
+      "max_images_per_request": 5,
+      "max_native_choices": 1
+    },
+    "inference_settings": {
+      "reasoning_effort": "none",
+      "route_max_completion_tokens": 1024,
+      "scorer_max_completion_tokens": 1024
+    },
+    "critic_temperature": 0.7,
+    "scorer_temperature": 0.0
+  },
+  "critic_candidate_generation": {
+    "strategy": "independent_calls",
+    "single_http_request_per_iteration": false,
+    "requested_choice_count": 2
+  },
+  "candidate_count_requested": 2,
+  "requested_iterations": 10,
+  "completed_iterations": 10,
+  "artificial_delay_enabled": false,
+  "scorer_policy": {
+    "name": "feasibility_filtered_visual_scorer",
+    "python_validity_filter_enabled": true,
+    "distance_or_gap_sent_to_scorer": false,
+    "single_valid_candidate_is_selected_without_api": true,
+    "no_valid_candidate_action": "retain_previous_route"
+  },
+  "initializer": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/groq/qwen-qwen3.6-27b/zero_shot/zero_shot_results.json",
+    "route_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png",
+    "route": [
+      0,
+      10,
+      21,
+      24,
+      8,
+      13,
+      17,
+      7,
+      23,
+      16,
+      19,
+      14,
+      4,
+      18,
+      2,
+      5,
+      15,
+      6,
+      3,
+      22,
+      11,
+      1,
+      9,
+      12,
+      20,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 26.353286582428108,
+    "reference_distance": 17.564560227642477,
+    "gap_to_reference_percent": 50.03670026963867
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 1.5619842999149114,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3182
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T08:59:32.397342+00:00",
+            "finished_at_utc": "2026-07-28T08:59:33.141403+00:00",
+            "api_call_wall_seconds": 0.744000299833715,
+            "input_image_count": 1,
+            "input_image_bytes": 88769,
+            "input_image_original_bytes": 161229,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 161229,
+                "uploaded_bytes": 88769,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 82,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1591,
+              "raw": {
+                "queue_time": 0.14649207,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.130008826,
+                "completion_tokens": 82,
+                "completion_time": 0.170176694,
+                "total_tokens": 1591,
+                "total_time": 0.30018552
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T08:59:33.251521+00:00",
+            "finished_at_utc": "2026-07-28T08:59:34.069530+00:00",
+            "api_call_wall_seconds": 0.8179840000811964,
+            "input_image_count": 1,
+            "input_image_bytes": 88769,
+            "input_image_original_bytes": 161229,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 161229,
+                "uploaded_bytes": 88769,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 82,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1591,
+              "raw": {
+                "queue_time": 0.285666607,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.131643472,
+                "completion_tokens": 82,
+                "completion_time": 0.160137853,
+                "total_tokens": 1591,
+                "total_time": 0.291781325
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 1.5619842999149114,
+          "response_parsing_seconds": 0.0005013998597860336,
+          "validation_and_metrics_seconds": 0.000201899791136384,
+          "route_rendering_seconds": 0.45137459971010685,
+          "critic_stage_wall_seconds": 2.2714243000373244,
+          "checkpoint_write_seconds": 0.0007779998704791069
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-12-0-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              12,
+              0,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.54782850159584,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0004094999749213457,
+              "validation_and_metrics_seconds": 0.0001224998850375414,
+              "route_rendering_seconds": 0.25008349982090294,
+              "candidate_processing_wall_seconds": 0.2514304998330772
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-12-0-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              12,
+              0,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.54782850159584,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.189988486468792e-05,
+              "validation_and_metrics_seconds": 7.939990609884262e-05,
+              "route_rendering_seconds": 0.2012910998892039,
+              "candidate_processing_wall_seconds": 0.2020622999407351
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "retain_previous_route_no_valid_candidate",
+        "eligible_candidate_ids": [],
+        "excluded_invalid_candidate_ids": [
+          1,
+          2
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": null,
+        "selection_regret_percent_after_evaluation": null,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 7.129996083676815e-05,
+          "selected_route_rendering_seconds": 0.20906500006094575,
+          "scorer_stage_wall_seconds": 0.20915109990164638
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          21,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          4,
+          18,
+          2,
+          5,
+          15,
+          6,
+          3,
+          22,
+          11,
+          1,
+          9,
+          12,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 26.353286582428108,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 50.03670026963867,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/selected.png",
+          "retained_from_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 2.2714243000373244,
+        "scorer_stage_wall_seconds": 0.20915109990164638,
+        "critic_checkpoint_write_seconds": 0.0007779998704791069,
+        "completion_checkpoint_write_seconds": 0.0009691999293863773,
+        "checkpoint_write_seconds": 0.0017471997998654842,
+        "iteration_processing_wall_seconds": 2.4823225997388363
+      }
+    },
+    {
+      "iteration": 2,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_01/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 2.549047800246626,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3180
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T09:59:16.063519+00:00",
+            "finished_at_utc": "2026-07-28T09:59:17.003657+00:00",
+            "api_call_wall_seconds": 0.9401162001304328,
+            "input_image_count": 1,
+            "input_image_bytes": 85759,
+            "input_image_original_bytes": 160582,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 160582,
+                "uploaded_bytes": 85759,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.402853761,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.108738278,
+                "completion_tokens": 80,
+                "completion_time": 0.15203889,
+                "total_tokens": 1589,
+                "total_time": 0.260777168
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T09:59:17.112786+00:00",
+            "finished_at_utc": "2026-07-28T09:59:18.721739+00:00",
+            "api_call_wall_seconds": 1.6089316001161933,
+            "input_image_count": 1,
+            "input_image_bytes": 85759,
+            "input_image_original_bytes": 160582,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 160582,
+                "uploaded_bytes": 85759,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 82,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1591,
+              "raw": {
+                "queue_time": 1.021331452,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.133316211,
+                "completion_tokens": 82,
+                "completion_time": 0.213194521,
+                "total_tokens": 1591,
+                "total_time": 0.346510732
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 2.549047800246626,
+          "response_parsing_seconds": 0.0003656002227216959,
+          "validation_and_metrics_seconds": 0.0001458998303860426,
+          "route_rendering_seconds": 0.45144969993270934,
+          "critic_stage_wall_seconds": 3.231151699787006,
+          "checkpoint_write_seconds": 0.0008799000643193722
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-12-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              12,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.353286582428108,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 50.03670026963867,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00028970022685825825,
+              "validation_and_metrics_seconds": 6.809993647038937e-05,
+              "route_rendering_seconds": 0.24156860006041825,
+              "candidate_processing_wall_seconds": 0.24270120006985962
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-12-0-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              12,
+              0,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.54782850159584,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 7.589999586343765e-05,
+              "validation_and_metrics_seconds": 7.779989391565323e-05,
+              "route_rendering_seconds": 0.2098810998722911,
+              "candidate_processing_wall_seconds": 0.21059549995698035
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "single_valid_candidate_without_api",
+        "eligible_candidate_ids": [
+          1
+        ],
+        "excluded_invalid_candidate_ids": [
+          2
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.20835789991542697,
+          "scorer_stage_wall_seconds": 0.20838019996881485
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          21,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          4,
+          18,
+          2,
+          5,
+          15,
+          6,
+          3,
+          22,
+          11,
+          1,
+          9,
+          12,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 26.353286582428108,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 50.03670026963867,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 3.231151699787006,
+        "scorer_stage_wall_seconds": 0.20838019996881485,
+        "critic_checkpoint_write_seconds": 0.0008799000643193722,
+        "completion_checkpoint_write_seconds": 0.0011380999349057674,
+        "checkpoint_write_seconds": 0.0020179999992251396,
+        "iteration_processing_wall_seconds": 3.4415498997550458
+      }
+    },
+    {
+      "iteration": 3,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 1.5375818000175059,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3174
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:01:16.592411+00:00",
+            "finished_at_utc": "2026-07-28T10:01:17.383517+00:00",
+            "api_call_wall_seconds": 0.7910331001039594,
+            "input_image_count": 1,
+            "input_image_bytes": 85950,
+            "input_image_original_bytes": 158057,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 158057,
+                "uploaded_bytes": 85950,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 77,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1586,
+              "raw": {
+                "queue_time": 0.163630386,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.130641859,
+                "completion_tokens": 77,
+                "completion_time": 0.193062516,
+                "total_tokens": 1586,
+                "total_time": 0.323704375
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:01:17.497485+00:00",
+            "finished_at_utc": "2026-07-28T10:01:18.244057+00:00",
+            "api_call_wall_seconds": 0.7465486999135464,
+            "input_image_count": 1,
+            "input_image_bytes": 85950,
+            "input_image_original_bytes": 158057,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 158057,
+                "uploaded_bytes": 85950,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 79,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1588,
+              "raw": {
+                "queue_time": 0.160250388,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.129260779,
+                "completion_tokens": 79,
+                "completion_time": 0.200261532,
+                "total_tokens": 1588,
+                "total_time": 0.329522311
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 1.5375818000175059,
+          "response_parsing_seconds": 0.0004181999247521162,
+          "validation_and_metrics_seconds": 0.0002258999738842249,
+          "route_rendering_seconds": 0.4104628001805395,
+          "critic_stage_wall_seconds": 2.197355099953711,
+          "checkpoint_write_seconds": 0.0008310000412166119
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-21-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-9-1-12-10-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              9,
+              1,
+              12,
+              10,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [
+                20
+              ],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 22.033468382555352,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0003364000003784895,
+              "validation_and_metrics_seconds": 0.00011319993063807487,
+              "route_rendering_seconds": 0.208909000037238,
+              "candidate_processing_wall_seconds": 0.20994649990461767
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-18-4-2-5-15-6-3-22-11-9-1-12-0-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              18,
+              4,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              9,
+              1,
+              12,
+              0,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [
+                20
+              ],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 22.073663278075053,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.179992437362671e-05,
+              "validation_and_metrics_seconds": 0.00011270004324615002,
+              "route_rendering_seconds": 0.2015538001433015,
+              "candidate_processing_wall_seconds": 0.20229559997096658
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "retain_previous_route_no_valid_candidate",
+        "eligible_candidate_ids": [],
+        "excluded_invalid_candidate_ids": [
+          1,
+          2
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": null,
+        "selection_regret_percent_after_evaluation": null,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 6.46000262349844e-05,
+          "selected_route_rendering_seconds": 0.20277850003913045,
+          "scorer_stage_wall_seconds": 0.20285859983414412
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          21,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          4,
+          18,
+          2,
+          5,
+          15,
+          6,
+          3,
+          22,
+          11,
+          1,
+          9,
+          12,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 26.353286582428108,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 50.03670026963867,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/selected.png",
+          "retained_from_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_02/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 2.197355099953711,
+        "scorer_stage_wall_seconds": 0.20285859983414412,
+        "critic_checkpoint_write_seconds": 0.0008310000412166119,
+        "completion_checkpoint_write_seconds": 0.0009860999416559935,
+        "checkpoint_write_seconds": 0.0018170999828726053,
+        "iteration_processing_wall_seconds": 2.4020307997707278
+      }
+    },
+    {
+      "iteration": 4,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_03/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 3.6159818000160158,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3174
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:02:10.248742+00:00",
+            "finished_at_utc": "2026-07-28T10:02:11.625139+00:00",
+            "api_call_wall_seconds": 1.3763731999788433,
+            "input_image_count": 1,
+            "input_image_bytes": 85991,
+            "input_image_original_bytes": 161043,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 161043,
+                "uploaded_bytes": 85991,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 76,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1585,
+              "raw": {
+                "queue_time": 0.819346949,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.133668504,
+                "completion_tokens": 76,
+                "completion_time": 0.149090484,
+                "total_tokens": 1585,
+                "total_time": 0.282758988
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:02:11.737085+00:00",
+            "finished_at_utc": "2026-07-28T10:02:13.976712+00:00",
+            "api_call_wall_seconds": 2.2396086000371724,
+            "input_image_count": 1,
+            "input_image_bytes": 85991,
+            "input_image_original_bytes": 161043,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 161043,
+                "uploaded_bytes": 85991,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 1.73196062,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.111692622,
+                "completion_tokens": 80,
+                "completion_time": 0.152283417,
+                "total_tokens": 1589,
+                "total_time": 0.263976039
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 3.6159818000160158,
+          "response_parsing_seconds": 0.0004827999509871006,
+          "validation_and_metrics_seconds": 0.00020880019292235374,
+          "route_rendering_seconds": 0.42582880007103086,
+          "critic_stage_wall_seconds": 4.290177999995649,
+          "checkpoint_write_seconds": 0.0009620999917387962
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-4-18-2-15-5-6-3-22-11-1-9-12-0\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              15,
+              5,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              12,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [
+                20
+              ],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 23.793445040246525,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0004072999581694603,
+              "validation_and_metrics_seconds": 0.00011460017412900925,
+              "route_rendering_seconds": 0.21424130001105368,
+              "candidate_processing_wall_seconds": 0.2152453998569399
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-12-1-9-11-22-3-6-15-5-2-18-4-14-19-16-23-7-17-13-8-24-21-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              12,
+              1,
+              9,
+              11,
+              22,
+              3,
+              6,
+              15,
+              5,
+              2,
+              18,
+              4,
+              14,
+              19,
+              16,
+              23,
+              7,
+              17,
+              13,
+              8,
+              24,
+              21,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.80761938913679,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 52.62334520022833,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 7.54999928176403e-05,
+              "validation_and_metrics_seconds": 9.42000187933445e-05,
+              "route_rendering_seconds": 0.21158750005997717,
+              "candidate_processing_wall_seconds": 0.21239709993824363
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "single_valid_candidate_without_api",
+        "eligible_candidate_ids": [
+          2
+        ],
+        "excluded_invalid_candidate_ids": [
+          1
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": 2,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.2476365000475198,
+          "scorer_stage_wall_seconds": 0.24765919987112284
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          12,
+          1,
+          9,
+          11,
+          22,
+          3,
+          6,
+          15,
+          5,
+          2,
+          18,
+          4,
+          14,
+          19,
+          16,
+          23,
+          7,
+          17,
+          13,
+          8,
+          24,
+          21,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 26.80761938913679,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 52.62334520022833,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 4.290177999995649,
+        "scorer_stage_wall_seconds": 0.24765919987112284,
+        "critic_checkpoint_write_seconds": 0.0009620999917387962,
+        "completion_checkpoint_write_seconds": 0.0012187999673187733,
+        "checkpoint_write_seconds": 0.0021808999590575695,
+        "iteration_processing_wall_seconds": 4.540018099825829
+      }
+    },
+    {
+      "iteration": 5,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_04/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 2.722605599788949,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3178
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:04:29.688767+00:00",
+            "finished_at_utc": "2026-07-28T10:04:30.586101+00:00",
+            "api_call_wall_seconds": 0.8973095999099314,
+            "input_image_count": 1,
+            "input_image_bytes": 86175,
+            "input_image_original_bytes": 157417,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 157417,
+                "uploaded_bytes": 86175,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.19493126,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.120050218,
+                "completion_tokens": 80,
+                "completion_time": 0.15212235,
+                "total_tokens": 1589,
+                "total_time": 0.272172568
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:04:30.693561+00:00",
+            "finished_at_utc": "2026-07-28T10:04:32.518878+00:00",
+            "api_call_wall_seconds": 1.8252959998790175,
+            "input_image_count": 1,
+            "input_image_bytes": 86175,
+            "input_image_original_bytes": 157417,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 157417,
+                "uploaded_bytes": 86175,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 1.287383051,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.134344148,
+                "completion_tokens": 80,
+                "completion_time": 0.15683987,
+                "total_tokens": 1589,
+                "total_time": 0.291184018
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 2.722605599788949,
+          "response_parsing_seconds": 0.0004292998928576708,
+          "validation_and_metrics_seconds": 0.00018870015628635883,
+          "route_rendering_seconds": 0.41172670014202595,
+          "critic_stage_wall_seconds": 3.358481800183654,
+          "checkpoint_write_seconds": 0.0009639998897910118
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-12-9-1-11-22-3-6-15-5-2-18-4-14-19-16-23-7-17-13-8-24-21-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              12,
+              9,
+              1,
+              11,
+              22,
+              3,
+              6,
+              15,
+              5,
+              2,
+              18,
+              4,
+              14,
+              19,
+              16,
+              23,
+              7,
+              17,
+              13,
+              8,
+              24,
+              21,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.098829409828753,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 48.58800375061681,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0003486999776214361,
+              "validation_and_metrics_seconds": 0.0001268000341951847,
+              "route_rendering_seconds": 0.20278459996916354,
+              "candidate_processing_wall_seconds": 0.2038789999205619
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-12-21-13-8-24-17-7-23-16-19-14-4-18-2-15-5-6-3-22-11-1-9-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              12,
+              21,
+              13,
+              8,
+              24,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              15,
+              5,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 27.591165600558536,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 57.08429498358032,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.059991523623466e-05,
+              "validation_and_metrics_seconds": 6.190012209117413e-05,
+              "route_rendering_seconds": 0.2089421001728624,
+              "candidate_processing_wall_seconds": 0.20959889981895685
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2
+        ],
+        "excluded_invalid_candidate_ids": [],
+        "raw_response": "<<image1: 9, image2: 6>>\n<<the best route: image1>>",
+        "scores": {
+          "1": 9.0,
+          "2": 6.0
+        },
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": {
+          "phase": "visual_scorer",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "response_model": "qwen/qwen3.6-27b",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-07-28T10:06:45.728937+00:00",
+          "finished_at_utc": "2026-07-28T10:06:47.685276+00:00",
+          "api_call_wall_seconds": 1.9563198999967426,
+          "input_image_count": 2,
+          "input_image_bytes": 66432,
+          "input_image_original_bytes": 309130,
+          "input_image_max_dimension": 384,
+          "input_images": [
+            {
+              "original_bytes": 150546,
+              "uploaded_bytes": 32866,
+              "original_width": 1800,
+              "original_height": 1800,
+              "uploaded_width": 384,
+              "uploaded_height": 384,
+              "resized_for_upload": true
+            },
+            {
+              "original_bytes": 158584,
+              "uploaded_bytes": 33566,
+              "original_width": 1800,
+              "original_height": 1800,
+              "uploaded_width": 384,
+              "uploaded_height": 384,
+              "resized_for_upload": true
+            }
+          ],
+          "configured_max_completion_tokens": 2048,
+          "max_completion_tokens": 1024,
+          "reasoning_effort": "none",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_token_count": 2750,
+            "candidates_token_count": 23,
+            "thoughts_token_count": null,
+            "cached_content_token_count": null,
+            "total_token_count": 2773,
+            "raw": {
+              "queue_time": 1.43659691,
+              "prompt_tokens": 2750,
+              "prompt_time": 0.238464127,
+              "completion_tokens": 23,
+              "completion_time": 0.045483652,
+              "total_tokens": 2773,
+              "total_time": 0.283947779
+            }
+          }
+        },
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 1.9563198999967426,
+          "response_parsing_seconds": 0.00038180011324584484,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.21104760002344847,
+          "scorer_stage_wall_seconds": 2.3106768000870943
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          12,
+          9,
+          1,
+          11,
+          22,
+          3,
+          6,
+          15,
+          5,
+          2,
+          18,
+          4,
+          14,
+          19,
+          16,
+          23,
+          7,
+          17,
+          13,
+          8,
+          24,
+          21,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 26.098829409828753,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 48.58800375061681,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 3.358481800183654,
+        "scorer_stage_wall_seconds": 2.3106768000870943,
+        "critic_checkpoint_write_seconds": 0.0009639998897910118,
+        "completion_checkpoint_write_seconds": 0.0012729000300168991,
+        "checkpoint_write_seconds": 0.002236899919807911,
+        "iteration_processing_wall_seconds": 5.671395500190556
+      }
+    },
+    {
+      "iteration": 6,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_05/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 1.4165124997962266,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3174
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:08:30.025039+00:00",
+            "finished_at_utc": "2026-07-28T10:08:30.759906+00:00",
+            "api_call_wall_seconds": 0.7348485998809338,
+            "input_image_count": 1,
+            "input_image_bytes": 84958,
+            "input_image_original_bytes": 154155,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 154155,
+                "uploaded_bytes": 84958,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.185685426,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.115459244,
+                "completion_tokens": 80,
+                "completion_time": 0.152344998,
+                "total_tokens": 1589,
+                "total_time": 0.267804242
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:08:30.873248+00:00",
+            "finished_at_utc": "2026-07-28T10:08:31.554928+00:00",
+            "api_call_wall_seconds": 0.6816638999152929,
+            "input_image_count": 1,
+            "input_image_bytes": 84958,
+            "input_image_original_bytes": 154155,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 154155,
+                "uploaded_bytes": 84958,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 76,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1585,
+              "raw": {
+                "queue_time": 0.177470461,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.133634713,
+                "completion_tokens": 76,
+                "completion_time": 0.148868693,
+                "total_tokens": 1585,
+                "total_time": 0.282503406
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 1.4165124997962266,
+          "response_parsing_seconds": 0.000493000028654933,
+          "validation_and_metrics_seconds": 0.00021079974249005318,
+          "route_rendering_seconds": 0.4360081998165697,
+          "critic_stage_wall_seconds": 2.094261599937454,
+          "checkpoint_write_seconds": 0.0010927999392151833
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-12-24-8-13-17-7-23-16-19-14-18-4-2-5-15-6-3-22-11-1-9-21-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              12,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              18,
+              4,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              21,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 25.302372250377555,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 44.05354829526324,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0003690000157803297,
+              "validation_and_metrics_seconds": 8.269981481134892e-05,
+              "route_rendering_seconds": 0.22248819982632995,
+              "candidate_processing_wall_seconds": 0.22349209990352392
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-12-21-24-8-13-17-7-23-16-19-14-18-4-2-5-15-6-3-22-11-1-9-0\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              12,
+              21,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              18,
+              4,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [
+                20
+              ],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 20.09959919495988,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00012400001287460327,
+              "validation_and_metrics_seconds": 0.00012809992767870426,
+              "route_rendering_seconds": 0.21351999999023974,
+              "candidate_processing_wall_seconds": 0.21427759993821383
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "single_valid_candidate_without_api",
+        "eligible_candidate_ids": [
+          1
+        ],
+        "excluded_invalid_candidate_ids": [
+          2
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.22496100002899766,
+          "scorer_stage_wall_seconds": 0.22498370008543134
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          12,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          18,
+          4,
+          2,
+          5,
+          15,
+          6,
+          3,
+          22,
+          11,
+          1,
+          9,
+          21,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 25.302372250377555,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 44.05354829526324,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 2.094261599937454,
+        "scorer_stage_wall_seconds": 0.22498370008543134,
+        "critic_checkpoint_write_seconds": 0.0010927999392151833,
+        "completion_checkpoint_write_seconds": 0.0012145000509917736,
+        "checkpoint_write_seconds": 0.002307299990206957,
+        "iteration_processing_wall_seconds": 2.321552600013092
+      }
+    },
+    {
+      "iteration": 7,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_06/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 3.3275041999295354,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3180
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:09:47.492572+00:00",
+            "finished_at_utc": "2026-07-28T10:09:49.637565+00:00",
+            "api_call_wall_seconds": 2.144974400056526,
+            "input_image_count": 1,
+            "input_image_bytes": 84221,
+            "input_image_original_bytes": 156684,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 156684,
+                "uploaded_bytes": 84221,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 82,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1591,
+              "raw": {
+                "queue_time": 1.578755897,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.134648287,
+                "completion_tokens": 82,
+                "completion_time": 0.160671141,
+                "total_tokens": 1591,
+                "total_time": 0.295319428
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:09:49.745709+00:00",
+            "finished_at_utc": "2026-07-28T10:09:50.928282+00:00",
+            "api_call_wall_seconds": 1.1825297998730093,
+            "input_image_count": 1,
+            "input_image_bytes": 84221,
+            "input_image_original_bytes": 156684,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 156684,
+                "uploaded_bytes": 84221,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.6590236,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.135052729,
+                "completion_tokens": 80,
+                "completion_time": 0.157034928,
+                "total_tokens": 1589,
+                "total_time": 0.292087657
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 3.3275041999295354,
+          "response_parsing_seconds": 0.00044550024904310703,
+          "validation_and_metrics_seconds": 0.0001813999842852354,
+          "route_rendering_seconds": 0.41400910005904734,
+          "critic_stage_wall_seconds": 3.9859096999280155,
+          "checkpoint_write_seconds": 0.0012397000100463629
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-21-20-15-5-2-18-4-14-19-16-23-7-17-13-8-24-12-10-0-1-9-3-6-22-11-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              21,
+              20,
+              15,
+              5,
+              2,
+              18,
+              4,
+              14,
+              19,
+              16,
+              23,
+              7,
+              17,
+              13,
+              8,
+              24,
+              12,
+              10,
+              0,
+              1,
+              9,
+              3,
+              6,
+              22,
+              11,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.649175357776834,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00031940010376274586,
+              "validation_and_metrics_seconds": 6.38000201433897e-05,
+              "route_rendering_seconds": 0.21140379994176328,
+              "candidate_processing_wall_seconds": 0.21251929993741214
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-21-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              12,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              21,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 25.30348154814084,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 44.05986384059378,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00012610014528036118,
+              "validation_and_metrics_seconds": 0.0001175999641418457,
+              "route_rendering_seconds": 0.20260530011728406,
+              "candidate_processing_wall_seconds": 0.20338600012473762
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "single_valid_candidate_without_api",
+        "eligible_candidate_ids": [
+          2
+        ],
+        "excluded_invalid_candidate_ids": [
+          1
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": 2,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.20933460001833737,
+          "scorer_stage_wall_seconds": 0.2093582998495549
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          12,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          4,
+          18,
+          2,
+          5,
+          15,
+          6,
+          3,
+          22,
+          11,
+          1,
+          9,
+          21,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 25.30348154814084,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 44.05986384059378,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 3.9859096999280155,
+        "scorer_stage_wall_seconds": 0.2093582998495549,
+        "critic_checkpoint_write_seconds": 0.0012397000100463629,
+        "completion_checkpoint_write_seconds": 0.001330000115558505,
+        "checkpoint_write_seconds": 0.002569700125604868,
+        "iteration_processing_wall_seconds": 4.197837699903175
+      }
+    },
+    {
+      "iteration": 8,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_07/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 1.946898699970916,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3177
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:10:57.321241+00:00",
+            "finished_at_utc": "2026-07-28T10:10:58.454379+00:00",
+            "api_call_wall_seconds": 1.1331187000032514,
+            "input_image_count": 1,
+            "input_image_bytes": 84284,
+            "input_image_original_bytes": 156114,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 156114,
+                "uploaded_bytes": 84284,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.55367665,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.134820147,
+                "completion_tokens": 80,
+                "completion_time": 0.156489414,
+                "total_tokens": 1589,
+                "total_time": 0.291309561
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:10:58.565467+00:00",
+            "finished_at_utc": "2026-07-28T10:10:59.379270+00:00",
+            "api_call_wall_seconds": 0.8137799999676645,
+            "input_image_count": 1,
+            "input_image_bytes": 84284,
+            "input_image_original_bytes": 156114,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 156114,
+                "uploaded_bytes": 84284,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 79,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1588,
+              "raw": {
+                "queue_time": 0.30349362,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.118236352,
+                "completion_tokens": 79,
+                "completion_time": 0.15039049,
+                "total_tokens": 1588,
+                "total_time": 0.268626842
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 1.946898699970916,
+          "response_parsing_seconds": 0.00035619991831481457,
+          "validation_and_metrics_seconds": 0.00012740003876388073,
+          "route_rendering_seconds": 0.42729120003059506,
+          "critic_stage_wall_seconds": 2.6099913001526147,
+          "checkpoint_write_seconds": 0.0014299999456852674
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-10-21-20-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              12,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              5,
+              15,
+              6,
+              3,
+              22,
+              11,
+              1,
+              9,
+              10,
+              21,
+              20,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 25.35750729770289,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 44.36744768477695,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00028709997422993183,
+              "validation_and_metrics_seconds": 6.220000796020031e-05,
+              "route_rendering_seconds": 0.21604269999079406,
+              "candidate_processing_wall_seconds": 0.21680509997531772
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-1-9-11-22-3-6-15-5-2-18-4-14-19-16-23-7-17-13-8-24-12-0-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              1,
+              9,
+              11,
+              22,
+              3,
+              6,
+              15,
+              5,
+              2,
+              18,
+              4,
+              14,
+              19,
+              16,
+              23,
+              7,
+              17,
+              13,
+              8,
+              24,
+              12,
+              0,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [
+                20
+              ],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 21.295562517888328,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 6.909994408488274e-05,
+              "validation_and_metrics_seconds": 6.520003080368042e-05,
+              "route_rendering_seconds": 0.211248500039801,
+              "candidate_processing_wall_seconds": 0.21210099989548326
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "single_valid_candidate_without_api",
+        "eligible_candidate_ids": [
+          1
+        ],
+        "excluded_invalid_candidate_ids": [
+          2
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.21746530011296272,
+          "scorer_stage_wall_seconds": 0.21749280020594597
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          12,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          4,
+          18,
+          2,
+          5,
+          15,
+          6,
+          3,
+          22,
+          11,
+          1,
+          9,
+          10,
+          21,
+          20,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 25.35750729770289,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 44.36744768477695,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 2.6099913001526147,
+        "scorer_stage_wall_seconds": 0.21749280020594597,
+        "critic_checkpoint_write_seconds": 0.0014299999456852674,
+        "completion_checkpoint_write_seconds": 0.001431700075045228,
+        "checkpoint_write_seconds": 0.0028617000207304955,
+        "iteration_processing_wall_seconds": 2.830345800379291
+      }
+    },
+    {
+      "iteration": 9,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_08/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 2.6580737999174744,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3180
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:12:32.867254+00:00",
+            "finished_at_utc": "2026-07-28T10:12:34.829120+00:00",
+            "api_call_wall_seconds": 1.9618478999473155,
+            "input_image_count": 1,
+            "input_image_bytes": 82792,
+            "input_image_original_bytes": 152936,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 152936,
+                "uploaded_bytes": 82792,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 82,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1591,
+              "raw": {
+                "queue_time": 1.403818035,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.124087385,
+                "completion_tokens": 82,
+                "completion_time": 0.156073678,
+                "total_tokens": 1591,
+                "total_time": 0.280161063
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:12:34.938422+00:00",
+            "finished_at_utc": "2026-07-28T10:12:35.634677+00:00",
+            "api_call_wall_seconds": 0.6962258999701589,
+            "input_image_count": 1,
+            "input_image_bytes": 82792,
+            "input_image_original_bytes": 152936,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 152936,
+                "uploaded_bytes": 82792,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.165370536,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.130288017,
+                "completion_tokens": 80,
+                "completion_time": 0.156596727,
+                "total_tokens": 1589,
+                "total_time": 0.286884744
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 2.6580737999174744,
+          "response_parsing_seconds": 0.0004493999294936657,
+          "validation_and_metrics_seconds": 0.0001471000723540783,
+          "route_rendering_seconds": 0.41755189979448915,
+          "critic_stage_wall_seconds": 3.3030663998797536,
+          "checkpoint_write_seconds": 0.0015946999192237854
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-1-9-11-15-5-2-4-18-14-19-16-23-7-17-13-8-24-12-10-0-21-20-3-22-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              1,
+              9,
+              11,
+              15,
+              5,
+              2,
+              4,
+              18,
+              14,
+              19,
+              16,
+              23,
+              7,
+              17,
+              13,
+              8,
+              24,
+              12,
+              10,
+              0,
+              21,
+              20,
+              3,
+              22,
+              6,
+              0
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [
+                0
+              ],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 26.928022705199687,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00037679984234273434,
+              "validation_and_metrics_seconds": 7.730000652372837e-05,
+              "route_rendering_seconds": 0.20960019994527102,
+              "candidate_processing_wall_seconds": 0.21066079987213016
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-12-24-8-13-17-7-23-16-19-14-4-18-2-15-6-3-22-1-11-9-20-5-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              12,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              4,
+              18,
+              2,
+              15,
+              6,
+              3,
+              22,
+              1,
+              11,
+              9,
+              20,
+              5,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 25.099489959491414,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 42.898482137860384,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 7.260008715093136e-05,
+              "validation_and_metrics_seconds": 6.980006583034992e-05,
+              "route_rendering_seconds": 0.20795169984921813,
+              "candidate_processing_wall_seconds": 0.20866989996284246
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": null,
+        "selection_mode": "single_valid_candidate_without_api",
+        "eligible_candidate_ids": [
+          2
+        ],
+        "excluded_invalid_candidate_ids": [
+          1
+        ],
+        "raw_response": null,
+        "scores": {},
+        "best_candidate_id": 2,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": null,
+        "attempt_count": 0,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.0,
+          "response_parsing_seconds": 0.0,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.20316089992411435,
+          "scorer_stage_wall_seconds": 0.20318289985880256
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          21,
+          12,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          4,
+          18,
+          2,
+          15,
+          6,
+          3,
+          22,
+          1,
+          11,
+          9,
+          20,
+          5,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 25.099489959491414,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 42.898482137860384,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 3.3030663998797536,
+        "scorer_stage_wall_seconds": 0.20318289985880256,
+        "critic_checkpoint_write_seconds": 0.0015946999192237854,
+        "completion_checkpoint_write_seconds": 0.0015622000209987164,
+        "checkpoint_write_seconds": 0.0031568999402225018,
+        "iteration_processing_wall_seconds": 3.5094061996787786
+      }
+    },
+    {
+      "iteration": 10,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "independent_calls",
+        "requested_candidate_count": 2,
+        "returned_candidate_count": 2,
+        "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_09/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "temperature": 0.7,
+          "success": true,
+          "strategy": "independent_calls",
+          "http_request_count": 2,
+          "api_call_wall_seconds": 1.4436359000392258,
+          "requested_candidate_count": 2,
+          "returned_candidate_count": 2,
+          "usage": {
+            "total_token_count": 3178
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation_01",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:14:19.767463+00:00",
+            "finished_at_utc": "2026-07-28T10:14:20.495852+00:00",
+            "api_call_wall_seconds": 0.7283658999949694,
+            "input_image_count": 1,
+            "input_image_bytes": 79900,
+            "input_image_original_bytes": 150968,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 150968,
+                "uploaded_bytes": 79900,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.18223988,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.111743877,
+                "completion_tokens": 80,
+                "completion_time": 0.152093415,
+                "total_tokens": 1589,
+                "total_time": 0.263837292
+              }
+            }
+          },
+          {
+            "phase": "critic_candidate_generation_02",
+            "provider": "groq",
+            "model": "qwen/qwen3.6-27b",
+            "response_model": "qwen/qwen3.6-27b",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-07-28T10:14:20.603382+00:00",
+            "finished_at_utc": "2026-07-28T10:14:21.318671+00:00",
+            "api_call_wall_seconds": 0.7152700000442564,
+            "input_image_count": 1,
+            "input_image_bytes": 79900,
+            "input_image_original_bytes": 150968,
+            "input_image_max_dimension": 768,
+            "input_images": [
+              {
+                "original_bytes": 150968,
+                "uploaded_bytes": 79900,
+                "original_width": 1800,
+                "original_height": 1800,
+                "uploaded_width": 768,
+                "uploaded_height": 768,
+                "resized_for_upload": true
+              }
+            ],
+            "configured_max_completion_tokens": 4096,
+            "max_completion_tokens": 1024,
+            "reasoning_effort": "none",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_token_count": 1509,
+              "candidates_token_count": 80,
+              "thoughts_token_count": null,
+              "cached_content_token_count": null,
+              "total_token_count": 1589,
+              "raw": {
+                "queue_time": 0.197147269,
+                "prompt_tokens": 1509,
+                "prompt_time": 0.118574889,
+                "completion_tokens": 80,
+                "completion_time": 0.152522645,
+                "total_tokens": 1589,
+                "total_time": 0.271097534
+              }
+            }
+          }
+        ],
+        "timing": {
+          "api_call_wall_seconds": 1.4436359000392258,
+          "response_parsing_seconds": 0.00040689995512366295,
+          "validation_and_metrics_seconds": 0.00015419977717101574,
+          "route_rendering_seconds": 0.42234960035420954,
+          "critic_stage_wall_seconds": 2.1061762999743223,
+          "checkpoint_write_seconds": 0.0014407997950911522
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-12-24-8-13-17-7-23-16-19-14-18-4-2-15-6-3-22-1-11-20-5-9-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              12,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              18,
+              4,
+              2,
+              15,
+              6,
+              3,
+              22,
+              1,
+              11,
+              20,
+              5,
+              9,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 24.652418262657992,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 40.353176755663355,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_10/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0003206999972462654,
+              "validation_and_metrics_seconds": 6.939982995390892e-05,
+              "route_rendering_seconds": 0.21851710020564497,
+              "candidate_processing_wall_seconds": 0.2194870999082923
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-10-21-12-24-8-13-17-7-23-16-19-14-18-4-2-15-6-3-22-1-9-5-20-11-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              0,
+              10,
+              21,
+              12,
+              24,
+              8,
+              13,
+              17,
+              7,
+              23,
+              16,
+              19,
+              14,
+              18,
+              4,
+              2,
+              15,
+              6,
+              3,
+              22,
+              1,
+              9,
+              5,
+              20,
+              11,
+              0
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 25.362204575424425,
+            "reference_distance": 17.564560227642477,
+            "gap_to_reference_percent": 44.39419061292689,
+            "artifacts": {
+              "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_10/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.619995787739754e-05,
+              "validation_and_metrics_seconds": 8.479994721710682e-05,
+              "route_rendering_seconds": 0.20383250014856458,
+              "candidate_processing_wall_seconds": 0.20447039999999106
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2
+        ],
+        "excluded_invalid_candidate_ids": [],
+        "raw_response": "<<image1: 8, image2: 9>>\n<<the best route: image2>>",
+        "scores": {
+          "1": 8.0,
+          "2": 9.0
+        },
+        "best_candidate_id": 2,
+        "selection_regret_percent_after_evaluation": 2.8791751997879023,
+        "api_call": {
+          "phase": "visual_scorer",
+          "provider": "groq",
+          "model": "qwen/qwen3.6-27b",
+          "response_model": "qwen/qwen3.6-27b",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-07-28T10:15:51.441756+00:00",
+          "finished_at_utc": "2026-07-28T10:15:52.193839+00:00",
+          "api_call_wall_seconds": 0.7520670001395047,
+          "input_image_count": 2,
+          "input_image_bytes": 61661,
+          "input_image_original_bytes": 283403,
+          "input_image_max_dimension": 384,
+          "input_images": [
+            {
+              "original_bytes": 139814,
+              "uploaded_bytes": 30451,
+              "original_width": 1800,
+              "original_height": 1800,
+              "uploaded_width": 384,
+              "uploaded_height": 384,
+              "resized_for_upload": true
+            },
+            {
+              "original_bytes": 143589,
+              "uploaded_bytes": 31210,
+              "original_width": 1800,
+              "original_height": 1800,
+              "uploaded_width": 384,
+              "uploaded_height": 384,
+              "resized_for_upload": true
+            }
+          ],
+          "configured_max_completion_tokens": 2048,
+          "max_completion_tokens": 1024,
+          "reasoning_effort": "none",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_token_count": 2750,
+            "candidates_token_count": 23,
+            "thoughts_token_count": null,
+            "cached_content_token_count": null,
+            "total_token_count": 2773,
+            "raw": {
+              "queue_time": 0.208450348,
+              "prompt_tokens": 2750,
+              "prompt_time": 0.238097136,
+              "completion_tokens": 23,
+              "completion_time": 0.045440143,
+              "total_tokens": 2773,
+              "total_time": 0.283537279
+            }
+          }
+        },
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 0.7520670001395047,
+          "response_parsing_seconds": 0.00035830005072057247,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.3195634000003338,
+          "scorer_stage_wall_seconds": 1.2488076000008732
+        }
+      },
+      "selected_solution": {
+        "route": [
+          0,
+          10,
+          21,
+          12,
+          24,
+          8,
+          13,
+          17,
+          7,
+          23,
+          16,
+          19,
+          14,
+          18,
+          4,
+          2,
+          15,
+          6,
+          3,
+          22,
+          1,
+          9,
+          5,
+          20,
+          11,
+          0
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 25.362204575424425,
+        "reference_distance": 17.564560227642477,
+        "gap_to_reference_percent": 44.39419061292689,
+        "artifacts": {
+          "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent1/images/iteration_10/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 2.1061762999743223,
+        "scorer_stage_wall_seconds": 1.2488076000008732,
+        "critic_checkpoint_write_seconds": 0.0014407997950911522,
+        "completion_checkpoint_write_seconds": 0.0018331001047044992,
+        "checkpoint_write_seconds": 0.0032738998997956514,
+        "iteration_processing_wall_seconds": 3.358257799874991
+      }
+    }
+  ],
+  "pending_iteration": null,
+  "final_solution": {
+    "source": "scorer_selection",
+    "iteration": 10,
+    "route": [
+      0,
+      10,
+      21,
+      12,
+      24,
+      8,
+      13,
+      17,
+      7,
+      23,
+      16,
+      19,
+      14,
+      18,
+      4,
+      2,
+      15,
+      6,
+      3,
+      22,
+      1,
+      9,
+      5,
+      20,
+      11,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 25.362204575424425,
+    "reference_distance": 17.564560227642477,
+    "gap_to_reference_percent": 44.39419061292689
+  },
+  "best_valid_solution": {
+    "source": "scorer_selection",
+    "iteration": 9,
+    "route": [
+      0,
+      10,
+      21,
+      12,
+      24,
+      8,
+      13,
+      17,
+      7,
+      23,
+      16,
+      19,
+      14,
+      4,
+      18,
+      2,
+      15,
+      6,
+      3,
+      22,
+      1,
+      11,
+      9,
+      20,
+      5,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 25.099489959491414,
+    "reference_distance": 17.564560227642477,
+    "gap_to_reference_percent": 42.898482137860384
+  },
+  "best_critic_candidate_oracle": {
+    "source": "critic_candidate_oracle",
+    "iteration": 10,
+    "candidate_id": 1,
+    "route": [
+      0,
+      10,
+      21,
+      12,
+      24,
+      8,
+      13,
+      17,
+      7,
+      23,
+      16,
+      19,
+      14,
+      18,
+      4,
+      2,
+      15,
+      6,
+      3,
+      22,
+      1,
+      11,
+      20,
+      5,
+      9,
+      0
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 24.652418262657992,
+    "reference_distance": 17.564560227642477,
+    "gap_to_reference_percent": 40.353176755663355
+  },
+  "errors": [
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7557, Requested 5070. Please try again in 34.7025s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "visual_scorer",
+      "iteration": 5,
+      "status_code": 429,
+      "api_call": {
+        "phase": "visual_scorer",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.0,
+        "success": false,
+        "started_at_utc": "2026-07-28T10:04:33.075267+00:00",
+        "finished_at_utc": "2026-07-28T10:04:33.282304+00:00",
+        "api_call_wall_seconds": 0.2070248001255095,
+        "input_image_count": 2,
+        "input_image_bytes": 66432,
+        "input_image_original_bytes": 309130,
+        "input_image_max_dimension": 384,
+        "input_images": [
+          {
+            "original_bytes": 150546,
+            "uploaded_bytes": 32866,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 384,
+            "uploaded_height": 384,
+            "resized_for_upload": true
+          },
+          {
+            "original_bytes": 158584,
+            "uploaded_bytes": 33566,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 384,
+            "uploaded_height": 384,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 2048,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "failed_stage_wall_seconds": 0.3470904999412596
+    },
+    {
+      "type": "GroqAPIError",
+      "message": "Groq HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.6-27b` in organization `org_01kxxg7wk6fyevj1f6r90bgmcf` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7703, Requested 5070. Please try again in 35.7975s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "phase": "visual_scorer",
+      "iteration": 10,
+      "status_code": 429,
+      "api_call": {
+        "phase": "visual_scorer",
+        "provider": "groq",
+        "model": "qwen/qwen3.6-27b",
+        "temperature": 0.0,
+        "success": false,
+        "started_at_utc": "2026-07-28T10:14:21.907435+00:00",
+        "finished_at_utc": "2026-07-28T10:14:22.115508+00:00",
+        "api_call_wall_seconds": 0.2080727000720799,
+        "input_image_count": 2,
+        "input_image_bytes": 61661,
+        "input_image_original_bytes": 283403,
+        "input_image_max_dimension": 384,
+        "input_images": [
+          {
+            "original_bytes": 139814,
+            "uploaded_bytes": 30451,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 384,
+            "uploaded_height": 384,
+            "resized_for_upload": true
+          },
+          {
+            "original_bytes": 143589,
+            "uploaded_bytes": 31210,
+            "original_width": 1800,
+            "original_height": 1800,
+            "uploaded_width": 384,
+            "uploaded_height": 384,
+            "resized_for_upload": true
+          }
+        ],
+        "configured_max_completion_tokens": 2048,
+        "max_completion_tokens": 1024,
+        "reasoning_effort": "none",
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "raw": {}
+        }
+      },
+      "failed_stage_wall_seconds": 0.36915850010700524
+    }
+  ],
+  "run_summary": {
+    "api_call_count": 24,
+    "successful_api_call_count": 22,
+    "failed_api_call_count": 2,
+    "total_api_call_wall_seconds": 25.903310799971223,
+    "total_token_count": 37323,
+    "manifest_and_input_loading_seconds": 0.0014511998742818832,
+    "accumulated_completed_iteration_wall_seconds": 34.75471699913032,
+    "current_invocation_wall_seconds_before_result_write": 1.276005599880591
+  }
+}

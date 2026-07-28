@@ -9,7 +9,11 @@ from typing import Any
 from src.analysis import build_analysis
 from src.core import normalize_run_id, write_json
 from src.run_manifest import load_run_problem
-from src.terminal_report import compact_text, render_table
+from src.terminal_report import (
+    compact_text,
+    render_summary,
+    render_table,
+)
 
 
 ROOT = Path(__file__).resolve().parent
@@ -29,14 +33,6 @@ def parse_args() -> argparse.Namespace:
         help="Dört yöntem tamamlanmamışsa dosya yazmadan hata verir.",
     )
     return parser.parse_args()
-
-
-def _value(value: Any) -> str:
-    if value is None:
-        return "-"
-    if isinstance(value, float):
-        return f"{value:.4f}"
-    return str(value)
 
 
 def _status(value: Any) -> str:
@@ -59,10 +55,48 @@ def _method_name(value: str) -> str:
 
 def _selection_name(value: Any) -> str:
     return {
-        "visual_scorer_after_feasibility_filter": "görsel scorer",
-        "single_valid_candidate_without_api": "tek geçerli aday",
-        "retain_previous_route_no_valid_candidate": "önceki rota",
-    }.get(str(value), compact_text(value, maximum=18))
+        "visual_scorer_after_feasibility_filter": "scorer",
+        "single_valid_candidate_without_api": "tek aday",
+        "retain_previous_route_no_valid_candidate": "fallback",
+    }.get(str(value), compact_text(value, maximum=14))
+
+
+def _selection_label(item: dict[str, Any]) -> str:
+    name = _selection_name(item.get("selection_mode"))
+    candidate_id = item.get("selected_candidate_id")
+    if candidate_id is None:
+        return name
+    return f"{name} (#{candidate_id})"
+
+
+def _percent_count(
+    numerator: int,
+    denominator: int,
+) -> str:
+    if denominator == 0:
+        return "-"
+    return (
+        f"{numerator}/{denominator} "
+        f"(%{100.0 * numerator / denominator:.1f})"
+    )
+
+
+def _improvement_percent(
+    initial_distance: Any,
+    final_distance: Any,
+) -> str | None:
+    if (
+        initial_distance is None
+        or final_distance is None
+        or float(initial_distance) == 0
+    ):
+        return None
+    value = (
+        100.0
+        * (float(initial_distance) - float(final_distance))
+        / float(initial_distance)
+    )
+    return f"%{value:.4f}"
 
 
 def _print_method_table(analysis: dict[str, Any]) -> None:
@@ -148,7 +182,6 @@ def _print_iterations(analysis: dict[str, Any]) -> None:
                     f"{label} — Multi-Agent 2 iterasyonları",
                     [
                         "İter.",
-                        "Durum",
                         "Geçerli",
                         "Mesafe",
                         "Gap %",
@@ -156,8 +189,49 @@ def _print_iterations(analysis: dict[str, Any]) -> None:
                         "Toplam sn",
                         "Token",
                     ],
-                    ma2_rows,
-                    right_align={0, 3, 4, 5, 6, 7},
+                    [
+                        [
+                            row[0],
+                            row[2],
+                            row[3],
+                            row[4],
+                            row[5],
+                            row[6],
+                            row[7],
+                        ]
+                        for row in ma2_rows
+                    ],
+                    right_align={0, 2, 3, 4, 5, 6},
+                )
+            )
+            initializer = ma2.get("initializer") or {}
+            best = ma2.get("best_valid_solution") or {}
+            final = ma2.get("final_solution") or {}
+            print(
+                render_summary(
+                    [
+                        (
+                            "geçerli iterasyon",
+                            _percent_count(
+                                int(
+                                    ma2.get(
+                                        "valid_iteration_count"
+                                    )
+                                    or 0
+                                ),
+                                len(ma2_rows),
+                            ),
+                        ),
+                        ("en iyi mesafe", best.get("distance")),
+                        ("son mesafe", final.get("distance")),
+                        (
+                            "başlangıca göre iyileşme",
+                            _improvement_percent(
+                                initializer.get("distance"),
+                                best.get("distance"),
+                            ),
+                        ),
+                    ]
                 )
             )
 
@@ -169,12 +243,10 @@ def _print_iterations(analysis: dict[str, Any]) -> None:
                     f"{item['valid_candidate_count']}/"
                     f"{item['returned_candidate_count']}"
                 ),
-                _selection_name(item["selection_mode"]),
-                item["selected_candidate_id"],
+                _selection_label(item),
                 item["selected_distance"],
                 item["best_valid_candidate_distance"],
                 item["selection_regret_percent"],
-                item["selected_best_valid_candidate"],
                 item["timing_seconds"]["total"],
             ]
             for item in ma1.get("iterations", [])
@@ -185,42 +257,70 @@ def _print_iterations(analysis: dict[str, Any]) -> None:
                     f"{label} — Multi-Agent 1 iterasyonları",
                     [
                         "İter.",
-                        "Geçerli aday",
+                        "Geçerli",
                         "Seçim",
-                        "Aday",
                         "Seçilen",
-                        "En iyi aday",
+                        "En iyi",
                         "Regret %",
-                        "Doğru seçim",
-                        "Toplam sn",
+                        "Süre sn",
                     ],
                     ma1_rows,
-                    right_align={0, 3, 4, 5, 6, 8},
+                    right_align={0, 3, 4, 5, 6},
                     max_widths={2: 18},
                 )
             )
+            iterations = ma1.get("iterations", [])
+            fallback_count = sum(
+                item.get("selection_mode")
+                == "retain_previous_route_no_valid_candidate"
+                for item in iterations
+            )
+            scorer_count = int(
+                ma1.get("scorer_evaluated_iteration_count")
+                or 0
+            )
+            scorer_best = int(
+                ma1.get(
+                    "scorer_best_candidate_selection_count"
+                )
+                or 0
+            )
+            best_system = ma1.get("best_valid_solution") or {}
             print(
-                render_table(
-                    f"{label} — scorer performansı",
-                    [
-                        "Değerlendirilen",
-                        "En kısa aday seçimi",
-                        "Başarı %",
-                    ],
+                render_summary(
                     [
                         [
-                            ma1.get(
-                                "scorer_evaluated_iteration_count"
+                            "geçerli aday",
+                            _percent_count(
+                                int(
+                                    ma1.get(
+                                        "valid_candidate_count"
+                                    )
+                                    or 0
+                                ),
+                                int(
+                                    ma1.get(
+                                        "total_candidate_count"
+                                    )
+                                    or 0
+                                ),
                             ),
-                            ma1.get(
-                                "scorer_best_candidate_selection_count"
+                        ],
+                        ["scorer çağrısı", scorer_count],
+                        [
+                            "en kısa seçimi",
+                            _percent_count(
+                                scorer_best,
+                                scorer_count,
                             ),
-                            ma1.get(
-                                "scorer_best_candidate_selection_rate_percent"
-                            ),
-                        ]
+                        ],
+                        ["fallback", fallback_count],
+                        [
+                            "en iyi sistem mesafesi",
+                            best_system.get("distance"),
+                        ],
                     ],
-                    right_align={0, 1, 2},
+                    fields_per_line=3,
                 )
             )
 
@@ -229,35 +329,41 @@ def _print_errors(analysis: dict[str, Any]) -> None:
     rows: list[list[Any]] = []
     for model in analysis.get("provider_models", []):
         for method_name, section in model["methods"].items():
-            for error in section.get("errors", []):
-                rows.append(
-                    [
-                        model["provider"],
-                        model["model_alias"],
-                        _method_name(method_name),
-                        error.get("iteration"),
-                        error.get("error_type"),
-                        compact_text(
-                            error.get("message"),
-                            maximum=56,
-                        ),
-                    ]
-                )
+            errors = section.get("errors", [])
+            if not errors:
+                continue
+            last_error = errors[-1]
+            recovered = section.get("status") == "completed"
+            rows.append(
+                [
+                    model["provider"],
+                    model["model_alias"],
+                    _method_name(method_name),
+                    "aşıldı" if recovered else "çözülmedi",
+                    len(errors),
+                    last_error.get("error_type"),
+                    compact_text(
+                        last_error.get("message"),
+                        maximum=42,
+                    ),
+                ]
+            )
     if rows:
         print(
             render_table(
-                "Kaydedilmiş API ve deney hataları",
+                "Hata özeti (ayrıntılar analiz JSON'unda)",
                 [
                     "Provider",
                     "Model",
                     "Yöntem",
-                    "İter.",
+                    "Durum",
+                    "Adet",
                     "Hata",
-                    "Mesaj",
+                    "Son mesaj",
                 ],
                 rows,
-                right_align={3},
-                max_widths={1: 24, 5: 56},
+                right_align={4},
+                max_widths={1: 24, 6: 42},
             )
         )
 

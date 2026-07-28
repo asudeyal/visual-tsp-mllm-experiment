@@ -1,0 +1,148 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_visual_zero_shot_tsp",
+  "run_id": "random25_run_01",
+  "method": "zero_shot",
+  "problem": {
+    "name": "random_n25_seed42",
+    "dimension": 25,
+    "depot_id": 0,
+    "source_type": "random",
+    "fingerprint_sha256": "fef8c0c196b445a04330bd53fd1534404bcf12d016d102fb69eed4127659a75b",
+    "reference_type": "or_tools_heuristic",
+    "reference_is_proven_optimal": false
+  },
+  "model": {
+    "provider": "groq",
+    "alias": "qwen/qwen3.6-27b",
+    "requested_name": "qwen/qwen3.6-27b",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": false,
+      "max_images_per_request": 5,
+      "max_native_choices": 1
+    },
+    "inference_settings": {
+      "reasoning_effort": "none",
+      "route_max_completion_tokens": 1024,
+      "scorer_max_completion_tokens": 1024
+    },
+    "temperature": 0.0
+  },
+  "model_input": {
+    "image": "baseline/images/points.png",
+    "coordinates_sent_to_model": false,
+    "prompt": "Inspect the provided image and find a short route for one salesman.\n\nProblem information:\n- Problem name: random_n25_seed42\n- The image contains exactly 25 nodes labelled 0 through 24.\n- Node 0, marked with a black square, is the depot.\n\nImportant rules:\n- Start at the depot, visit every non-depot node exactly once, and return to the depot.\n- The required non-depot node IDs are: 1 through 24.\n- Do not omit, repeat, invent, or renumber nodes.\n- Minimize crossings and total route length.\n- Use only visual information from the image; coordinates are not provided.\n\nOutput exactly one route and no explanation:\n<<start>>\nSalesman1: Depot-1-2-3-Depot\n<<end>>\n\nThe displayed route is only a format example. Replace its order with every required\nnon-depot node. The word Depot means node 0."
+  },
+  "errors": [],
+  "raw_response": "<<start>>\nSalesman1: Depot-10-21-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-12-20-Depot\n<<end>>",
+  "route": [
+    0,
+    10,
+    21,
+    24,
+    8,
+    13,
+    17,
+    7,
+    23,
+    16,
+    19,
+    14,
+    4,
+    18,
+    2,
+    5,
+    15,
+    6,
+    3,
+    22,
+    11,
+    1,
+    9,
+    12,
+    20,
+    0
+  ],
+  "validation": {
+    "is_valid": true,
+    "starts_at_depot": true,
+    "ends_at_depot": true,
+    "missing_nodes": [],
+    "repeated_nodes": [],
+    "unexpected_nodes": []
+  },
+  "legal_node_ids": true,
+  "distance": 26.353286582428108,
+  "reference_distance": 17.564560227642477,
+  "gap_to_reference_percent": 50.03670026963867,
+  "gap_to_known_optimum_percent": 50.03670026963867,
+  "artifacts": {
+    "route_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png"
+  },
+  "api_calls": [
+    {
+      "phase": "route_generation",
+      "provider": "groq",
+      "model": "qwen/qwen3.6-27b",
+      "response_model": "qwen/qwen3.6-27b",
+      "temperature": 0.0,
+      "success": true,
+      "started_at_utc": "2026-07-28T08:48:30.144668+00:00",
+      "finished_at_utc": "2026-07-28T08:48:31.126373+00:00",
+      "api_call_wall_seconds": 0.9816789999604225,
+      "input_image_count": 1,
+      "input_image_bytes": 33301,
+      "input_image_original_bytes": 55046,
+      "input_image_max_dimension": 768,
+      "input_images": [
+        {
+          "original_bytes": 55046,
+          "uploaded_bytes": 33301,
+          "original_width": 1800,
+          "original_height": 1800,
+          "uploaded_width": 768,
+          "uploaded_height": 768,
+          "resized_for_upload": true
+        }
+      ],
+      "configured_max_completion_tokens": 4096,
+      "max_completion_tokens": 1024,
+      "reasoning_effort": "none",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_token_count": 1503,
+        "candidates_token_count": 80,
+        "thoughts_token_count": null,
+        "cached_content_token_count": null,
+        "total_token_count": 1583,
+        "raw": {
+          "queue_time": 0.549208128,
+          "prompt_tokens": 1503,
+          "prompt_time": 0.12949113,
+          "completion_tokens": 80,
+          "completion_time": 0.15982476,
+          "total_tokens": 1583,
+          "total_time": 0.28931589
+        }
+      }
+    }
+  ],
+  "timing": {
+    "manifest_and_input_loading_seconds": 0.0009783999994397163,
+    "prompt_preparation_seconds": 3.700004890561104e-05,
+    "api_call_wall_seconds": 0.9816789999604225,
+    "response_parsing_seconds": 0.00045449985191226006,
+    "validation_and_metrics_seconds": 0.00018449989147484303,
+    "route_rendering_seconds": 0.3990134000778198,
+    "total_wall_seconds_before_result_write": 1.5498059000819921
+  },
+  "run_summary": {
+    "api_call_count": 1,
+    "successful_api_call_count": 1,
+    "failed_api_call_count": 0,
+    "total_api_call_wall_seconds": 0.9816789999604225,
+    "total_token_count": 1583
+  }
+}
