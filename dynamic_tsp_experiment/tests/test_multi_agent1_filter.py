@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-import run_gemini_multi_agent1 as ma1
+import run_multi_agent1 as ma1
 from src.core import evaluate_route
 from src.problem_loader import generate_random_problem
 
@@ -38,9 +38,13 @@ def _pending(candidates: list[dict]) -> dict:
     }
 
 
+class _NoScorerProvider:
+    def request_scorer(self, *args, **kwargs):
+        pytest.fail("Bu senaryoda scorer API çağrılmamalı.")
+
+
 def test_single_valid_candidate_avoids_scorer_api(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     problem = generate_random_problem(
         num_nodes=4,
@@ -67,18 +71,10 @@ def test_single_valid_candidate_avoids_scorer_api(
             route_image="multi_agent1/images/candidate_2.png",
         ),
     ]
-    monkeypatch.setattr(
-        ma1,
-        "request_scorer",
-        lambda *args, **kwargs: pytest.fail(
-            "Tek geçerli adayda scorer API çağrılmamalı."
-        ),
-    )
-
     completed, error = ma1._finish_scorer(
         _pending(candidates),
         problem=problem,
-        model="test-model",
+        provider=_NoScorerProvider(),
         output=output,
         run_dir=run_dir,
         fallback_route=valid_route,
@@ -97,7 +93,6 @@ def test_single_valid_candidate_avoids_scorer_api(
 
 def test_no_valid_candidate_retains_previous_route(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     problem = generate_random_problem(
         num_nodes=4,
@@ -117,18 +112,10 @@ def test_no_valid_candidate_retains_previous_route(
             route_image="multi_agent1/images/candidate_1.png",
         )
     ]
-    monkeypatch.setattr(
-        ma1,
-        "request_scorer",
-        lambda *args, **kwargs: pytest.fail(
-            "Geçerli aday yokken scorer API çağrılmamalı."
-        ),
-    )
-
     completed, error = ma1._finish_scorer(
         _pending(candidates),
         problem=problem,
-        model="test-model",
+        provider=_NoScorerProvider(),
         output=output,
         run_dir=run_dir,
         fallback_route=fallback_route,
@@ -190,17 +177,18 @@ def test_scorer_receives_only_valid_candidate_ids(
             "usage": {"total_token_count": 10},
         }
 
-    def fake_request(paths, *, problem, image_ids, model):
+    def fake_request(paths, *, problem, image_ids):
         captured["ids"] = image_ids
         captured["problem"] = problem
         return Response()
 
-    monkeypatch.setattr(ma1, "request_scorer", fake_request)
+    class FakeProvider:
+        request_scorer = staticmethod(fake_request)
 
     completed, error = ma1._finish_scorer(
         _pending(candidates),
         problem=problem,
-        model="test-model",
+        provider=FakeProvider(),
         output=output,
         run_dir=run_dir,
         fallback_route=routes[0],
@@ -220,6 +208,7 @@ def test_checkpoint_validates_problem_fingerprint() -> None:
         "run_id": "run",
         "model": "model",
         "candidate_count_requested": 7,
+        "candidate_strategy": "native_multiple_choices",
         "problem_fingerprint_sha256": "old",
     }
     with pytest.raises(ValueError, match="fingerprint"):
@@ -228,5 +217,6 @@ def test_checkpoint_validates_problem_fingerprint() -> None:
             run_id="run",
             model="model",
             candidate_count=7,
+            candidate_strategy="native_multiple_choices",
             fingerprint="new",
         )

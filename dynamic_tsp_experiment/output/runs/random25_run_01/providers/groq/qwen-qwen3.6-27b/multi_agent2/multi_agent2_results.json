@@ -34,10 +34,10 @@
   "completed_iterations": 10,
   "artificial_delay_enabled": false,
   "initializer": {
-    "source": "zero_shot",
+    "source": "providers/gemini/gemini-2.5-flash/zero_shot",
     "iteration": 0,
-    "source_file": "providers/groq/qwen-qwen3.6-27b/zero_shot/zero_shot_results.json",
-    "route_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png",
+    "source_file": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/zero_shot_results.json",
+    "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
     "route": [
       0,
       10,
@@ -85,7 +85,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
       "raw_response": "<<start>>\nSalesman1: Depot-21-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-12-0-10-20-24-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -177,7 +177,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": null,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_01.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_01.png"
       },
       "timing": {
         "prompt_preparation_seconds": 4.9999915063381195e-05,
@@ -194,7 +194,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_01.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_01.png",
       "raw_response": "<<start>>\nSalesman1: Depot-10-12-13-8-24-20-5-15-6-3-22-11-1-9-21-7-17-23-16-19-14-4-18-2-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -283,7 +283,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 65.13973388264864,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_02.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_02.png"
       },
       "timing": {
         "prompt_preparation_seconds": 4.8999907448887825e-05,
@@ -300,7 +300,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_02.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_02.png",
       "raw_response": "<<start>>\nSalesman1: Depot-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-21-20-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -389,7 +389,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 44.05986384059378,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_03.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_03.png"
       },
       "timing": {
         "prompt_preparation_seconds": 1.9700033590197563e-05,
@@ -406,7 +406,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_03.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_03.png",
       "raw_response": "<<start>>\nSalesman1: Depot-20-21-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-6-3-22-11-1-9-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -495,7 +495,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 39.56454754311543,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_04.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_04.png"
       },
       "timing": {
         "prompt_preparation_seconds": 1.9799917936325073e-05,
@@ -512,7 +512,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_04.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_04.png",
       "raw_response": "<<start>>\nSalesman1: Depot-21-10-12-24-13-17-7-23-16-19-14-18-4-8-2-3-6-15-5-11-1-9-20-22-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -601,7 +601,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 93.48422007557328,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_05.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_05.png"
       },
       "timing": {
         "prompt_preparation_seconds": 3.269989974796772e-05,
@@ -618,7 +618,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_05.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_05.png",
       "raw_response": "<<start>>\nSalesman1: Depot-21-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-11-1-9-22-3-6-20-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -707,7 +707,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 29.332025800571305,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_06.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_06.png"
       },
       "timing": {
         "prompt_preparation_seconds": 2.100015990436077e-05,
@@ -724,7 +724,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_06.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_06.png",
       "raw_response": "<<start>>\nSalesman1: Depot-21-10-12-24-8-13-17-7-23-16-19-14-4-18-2-5-15-11-1-9-22-3-6-20-7-17-13-8-24-12-10-0\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -828,7 +828,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": null,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_07.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_07.png"
       },
       "timing": {
         "prompt_preparation_seconds": 2.2300053387880325e-05,
@@ -845,7 +845,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_07.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_07.png",
       "raw_response": "<<start>>\nSalesman1: Depot-8-24-13-17-7-23-16-19-14-4-18-2-5-15-11-1-9-22-3-6-20-21-10-12-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -934,7 +934,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 47.345344215808794,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_08.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_08.png"
       },
       "timing": {
         "prompt_preparation_seconds": 5.91999851167202e-05,
@@ -951,7 +951,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_08.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_08.png",
       "raw_response": "<<start>>\nSalesman1: Depot-8-24-6-21-10-12-7-17-13-23-16-19-14-4-18-2-5-15-11-1-9-22-3-20-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -1040,7 +1040,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": 80.3824347608726,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_09.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_09.png"
       },
       "timing": {
         "prompt_preparation_seconds": 3.3499905839562416e-05,
@@ -1057,7 +1057,7 @@
       "iteration_type": "critic_route_revision",
       "status": "completed",
       "temperature": 0.7,
-      "input_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_09.png",
+      "input_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_09.png",
       "raw_response": "<<start>>\nSalesman1: Depot-21-6-20-5-15-11-22-1-9-12-10-0-24-13-17-7-23-16-19-14-4-18-2-Depot\n<<end>>",
       "api_call": {
         "phase": "critic_route_revision",
@@ -1150,7 +1150,7 @@
       "reference_distance": 17.564560227642477,
       "gap_to_reference_percent": null,
       "artifacts": {
-        "route_image": "providers/groq/qwen-qwen3.6-27b/multi_agent2/images/iteration_10.png"
+        "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/multi_agent2/images/iteration_10.png"
       },
       "timing": {
         "prompt_preparation_seconds": 2.3899832740426064e-05,

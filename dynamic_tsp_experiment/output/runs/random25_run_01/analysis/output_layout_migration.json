@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "status": "applied",
+  "applied_at_utc": "2026-07-28T11:35:57.105382+00:00",
+  "run_id": "random25_run_01",
+  "moves": [
+    {
+      "source": "zero_shot",
+      "target": "providers/gemini/gemini-2.5-flash/zero_shot"
+    },
+    {
+      "source": "multi_agent1",
+      "target": "providers/gemini/gemini-2.5-flash/multi_agent1"
+    },
+    {
+      "source": "multi_agent2",
+      "target": "providers/gemini/gemini-2.5-flash/multi_agent2"
+    },
+    {
+      "source": "model_comparisons/openrouter/gemma-4-26b-a4b-it/zero_shot_results.json",
+      "target": "providers/openrouter/gemma-4-26b-a4b-it/zero_shot/zero_shot_results.json"
+    },
+    {
+      "source": "model_comparisons/openrouter/gemma-4-26b-a4b-it/images",
+      "target": "providers/openrouter/gemma-4-26b-a4b-it/zero_shot/images"
+    },
+    {
+      "source": "model_comparisons/openrouter/gemma-4-26b-a4b-it/multi_agent2",
+      "target": "providers/openrouter/gemma-4-26b-a4b-it/multi_agent2"
+    },
+    {
+      "source": "model_comparisons/openrouter/gemma-4-31b-it/zero_shot_results.json",
+      "target": "providers/openrouter/gemma-4-31b-it/zero_shot/zero_shot_results.json"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-3-nano-omni/zero_shot_results.json",
+      "target": "providers/openrouter/nemotron-3-nano-omni/zero_shot/zero_shot_results.json"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-3-nano-omni/images",
+      "target": "providers/openrouter/nemotron-3-nano-omni/zero_shot/images"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-3-nano-omni/multi_agent1",
+      "target": "providers/openrouter/nemotron-3-nano-omni/multi_agent1"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-3-nano-omni/multi_agent2",
+      "target": "providers/openrouter/nemotron-3-nano-omni/multi_agent2"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-nano-12b-v2-vl/zero_shot_results.json",
+      "target": "providers/openrouter/nemotron-nano-12b-v2-vl/zero_shot/zero_shot_results.json"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-nano-12b-v2-vl/images",
+      "target": "providers/openrouter/nemotron-nano-12b-v2-vl/zero_shot/images"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-nano-12b-v2-vl/multi_agent1",
+      "target": "providers/openrouter/nemotron-nano-12b-v2-vl/multi_agent1"
+    },
+    {
+      "source": "model_comparisons/openrouter/nemotron-nano-12b-v2-vl/multi_agent2",
+      "target": "providers/openrouter/nemotron-nano-12b-v2-vl/multi_agent2"
+    },
+    {
+      "source": "model_comparisons/openrouter/openrouter_model_comparison.json",
+      "target": "analysis/legacy_openrouter/openrouter_model_comparison.json"
+    }
+  ],
+  "json_rewrite": {
+    "changed_file_count": 25,
+    "changed_path_value_count": 481
+  }
+}

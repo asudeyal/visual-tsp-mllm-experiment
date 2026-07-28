@@ -1,0 +1,107 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_visual_zero_shot_tsp",
+  "run_id": "random25_run_01",
+  "method": "providers/gemini/gemini-2.5-flash/zero_shot",
+  "problem": {
+    "name": "random_n25_seed42",
+    "dimension": 25,
+    "depot_id": 0,
+    "source_type": "random",
+    "fingerprint_sha256": "fef8c0c196b445a04330bd53fd1534404bcf12d016d102fb69eed4127659a75b",
+    "reference_type": "or_tools_heuristic",
+    "reference_is_proven_optimal": false
+  },
+  "model": {
+    "provider": "google_gemini",
+    "name": "gemini-2.5-flash",
+    "temperature": 0.0
+  },
+  "model_input": {
+    "image": "baseline/images/points.png",
+    "coordinates_sent_to_model": false,
+    "prompt": "Inspect the provided image and find a short route for one salesman.\n\nProblem information:\n- Problem name: random_n25_seed42\n- The image contains exactly 25 nodes labelled 0 through 24.\n- Node 0, marked with a black square, is the depot.\n\nImportant rules:\n- Start at the depot, visit every non-depot node exactly once, and return to the depot.\n- The required non-depot node IDs are: 1 through 24.\n- Do not omit, repeat, invent, or renumber nodes.\n- Minimize crossings and total route length.\n- Use only visual information from the image; coordinates are not provided.\n\nOutput exactly one route and no explanation:\n<<start>>\nSalesman1: Depot-1-2-3-Depot\n<<end>>\n\nThe displayed route is only a format example. Replace its order with every required\nnon-depot node. The word Depot means node 0."
+  },
+  "errors": [],
+  "raw_response": "Salesman1: Depot-9-1-22-3-6-15-11-5-2-14-19-20-16-23-7-17-13-8-24-12-10-21-4-18-Depot",
+  "route": [
+    0,
+    9,
+    1,
+    22,
+    3,
+    6,
+    15,
+    11,
+    5,
+    2,
+    14,
+    19,
+    20,
+    16,
+    23,
+    7,
+    17,
+    13,
+    8,
+    24,
+    12,
+    10,
+    21,
+    4,
+    18,
+    0
+  ],
+  "validation": {
+    "is_valid": true,
+    "starts_at_depot": true,
+    "ends_at_depot": true,
+    "missing_nodes": [],
+    "repeated_nodes": [],
+    "unexpected_nodes": []
+  },
+  "legal_node_ids": true,
+  "distance": 26.039795902767526,
+  "reference_distance": 17.564560227642477,
+  "gap_to_reference_percent": 48.2519093292585,
+  "gap_to_known_optimum_percent": 48.2519093292585,
+  "artifacts": {
+    "route_image": "providers/gemini/gemini-2.5-flash/zero_shot/images/route.png"
+  },
+  "api_calls": [
+    {
+      "phase": "route_generation",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.0,
+      "success": true,
+      "started_at_utc": "2026-07-27T20:26:13.656860+00:00",
+      "finished_at_utc": "2026-07-27T20:26:26.020939+00:00",
+      "api_call_wall_seconds": 12.362203000113368,
+      "input_image_count": 1,
+      "input_image_bytes": 55046,
+      "usage": {
+        "prompt_token_count": 472,
+        "candidates_token_count": 71,
+        "thoughts_token_count": 1659,
+        "cached_content_token_count": null,
+        "total_token_count": 2202
+      }
+    }
+  ],
+  "timing": {
+    "manifest_and_input_loading_seconds": 0.013225100003182888,
+    "prompt_preparation_seconds": 2.5499844923615456e-05,
+    "api_call_wall_seconds": 12.362203000113368,
+    "response_parsing_seconds": 0.00027190009132027626,
+    "validation_and_metrics_seconds": 7.459986954927444e-05,
+    "route_rendering_seconds": 0.23577890009619296,
+    "total_wall_seconds_before_result_write": 14.535311399959028
+  },
+  "run_summary": {
+    "api_call_count": 1,
+    "successful_api_call_count": 1,
+    "failed_api_call_count": 0,
+    "total_api_call_wall_seconds": 12.362203000113368,
+    "total_token_count": 2202
+  }
+}

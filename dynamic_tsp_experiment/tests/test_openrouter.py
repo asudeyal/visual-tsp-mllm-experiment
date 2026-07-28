@@ -1,14 +1,8 @@
-import json
 from pathlib import Path
 
 import pytest
 
 import src.openrouter as openrouter
-from run_openrouter_zero_shot import (
-    build_comparison,
-    is_ascending_node_id_route,
-    output_format_compliant,
-)
 from src.openrouter import (
     OPENROUTER_MODELS,
     OpenRouterAPIError,
@@ -19,72 +13,6 @@ from src.openrouter import (
     request_candidates,
     resolve_model_alias,
 )
-
-
-def _manifest() -> dict:
-    return {
-        "run_id": "random25_run_01",
-        "problem": {
-            "name": "random_n25_seed42",
-            "dimension": 25,
-            "depot_id": 0,
-            "fingerprint_sha256": "same-problem",
-            "reference": {
-                "type": "or_tools_heuristic",
-                "distance": 17.5,
-                "is_proven_optimal": False,
-            },
-        },
-    }
-
-
-def _write_result(
-    run_dir: Path,
-    alias: str,
-    *,
-    valid: bool,
-    distance: float,
-) -> None:
-    path = (
-        run_dir
-        / "model_comparisons"
-        / "openrouter"
-        / alias
-        / "zero_shot_results.json"
-    )
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(
-            {
-                "problem": {
-                    "fingerprint_sha256": "same-problem"
-                },
-                "validation": {
-                    "is_valid": valid,
-                    "missing_nodes": [] if valid else [3],
-                    "repeated_nodes": [],
-                    "unexpected_nodes": [],
-                },
-                "distance": distance,
-                "gap_to_reference_percent": (
-                    10.0 if valid else None
-                ),
-                "api_calls": [
-                    {
-                        "api_call_wall_seconds": 2.0,
-                        "finish_reason": "stop",
-                        "usage": {
-                            "total_token_count": 100,
-                            "cost": 0.0,
-                        },
-                    }
-                ],
-                "errors": [],
-                "raw_response": "route",
-            }
-        ),
-        encoding="utf-8",
-    )
 
 
 def test_registered_models_are_fixed_openrouter_ids() -> None:
@@ -235,31 +163,6 @@ def test_independent_candidate_strategy_returns_requested_count(
     assert result.api_call["usage"]["total_token_count"] == 36.0
 
 
-def test_output_format_compliance_rejects_extra_commentary() -> None:
-    exact = (
-        "<<start>>\n"
-        "Salesman1: Depot-1-2-Depot\n"
-        "<<end>>"
-    )
-    assert output_format_compliant(exact)
-    assert not output_format_compliant(
-        exact + "\nI will reconsider the route."
-    )
-
-
-def test_ascending_node_route_is_detected() -> None:
-    assert is_ascending_node_id_route(
-        [0, 1, 2, 3, 0],
-        node_ids=[0, 1, 2, 3],
-        depot_id=0,
-    )
-    assert not is_ascending_node_id_route(
-        [0, 2, 1, 3, 0],
-        node_ids=[0, 1, 2, 3],
-        depot_id=0,
-    )
-
-
 def test_openrouter_usage_is_normalized() -> None:
     usage = normalize_usage(
         {
@@ -282,100 +185,3 @@ def test_openrouter_usage_is_normalized() -> None:
     assert usage["thoughts_token_count"] == 4
     assert usage["cached_content_token_count"] == 2
     assert usage["cost"] == 0.001
-
-
-def test_comparison_ranks_only_valid_routes(
-    tmp_path: Path,
-) -> None:
-    run_dir = tmp_path / "runs" / "random25_run_01"
-    _write_result(
-        run_dir,
-        "gemma-4-26b-a4b-it",
-        valid=True,
-        distance=22.0,
-    )
-    _write_result(
-        run_dir,
-        "gemma-4-31b-it",
-        valid=True,
-        distance=20.0,
-    )
-    _write_result(
-        run_dir,
-        "nemotron-3-nano-omni",
-        valid=False,
-        distance=18.0,
-    )
-
-    comparison = build_comparison(
-        run_dir=run_dir,
-        manifest=_manifest(),
-    )
-
-    assert comparison["counts"]["valid_route_count"] == 2
-    assert comparison["best_valid_model"]["alias"] == (
-        "gemma-4-31b-it"
-    )
-    assert [
-        row["alias"]
-        for row in comparison["ranking_by_valid_distance"]
-    ] == [
-        "gemma-4-31b-it",
-        "gemma-4-26b-a4b-it",
-    ]
-
-
-def test_equal_best_distances_are_reported_as_tie(
-    tmp_path: Path,
-) -> None:
-    run_dir = tmp_path / "runs" / "random25_run_01"
-    _write_result(
-        run_dir,
-        "nemotron-3-nano-omni",
-        valid=True,
-        distance=61.0,
-    )
-    _write_result(
-        run_dir,
-        "nemotron-nano-12b-v2-vl",
-        valid=True,
-        distance=61.0,
-    )
-
-    comparison = build_comparison(
-        run_dir=run_dir,
-        manifest=_manifest(),
-    )
-
-    assert comparison["best_distance_is_tied"]
-    assert len(
-        comparison["best_valid_models_at_same_distance"]
-    ) == 2
-
-
-def test_comparison_rejects_different_problem(
-    tmp_path: Path,
-) -> None:
-    run_dir = tmp_path / "runs" / "random25_run_01"
-    _write_result(
-        run_dir,
-        "gemma-4-31b-it",
-        valid=True,
-        distance=20.0,
-    )
-    path = (
-        run_dir
-        / "model_comparisons"
-        / "openrouter"
-        / "gemma-4-31b-it"
-        / "zero_shot_results.json"
-    )
-    value = json.loads(path.read_text(encoding="utf-8"))
-    value["problem"]["fingerprint_sha256"] = "other"
-    path.write_text(json.dumps(value), encoding="utf-8")
-
-    with pytest.raises(ValueError, match="farklı probleme"):
-        build_comparison(
-            run_dir=run_dir,
-            manifest=_manifest(),
-        )

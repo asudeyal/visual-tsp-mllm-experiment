@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "status": "applied",
+  "applied_at_utc": "2026-07-28T11:37:13.824560+00:00",
+  "run_id": "eil51_run_02",
+  "moves": [
+    {
+      "source": "zero_shot",
+      "target": "providers/gemini/gemini-2.5-flash/zero_shot"
+    },
+    {
+      "source": "multi_agent1",
+      "target": "providers/gemini/gemini-2.5-flash/multi_agent1"
+    },
+    {
+      "source": "multi_agent2",
+      "target": "providers/gemini/gemini-2.5-flash/multi_agent2"
+    }
+  ],
+  "json_rewrite": {
+    "changed_file_count": 6,
+    "changed_path_value_count": 239
+  }
+}

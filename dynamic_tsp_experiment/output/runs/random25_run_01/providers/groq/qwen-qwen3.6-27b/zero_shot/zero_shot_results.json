@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "experiment": "dynamic_unified_visual_zero_shot_tsp",
   "run_id": "random25_run_01",
-  "method": "zero_shot",
+  "method": "providers/gemini/gemini-2.5-flash/zero_shot",
   "problem": {
     "name": "random_n25_seed42",
     "dimension": 25,
@@ -79,7 +79,7 @@
   "gap_to_reference_percent": 50.03670026963867,
   "gap_to_known_optimum_percent": 50.03670026963867,
   "artifacts": {
-    "route_image": "providers/groq/qwen-qwen3.6-27b/zero_shot/images/route.png"
+    "route_image": "providers/groq/qwen-qwen3.6-27b/providers/gemini/gemini-2.5-flash/zero_shot/images/route.png"
   },
   "api_calls": [
     {
