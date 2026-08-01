@@ -341,22 +341,33 @@ class GroqProvider(ProviderAdapter):
     @property
     def model_metadata(self) -> dict[str, Any]:
         metadata = super().model_metadata
-        settings, effective_max_tokens = _model_request_settings(
-            self.resolved_model,
-            max_tokens=GROQ_ROUTE_MAX_COMPLETION_TOKENS,
+
+        settings, effective_max_tokens = (
+            _model_request_settings(
+                self.resolved_model,
+                max_tokens=(
+                    GROQ_ROUTE_MAX_COMPLETION_TOKENS
+                ),
+            )
         )
+
         metadata["inference_settings"] = {
             "reasoning_effort": settings.get(
                 "reasoning_effort"
             ),
-            "route_max_completion_tokens": effective_max_tokens,
+            "route_max_completion_tokens": (
+                effective_max_tokens
+            ),
             "scorer_max_completion_tokens": (
                 _model_request_settings(
                     self.resolved_model,
-                    max_tokens=GROQ_SCORER_MAX_COMPLETION_TOKENS,
+                    max_tokens=(
+                        GROQ_SCORER_MAX_COMPLETION_TOKENS
+                    ),
                 )[1]
             ),
         }
+
         return metadata
 
     def request_route(
@@ -367,14 +378,19 @@ class GroqProvider(ProviderAdapter):
         temperature: float,
         phase: str,
     ) -> ProviderTextResult:
-        return _request(
-            [image_path],
-            image_ids=None,
-            prompt=prompt,
-            model=self.resolved_model,
-            temperature=temperature,
-            max_tokens=GROQ_ROUTE_MAX_COMPLETION_TOKENS,
-            phase=phase,
+        return self._execute_request(
+            lambda: _request(
+                [image_path],
+                image_ids=None,
+                prompt=prompt,
+                model=self.resolved_model,
+                temperature=temperature,
+                max_tokens=(
+                    GROQ_ROUTE_MAX_COMPLETION_TOKENS
+                ),
+                phase=phase,
+            ),
+            label=f"groq:{phase}",
         )
 
     def request_candidates(
@@ -386,57 +402,95 @@ class GroqProvider(ProviderAdapter):
         temperature: float,
         strategy: str,
     ) -> ProviderCandidatesResult:
-        self.validate_candidate_count(candidate_count)
+        self.validate_candidate_count(
+            candidate_count
+        )
+
         if strategy == "auto":
             strategy = "independent_calls"
+
         if strategy != "independent_calls":
             raise ValueError(
-                "Groq Chat Completions API yalnız n=1 desteklediği "
-                "için independent_calls kullanılmalıdır."
+                "Groq Chat Completions API yalnız n=1 "
+                "desteklediği için independent_calls "
+                "kullanılmalıdır."
             )
+
         texts: list[str] = []
         calls: list[dict[str, Any]] = []
-        for candidate_id in range(1, candidate_count + 1):
+
+        for candidate_id in range(
+            1,
+            candidate_count + 1,
+        ):
+            label = (
+                "groq:"
+                "critic_candidate_generation_"
+                f"{candidate_id:02d}"
+            )
+
             try:
-                response = _request(
-                    [image_path],
-                    image_ids=None,
-                    prompt=critic_prompt(problem),
-                    model=self.resolved_model,
-                    temperature=temperature,
-                    max_tokens=GROQ_ROUTE_MAX_COMPLETION_TOKENS,
-                    phase=(
-                        "critic_candidate_generation_"
-                        f"{candidate_id:02d}"
+                response = self._execute_request(
+                    lambda: _request(
+                        [image_path],
+                        image_ids=None,
+                        prompt=critic_prompt(problem),
+                        model=self.resolved_model,
+                        temperature=temperature,
+                        max_tokens=(
+                            GROQ_ROUTE_MAX_COMPLETION_TOKENS
+                        ),
+                        phase=(
+                            "critic_candidate_generation_"
+                            f"{candidate_id:02d}"
+                        ),
                     ),
+                    label=label,
                 )
             except Exception as exc:
+                failed_records = getattr(
+                    exc,
+                    "provider_call_records",
+                    None,
+                )
+
+                if not isinstance(
+                    failed_records,
+                    list,
+                ):
+                    single_record = getattr(
+                        exc,
+                        "provider_call_record",
+                        None,
+                    )
+                    failed_records = (
+                        [single_record]
+                        if isinstance(
+                            single_record,
+                            dict,
+                        )
+                        else []
+                    )
+
                 try:
                     setattr(
                         exc,
                         "provider_call_records",
                         [
                             *calls,
-                            *(
-                                [exc.provider_call_record]
-                                if isinstance(
-                                    getattr(
-                                        exc,
-                                        "provider_call_record",
-                                        None,
-                                    ),
-                                    dict,
-                                )
-                                else []
-                            ),
+                            *failed_records,
                         ],
                     )
                 except Exception:
                     pass
+
                 raise
+
             texts.append(response.text)
             calls.append(response.api_call)
+
         summary = summarize_api_calls(calls)
+
         aggregate = {
             "phase": "critic_candidate_generation",
             "provider": self.provider_id,
@@ -448,13 +502,22 @@ class GroqProvider(ProviderAdapter):
             "api_call_wall_seconds": summary[
                 "total_api_call_wall_seconds"
             ],
-            "requested_candidate_count": candidate_count,
+            "requested_candidate_count": (
+                candidate_count
+            ),
             "returned_candidate_count": len(texts),
             "usage": {
-                "total_token_count": summary["total_token_count"],
+                "total_token_count": summary[
+                    "total_token_count"
+                ],
             },
         }
-        return ProviderCandidatesResult(texts, aggregate, calls)
+
+        return ProviderCandidatesResult(
+            texts,
+            aggregate,
+            calls,
+        )
 
     def request_scorer(
         self,
@@ -463,13 +526,24 @@ class GroqProvider(ProviderAdapter):
         problem: ProblemInstance,
         image_ids: Sequence[int],
     ) -> ProviderTextResult:
-        self.validate_candidate_count(len(image_paths))
-        return _request(
-            image_paths,
-            image_ids=image_ids,
-            prompt=scorer_prompt(problem, image_ids),
-            model=self.resolved_model,
-            temperature=0.0,
-            max_tokens=GROQ_SCORER_MAX_COMPLETION_TOKENS,
-            phase="visual_scorer",
+        self.validate_candidate_count(
+            len(image_paths)
+        )
+
+        return self._execute_request(
+            lambda: _request(
+                image_paths,
+                image_ids=image_ids,
+                prompt=scorer_prompt(
+                    problem,
+                    image_ids,
+                ),
+                model=self.resolved_model,
+                temperature=0.0,
+                max_tokens=(
+                    GROQ_SCORER_MAX_COMPLETION_TOKENS
+                ),
+                phase="visual_scorer",
+            ),
+            label="groq:visual_scorer",
         )
