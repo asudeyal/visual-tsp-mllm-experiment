@@ -29,7 +29,10 @@ def add_problem_arguments(
         "--instance",
         dest="tsplib_file",
         type=Path,
-        help="NODE_COORD_SECTION içeren EUC_2D TSPLIB problem dosyası.",
+        help=(
+            "NODE_COORD_SECTION içeren EUC_2D veya GEO TSPLIB "
+            "problem dosyası."
+        ),
     )
     parser.add_argument(
         "--optimal-tour-file",

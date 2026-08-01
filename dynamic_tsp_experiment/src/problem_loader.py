@@ -16,7 +16,14 @@ from src.problem_instance import (
 )
 
 
-SUPPORTED_TSPLIB_EDGE_WEIGHT_TYPES = frozenset({"EUC_2D"})
+SUPPORTED_TSPLIB_EDGE_WEIGHT_TYPES = frozenset(
+    {
+        "EUC_2D",
+        "GEO",
+    }
+)
+
+TSPLIB_GEO_EARTH_RADIUS_KM = 6378.388
 
 
 def euc_2d_distance(
@@ -34,11 +41,82 @@ def euc_2d_distance(
     )
 
 
+def geo_coordinate_to_radians(value: float) -> float:
+    """TSPLIB DDD.MM koordinatını radyana dönüştürür."""
+
+    degrees = int(value)
+    minutes = value - degrees
+    decimal_degrees = degrees + (5.0 * minutes / 3.0)
+    return math.pi * decimal_degrees / 180.0
+
+
+def geo_distance(
+    first: tuple[float, float],
+    second: tuple[float, float],
+) -> int:
+    """TSPLIB GEO kuralıyla iki koordinat arasındaki mesafeyi hesaplar."""
+
+    first_latitude = geo_coordinate_to_radians(first[0])
+    first_longitude = geo_coordinate_to_radians(first[1])
+    second_latitude = geo_coordinate_to_radians(second[0])
+    second_longitude = geo_coordinate_to_radians(second[1])
+
+    longitude_term = math.cos(
+        first_longitude - second_longitude
+    )
+    latitude_difference_term = math.cos(
+        first_latitude - second_latitude
+    )
+    latitude_sum_term = math.cos(
+        first_latitude + second_latitude
+    )
+    acos_argument = 0.5 * (
+        (1.0 + longitude_term) * latitude_difference_term
+        - (1.0 - longitude_term) * latitude_sum_term
+    )
+
+    # Kayan nokta hataları acos aralığını çok küçük miktarda
+    # aşabildiği için değer güvenli biçimde [-1, 1] aralığına alınır.
+    bounded_argument = max(-1.0, min(1.0, acos_argument))
+
+    return int(
+        TSPLIB_GEO_EARTH_RADIUS_KM
+        * math.acos(bounded_argument)
+        + 1.0
+    )
+
+
+def tsplib_edge_distance(
+    edge_weight_type: str,
+    first: tuple[float, float],
+    second: tuple[float, float],
+) -> int:
+    """Desteklenen TSPLIB türü için tek kenar mesafesini döndürür."""
+
+    normalized_type = edge_weight_type.strip().upper()
+
+    if normalized_type == "EUC_2D":
+        return euc_2d_distance(first, second)
+
+    if normalized_type == "GEO":
+        return geo_distance(first, second)
+
+    supported = ", ".join(
+        sorted(SUPPORTED_TSPLIB_EDGE_WEIGHT_TYPES)
+    )
+    raise ValueError(
+        f"EDGE_WEIGHT_TYPE={normalized_type or 'EMPTY'} "
+        f"desteklenmiyor. Desteklenen türler: {supported}."
+    )
+
+
 def tsplib_route_distance(
     coordinates: dict[int, tuple[float, float]],
     route: tuple[int, ...] | list[int],
+    *,
+    edge_weight_type: str = "EUC_2D",
 ) -> int:
-    """Kapalı bir TSPLIB rotasının EUC_2D toplam mesafesini hesaplar."""
+    """Kapalı bir TSPLIB rotasının toplam mesafesini hesaplar."""
 
     if len(route) < 3:
         raise ValueError(
@@ -53,7 +131,8 @@ def tsplib_route_distance(
         )
 
     return sum(
-        euc_2d_distance(
+        tsplib_edge_distance(
+            edge_weight_type,
             coordinates[first],
             coordinates[second],
         )
@@ -212,7 +291,7 @@ def load_tsplib_problem(
     optimal_tour_file: Path | None = None,
     depot_id: int | None = None,
 ) -> ProblemInstance:
-    """NODE_COORD_SECTION içeren bir EUC_2D TSPLIB problemini yükler."""
+    """Koordinat tabanlı, desteklenen bir TSPLIB problemini yükler."""
 
     instance_file = Path(instance_file)
 
@@ -290,6 +369,7 @@ def load_tsplib_problem(
                 tsplib_route_distance(
                     coordinates,
                     route,
+                    edge_weight_type=edge_weight_type,
                 )
             ),
             is_proven_optimal=True,
