@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +13,11 @@ from src.core import (
     plot_route,
     read_json,
     write_json,
+)
+from src.experiment_observability import (
+    ExperimentObservability,
+    add_observability_arguments,
+    settings_from_args,
 )
 from src.gemini import (
     parse_route,
@@ -32,6 +38,7 @@ from src.providers import (
     zero_shot_result_candidates,
 )
 from src.run_manifest import load_run_problem
+from src.solution_tracking import SolutionProgressTracker
 
 
 ROOT = Path(__file__).resolve().parent
@@ -81,6 +88,10 @@ def parse_args() -> argparse.Namespace:
         "--validate-only",
         action="store_true",
         help="Girdileri API çağrısı yapmadan doğrular.",
+    )
+    add_observability_arguments(
+        parser,
+        include_early_stop=True,
     )
     return parser.parse_args()
 
@@ -178,6 +189,279 @@ def _resolve_run_artifact(
     return path
 
 
+def _phase(
+    observability: ExperimentObservability | None,
+    name: str,
+):
+    return (
+        observability.phase(name)
+        if observability is not None
+        else nullcontext()
+    )
+
+
+def _request_timing(
+    api_call: dict[str, Any] | None,
+) -> dict[str, float]:
+    call = api_call if isinstance(api_call, dict) else {}
+    api_wall = float(
+        call.get("api_call_wall_seconds") or 0.0
+    )
+    control = call.get("request_control")
+    if not isinstance(control, dict):
+        return {
+            "api_active_wall_seconds": api_wall,
+            "deliberate_delay_seconds": 0.0,
+            "rate_limit_backoff_seconds": 0.0,
+            "controlled_wait_seconds": 0.0,
+            "api_request_total_wall_seconds": api_wall,
+        }
+
+    waits = control.get("waits")
+    if not isinstance(waits, dict):
+        waits = {}
+    deliberate = float(
+        waits.get("deliberate_delay_seconds") or 0.0
+    )
+    backoff = float(
+        waits.get("rate_limit_backoff_seconds") or 0.0
+    )
+    controlled = float(
+        waits.get("controlled_wait_seconds")
+        or deliberate + backoff
+    )
+    return {
+        "api_active_wall_seconds": float(
+            control.get("active_wall_seconds") or api_wall
+        ),
+        "deliberate_delay_seconds": deliberate,
+        "rate_limit_backoff_seconds": backoff,
+        "controlled_wait_seconds": controlled,
+        "api_request_total_wall_seconds": float(
+            control.get("total_wall_seconds")
+            or api_wall + controlled
+        ),
+    }
+
+
+def _calls_timing(
+    api_calls: list[dict[str, Any]] | None,
+    *,
+    fallback_call: dict[str, Any] | None = None,
+) -> dict[str, float]:
+    calls = [
+        call
+        for call in (api_calls or [])
+        if isinstance(call, dict)
+    ]
+    if not calls and isinstance(fallback_call, dict):
+        calls = [fallback_call]
+
+    values = [_request_timing(call) for call in calls]
+    keys = (
+        "api_active_wall_seconds",
+        "deliberate_delay_seconds",
+        "rate_limit_backoff_seconds",
+        "controlled_wait_seconds",
+        "api_request_total_wall_seconds",
+    )
+    return {
+        key: sum(value[key] for value in values)
+        for key in keys
+    }
+
+
+def _token_count(
+    api_call: dict[str, Any] | None,
+    api_calls: list[dict[str, Any]] | None = None,
+) -> int | None:
+    if isinstance(api_call, dict):
+        usage = api_call.get("usage")
+        if isinstance(usage, dict):
+            total = usage.get("total_token_count")
+            if total is not None:
+                return int(total)
+
+    totals = []
+    for call in api_calls or []:
+        usage = call.get("usage") if isinstance(call, dict) else None
+        total = (
+            usage.get("total_token_count")
+            if isinstance(usage, dict)
+            else None
+        )
+        if total is not None:
+            totals.append(int(total))
+    return sum(totals) if totals else None
+
+
+def _create_progress_tracker(
+    *,
+    problem: ProblemInstance,
+    provider: ProviderAdapter,
+    observability: ExperimentObservability,
+) -> SolutionProgressTracker:
+    reference = problem.reference
+    return SolutionProgressTracker(
+        provider=provider.provider_id,
+        reference_distance=(
+            reference.distance
+            if reference is not None
+            else None
+        ),
+        reference_type=(
+            reference.reference_type.value
+            if reference is not None
+            else None
+        ),
+        reference_is_proven_optimal=(
+            reference.is_proven_optimal
+            if reference is not None
+            else False
+        ),
+        early_stop_policy=observability.early_stop_policy(),
+    )
+
+
+def _record_solution_progress(
+    tracker: SolutionProgressTracker,
+    completed: dict[str, Any],
+) -> dict[str, Any]:
+    progress = tracker.record_iteration(
+        iteration=int(completed["iteration"]),
+        selected_solution=completed["selected_solution"],
+        candidates=completed["critic"]["candidates"],
+        selected_source="scorer_selection",
+        candidate_source="critic_candidate",
+    )
+    completed["solution_progress"] = progress
+    iteration_best = progress.get("iteration_best") or {}
+    system_gbest = progress.get("system_gbest") or {}
+    observed_gbest = (
+        progress.get("observed_candidate_gbest") or {}
+    )
+    completed["iteration_best_distance"] = iteration_best.get(
+        "distance"
+    )
+    completed["system_gbest_distance"] = system_gbest.get(
+        "distance"
+    )
+    completed["system_gbest_gap_percent"] = system_gbest.get(
+        "gap_to_reference_percent"
+    )
+    completed["observed_candidate_gbest_distance"] = (
+        observed_gbest.get("distance")
+    )
+    completed["selection_regret_percent"] = progress.get(
+        "selection_regret_percent"
+    )
+    completed["selected_is_iteration_best"] = progress.get(
+        "selected_is_iteration_best"
+    )
+    return progress
+
+
+def _replay_solution_progress(
+    tracker: SolutionProgressTracker,
+    *,
+    initializer: dict[str, Any],
+    iterations: list[dict[str, Any]],
+) -> None:
+    tracker.seed_initializer(initializer)
+    for completed in iterations:
+        _finalize_iteration_observability(completed)
+        _record_solution_progress(tracker, completed)
+
+
+def _finalize_iteration_observability(
+    completed: dict[str, Any],
+) -> None:
+    critic = completed["critic"]
+    scorer = completed["scorer"]
+    critic_calls = critic.get("api_calls")
+    scorer_calls = scorer.get("api_calls")
+    critic_timing = _calls_timing(
+        critic_calls,
+        fallback_call=critic.get("api_call"),
+    )
+    scorer_timing = _calls_timing(
+        scorer_calls,
+        fallback_call=scorer.get("api_call"),
+    )
+    critic_tokens = _token_count(
+        critic.get("api_call"),
+        critic_calls,
+    )
+    scorer_tokens = _token_count(
+        scorer.get("api_call"),
+        scorer_calls,
+    )
+
+    critic["token_count"] = critic_tokens
+    scorer["token_count"] = scorer_tokens
+    critic["timing"].update(critic_timing)
+    scorer["timing"].update(scorer_timing)
+
+    processing = float(
+        completed["timing"].get(
+            "iteration_processing_wall_seconds",
+            0.0,
+        )
+    )
+    scorer_reused = bool(
+        scorer["timing"].get("reused_stored_response")
+    )
+    request_time_in_processing = (
+        critic_timing["api_request_total_wall_seconds"]
+        + (
+            0.0
+            if scorer_reused
+            else scorer_timing["api_request_total_wall_seconds"]
+        )
+    )
+    local_active = max(
+        0.0,
+        processing - request_time_in_processing,
+    )
+    active = (
+        local_active
+        + critic_timing["api_active_wall_seconds"]
+        + scorer_timing["api_active_wall_seconds"]
+    )
+    deliberate = (
+        critic_timing["deliberate_delay_seconds"]
+        + scorer_timing["deliberate_delay_seconds"]
+    )
+    backoff = (
+        critic_timing["rate_limit_backoff_seconds"]
+        + scorer_timing["rate_limit_backoff_seconds"]
+    )
+    controlled = (
+        critic_timing["controlled_wait_seconds"]
+        + scorer_timing["controlled_wait_seconds"]
+    )
+
+    completed["token_count"] = (
+        critic_tokens + scorer_tokens
+        if critic_tokens is not None and scorer_tokens is not None
+        else critic_tokens
+        if scorer_tokens is None
+        else scorer_tokens
+    )
+    completed["timing"].update(
+        {
+            "local_processing_active_wall_seconds": local_active,
+            "iteration_active_wall_seconds": active,
+            "deliberate_delay_seconds": deliberate,
+            "rate_limit_backoff_seconds": backoff,
+            "controlled_wait_seconds": controlled,
+            "iteration_observed_total_wall_seconds": (
+                active + controlled
+            ),
+        }
+    )
+
+
 def _calls(
     iterations: list[dict[str, Any]],
     pending: dict[str, Any] | None,
@@ -200,9 +484,18 @@ def _calls(
 
     for item in iterations:
         extend_critic(item.get("critic", {}))
-        scorer_call = item.get("scorer", {}).get("api_call")
-        if isinstance(scorer_call, dict):
-            calls.append(scorer_call)
+        scorer = item.get("scorer", {})
+        scorer_calls = scorer.get("api_calls")
+        if isinstance(scorer_calls, list):
+            calls.extend(
+                call
+                for call in scorer_calls
+                if isinstance(call, dict)
+            )
+        else:
+            scorer_call = scorer.get("api_call")
+            if isinstance(scorer_call, dict):
+                calls.append(scorer_call)
     if pending:
         extend_critic(pending.get("critic", {}))
         for attempt in pending.get("scorer_attempts", []):
@@ -487,6 +780,7 @@ def _finish_scorer(
     run_dir: Path,
     fallback_route: list[int],
     fallback_image: Path,
+    observability: ExperimentObservability | None = None,
 ) -> tuple[dict[str, Any] | None, Exception | None]:
     scorer_stage_timer = start_timer()
     all_candidates = pending["critic"]["candidates"]
@@ -514,7 +808,8 @@ def _finish_scorer(
 
     if not candidates:
         evaluation_timer = start_timer()
-        evaluation = evaluate_route(problem, fallback_route)
+        with _phase(observability, "validation_and_metrics"):
+            evaluation = evaluate_route(problem, fallback_route)
         evaluation_seconds = elapsed_seconds(evaluation_timer)
         iteration = pending["iteration"]
         selected_image = (
@@ -524,15 +819,16 @@ def _finish_scorer(
             / "selected.png"
         )
         rendering_timer = start_timer()
-        plot_route(
-            problem,
-            fallback_route,
-            selected_image,
-            title=(
-                f"{problem.name} Multi-Agent 1 — iteration "
-                f"{iteration}: retained previous route"
-            ),
-        )
+        with _phase(observability, "route_rendering"):
+            plot_route(
+                problem,
+                fallback_route,
+                selected_image,
+                title=(
+                    f"{problem.name} Multi-Agent 1 — iteration "
+                    f"{iteration}: retained previous route"
+                ),
+            )
         rendering_seconds = elapsed_seconds(rendering_timer)
         scorer_seconds = elapsed_seconds(scorer_stage_timer)
         completed = {
@@ -554,6 +850,7 @@ def _finish_scorer(
                 "best_candidate_id": None,
                 "selection_regret_percent_after_evaluation": None,
                 "api_call": None,
+                "api_calls": [],
                 "attempt_count": len(
                     pending.get("scorer_attempts", [])
                 ),
@@ -622,10 +919,11 @@ def _finish_scorer(
         ):
             try:
                 parsing_timer = start_timer()
-                scores, best_id = parse_scorer_response(
-                    attempt["raw_response"],
-                    expected_image_ids=ids,
-                )
+                with _phase(observability, "response_parsing"):
+                    scores, best_id = parse_scorer_response(
+                        attempt["raw_response"],
+                        expected_image_ids=ids,
+                    )
                 parsing_seconds += elapsed_seconds(parsing_timer)
                 raw_response = attempt["raw_response"]
                 scorer_call = attempt.get("api_call")
@@ -636,17 +934,18 @@ def _finish_scorer(
 
     if best_id is None:
         try:
-            response = provider.request_scorer(
-                [
-                    _resolve_run_artifact(
-                        run_dir,
-                        candidate["artifacts"]["route_image"],
-                    )
-                    for candidate in candidates
-                ],
-                problem=problem,
-                image_ids=ids,
-            )
+            with _phase(observability, "api_request"):
+                response = provider.request_scorer(
+                    [
+                        _resolve_run_artifact(
+                            run_dir,
+                            candidate["artifacts"]["route_image"],
+                        )
+                        for candidate in candidates
+                    ],
+                    problem=problem,
+                    image_ids=ids,
+                )
             raw_response = response.text
             scorer_call = response.api_call
             pending.setdefault("scorer_attempts", []).append(
@@ -656,10 +955,11 @@ def _finish_scorer(
                 }
             )
             parsing_timer = start_timer()
-            scores, best_id = parse_scorer_response(
-                raw_response,
-                expected_image_ids=ids,
-            )
+            with _phase(observability, "response_parsing"):
+                scores, best_id = parse_scorer_response(
+                    raw_response,
+                    expected_image_ids=ids,
+                )
             parsing_seconds += elapsed_seconds(parsing_timer)
         except Exception as exc:
             if (
@@ -706,15 +1006,16 @@ def _finish_scorer(
         / "selected.png"
     )
     rendering_timer = start_timer()
-    plot_route(
-        problem,
-        selected["route"],
-        selected_image,
-        title=(
-            f"{problem.name} Multi-Agent 1 — iteration "
-            f"{iteration}: selected candidate {best_id}"
-        ),
-    )
+    with _phase(observability, "route_rendering"):
+        plot_route(
+            problem,
+            selected["route"],
+            selected_image,
+            title=(
+                f"{problem.name} Multi-Agent 1 — iteration "
+                f"{iteration}: selected candidate {best_id}"
+            ),
+        )
     rendering_seconds = elapsed_seconds(rendering_timer)
     scorer_seconds = elapsed_seconds(scorer_stage_timer)
     scorer_api_seconds = (
@@ -749,6 +1050,11 @@ def _finish_scorer(
             "best_candidate_id": best_id,
             "selection_regret_percent_after_evaluation": regret,
             "api_call": scorer_call,
+            "api_calls": [
+                attempt["api_call"]
+                for attempt in pending.get("scorer_attempts", [])
+                if isinstance(attempt.get("api_call"), dict)
+            ],
             "attempt_count": len(
                 pending.get("scorer_attempts", [])
             ),
@@ -816,6 +1122,18 @@ def main() -> None:
         provider.validate_candidate_count(args.candidate_count)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
+
+    settings = settings_from_args(
+        args,
+        include_early_stop=True,
+    )
+    observability = ExperimentObservability(settings)
+    if not args.validate_only:
+        provider.configure_request_controller(
+            observability.request_controller
+        )
+        observability.start()
+
     candidate_strategy = (
         provider.default_candidate_strategy
         if args.candidate_strategy == "auto"
@@ -836,21 +1154,27 @@ def main() -> None:
     checkpoint_path = output / "multi_agent1_checkpoint.json"
 
     loading_timer = start_timer()
-    if not manifest_path.exists():
-        raise SystemExit(
-            "Run manifesti bulunamadı. Önce baseline çalıştırılmalıdır."
-        )
-    manifest, problem = load_run_problem(manifest_path)
-    fingerprint = manifest["problem"]["fingerprint_sha256"]
-    try:
-        initializer, current_route, current_image = _load_initializer(
-            run_dir=run_dir,
-            provider=provider,
-            problem=problem,
-            fingerprint=fingerprint,
-        )
-    except Exception as exc:
-        raise SystemExit(str(exc)) from exc
+    with observability.phase("manifest_and_input_loading"):
+        if not manifest_path.exists():
+            observability.stop()
+            raise SystemExit(
+                "Run manifesti bulunamadı. Önce baseline "
+                "çalıştırılmalıdır."
+            )
+        manifest, problem = load_run_problem(manifest_path)
+        fingerprint = manifest["problem"]["fingerprint_sha256"]
+        try:
+            initializer, current_route, current_image = (
+                _load_initializer(
+                    run_dir=run_dir,
+                    provider=provider,
+                    problem=problem,
+                    fingerprint=fingerprint,
+                )
+            )
+        except Exception as exc:
+            observability.stop()
+            raise SystemExit(str(exc)) from exc
     loading_seconds = elapsed_seconds(loading_timer)
 
     if args.validate_only:
@@ -895,6 +1219,11 @@ def main() -> None:
     iterations: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
     pending: dict[str, Any] | None = None
+    termination: dict[str, Any] = {
+        "reason": "requested_iterations_completed",
+        "early_stop": None,
+        "failed_iteration": None,
+    }
 
     if args.resume and checkpoint_path.exists():
         checkpoint = read_json(checkpoint_path)
@@ -931,9 +1260,30 @@ def main() -> None:
     elif args.resume:
         print("Checkpoint bulunamadı; deney baştan başlatılıyor.")
 
+    progress_tracker = _create_progress_tracker(
+        problem=problem,
+        provider=provider,
+        observability=observability,
+    )
+    _replay_solution_progress(
+        progress_tracker,
+        initializer=initializer,
+        iterations=iterations,
+    )
+    if progress_tracker.should_stop:
+        termination = {
+            "reason": "early_stop",
+            "early_stop": progress_tracker.latest_early_stop,
+            "failed_iteration": None,
+        }
+
     stopped = False
     next_iteration = len(iterations) + 1
-    while next_iteration <= args.iterations and not stopped:
+    while (
+        next_iteration <= args.iterations
+        and not stopped
+        and not progress_tracker.should_stop
+    ):
         if pending:
             print(
                 f"\nİterasyon {pending['iteration']}: kayıtlı critic "
@@ -947,13 +1297,14 @@ def main() -> None:
             )
             critic_stage_timer = start_timer()
             try:
-                request = provider.request_candidates(
-                    current_image,
-                    problem=problem,
-                    candidate_count=args.candidate_count,
-                    temperature=0.7,
-                    strategy=candidate_strategy,
-                )
+                with observability.phase("api_request"):
+                    request = provider.request_candidates(
+                        current_image,
+                        problem=problem,
+                        candidate_count=args.candidate_count,
+                        temperature=0.7,
+                        strategy=candidate_strategy,
+                    )
                 parsing_total = 0.0
                 evaluation_total = 0.0
                 rendering_total = 0.0
@@ -967,10 +1318,11 @@ def main() -> None:
                     parsing_timer = start_timer()
                     parse_error: dict[str, str] | None = None
                     try:
-                        route = parse_route(
-                            raw,
-                            depot_id=problem.depot_id,
-                        )
+                        with observability.phase("response_parsing"):
+                            route = parse_route(
+                                raw,
+                                depot_id=problem.depot_id,
+                            )
                     except Exception as exc:
                         route = []
                         parse_error = {
@@ -981,7 +1333,10 @@ def main() -> None:
                     parsing_total += parsing_seconds
 
                     evaluation_timer = start_timer()
-                    evaluation = evaluate_route(problem, route)
+                    with observability.phase(
+                        "validation_and_metrics"
+                    ):
+                        evaluation = evaluate_route(problem, route)
                     evaluation_seconds = elapsed_seconds(evaluation_timer)
                     evaluation_total += evaluation_seconds
 
@@ -998,16 +1353,17 @@ def main() -> None:
                         and len(route) >= 2
                     ):
                         rendering_timer = start_timer()
-                        plot_route(
-                            problem,
-                            route,
-                            image,
-                            title=(
-                                f"{problem.name} MA1 iteration "
-                                f"{next_iteration} candidate "
-                                f"{candidate_id}"
-                            ),
-                        )
+                        with observability.phase("route_rendering"):
+                            plot_route(
+                                problem,
+                                route,
+                                image,
+                                title=(
+                                    f"{problem.name} MA1 iteration "
+                                    f"{next_iteration} candidate "
+                                    f"{candidate_id}"
+                                ),
+                            )
                         rendering_seconds = elapsed_seconds(
                             rendering_timer
                         )
@@ -1048,6 +1404,14 @@ def main() -> None:
                     )
 
                 critic_seconds = elapsed_seconds(critic_stage_timer)
+                critic_request_timing = _calls_timing(
+                    request.api_calls,
+                    fallback_call=request.api_call,
+                )
+                critic_token_count = _token_count(
+                    request.api_call,
+                    request.api_calls,
+                )
                 pending = {
                     "iteration": next_iteration,
                     "critic": {
@@ -1065,6 +1429,7 @@ def main() -> None:
                         ),
                         "api_call": request.api_call,
                         "api_calls": request.api_calls,
+                        "token_count": critic_token_count,
                         "timing": {
                             "api_call_wall_seconds": request.api_call[
                                 "api_call_wall_seconds"
@@ -1075,6 +1440,7 @@ def main() -> None:
                             ),
                             "route_rendering_seconds": rendering_total,
                             "critic_stage_wall_seconds": critic_seconds,
+                            **critic_request_timing,
                         },
                         "candidates": candidates,
                     },
@@ -1126,11 +1492,25 @@ def main() -> None:
                     iteration=next_iteration,
                 )
                 record["failed_stage_wall_seconds"] = failure_seconds
+                request_control = getattr(
+                    exc,
+                    "request_control_report",
+                    None,
+                )
+                if isinstance(request_control, dict):
+                    record["request_control"] = request_control
                 errors.append(record)
                 print(
                     f"Critic iterasyon {next_iteration} "
                     f"tamamlanamadı: {exc}"
                 )
+                termination = {
+                    "reason": "critic_stage_failed",
+                    "early_stop": (
+                        progress_tracker.latest_early_stop
+                    ),
+                    "failed_iteration": next_iteration,
+                }
                 stopped = True
                 break
 
@@ -1143,6 +1523,7 @@ def main() -> None:
             run_dir=run_dir,
             fallback_route=current_route,
             fallback_image=current_image,
+            observability=observability,
         )
         if scorer_error is not None:
             record = error_record(
@@ -1155,6 +1536,13 @@ def main() -> None:
                 "ma1_scorer_stage_wall_seconds",
                 None,
             )
+            request_control = getattr(
+                scorer_error,
+                "request_control_report",
+                None,
+            )
+            if isinstance(request_control, dict):
+                record["request_control"] = request_control
             errors.append(record)
             _save_checkpoint(
                 checkpoint_path,
@@ -1174,10 +1562,21 @@ def main() -> None:
                 f"Scorer iterasyon {pending['iteration']} "
                 f"tamamlanamadı: {scorer_error}"
             )
+            termination = {
+                "reason": "scorer_stage_failed",
+                "early_stop": (
+                    progress_tracker.latest_early_stop
+                ),
+                "failed_iteration": pending["iteration"],
+            }
             stopped = True
             break
 
         assert completed is not None
+        _record_solution_progress(
+            progress_tracker,
+            completed,
+        )
         selected = completed["selected_solution"]
         current_route = [
             int(value)
@@ -1235,6 +1634,7 @@ def main() -> None:
         completed["timing"][
             "iteration_processing_wall_seconds"
         ] += checkpoint_seconds
+        _finalize_iteration_observability(completed)
         _save_checkpoint(
             checkpoint_path,
             run_id=run_id,
@@ -1250,33 +1650,138 @@ def main() -> None:
             errors=errors,
         )
 
-    result = _result(
-        run_id=run_id,
-        problem=problem,
-        fingerprint=fingerprint,
-        provider=provider,
-        candidate_count=args.candidate_count,
-        candidate_strategy=candidate_strategy,
-        requested=args.iterations,
-        initializer=initializer,
-        iterations=iterations,
-        pending=pending,
-        errors=errors,
-        loading_seconds=loading_seconds,
-        invocation_seconds=elapsed_seconds(invocation_timer),
-    )
-    write_json(result_path, result)
+        print(
+            "İterasyon en iyi / sistem GBest / gözlenen aday GBest: "
+            f"{completed['iteration_best_distance']} / "
+            f"{completed['system_gbest_distance']} / "
+            f"{completed['observed_candidate_gbest_distance']}"
+        )
+        print(
+            "Seçim regret / doğru seçim: "
+            f"{completed['selection_regret_percent']} / "
+            f"{completed['selected_is_iteration_best']}"
+        )
+        token_display = (
+            completed["token_count"]
+            if completed["token_count"] is not None
+            else "-"
+        )
+        print(
+            "Token / aktif / bekleme / toplam: "
+            f"{token_display} / "
+            f"{completed['timing']['iteration_active_wall_seconds']:.4f} / "
+            f"{completed['timing']['controlled_wait_seconds']:.4f} / "
+            f"{completed['timing']['iteration_observed_total_wall_seconds']:.4f} sn"
+        )
+
+        if progress_tracker.should_stop:
+            termination = {
+                "reason": "early_stop",
+                "early_stop": progress_tracker.latest_early_stop,
+                "failed_iteration": None,
+            }
+            print(
+                "Erken durdurma: sistem GBest gap değeri "
+                f"%{settings.early_stop_gap_percent:g} "
+                "eşiğine ulaştı."
+            )
+            break
+
+    try:
+        observability_summary = observability.stop()
+        result = _result(
+            run_id=run_id,
+            problem=problem,
+            fingerprint=fingerprint,
+            provider=provider,
+            candidate_count=args.candidate_count,
+            candidate_strategy=candidate_strategy,
+            requested=args.iterations,
+            initializer=initializer,
+            iterations=iterations,
+            pending=pending,
+            errors=errors,
+            loading_seconds=loading_seconds,
+            invocation_seconds=elapsed_seconds(invocation_timer),
+        )
+        result["artificial_delay_enabled"] = (
+            settings.minimum_request_interval_seconds > 0
+        )
+        result["solution_progress"] = progress_tracker.snapshot()
+        result["termination"] = termination
+        result["observability"] = observability_summary
+        result["run_summary"].update(
+            {
+                "accumulated_completed_iteration_active_wall_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "iteration_active_wall_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+                "accumulated_deliberate_delay_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "deliberate_delay_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+                "accumulated_rate_limit_backoff_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "rate_limit_backoff_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+                "accumulated_controlled_wait_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "controlled_wait_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+            }
+        )
+        write_json(result_path, result)
+    finally:
+        observability.stop()
     print(
         "\nBirleşik dinamik Multi-Agent 1 durumu kaydedildi."
     )
     print(f"Provider: {provider.provider_id}")
     print(f"Model: {provider.model_alias}")
     print(f"Tamamlanan tam iterasyon: {len(iterations)}")
-    if pending:
+    if termination["reason"] == "early_stop":
+        early_stop = termination["early_stop"] or {}
+        print(
+            "Durdurma: erken durdurma, sistem GBest gap="
+            f"{early_stop.get('system_gbest_gap_percent')}%"
+        )
+    elif pending:
         print(
             f"Scorer bekleyen iterasyon: {pending['iteration']} "
             "(--resume ile devam edilir)"
         )
+    request_summary = result["observability"]["request_control"]
+    waits = request_summary["waits"]
+    print(
+        "API denemesi/retry: "
+        f"{request_summary['request_attempt_count']}/"
+        f"{request_summary['retry_count']}"
+    )
+    print(
+        "Bilinçli bekleme / rate-limit backoff: "
+        f"{waits['deliberate_delay_seconds']:.4f} / "
+        f"{waits['rate_limit_backoff_seconds']:.4f} sn"
+    )
     print(f"Sonuç dosyası: {result_path}")
 
 
