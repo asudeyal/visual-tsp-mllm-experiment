@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 from src.analysis import build_analysis
 from src.core import normalize_run_id, write_json
 from src.run_manifest import load_run_problem
 from src.terminal_report import (
     compact_text,
+    render_note,
     render_summary,
     render_table,
 )
@@ -30,7 +31,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--require-complete",
         action="store_true",
-        help="Dört yöntem tamamlanmamışsa dosya yazmadan hata verir.",
+        help=(
+            "Tüm provider/model yöntemleri tamamlanmamışsa "
+            "dosya yazmadan hata verir."
+        ),
     )
     return parser.parse_args()
 
@@ -50,6 +54,7 @@ def _method_name(value: str) -> str:
         "zero_shot": "Zero-shot",
         "multi_agent_1": "Multi-Agent 1",
         "multi_agent_2": "Multi-Agent 2",
+        "baseline": "Baseline",
     }.get(value, value)
 
 
@@ -62,17 +67,17 @@ def _selection_name(value: Any) -> str:
 
 
 def _selection_label(item: dict[str, Any]) -> str:
+    valid = (
+        f"{item.get('valid_candidate_count', 0)}/"
+        f"{item.get('returned_candidate_count', 0)}"
+    )
     name = _selection_name(item.get("selection_mode"))
     candidate_id = item.get("selected_candidate_id")
-    if candidate_id is None:
-        return name
-    return f"{name} (#{candidate_id})"
+    choice = name if candidate_id is None else f"{name}(#{candidate_id})"
+    return f"{valid} {choice}"
 
 
-def _percent_count(
-    numerator: int,
-    denominator: int,
-) -> str:
+def _percent_count(numerator: int, denominator: int) -> str:
     if denominator == 0:
         return "-"
     return (
@@ -102,6 +107,7 @@ def _improvement_percent(
 def _print_method_table(analysis: dict[str, Any]) -> None:
     baseline = analysis["methods"]["baseline"]
     baseline_solution = baseline.get("or_tools") or {}
+    baseline_timing = baseline.get("timing_seconds") or {}
     rows: list[list[Any]] = [
         [
             "baseline",
@@ -112,8 +118,10 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
             baseline_solution.get("is_valid"),
             baseline_solution.get("distance"),
             baseline_solution.get("gap_to_reference_percent"),
-            (baseline.get("timing_seconds") or {}).get("total"),
             "-",
+            baseline_timing.get("total"),
+            0.0,
+            0.0,
             0,
         ]
     ]
@@ -131,14 +139,16 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
                 item["is_valid"],
                 item["distance"],
                 item["gap_to_reference_percent"],
-                item["api_wall_seconds"],
                 item["total_token_count"],
+                item.get("active_wall_seconds"),
+                item.get("deliberate_delay_seconds"),
+                item.get("rate_limit_backoff_seconds"),
                 item["error_count"],
             ]
         )
     print(
         render_table(
-            "Tüm sağlayıcı ve model sonuçları",
+            "Tüm sağlayıcı, model ve yöntem sonuçları",
             [
                 "Provider",
                 "Model",
@@ -148,13 +158,200 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
                 "Geçerli",
                 "Mesafe",
                 "Gap %",
-                "API/çözüm sn",
                 "Token",
+                "Aktif sn",
+                "Planlı sn",
+                "Backoff sn",
                 "Hata",
             ],
             rows,
-            right_align={4, 6, 7, 8, 9, 10},
+            right_align={4, 6, 7, 8, 9, 10, 11, 12},
             max_widths={1: 28, 3: 12},
+        )
+    )
+
+
+def _termination_text(section: dict[str, Any]) -> str:
+    termination = section.get("termination") or {}
+    reason = termination.get("reason")
+    if reason == "early_stop":
+        early = termination.get("early_stop") or {}
+        return (
+            "erken durdurma; "
+            f"GBest iter={early.get('system_gbest_iteration')}, "
+            f"gap=%{early.get('system_gbest_gap_percent')}, "
+            f"eşik=%{early.get('threshold_percent')}"
+        )
+    if reason == "iteration_failed":
+        return (
+            "iterasyon hatası; "
+            f"iter={termination.get('failed_iteration')}"
+        )
+    if reason:
+        return str(reason)
+    return "normal tamamlanma veya tarihsel çıktı"
+
+
+def _print_ma2_iterations(
+    label: str,
+    section: dict[str, Any],
+) -> None:
+    iterations = section.get("iterations", [])
+    if not iterations:
+        return
+    rows = [
+        [
+            item["iteration"],
+            item["is_valid"],
+            item["distance"],
+            item.get("iteration_best_distance"),
+            item.get("system_gbest_distance"),
+            item.get("system_gbest_gap_percent"),
+            item["total_token_count"],
+            item["timing_seconds"].get("active"),
+            item["timing_seconds"].get("deliberate_delay"),
+            item["timing_seconds"].get("rate_limit_backoff"),
+            item["timing_seconds"].get("total"),
+        ]
+        for item in iterations
+    ]
+    print(
+        render_table(
+            f"{label} — Multi-Agent 2 iterasyonları",
+            [
+                "İter.",
+                "Geçerli",
+                "Mesafe",
+                "İter. en iyi",
+                "Sistem GBest",
+                "GBest gap %",
+                "Token",
+                "Aktif sn",
+                "Planlı sn",
+                "Backoff sn",
+                "Toplam sn",
+            ],
+            rows,
+            right_align={0, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        )
+    )
+    initializer = section.get("initializer") or {}
+    best = section.get("best_valid_solution") or {}
+    final = section.get("final_solution") or {}
+    print(
+        render_summary(
+            [
+                (
+                    "geçerli iterasyon",
+                    _percent_count(
+                        int(section.get("valid_iteration_count") or 0),
+                        len(iterations),
+                    ),
+                ),
+                ("en iyi mesafe", best.get("distance")),
+                ("son mesafe", final.get("distance")),
+                (
+                    "başlangıca göre iyileşme",
+                    _improvement_percent(
+                        initializer.get("distance"),
+                        best.get("distance"),
+                    ),
+                ),
+                ("bitiş", _termination_text(section)),
+            ],
+            fields_per_line=3,
+        )
+    )
+
+
+def _print_ma1_iterations(
+    label: str,
+    section: dict[str, Any],
+) -> None:
+    iterations = section.get("iterations", [])
+    if not iterations:
+        return
+    rows = [
+        [
+            item["iteration"],
+            _selection_label(item),
+            item["selected_distance"],
+            item.get("iteration_best_distance"),
+            item.get("system_gbest_distance"),
+            item.get("observed_candidate_gbest_distance"),
+            item["selection_regret_percent"],
+            item["selected_best_valid_candidate"],
+            (item.get("token_count") or {}).get("total"),
+            item["timing_seconds"].get("active"),
+            item["timing_seconds"].get("deliberate_delay"),
+            item["timing_seconds"].get("rate_limit_backoff"),
+            item["timing_seconds"].get("total"),
+        ]
+        for item in iterations
+    ]
+    print(
+        render_table(
+            f"{label} — Multi-Agent 1 iterasyonları",
+            [
+                "İter.",
+                "Aday / seçim",
+                "Seçilen",
+                "İter. en iyi",
+                "Sistem GBest",
+                "Aday GBest",
+                "Regret %",
+                "Doğru seçim",
+                "Token",
+                "Aktif sn",
+                "Planlı sn",
+                "Backoff sn",
+                "Toplam sn",
+            ],
+            rows,
+            right_align={0, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12},
+            max_widths={1: 20},
+        )
+    )
+    fallback_count = sum(
+        item.get("selection_mode")
+        == "retain_previous_route_no_valid_candidate"
+        for item in iterations
+    )
+    scorer_count = int(
+        section.get("scorer_evaluated_iteration_count") or 0
+    )
+    scorer_best = int(
+        section.get("scorer_best_candidate_selection_count") or 0
+    )
+    best_system = section.get("best_valid_solution") or {}
+    progress = section.get("solution_progress") or {}
+    observed = progress.get("observed_candidate_gbest") or {}
+    if not observed and iterations:
+        observed = {
+            "distance": iterations[-1].get(
+                "observed_candidate_gbest_distance"
+            )
+        }
+    print(
+        render_summary(
+            [
+                (
+                    "geçerli aday",
+                    _percent_count(
+                        int(section.get("valid_candidate_count") or 0),
+                        int(section.get("total_candidate_count") or 0),
+                    ),
+                ),
+                (
+                    "scorer en kısa seçimi",
+                    _percent_count(scorer_best, scorer_count),
+                ),
+                ("fallback", fallback_count),
+                ("sistem GBest", best_system.get("distance")),
+                ("gözlenen aday GBest", observed.get("distance")),
+                ("bitiş", _termination_text(section)),
+            ],
+            fields_per_line=3,
         )
     )
 
@@ -162,167 +359,114 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
 def _print_iterations(analysis: dict[str, Any]) -> None:
     for model in analysis.get("provider_models", []):
         label = f"{model['provider']} / {model['model_alias']}"
-        ma2 = model["methods"]["multi_agent_2"]
-        ma2_rows = [
-            [
-                item["iteration"],
-                _status(item["status"]),
-                item["is_valid"],
-                item["distance"],
-                item["gap_to_reference_percent"],
-                item["timing_seconds"]["api"],
-                item["timing_seconds"]["total"],
-                item["total_token_count"],
-            ]
-            for item in ma2.get("iterations", [])
-        ]
-        if ma2_rows:
-            print(
-                render_table(
-                    f"{label} — Multi-Agent 2 iterasyonları",
-                    [
-                        "İter.",
-                        "Geçerli",
-                        "Mesafe",
-                        "Gap %",
-                        "API sn",
-                        "Toplam sn",
-                        "Token",
-                    ],
-                    [
-                        [
-                            row[0],
-                            row[2],
-                            row[3],
-                            row[4],
-                            row[5],
-                            row[6],
-                            row[7],
-                        ]
-                        for row in ma2_rows
-                    ],
-                    right_align={0, 2, 3, 4, 5, 6},
-                )
-            )
-            initializer = ma2.get("initializer") or {}
-            best = ma2.get("best_valid_solution") or {}
-            final = ma2.get("final_solution") or {}
-            print(
-                render_summary(
-                    [
-                        (
-                            "geçerli iterasyon",
-                            _percent_count(
-                                int(
-                                    ma2.get(
-                                        "valid_iteration_count"
-                                    )
-                                    or 0
-                                ),
-                                len(ma2_rows),
-                            ),
-                        ),
-                        ("en iyi mesafe", best.get("distance")),
-                        ("son mesafe", final.get("distance")),
-                        (
-                            "başlangıca göre iyileşme",
-                            _improvement_percent(
-                                initializer.get("distance"),
-                                best.get("distance"),
-                            ),
-                        ),
-                    ]
-                )
+        _print_ma2_iterations(
+            label,
+            model["methods"]["multi_agent_2"],
+        )
+        _print_ma1_iterations(
+            label,
+            model["methods"]["multi_agent_1"],
+        )
+
+
+def _metric_pair(
+    resources: dict[str, Any],
+    name: str,
+) -> str:
+    metric = (
+        resources.get("overall_metrics") or {}
+    ).get(name)
+    if not isinstance(metric, dict):
+        return "-"
+    average = metric.get("average")
+    maximum = metric.get("maximum")
+    if average is None and maximum is None:
+        return "-"
+    return f"{float(average):.1f}/{float(maximum):.1f}"
+
+
+def _gpu_status(resources: dict[str, Any]) -> str:
+    if resources.get("enabled") is not True:
+        return "profil kapalı"
+    gpu = resources.get("local_gpu") or {}
+    if gpu.get("available") is True:
+        utilization = _metric_pair(
+            resources,
+            "local_gpu_utilization_percent",
+        )
+        return f"ölçüldü {utilization}%"
+    reason = str(gpu.get("unavailable_reason") or "desteklenmiyor")
+    if "NVML" in reason or "LibraryNotFound" in reason:
+        return "ölçülemedi (NVIDIA/NVML yok)"
+    return f"ölçülemedi ({compact_text(reason, maximum=22)})"
+
+
+def _resource_sections(
+    analysis: dict[str, Any],
+) -> Iterable[tuple[str, str, str, dict[str, Any]]]:
+    baseline = analysis["methods"]["baseline"]
+    yield (
+        "baseline",
+        "OR-Tools",
+        "Referans",
+        baseline,
+    )
+    for model in analysis.get("provider_models", []):
+        for method_name, section in model["methods"].items():
+            yield (
+                model["provider"],
+                model["model_alias"],
+                _method_name(method_name),
+                section,
             )
 
-        ma1 = model["methods"]["multi_agent_1"]
-        ma1_rows = [
+
+def _print_resources(analysis: dict[str, Any]) -> None:
+    rows: list[list[Any]] = []
+    for provider, model, method, section in _resource_sections(analysis):
+        observability = section.get("observability")
+        if not isinstance(observability, dict):
+            continue
+        resources = observability.get("resources") or {}
+        request = observability.get("request_control") or {}
+        rows.append(
             [
-                item["iteration"],
-                (
-                    f"{item['valid_candidate_count']}/"
-                    f"{item['returned_candidate_count']}"
-                ),
-                _selection_label(item),
-                item["selected_distance"],
-                item["best_valid_candidate_distance"],
-                item["selection_regret_percent"],
-                item["timing_seconds"]["total"],
+                provider,
+                model,
+                method,
+                resources.get("enabled"),
+                resources.get("sample_count"),
+                _metric_pair(resources, "system_cpu_percent"),
+                _metric_pair(resources, "process_cpu_percent"),
+                _metric_pair(resources, "process_memory_rss_mb"),
+                _metric_pair(resources, "system_memory_percent"),
+                _gpu_status(resources),
+                request.get("retry_count"),
             ]
-            for item in ma1.get("iterations", [])
-        ]
-        if ma1_rows:
-            print(
-                render_table(
-                    f"{label} — Multi-Agent 1 iterasyonları",
-                    [
-                        "İter.",
-                        "Geçerli",
-                        "Seçim",
-                        "Seçilen",
-                        "En iyi",
-                        "Regret %",
-                        "Süre sn",
-                    ],
-                    ma1_rows,
-                    right_align={0, 3, 4, 5, 6},
-                    max_widths={2: 18},
-                )
-            )
-            iterations = ma1.get("iterations", [])
-            fallback_count = sum(
-                item.get("selection_mode")
-                == "retain_previous_route_no_valid_candidate"
-                for item in iterations
-            )
-            scorer_count = int(
-                ma1.get("scorer_evaluated_iteration_count")
-                or 0
-            )
-            scorer_best = int(
-                ma1.get(
-                    "scorer_best_candidate_selection_count"
-                )
-                or 0
-            )
-            best_system = ma1.get("best_valid_solution") or {}
-            print(
-                render_summary(
-                    [
-                        [
-                            "geçerli aday",
-                            _percent_count(
-                                int(
-                                    ma1.get(
-                                        "valid_candidate_count"
-                                    )
-                                    or 0
-                                ),
-                                int(
-                                    ma1.get(
-                                        "total_candidate_count"
-                                    )
-                                    or 0
-                                ),
-                            ),
-                        ],
-                        ["scorer çağrısı", scorer_count],
-                        [
-                            "en kısa seçimi",
-                            _percent_count(
-                                scorer_best,
-                                scorer_count,
-                            ),
-                        ],
-                        ["fallback", fallback_count],
-                        [
-                            "en iyi sistem mesafesi",
-                            best_system.get("distance"),
-                        ],
-                    ],
-                    fields_per_line=3,
-                )
-            )
+        )
+    if not rows:
+        return
+    print(
+        render_table(
+            "Yerel kaynak kullanımı (ortalama/azami)",
+            [
+                "Provider",
+                "Model",
+                "Yöntem",
+                "Profil",
+                "Örnek",
+                "Sistem CPU %",
+                "Süreç CPU %",
+                "Süreç RSS MB",
+                "Sistem RAM %",
+                "Yerel GPU",
+                "Retry",
+            ],
+            rows,
+            right_align={4, 10},
+            max_widths={1: 24, 9: 30},
+        )
+    )
 
 
 def _print_errors(analysis: dict[str, Any]) -> None:
@@ -392,9 +536,9 @@ def main() -> None:
             "üretebilirsiniz."
         )
 
-    analysis_dir = run_dir / "analysis"
     output_path = (
-        analysis_dir
+        run_dir
+        / "analysis"
         / "experiment_analysis_summary.json"
     )
     write_json(output_path, analysis)
@@ -426,8 +570,19 @@ def main() -> None:
             max_widths={0: 24, 1: 28, 3: 28},
         )
     )
+    print(
+        render_note(
+            "Sürelerin yorumu",
+            [
+                "Aktif sn, planlı bekleme ve rate-limit backoff süreleri çıkarılmış yerel + API süresidir.",
+                "API aktif süresi ağ, sağlayıcı kuyruğu ve uzak model çıkarımını birlikte içerir; bunlar istemci tarafında kesin ayrıştırılamaz.",
+                "CPU/RAM yerel bilgisayarı gösterir. Uzak API modelinin GPU/CPU kullanımı bu ölçüme dahil değildir.",
+            ],
+        )
+    )
     _print_method_table(analysis)
     _print_iterations(analysis)
+    _print_resources(analysis)
     _print_errors(analysis)
     print(f"\nAnaliz dosyası: {output_path}")
 

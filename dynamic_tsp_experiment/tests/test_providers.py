@@ -5,6 +5,22 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from src import gemini
+from src.problem_loader import generate_random_problem
+from src.providers.gemini_provider import GeminiProvider
+from src.request_control import (
+    RequestController,
+    RetryPolicy,
+)
+
+import src.providers.groq_provider as groq_provider_module
+
+from src import openrouter
+from src.providers.base import ProviderTextResult
+from src.providers.openrouter_provider import (
+    OpenRouterProvider,
+)
+
 from src.providers.registry import (
     create_provider,
     model_slug,
@@ -18,6 +34,7 @@ from src.providers.groq_provider import (
     GROQ_QWEN_REASONING_MODEL,
     GROQ_SINGLE_IMAGE_MAX_DIMENSION,
     GROQ_USER_AGENT,
+    GroqProvider,
     _data_url,
     _model_request_settings,
     _request_headers,
@@ -174,3 +191,359 @@ def test_groq_data_url_resizes_only_upload_copy(tmp_path: Path) -> None:
         "resized_for_upload": True,
     }
     assert image_path.read_bytes() == original_bytes
+
+def _zero_delay_request_controller() -> RequestController:
+    return RequestController(
+        retry_policy=RetryPolicy(
+            max_retries=1,
+            base_delay_seconds=0.0,
+            maximum_delay_seconds=0.0,
+        )
+    )
+
+
+def _transient_service_error() -> RuntimeError:
+    error = RuntimeError("Service unavailable")
+    error.status_code = 503
+    return error
+
+
+def test_gemini_route_uses_request_controller(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    call_count = 0
+
+    def fake_request_route(
+        *args,
+        **kwargs,
+    ) -> gemini.GeminiTextResult:
+        nonlocal call_count
+
+        call_count += 1
+
+        if call_count == 1:
+            raise _transient_service_error()
+
+        return gemini.GeminiTextResult(
+            text="Salesman1: Depot-1-Depot",
+            api_call={
+                "phase": kwargs["phase"],
+                "success": True,
+                "api_call_wall_seconds": 0.25,
+                "usage": {
+                    "total_token_count": 12,
+                },
+            },
+        )
+
+    monkeypatch.setattr(
+        gemini,
+        "request_route",
+        fake_request_route,
+    )
+
+    controller = _zero_delay_request_controller()
+    provider = GeminiProvider(
+        "gemini-test-model"
+    )
+    provider.configure_request_controller(
+        controller
+    )
+
+    result = provider.request_route(
+        Path("unused.png"),
+        prompt="test prompt",
+        temperature=0.0,
+        phase="route_generation",
+    )
+
+    assert call_count == 2
+
+    request_control = result.api_call[
+        "request_control"
+    ]
+
+    assert request_control["success"] is True
+    assert request_control["attempt_count"] == 2
+    assert request_control["retry_count"] == 1
+    assert (
+        request_control["active_wall_seconds"]
+        >= 0
+    )
+
+    assert result.api_call[
+        "provider_timing"
+    ]["available"] is False
+
+    summary = controller.summary()
+
+    assert summary["execution_count"] == 1
+    assert summary["retry_count"] == 1
+
+
+def test_gemini_independent_candidates_retry_only_failed_call(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    api_attempt_count = 0
+
+    def fake_request_candidates(
+        *args,
+        **kwargs,
+    ) -> gemini.GeminiCandidatesResult:
+        nonlocal api_attempt_count
+
+        api_attempt_count += 1
+
+        if api_attempt_count == 2:
+            raise _transient_service_error()
+
+        return gemini.GeminiCandidatesResult(
+            texts=[
+                f"candidate-{api_attempt_count}"
+            ],
+            api_call={
+                "phase": (
+                    "critic_candidate_generation"
+                ),
+                "success": True,
+                "api_call_wall_seconds": 0.1,
+                "usage": {
+                    "total_token_count": 10,
+                },
+            },
+        )
+
+    monkeypatch.setattr(
+        gemini,
+        "request_candidates",
+        fake_request_candidates,
+    )
+
+    problem = generate_random_problem(
+        4,
+        seed=42,
+    )
+    controller = _zero_delay_request_controller()
+    provider = GeminiProvider(
+        "gemini-test-model"
+    )
+    provider.configure_request_controller(
+        controller
+    )
+
+    result = provider.request_candidates(
+        Path("unused.png"),
+        problem=problem,
+        candidate_count=2,
+        temperature=0.7,
+        strategy="independent_calls",
+    )
+
+    # İlk aday bir kez çalışır. İkinci adayın ilk
+    # isteği başarısız olur ve yalnız o istek tekrarlanır.
+    assert api_attempt_count == 3
+    assert len(result.texts) == 2
+    assert len(result.api_calls) == 2
+
+    first_request = result.api_calls[0][
+        "request_control"
+    ]
+    second_request = result.api_calls[1][
+        "request_control"
+    ]
+
+    assert first_request["attempt_count"] == 1
+    assert first_request["retry_count"] == 0
+
+    assert second_request["attempt_count"] == 2
+    assert second_request["retry_count"] == 1
+
+    assert controller.summary()[
+        "execution_count"
+    ] == 2
+
+def test_groq_request_control_and_provider_timing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    api_attempt_count = 0
+
+    def fake_groq_request(
+        *args,
+        **kwargs,
+    ) -> ProviderTextResult:
+        nonlocal api_attempt_count
+
+        api_attempt_count += 1
+
+        if api_attempt_count == 1:
+            raise _transient_service_error()
+
+        return ProviderTextResult(
+            text="Salesman1: Depot-1-Depot",
+            api_call={
+                "phase": kwargs["phase"],
+                "success": True,
+                "api_call_wall_seconds": 0.8,
+                "usage": {
+                    "total_token_count": 20,
+                    "raw": {
+                        "queue_time": 0.1,
+                        "prompt_time": 0.2,
+                        "completion_time": 0.3,
+                        "total_time": 0.6,
+                    },
+                },
+            },
+        )
+
+    monkeypatch.setattr(
+        groq_provider_module,
+        "_request",
+        fake_groq_request,
+    )
+
+    controller = _zero_delay_request_controller()
+    provider = GroqProvider(
+        "groq-test-model"
+    )
+    provider.configure_request_controller(
+        controller
+    )
+
+    result = provider.request_route(
+        Path("unused.png"),
+        prompt="test prompt",
+        temperature=0.0,
+        phase="route_generation",
+    )
+
+    assert api_attempt_count == 2
+
+    request_control = result.api_call[
+        "request_control"
+    ]
+
+    assert request_control["attempt_count"] == 2
+    assert request_control["retry_count"] == 1
+
+    provider_timing = result.api_call[
+        "provider_timing"
+    ]
+
+    assert provider_timing["available"] is True
+    assert provider_timing[
+        "provider_queue_seconds"
+    ] == pytest.approx(0.1)
+    assert provider_timing[
+        "provider_prompt_seconds"
+    ] == pytest.approx(0.2)
+    assert provider_timing[
+        "provider_completion_seconds"
+    ] == pytest.approx(0.3)
+    assert provider_timing[
+        "provider_total_seconds"
+    ] == pytest.approx(0.6)
+    assert provider_timing[
+        "estimated_network_or_client_overhead_seconds"
+    ] == pytest.approx(0.2)
+
+
+def test_openrouter_independent_candidates_retry_only_failed_call(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    api_attempt_count = 0
+
+    def fake_openrouter_candidates(
+        *args,
+        **kwargs,
+    ) -> openrouter.OpenRouterCandidatesResult:
+        nonlocal api_attempt_count
+
+        api_attempt_count += 1
+
+        assert kwargs["candidate_count"] == 1
+        assert kwargs["strategy"] == (
+            "native_multiple_choices"
+        )
+
+        if api_attempt_count == 2:
+            raise _transient_service_error()
+
+        call = {
+            "phase": "critic_candidate_generation",
+            "provider": "openrouter",
+            "model": kwargs["model"],
+            "success": True,
+            "api_call_wall_seconds": 0.2,
+            "input_image_count": 1,
+            "input_image_bytes": 100,
+            "response_model": kwargs["model"],
+            "routed_provider": "test-provider",
+            "finish_reason": "stop",
+            "usage": {
+                "prompt_token_count": 10,
+                "candidates_token_count": 5,
+                "total_token_count": 15,
+            },
+        }
+
+        return openrouter.OpenRouterCandidatesResult(
+            texts=[
+                f"candidate-{api_attempt_count}"
+            ],
+            api_call=call,
+            api_calls=[call],
+        )
+
+    monkeypatch.setattr(
+        openrouter,
+        "request_candidates",
+        fake_openrouter_candidates,
+    )
+
+    problem = generate_random_problem(
+        4,
+        seed=42,
+    )
+    controller = _zero_delay_request_controller()
+    provider = OpenRouterProvider(
+        "test/vision-model"
+    )
+    provider.configure_request_controller(
+        controller
+    )
+
+    result = provider.request_candidates(
+        Path("unused.png"),
+        problem=problem,
+        candidate_count=2,
+        temperature=0.7,
+        strategy="independent_calls",
+    )
+
+    assert api_attempt_count == 3
+    assert len(result.texts) == 2
+    assert len(result.api_calls) == 2
+
+    first_request = result.api_calls[0][
+        "request_control"
+    ]
+    second_request = result.api_calls[1][
+        "request_control"
+    ]
+
+    assert first_request["attempt_count"] == 1
+    assert first_request["retry_count"] == 0
+
+    assert second_request["attempt_count"] == 2
+    assert second_request["retry_count"] == 1
+
+    assert result.api_call[
+        "http_request_count"
+    ] == 2
+    assert result.api_call[
+        "returned_candidate_count"
+    ] == 2
+    assert result.api_call[
+        "usage"
+    ]["total_token_count"] == pytest.approx(30)

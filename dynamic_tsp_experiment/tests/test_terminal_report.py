@@ -2,6 +2,7 @@ import pytest
 
 from src.terminal_report import (
     compact_text,
+    render_note,
     render_summary,
     render_table,
 )
@@ -49,3 +50,17 @@ def test_render_summary_wraps_fields_without_creating_table() -> None:
 def test_render_summary_rejects_zero_fields_per_line() -> None:
     with pytest.raises(ValueError, match="en az 1"):
         render_summary([], fields_per_line=0)
+
+
+def test_render_note_uses_bullets_without_another_table() -> None:
+    rendered = render_note(
+        "Sürelerin yorumu",
+        [
+            "Aktif süre kontrollü beklemeyi içermez.",
+            "API süresi uzak servisi de içerir.",
+        ],
+    )
+    assert "Sürelerin yorumu" in rendered
+    assert "• Aktif süre" in rendered
+    assert "• API süresi" in rendered
+    assert "┌" not in rendered

@@ -5,6 +5,10 @@ import pytest
 import run_multi_agent1 as ma1
 from src.core import evaluate_route
 from src.problem_loader import generate_random_problem
+from src.solution_tracking import (
+    EarlyStopPolicy,
+    SolutionProgressTracker,
+)
 
 
 def _candidate(
@@ -201,6 +205,7 @@ def test_scorer_receives_only_valid_candidate_ids(
     assert captured["problem"] is problem
     assert completed["scorer"]["excluded_invalid_candidate_ids"] == [2]
     assert completed["scorer"]["best_candidate_id"] == 1
+    assert len(completed["scorer"]["api_calls"]) == 1
 
 
 def test_checkpoint_validates_problem_fingerprint() -> None:
@@ -220,3 +225,102 @@ def test_checkpoint_validates_problem_fingerprint() -> None:
             candidate_strategy="native_multiple_choices",
             fingerprint="new",
         )
+
+
+def test_critic_request_timing_separates_wait_types() -> None:
+    timing = ma1._calls_timing(
+        [
+            {
+                "api_call_wall_seconds": 2.0,
+                "request_control": {
+                    "active_wall_seconds": 1.5,
+                    "total_wall_seconds": 2.5,
+                    "waits": {
+                        "deliberate_delay_seconds": 0.5,
+                        "rate_limit_backoff_seconds": 0.5,
+                        "controlled_wait_seconds": 1.0,
+                    },
+                },
+            },
+            {
+                "api_call_wall_seconds": 3.0,
+                "request_control": {
+                    "active_wall_seconds": 2.0,
+                    "total_wall_seconds": 4.0,
+                    "waits": {
+                        "deliberate_delay_seconds": 1.0,
+                        "rate_limit_backoff_seconds": 1.0,
+                        "controlled_wait_seconds": 2.0,
+                    },
+                },
+            },
+        ]
+    )
+
+    assert timing == {
+        "api_active_wall_seconds": 3.5,
+        "deliberate_delay_seconds": 1.5,
+        "rate_limit_backoff_seconds": 1.5,
+        "controlled_wait_seconds": 3.0,
+        "api_request_total_wall_seconds": 6.5,
+    }
+
+
+def test_progress_distinguishes_selected_and_candidate_gbest() -> None:
+    tracker = SolutionProgressTracker(
+        provider="gemini",
+        reference_distance=80.0,
+        reference_type="tsplib_known_optimum",
+        reference_is_proven_optimal=True,
+        early_stop_policy=EarlyStopPolicy(
+            threshold_percent=1.0,
+        ),
+    )
+    tracker.seed_initializer(
+        {
+            "route": [0, 1, 0],
+            "validation": {"is_valid": True},
+            "distance": 100.0,
+            "gap_to_reference_percent": 25.0,
+        }
+    )
+    completed = {
+        "iteration": 1,
+        "critic": {
+            "candidates": [
+                {
+                    "candidate_id": 1,
+                    "route": [0, 1, 0],
+                    "validation": {"is_valid": True},
+                    "distance": 90.0,
+                    "gap_to_reference_percent": 12.5,
+                },
+                {
+                    "candidate_id": 2,
+                    "route": [0, 1, 0],
+                    "validation": {"is_valid": True},
+                    "distance": 95.0,
+                    "gap_to_reference_percent": 18.75,
+                },
+            ]
+        },
+        "selected_solution": {
+            "route": [0, 1, 0],
+            "validation": {"is_valid": True},
+            "distance": 95.0,
+            "gap_to_reference_percent": 18.75,
+        },
+    }
+
+    progress = ma1._record_solution_progress(
+        tracker,
+        completed,
+    )
+
+    assert completed["iteration_best_distance"] == 90.0
+    assert completed["system_gbest_distance"] == 95.0
+    assert completed["observed_candidate_gbest_distance"] == 90.0
+    assert completed["selected_is_iteration_best"] is False
+    assert progress["selection_regret_percent"] == pytest.approx(
+        5.555555555555555
+    )

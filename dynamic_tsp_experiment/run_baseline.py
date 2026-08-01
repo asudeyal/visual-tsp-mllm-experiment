@@ -16,6 +16,11 @@ from src.core import (
     solve_ortools,
     write_json,
 )
+from src.experiment_observability import (
+    ExperimentObservability,
+    add_observability_arguments,
+    settings_from_args,
+)
 from src.metrics import elapsed_seconds, start_timer
 from src.problem_cli import (
     add_problem_arguments,
@@ -53,6 +58,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--run-id",
         default="dynamic_run_01",
+    )
+    add_observability_arguments(
+        parser,
+        include_early_stop=False,
     )
     return parser.parse_args()
 
@@ -99,6 +108,12 @@ def main() -> None:
     if args.ortools_time_limit < 1:
         raise SystemExit("--ortools-time-limit en az 1 olmalıdır.")
 
+    settings = settings_from_args(
+        args,
+        include_early_stop=False,
+    )
+    observability = ExperimentObservability(settings)
+
     run_id = normalize_run_id(args.run_id)
     run_dir = Path(args.output_dir) / "runs" / run_id
     output = method_dir(
@@ -110,151 +125,165 @@ def main() -> None:
     manifest_path = run_dir / "run_manifest.json"
 
     total_timer = start_timer()
+    observability.start()
 
-    load_timer = start_timer()
-    problem, input_request = load_problem_from_args(
-        args,
-        default_tsplib_file=DEFAULT_TSPLIB,
-        default_optimal_tour_file=DEFAULT_OPTIMAL_TOUR,
-    )
-    problem = snapshot_problem_inputs(problem, run_dir)
-    loading_seconds = elapsed_seconds(load_timer)
-
-    ortools_timer = start_timer()
-    initial_or_tools = solve_ortools(
-        problem,
-        time_limit_seconds=args.ortools_time_limit,
-    )
-    ortools_seconds = elapsed_seconds(ortools_timer)
-
-    reference_timer = start_timer()
-    if problem.reference is None:
-        problem = replace(
-            problem,
-            reference=ReferenceSolution(
-                reference_type=ReferenceType.OR_TOOLS_HEURISTIC,
-                distance=float(initial_or_tools["distance"]),
-                is_proven_optimal=False,
-                route=tuple(initial_or_tools["route"]),
-            ),
-        )
-    or_tools = {
-        "method": initial_or_tools["method"],
-        **evaluate_route(
-            problem,
-            initial_or_tools["route"],
-        ),
-    }
-    reference = _reference_record(problem)
-    reference_seconds = elapsed_seconds(reference_timer)
-
-    render_timer = start_timer()
-    images = output / "images"
-    points_image = images / "points.png"
-    ortools_image = images / "or_tools_route.png"
-    plot_problem(problem, points_image)
-    plot_route(
-        problem,
-        or_tools["route"],
-        ortools_image,
-        title=(
-            f"{problem.name} OR-Tools — "
-            f"distance {or_tools['distance']}"
-        ),
-    )
-
-    reference_image: Path | None = None
-    if (
-        problem.reference is not None
-        and problem.reference.route is not None
-        and problem.reference.reference_type
-        is not ReferenceType.OR_TOOLS_HEURISTIC
-    ):
-        reference_image = images / "reference_route.png"
-        plot_route(
-            problem,
-            problem.reference.route,
-            reference_image,
-            title=(
-                f"{problem.name} reference — "
-                f"distance {problem.reference.distance}"
-            ),
-        )
-    rendering_seconds = elapsed_seconds(render_timer)
-
-    manifest_timer = start_timer()
-    manifest = build_run_manifest(
-        run_id=run_id,
-        problem=problem,
-        run_dir=run_dir,
-        input_request={
-            key: (
-                Path(value).name
-                if key in {
-                    "instance_file",
-                    "optimal_tour_file",
-                }
-                and value is not None
-                else value
+    try:
+        load_timer = start_timer()
+        with observability.phase("problem_loading"):
+            problem, input_request = load_problem_from_args(
+                args,
+                default_tsplib_file=DEFAULT_TSPLIB,
+                default_optimal_tour_file=DEFAULT_OPTIMAL_TOUR,
             )
-            for key, value in input_request.items()
-        },
-        baseline={
-            "method": "or_tools_savings_guided_local_search",
-            "time_limit_seconds": args.ortools_time_limit,
-            "distance": or_tools["distance"],
-            "reference_type": (
-                problem.reference.reference_type.value
-                if problem.reference is not None
-                else None
-            ),
-        },
-    )
-    write_run_manifest(manifest_path, manifest)
-    manifest_seconds = elapsed_seconds(manifest_timer)
+            problem = snapshot_problem_inputs(problem, run_dir)
+        loading_seconds = elapsed_seconds(load_timer)
 
-    result = {
-        "schema_version": "2.0",
-        "experiment": "dynamic_tsp_baseline",
-        "run_id": run_id,
-        "method": "baseline",
-        "problem": {
-            "name": problem.name,
-            "source_type": problem.source_type.value,
-            "dimension": problem.dimension,
-            "depot_id": problem.depot_id,
-            "edge_weight_type": problem.edge_weight_type,
-            "fingerprint_sha256": manifest["problem"][
-                "fingerprint_sha256"
-            ],
-        },
-        "reference_solution": reference,
-        "or_tools": or_tools,
-        "artifacts": {
-            "run_manifest": _relative(manifest_path, run_dir),
-            "points_image": _relative(points_image, run_dir),
-            "or_tools_route_image": _relative(
+        ortools_timer = start_timer()
+        with observability.phase("ortools_solve"):
+            initial_or_tools = solve_ortools(
+                problem,
+                time_limit_seconds=args.ortools_time_limit,
+            )
+        ortools_seconds = elapsed_seconds(ortools_timer)
+
+        reference_timer = start_timer()
+        with observability.phase("reference_preparation"):
+            if problem.reference is None:
+                problem = replace(
+                    problem,
+                    reference=ReferenceSolution(
+                        reference_type=(
+                            ReferenceType.OR_TOOLS_HEURISTIC
+                        ),
+                        distance=float(initial_or_tools["distance"]),
+                        is_proven_optimal=False,
+                        route=tuple(initial_or_tools["route"]),
+                    ),
+                )
+            or_tools = {
+                "method": initial_or_tools["method"],
+                **evaluate_route(
+                    problem,
+                    initial_or_tools["route"],
+                ),
+            }
+            reference = _reference_record(problem)
+        reference_seconds = elapsed_seconds(reference_timer)
+
+        render_timer = start_timer()
+        with observability.phase("route_rendering"):
+            images = output / "images"
+            points_image = images / "points.png"
+            ortools_image = images / "or_tools_route.png"
+            plot_problem(problem, points_image)
+            plot_route(
+                problem,
+                or_tools["route"],
                 ortools_image,
-                run_dir,
-            ),
-            "reference_route_image": (
-                _relative(reference_image, run_dir)
-                if reference_image is not None
-                else None
-            ),
-        },
-        "timing": {
-            "problem_loading_seconds": loading_seconds,
-            "or_tools_wall_seconds": ortools_seconds,
-            "reference_preparation_seconds": reference_seconds,
-            "route_rendering_seconds": rendering_seconds,
-            "manifest_write_seconds": manifest_seconds,
-            "total_wall_seconds_before_result_write": (
-                elapsed_seconds(total_timer)
-            ),
-        },
-    }
-    write_json(result_path, result)
+                title=(
+                    f"{problem.name} OR-Tools — "
+                    f"distance {or_tools['distance']}"
+                ),
+            )
+
+            reference_image: Path | None = None
+            if (
+                problem.reference is not None
+                and problem.reference.route is not None
+                and problem.reference.reference_type
+                is not ReferenceType.OR_TOOLS_HEURISTIC
+            ):
+                reference_image = images / "reference_route.png"
+                plot_route(
+                    problem,
+                    problem.reference.route,
+                    reference_image,
+                    title=(
+                        f"{problem.name} reference — "
+                        f"distance {problem.reference.distance}"
+                    ),
+                )
+        rendering_seconds = elapsed_seconds(render_timer)
+
+        manifest_timer = start_timer()
+        with observability.phase("manifest_write"):
+            manifest = build_run_manifest(
+                run_id=run_id,
+                problem=problem,
+                run_dir=run_dir,
+                input_request={
+                    key: (
+                        Path(value).name
+                        if key in {
+                            "instance_file",
+                            "optimal_tour_file",
+                        }
+                        and value is not None
+                        else value
+                    )
+                    for key, value in input_request.items()
+                },
+                baseline={
+                    "method": "or_tools_savings_guided_local_search",
+                    "time_limit_seconds": args.ortools_time_limit,
+                    "distance": or_tools["distance"],
+                    "reference_type": (
+                        problem.reference.reference_type.value
+                        if problem.reference is not None
+                        else None
+                    ),
+                },
+            )
+            write_run_manifest(manifest_path, manifest)
+        manifest_seconds = elapsed_seconds(manifest_timer)
+
+        observability_summary = observability.stop()
+
+        result = {
+            "schema_version": "2.0",
+            "experiment": "dynamic_tsp_baseline",
+            "run_id": run_id,
+            "method": "baseline",
+            "problem": {
+                "name": problem.name,
+                "source_type": problem.source_type.value,
+                "dimension": problem.dimension,
+                "depot_id": problem.depot_id,
+                "edge_weight_type": problem.edge_weight_type,
+                "fingerprint_sha256": manifest["problem"][
+                    "fingerprint_sha256"
+                ],
+            },
+            "reference_solution": reference,
+            "or_tools": or_tools,
+            "artifacts": {
+                "run_manifest": _relative(manifest_path, run_dir),
+                "points_image": _relative(points_image, run_dir),
+                "or_tools_route_image": _relative(
+                    ortools_image,
+                    run_dir,
+                ),
+                "reference_route_image": (
+                    _relative(reference_image, run_dir)
+                    if reference_image is not None
+                    else None
+                ),
+            },
+            "timing": {
+                "problem_loading_seconds": loading_seconds,
+                "or_tools_wall_seconds": ortools_seconds,
+                "reference_preparation_seconds": reference_seconds,
+                "route_rendering_seconds": rendering_seconds,
+                "manifest_write_seconds": manifest_seconds,
+                "total_wall_seconds_before_result_write": (
+                    elapsed_seconds(total_timer)
+                ),
+            },
+            "observability": observability_summary,
+        }
+        write_json(result_path, result)
+    finally:
+        observability.stop()
 
     print("Dinamik TSP baseline tamamlandı.")
     print(
@@ -272,6 +301,12 @@ def main() -> None:
             "kanıtlanmış optimum="
             f"{problem.reference.is_proven_optimal}"
         )
+    resources = observability_summary["resources"]
+    print(
+        "Kaynak profili: "
+        f"{'açık' if resources['enabled'] else 'kapalı'}, "
+        f"örnek={resources.get('sample_count', 0)}"
+    )
     print(f"Manifest: {manifest_path}")
     print(f"Sonuç dosyası: {result_path}")
 
