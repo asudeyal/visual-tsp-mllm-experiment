@@ -4,3 +4,5 @@ ortools>=9.10
 pytest>=8.0
 numpy>=1.26
 Pillow>=10.0
+psutil>=5.9
+nvidia-ml-py>=12.0
