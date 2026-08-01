@@ -51,6 +51,23 @@ def render_summary(
     return "\n".join(lines)
 
 
+def render_note(
+    title: str,
+    lines: Sequence[str],
+) -> str:
+    """Uzun açıklamaları yeni tablo oluşturmadan okunaklı gösterir."""
+    normalized = [
+        compact_text(line, maximum=160)
+        for line in lines
+        if str(line).strip()
+    ]
+    if not normalized:
+        return f"\n{title}\n  • Kayıt yok."
+    return "\n".join(
+        [f"\n{title}", *(f"  • {line}" for line in normalized)]
+    )
+
+
 def render_table(
     title: str,
     headers: Sequence[str],

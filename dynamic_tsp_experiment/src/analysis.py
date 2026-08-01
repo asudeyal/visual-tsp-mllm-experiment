@@ -28,6 +28,12 @@ def _status(
     if iterative:
         requested = int(result.get("requested_iterations", 0))
         completed = int(result.get("completed_iterations", 0))
+        termination = result.get("termination") or {}
+        if (
+            termination.get("reason") == "early_stop"
+            and result.get("pending_iteration") is None
+        ):
+            return "completed"
         if completed == requested and result.get("pending_iteration") is None:
             return "completed"
         return "partial"
@@ -66,7 +72,10 @@ def _compact_solution(
         "source": value.get("source"),
         "iteration": value.get("iteration"),
         "candidate_id": value.get("candidate_id"),
-        "is_valid": validation.get("is_valid"),
+        "is_valid": _first_not_none(
+            validation.get("is_valid"),
+            value.get("is_valid"),
+        ),
         "distance": value.get("distance"),
         "reference_distance": value.get("reference_distance"),
         "gap_to_reference_percent": value.get(
@@ -80,6 +89,198 @@ def _usage_tokens(call: dict[str, Any] | None) -> int:
         return 0
     usage = call.get("usage") or {}
     return int(usage.get("total_token_count") or 0)
+
+
+def _first_not_none(*values: Any) -> Any:
+    for value in values:
+        if value is not None:
+            return value
+    return None
+
+
+def _sum_numeric(
+    values: list[Any],
+) -> float:
+    return sum(
+        float(value)
+        for value in values
+        if value is not None
+    )
+
+
+def _resource_metric(
+    metrics: dict[str, Any],
+    name: str,
+) -> dict[str, Any] | None:
+    value = metrics.get(name)
+    if not isinstance(value, dict) or not value.get("sample_count"):
+        return None
+    return {
+        "average": value.get("average"),
+        "maximum": value.get("maximum"),
+    }
+
+
+def _resource_metrics(
+    metrics: dict[str, Any],
+) -> dict[str, Any]:
+    names = (
+        "system_cpu_percent",
+        "process_cpu_percent",
+        "process_memory_rss_mb",
+        "system_memory_percent",
+        "system_memory_available_mb",
+        "local_gpu_utilization_percent",
+        "local_gpu_memory_used_mb",
+        "local_gpu_memory_percent",
+        "local_gpu_temperature_celsius",
+    )
+    return {
+        name: compact
+        for name in names
+        if (compact := _resource_metric(metrics, name)) is not None
+    }
+
+
+def _compact_observability(
+    result: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    observability = (result or {}).get("observability")
+    if not isinstance(observability, dict):
+        return None
+
+    settings = observability.get("settings") or {}
+    request = observability.get("request_control") or {}
+    waits = (
+        request.get("waits")
+        or observability.get("controlled_waits")
+        or {}
+    )
+    resources = observability.get("resources") or {}
+    system = resources.get("system") or {}
+    local_gpu = system.get("local_gpu") or {}
+    overall = resources.get("overall") or {}
+
+    phases: dict[str, Any] = {}
+    for phase_name, phase in sorted(
+        (resources.get("by_phase") or {}).items()
+    ):
+        phase_metrics = _resource_metrics(
+            (phase or {}).get("metrics") or {}
+        )
+        phases[str(phase_name)] = {
+            "sample_count": (phase or {}).get("sample_count"),
+            "metrics": phase_metrics,
+        }
+
+    return {
+        "settings": {
+            "resource_profiling_enabled": settings.get(
+                "profile_resources"
+            ),
+            "resource_sample_interval_seconds": settings.get(
+                "resource_sample_interval_seconds"
+            ),
+            "minimum_request_interval_seconds": settings.get(
+                "minimum_request_interval_seconds"
+            ),
+            "max_retries": settings.get("max_retries"),
+            "early_stop_enabled": settings.get(
+                "early_stop_enabled"
+            ),
+            "early_stop_gap_percent": settings.get(
+                "early_stop_gap_percent"
+            ),
+        },
+        "request_control": {
+            "execution_count": request.get("execution_count"),
+            "request_attempt_count": request.get(
+                "request_attempt_count"
+            ),
+            "retry_count": request.get("retry_count"),
+            "api_active_wall_seconds": request.get(
+                "active_wall_seconds"
+            ),
+            "deliberate_delay_seconds": waits.get(
+                "deliberate_delay_seconds"
+            ),
+            "rate_limit_backoff_seconds": waits.get(
+                "rate_limit_backoff_seconds"
+            ),
+            "controlled_wait_seconds": waits.get(
+                "controlled_wait_seconds"
+            ),
+            "request_total_wall_seconds": request.get(
+                "total_wall_seconds"
+            ),
+        },
+        "resources": {
+            "enabled": resources.get("enabled"),
+            "reason": resources.get("reason"),
+            "duration_seconds": resources.get("duration_seconds"),
+            "sample_count": resources.get("sample_count"),
+            "local_gpu": {
+                "available": local_gpu.get("available"),
+                "backend": local_gpu.get("backend"),
+                "unavailable_reason": local_gpu.get(
+                    "unavailable_reason"
+                ),
+            },
+            "overall_metrics": _resource_metrics(
+                overall.get("metrics") or {}
+            ),
+            "phases": phases,
+            "sampling_error_count": len(
+                resources.get("sampling_errors") or []
+            ),
+        },
+    }
+
+
+def _compact_termination(
+    result: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    termination = (result or {}).get("termination")
+    if not isinstance(termination, dict):
+        return None
+    early = termination.get("early_stop")
+    compact_early = None
+    if isinstance(early, dict):
+        compact_early = {
+            "enabled": early.get("enabled"),
+            "eligible": early.get("eligible"),
+            "should_stop": early.get("should_stop"),
+            "reason": early.get("reason"),
+            "threshold_percent": early.get("threshold_percent"),
+            "system_gbest_iteration": early.get(
+                "system_gbest_iteration"
+            ),
+            "system_gbest_gap_percent": early.get(
+                "system_gbest_gap_percent"
+            ),
+        }
+    return {
+        "reason": termination.get("reason"),
+        "failed_iteration": termination.get("failed_iteration"),
+        "early_stop": compact_early,
+    }
+
+
+def _compact_progress(
+    result: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    progress = (result or {}).get("solution_progress")
+    if not isinstance(progress, dict):
+        return None
+    return {
+        "system_gbest": _compact_solution(
+            progress.get("system_gbest")
+        ),
+        "observed_candidate_gbest": _compact_solution(
+            progress.get("observed_candidate_gbest")
+        ),
+        "latest_early_stop": progress.get("latest_early_stop"),
+    }
 
 
 def _compact_error(error: dict[str, Any]) -> dict[str, Any]:
@@ -119,6 +320,7 @@ def _baseline_section(
                 "total_wall_seconds_before_result_write"
             ),
         },
+        "observability": _compact_observability(result),
     }
 
 
@@ -129,6 +331,7 @@ def _zero_shot_section(
     if status != "completed" or result is None:
         return {
             "status": status,
+            "observability": _compact_observability(result),
             "errors": [
                 _compact_error(item)
                 for item in (result or {}).get("errors", [])
@@ -136,23 +339,59 @@ def _zero_shot_section(
         }
     timing = result.get("timing") or {}
     summary = result.get("run_summary") or {}
+    observability = _compact_observability(result)
+    request = (observability or {}).get("request_control") or {}
+    total_seconds = timing.get(
+        "total_wall_seconds_before_result_write"
+    )
+    api_active = _first_not_none(
+        timing.get("api_active_wall_seconds"),
+        request.get("api_active_wall_seconds"),
+        timing.get("api_call_wall_seconds"),
+    )
+    controlled_wait = _first_not_none(
+        timing.get("controlled_wait_seconds"),
+        request.get("controlled_wait_seconds"),
+        0.0,
+    )
+    local_active = None
+    if total_seconds is not None:
+        local_active = max(
+            0.0,
+            float(total_seconds)
+            - float(api_active or 0.0)
+            - float(controlled_wait or 0.0),
+        )
     return {
         "status": status,
         "model": result.get("model"),
         "solution": _compact_solution(result),
         "timing_seconds": {
             "api": timing.get("api_call_wall_seconds"),
+            "api_active": api_active,
+            "local_processing_active": local_active,
+            "active": (
+                None
+                if local_active is None
+                else local_active + float(api_active or 0.0)
+            ),
+            "deliberate_delay": request.get(
+                "deliberate_delay_seconds"
+            ),
+            "rate_limit_backoff": request.get(
+                "rate_limit_backoff_seconds"
+            ),
+            "controlled_wait": controlled_wait,
             "parsing": timing.get("response_parsing_seconds"),
             "evaluation": timing.get(
                 "validation_and_metrics_seconds"
             ),
             "rendering": timing.get("route_rendering_seconds"),
-            "total": timing.get(
-                "total_wall_seconds_before_result_write"
-            ),
+            "total": total_seconds,
         },
         "api_call_count": summary.get("api_call_count"),
         "total_token_count": summary.get("total_token_count"),
+        "observability": observability,
         "errors": [
             _compact_error(item)
             for item in result.get("errors", [])
@@ -164,10 +403,48 @@ def _ma2_iterations(
     result: dict[str, Any],
 ) -> list[dict[str, Any]]:
     compact: list[dict[str, Any]] = []
+    initializer = result.get("initializer") or {}
+    initializer_validation = initializer.get("validation") or {}
+    running_gbest = (
+        initializer.get("distance")
+        if initializer_validation.get("is_valid") is True
+        else None
+    )
+    running_gbest_gap = (
+        initializer.get("gap_to_reference_percent")
+        if running_gbest is not None
+        else None
+    )
     for item in result.get("iterations", []):
         timing = item.get("timing") or {}
         call = item.get("api_call")
         validation = item.get("validation") or {}
+        if (
+            validation.get("is_valid") is True
+            and item.get("distance") is not None
+        ):
+            if (
+                running_gbest is None
+                or float(item["distance"]) < float(running_gbest)
+            ):
+                running_gbest = item["distance"]
+                running_gbest_gap = item.get(
+                    "gap_to_reference_percent"
+                )
+        api_active = _first_not_none(
+            timing.get("api_active_wall_seconds"),
+            timing.get("api_call_wall_seconds"),
+        )
+        active = _first_not_none(
+            timing.get("iteration_active_wall_seconds"),
+            timing.get("iteration_total_wall_seconds"),
+        )
+        local_active = None
+        if active is not None:
+            local_active = max(
+                0.0,
+                float(active) - float(api_active or 0.0),
+            )
         compact.append(
             {
                 "iteration": item.get("iteration"),
@@ -177,9 +454,33 @@ def _ma2_iterations(
                 "gap_to_reference_percent": item.get(
                     "gap_to_reference_percent"
                 ),
+                "iteration_best_distance": _first_not_none(
+                    item.get("iteration_best_distance"),
+                    item.get("distance"),
+                ),
+                "system_gbest_distance": _first_not_none(
+                    item.get("system_gbest_distance"),
+                    running_gbest,
+                ),
+                "system_gbest_gap_percent": _first_not_none(
+                    item.get("system_gbest_gap_percent"),
+                    running_gbest_gap,
+                ),
                 "timing_seconds": {
                     "api": timing.get(
                         "api_call_wall_seconds"
+                    ),
+                    "api_active": api_active,
+                    "local_processing_active": local_active,
+                    "active": active,
+                    "deliberate_delay": timing.get(
+                        "deliberate_delay_seconds"
+                    ),
+                    "rate_limit_backoff": timing.get(
+                        "rate_limit_backoff_seconds"
+                    ),
+                    "controlled_wait": timing.get(
+                        "controlled_wait_seconds"
                     ),
                     "parsing": timing.get(
                         "response_parsing_seconds"
@@ -197,7 +498,10 @@ def _ma2_iterations(
                         "iteration_total_wall_seconds"
                     ),
                 },
-                "total_token_count": _usage_tokens(call),
+                "total_token_count": _first_not_none(
+                    item.get("token_count"),
+                    _usage_tokens(call),
+                ),
             }
         )
     return compact
@@ -223,6 +527,23 @@ def _multi_agent2_section(
         if valid
         else None
     )
+    timing_totals = {
+        key: _sum_numeric(
+            [
+                item.get("timing_seconds", {}).get(key)
+                for item in iterations
+            ]
+        )
+        for key in (
+            "api_active",
+            "local_processing_active",
+            "active",
+            "deliberate_delay",
+            "rate_limit_backoff",
+            "controlled_wait",
+            "total",
+        )
+    }
     return {
         "status": status,
         "model": result.get("model"),
@@ -246,7 +567,15 @@ def _multi_agent2_section(
         "best_valid_solution": _compact_solution(
             result.get("best_valid_solution")
         ),
+        "solution_progress": _compact_progress(result),
+        "termination": _compact_termination(result),
         "iterations": iterations,
+        "timing_seconds": timing_totals,
+        "total_token_count": sum(
+            int(item.get("total_token_count") or 0)
+            for item in iterations
+        ),
+        "observability": _compact_observability(result),
         "run_summary": result.get("run_summary"),
         "errors": [
             _compact_error(item)
@@ -259,6 +588,19 @@ def _ma1_iterations(
     result: dict[str, Any],
 ) -> list[dict[str, Any]]:
     compact: list[dict[str, Any]] = []
+    initializer = result.get("initializer") or {}
+    initializer_validation = initializer.get("validation") or {}
+    running_system_gbest = (
+        initializer.get("distance")
+        if initializer_validation.get("is_valid") is True
+        else None
+    )
+    running_system_gbest_gap = (
+        initializer.get("gap_to_reference_percent")
+        if running_system_gbest is not None
+        else None
+    )
+    running_observed_gbest = None
     for item in result.get("iterations", []):
         critic = item.get("critic") or {}
         scorer = item.get("scorer") or {}
@@ -284,8 +626,29 @@ def _ma1_iterations(
         selected = item.get("selected_solution") or {}
         selected_validation = selected.get("validation") or {}
         selected_distance = selected.get("distance")
-        selection_regret = scorer.get(
-            "selection_regret_percent_after_evaluation"
+        if best_valid_distance is not None:
+            running_observed_gbest = min(
+                float(running_observed_gbest),
+                float(best_valid_distance),
+            ) if running_observed_gbest is not None else best_valid_distance
+        if (
+            selected_validation.get("is_valid") is True
+            and selected_distance is not None
+        ):
+            if (
+                running_system_gbest is None
+                or float(selected_distance)
+                < float(running_system_gbest)
+            ):
+                running_system_gbest = selected_distance
+                running_system_gbest_gap = selected.get(
+                    "gap_to_reference_percent"
+                )
+        selection_regret = _first_not_none(
+            item.get("selection_regret_percent"),
+            scorer.get(
+                "selection_regret_percent_after_evaluation"
+            ),
         )
         if (
             selection_regret is None
@@ -298,14 +661,53 @@ def _ma1_iterations(
                 * (selected_distance - best_valid_distance)
                 / best_valid_distance
             )
-        selected_best = (
-            abs(float(selection_regret)) <= 1e-9
-            if selection_regret is not None
-            else None
+        selected_best = _first_not_none(
+            item.get("selected_is_iteration_best"),
+            (
+                abs(float(selection_regret)) <= 1e-9
+                if selection_regret is not None
+                else None
+            ),
         )
         timing = item.get("timing") or {}
         critic_timing = critic.get("timing") or {}
         scorer_timing = scorer.get("timing") or {}
+        critic_tokens = _first_not_none(
+            critic.get("token_count"),
+            _usage_tokens(critic.get("api_call")),
+        )
+        scorer_tokens = _first_not_none(
+            scorer.get("token_count"),
+            _usage_tokens(scorer.get("api_call")),
+        )
+        total_tokens = _first_not_none(
+            item.get("token_count"),
+            int(critic_tokens or 0) + int(scorer_tokens or 0),
+        )
+        active = _first_not_none(
+            timing.get("iteration_active_wall_seconds"),
+            timing.get("iteration_processing_wall_seconds"),
+        )
+        api_active = _sum_numeric(
+            [
+                _first_not_none(
+                    critic_timing.get("api_active_wall_seconds"),
+                    critic_timing.get("api_call_wall_seconds"),
+                ),
+                _first_not_none(
+                    scorer_timing.get("api_active_wall_seconds"),
+                    scorer_timing.get("api_call_wall_seconds"),
+                ),
+            ]
+        )
+        local_active = _first_not_none(
+            timing.get("local_processing_active_wall_seconds"),
+            (
+                max(0.0, float(active) - api_active)
+                if active is not None
+                else None
+            ),
+        )
         compact.append(
             {
                 "iteration": item.get("iteration"),
@@ -318,6 +720,22 @@ def _ma1_iterations(
                 ),
                 "best_valid_candidate_distance": (
                     best_valid_distance
+                ),
+                "iteration_best_distance": _first_not_none(
+                    item.get("iteration_best_distance"),
+                    best_valid_distance,
+                ),
+                "system_gbest_distance": _first_not_none(
+                    item.get("system_gbest_distance"),
+                    running_system_gbest,
+                ),
+                "system_gbest_gap_percent": _first_not_none(
+                    item.get("system_gbest_gap_percent"),
+                    running_system_gbest_gap,
+                ),
+                "observed_candidate_gbest_distance": _first_not_none(
+                    item.get("observed_candidate_gbest_distance"),
+                    running_observed_gbest,
                 ),
                 "selection_mode": scorer.get("selection_mode"),
                 "selected_candidate_id": scorer.get(
@@ -345,20 +763,30 @@ def _ma1_iterations(
                     "scorer_total": timing.get(
                         "scorer_stage_wall_seconds"
                     ),
+                    "api_active": api_active,
+                    "local_processing_active": local_active,
+                    "active": active,
+                    "deliberate_delay": timing.get(
+                        "deliberate_delay_seconds"
+                    ),
+                    "rate_limit_backoff": timing.get(
+                        "rate_limit_backoff_seconds"
+                    ),
+                    "controlled_wait": timing.get(
+                        "controlled_wait_seconds"
+                    ),
                     "checkpoint": timing.get(
                         "checkpoint_write_seconds"
                     ),
                     "total": timing.get(
-                        "iteration_processing_wall_seconds"
+                        "iteration_observed_total_wall_seconds",
+                        timing.get("iteration_processing_wall_seconds"),
                     ),
                 },
                 "token_count": {
-                    "critic": _usage_tokens(
-                        critic.get("api_call")
-                    ),
-                    "scorer": _usage_tokens(
-                        scorer.get("api_call")
-                    ),
+                    "critic": critic_tokens,
+                    "scorer": scorer_tokens,
+                    "total": total_tokens,
                 },
             }
         )
@@ -390,6 +818,23 @@ def _multi_agent1_section(
         item["selected_best_valid_candidate"] is True
         for item in scorer_iterations
     )
+    timing_totals = {
+        key: _sum_numeric(
+            [
+                item.get("timing_seconds", {}).get(key)
+                for item in iterations
+            ]
+        )
+        for key in (
+            "api_active",
+            "local_processing_active",
+            "active",
+            "deliberate_delay",
+            "rate_limit_backoff",
+            "controlled_wait",
+            "total",
+        )
+    }
     return {
         "status": status,
         "model": result.get("model"),
@@ -433,7 +878,15 @@ def _multi_agent1_section(
         "best_critic_candidate_oracle": _compact_solution(
             result.get("best_critic_candidate_oracle")
         ),
+        "solution_progress": _compact_progress(result),
+        "termination": _compact_termination(result),
         "iterations": iterations,
+        "timing_seconds": timing_totals,
+        "total_token_count": sum(
+            int((item.get("token_count") or {}).get("total") or 0)
+            for item in iterations
+        ),
+        "observability": _compact_observability(result),
         "run_summary": result.get("run_summary"),
         "errors": [
             _compact_error(item)
@@ -746,6 +1199,10 @@ def _provider_comparison_rows(
         )
         for method_name, section, solution in values:
             run_summary = section.get("run_summary") or {}
+            timing = section.get("timing_seconds") or {}
+            observability = section.get("observability") or {}
+            request = observability.get("request_control") or {}
+            resources = observability.get("resources") or {}
             rows.append(
                 {
                     "provider": model["provider"],
@@ -765,16 +1222,41 @@ def _provider_comparison_rows(
                         or run_summary.get("api_call_count")
                     ),
                     "api_wall_seconds": (
-                        (section.get("timing_seconds") or {}).get(
-                            "api"
-                        )
-                        or run_summary.get(
-                            "total_api_call_wall_seconds"
+                        _first_not_none(
+                            timing.get("api_active"),
+                            timing.get("api"),
+                            request.get("api_active_wall_seconds"),
+                            run_summary.get(
+                                "total_api_call_wall_seconds"
+                            ),
                         )
                     ),
                     "total_token_count": (
-                        section.get("total_token_count")
-                        or run_summary.get("total_token_count")
+                        _first_not_none(
+                            section.get("total_token_count"),
+                            run_summary.get("total_token_count"),
+                        )
+                    ),
+                    "active_wall_seconds": _first_not_none(
+                        timing.get("active"),
+                        request.get("api_active_wall_seconds"),
+                    ),
+                    "deliberate_delay_seconds": _first_not_none(
+                        timing.get("deliberate_delay"),
+                        request.get("deliberate_delay_seconds"),
+                    ),
+                    "rate_limit_backoff_seconds": _first_not_none(
+                        timing.get("rate_limit_backoff"),
+                        request.get("rate_limit_backoff_seconds"),
+                    ),
+                    "controlled_wait_seconds": _first_not_none(
+                        timing.get("controlled_wait"),
+                        request.get("controlled_wait_seconds"),
+                    ),
+                    "total_wall_seconds": timing.get("total"),
+                    "retry_count": request.get("retry_count"),
+                    "resource_profile_enabled": resources.get(
+                        "enabled"
                     ),
                     "error_count": len(section.get("errors", [])),
                 }
@@ -913,6 +1395,31 @@ def build_analysis(
                     problem.get("reference") or {}
                 ).get("is_proven_optimal"),
             },
+        },
+        "measurement_definitions": {
+            "active_seconds": (
+                "Kontrollü beklemeler çıkarıldıktan sonra yerel işlem "
+                "ve API isteğinde geçen duvar saati süresi."
+            ),
+            "api_active_seconds": (
+                "İstek denemelerinin istemci tarafından gözlenen "
+                "süresi; ağ, sağlayıcı kuyruğu ve model çıkarımı "
+                "ayrı ayrı ölçülemez."
+            ),
+            "deliberate_delay_seconds": (
+                "İstek aralığı kuralı nedeniyle bilinçli bekleme."
+            ),
+            "rate_limit_backoff_seconds": (
+                "429/503/504 sonrasında kontrollü retry beklemesi."
+            ),
+            "system_gbest": (
+                "Yöntemin seçilmiş ve sonraki iterasyona aktardığı "
+                "çözümler arasındaki en iyi geçerli mesafe."
+            ),
+            "observed_candidate_gbest": (
+                "Multi-Agent 1 critic adayları içinde şimdiye kadar "
+                "gözlenen en iyi geçerli mesafe."
+            ),
         },
         "completion": {
             "methods": statuses,
