@@ -13,6 +13,11 @@ from src.core import (
     read_json,
     write_json,
 )
+from src.experiment_observability import (
+    ExperimentObservability,
+    add_observability_arguments,
+    settings_from_args,
+)
 from src.gemini import critic_prompt, parse_route
 from src.metrics import (
     elapsed_seconds,
@@ -29,6 +34,7 @@ from src.providers import (
     zero_shot_result_candidates,
 )
 from src.run_manifest import load_run_problem
+from src.solution_tracking import SolutionProgressTracker
 
 
 ROOT = Path(__file__).resolve().parent
@@ -65,6 +71,10 @@ def parse_args() -> argparse.Namespace:
         "--validate-only",
         action="store_true",
         help="Girdileri API çağrısı yapmadan doğrular.",
+    )
+    add_observability_arguments(
+        parser,
+        include_early_stop=True,
     )
     return parser.parse_args()
 
@@ -219,6 +229,121 @@ def _deduplicated_calls(
             calls.append(call)
             known.add(identity(call))
     return calls
+
+
+def _request_timing(
+    api_call: dict[str, Any] | None,
+    *,
+    request_control: dict[str, Any] | None = None,
+) -> dict[str, float]:
+    call = api_call if isinstance(api_call, dict) else {}
+    api_wall = float(
+        call.get("api_call_wall_seconds") or 0.0
+    )
+    control = request_control
+    if not isinstance(control, dict):
+        candidate = call.get("request_control")
+        control = candidate if isinstance(candidate, dict) else None
+
+    if not isinstance(control, dict):
+        return {
+            "api_active_wall_seconds": api_wall,
+            "deliberate_delay_seconds": 0.0,
+            "rate_limit_backoff_seconds": 0.0,
+            "controlled_wait_seconds": 0.0,
+            "api_request_total_wall_seconds": api_wall,
+        }
+
+    waits = control.get("waits")
+    if not isinstance(waits, dict):
+        waits = {}
+
+    deliberate = float(
+        waits.get("deliberate_delay_seconds") or 0.0
+    )
+    backoff = float(
+        waits.get("rate_limit_backoff_seconds") or 0.0
+    )
+    controlled = float(
+        waits.get("controlled_wait_seconds")
+        or deliberate + backoff
+    )
+
+    return {
+        "api_active_wall_seconds": float(
+            control.get("active_wall_seconds") or api_wall
+        ),
+        "deliberate_delay_seconds": deliberate,
+        "rate_limit_backoff_seconds": backoff,
+        "controlled_wait_seconds": controlled,
+        "api_request_total_wall_seconds": float(
+            control.get("total_wall_seconds")
+            or api_wall + controlled
+        ),
+    }
+
+
+def _token_count(
+    api_call: dict[str, Any] | None,
+) -> int | None:
+    if not isinstance(api_call, dict):
+        return None
+    usage = api_call.get("usage")
+    if not isinstance(usage, dict):
+        return None
+    value = usage.get("total_token_count")
+    return int(value) if value is not None else None
+
+
+def _create_progress_tracker(
+    *,
+    problem: ProblemInstance,
+    provider: ProviderAdapter,
+    observability: ExperimentObservability,
+) -> SolutionProgressTracker:
+    reference = problem.reference
+    return SolutionProgressTracker(
+        provider=provider.provider_id,
+        reference_distance=(
+            reference.distance
+            if reference is not None
+            else None
+        ),
+        reference_type=(
+            reference.reference_type.value
+            if reference is not None
+            else None
+        ),
+        reference_is_proven_optimal=(
+            reference.is_proven_optimal
+            if reference is not None
+            else False
+        ),
+        early_stop_policy=observability.early_stop_policy(),
+    )
+
+
+def _replay_solution_progress(
+    tracker: SolutionProgressTracker,
+    *,
+    initializer: dict[str, Any],
+    iterations: list[dict[str, Any]],
+) -> None:
+    tracker.seed_initializer(initializer)
+    for item in iterations:
+        progress = tracker.record_multi_agent2_iteration(
+            iteration=int(item["iteration"]),
+            solution=item,
+        )
+        item["solution_progress"] = progress
+        gbest = progress.get("system_gbest") or {}
+        item["iteration_best_distance"] = (
+            (progress.get("iteration_best") or {}).get("distance")
+        )
+        item["system_gbest_distance"] = gbest.get("distance")
+        item["system_gbest_gap_percent"] = gbest.get(
+            "gap_to_reference_percent"
+        )
 
 
 def _result(
@@ -396,6 +521,18 @@ def main() -> None:
         provider = create_provider(args.provider, args.model)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
+
+    settings = settings_from_args(
+        args,
+        include_early_stop=True,
+    )
+    observability = ExperimentObservability(settings)
+    if not args.validate_only:
+        provider.configure_request_controller(
+            observability.request_controller
+        )
+        observability.start()
+
     model = provider.resolved_model
     run_dir = Path(args.output_dir) / "runs" / run_id
     manifest_path = run_dir / "run_manifest.json"
@@ -411,25 +548,32 @@ def main() -> None:
     checkpoint_path = output / "multi_agent2_checkpoint.json"
 
     loading_timer = start_timer()
-    if not manifest_path.exists():
-        raise SystemExit(
-            "Run manifesti bulunamadı. Önce baseline çalıştırılmalıdır."
-        )
-    manifest, problem = load_run_problem(manifest_path)
-    fingerprint = manifest["problem"]["fingerprint_sha256"]
-    try:
-        initializer, current_route, current_image = _load_initializer(
-            run_dir=run_dir,
-            provider=provider,
-            problem=problem,
-            fingerprint=fingerprint,
-        )
-    except Exception as exc:
-        raise SystemExit(str(exc)) from exc
+    with observability.phase("manifest_and_input_loading"):
+        if not manifest_path.exists():
+            observability.stop()
+            raise SystemExit(
+                "Run manifesti bulunamadı. Önce baseline "
+                "çalıştırılmalıdır."
+            )
+        manifest, problem = load_run_problem(manifest_path)
+        fingerprint = manifest["problem"]["fingerprint_sha256"]
+        try:
+            initializer, current_route, current_image = (
+                _load_initializer(
+                    run_dir=run_dir,
+                    provider=provider,
+                    problem=problem,
+                    fingerprint=fingerprint,
+                )
+            )
+        except Exception as exc:
+            observability.stop()
+            raise SystemExit(str(exc)) from exc
     loading_seconds = elapsed_seconds(loading_timer)
 
     prompt_timer = start_timer()
-    prompt = critic_prompt(problem)
+    with observability.phase("prompt_preparation"):
+        prompt = critic_prompt(problem)
     prompt_seconds = elapsed_seconds(prompt_timer)
 
     if args.validate_only:
@@ -457,6 +601,11 @@ def main() -> None:
     invocation_timer = start_timer()
     iterations: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
+    termination: dict[str, Any] = {
+        "reason": "requested_iterations_completed",
+        "early_stop": None,
+        "failed_iteration": None,
+    }
 
     if args.resume and checkpoint_path.exists():
         checkpoint = read_json(checkpoint_path)
@@ -493,10 +642,30 @@ def main() -> None:
             "Checkpoint bulunamadı; deney baştan başlatılıyor."
         )
 
+    progress_tracker = _create_progress_tracker(
+        problem=problem,
+        provider=provider,
+        observability=observability,
+    )
+    _replay_solution_progress(
+        progress_tracker,
+        initializer=initializer,
+        iterations=iterations,
+    )
+    if progress_tracker.should_stop:
+        termination = {
+            "reason": "early_stop",
+            "early_stop": progress_tracker.latest_early_stop,
+            "failed_iteration": None,
+        }
+
     for iteration_number in range(
         len(iterations) + 1,
         args.iterations + 1,
     ):
+        if progress_tracker.should_stop:
+            break
+
         iteration_timer = start_timer()
         request = None
         print(
@@ -504,49 +673,63 @@ def main() -> None:
         )
         current_phase = "prompt_preparation"
         iteration_prompt_timer = start_timer()
-        prompt = critic_prompt(problem)
+        with observability.phase("prompt_preparation"):
+            prompt = critic_prompt(problem)
         iteration_prompt_seconds = elapsed_seconds(
             iteration_prompt_timer
         )
         try:
             current_phase = "critic_route_revision"
-            request = provider.request_route(
-                current_image,
-                prompt=prompt,
-                temperature=0.7,
-                phase="critic_route_revision",
-            )
+            with observability.phase("api_request"):
+                request = provider.request_route(
+                    current_image,
+                    prompt=prompt,
+                    temperature=0.7,
+                    phase="critic_route_revision",
+                )
 
             current_phase = "response_parsing"
             parsing_timer = start_timer()
-            route = parse_route(
-                request.text,
-                depot_id=problem.depot_id,
-            )
+            with observability.phase("response_parsing"):
+                route = parse_route(
+                    request.text,
+                    depot_id=problem.depot_id,
+                )
             parsing_seconds = elapsed_seconds(parsing_timer)
 
             current_phase = "validation_and_metrics"
             evaluation_timer = start_timer()
-            evaluation = evaluate_route(problem, route)
+            with observability.phase("validation_and_metrics"):
+                evaluation = evaluate_route(problem, route)
             evaluation_seconds = elapsed_seconds(evaluation_timer)
 
             current_phase = "route_rendering"
             rendering_timer = start_timer()
-            image_path = (
-                output
-                / "images"
-                / f"iteration_{iteration_number:02d}.png"
-            )
-            plot_route(
-                problem,
-                route,
-                image_path,
-                title=(
-                    f"{problem.name} Multi-Agent 2 — "
-                    f"iteration {iteration_number}"
-                ),
-            )
+            with observability.phase("route_rendering"):
+                image_path = (
+                    output
+                    / "images"
+                    / f"iteration_{iteration_number:02d}.png"
+                )
+                plot_route(
+                    problem,
+                    route,
+                    image_path,
+                    title=(
+                        f"{problem.name} Multi-Agent 2 — "
+                        f"iteration {iteration_number}"
+                    ),
+                )
             rendering_seconds = elapsed_seconds(rendering_timer)
+
+            request_timing = _request_timing(request.api_call)
+            token_count = _token_count(request.api_call)
+            progress = progress_tracker.record_multi_agent2_iteration(
+                iteration=iteration_number,
+                solution=evaluation,
+            )
+            iteration_best = progress.get("iteration_best") or {}
+            system_gbest = progress.get("system_gbest") or {}
 
             record = {
                 "iteration": iteration_number,
@@ -559,7 +742,18 @@ def main() -> None:
                 ),
                 "raw_response": request.text,
                 "api_call": request.api_call,
+                "token_count": token_count,
                 **_evaluation_from(evaluation),
+                "solution_progress": progress,
+                "iteration_best_distance": iteration_best.get(
+                    "distance"
+                ),
+                "system_gbest_distance": system_gbest.get(
+                    "distance"
+                ),
+                "system_gbest_gap_percent": system_gbest.get(
+                    "gap_to_reference_percent"
+                ),
                 "artifacts": {
                     "route_image": _relative(
                         image_path,
@@ -573,12 +767,14 @@ def main() -> None:
                     "api_call_wall_seconds": request.api_call[
                         "api_call_wall_seconds"
                     ],
+                    **request_timing,
                     "response_parsing_seconds": parsing_seconds,
                     "validation_and_metrics_seconds": (
                         evaluation_seconds
                     ),
                     "route_rendering_seconds": rendering_seconds,
                     "checkpoint_write_seconds": None,
+                    "iteration_active_wall_seconds": None,
                     "iteration_total_wall_seconds": None,
                 },
             }
@@ -608,8 +804,14 @@ def main() -> None:
             record["timing"]["checkpoint_write_seconds"] = (
                 checkpoint_seconds
             )
+            iteration_total = elapsed_seconds(iteration_timer)
             record["timing"]["iteration_total_wall_seconds"] = (
-                elapsed_seconds(iteration_timer)
+                iteration_total
+            )
+            record["timing"]["iteration_active_wall_seconds"] = max(
+                0.0,
+                iteration_total
+                - request_timing["controlled_wait_seconds"],
             )
             # İlk yazımın süresini checkpoint'e de kaydetmek için
             # güncellenmiş kayıt bir kez daha yazılır.
@@ -627,8 +829,14 @@ def main() -> None:
                 ),
                 errors=errors,
             )
+            iteration_total = elapsed_seconds(iteration_timer)
             record["timing"]["iteration_total_wall_seconds"] = (
-                elapsed_seconds(iteration_timer)
+                iteration_total
+            )
+            record["timing"]["iteration_active_wall_seconds"] = max(
+                0.0,
+                iteration_total
+                - request_timing["controlled_wait_seconds"],
             )
 
             print(
@@ -642,9 +850,32 @@ def main() -> None:
                 f"{'hesaplanamadı' if gap is None else f'%{gap:.4f}'}"
             )
             print(
-                "İterasyon toplam süresi: "
+                "İterasyon en iyi / sistem GBest: "
+                f"{record['iteration_best_distance']} / "
+                f"{record['system_gbest_distance']}"
+            )
+            print(
+                "Token / aktif / bekleme / toplam: "
+                f"{token_count if token_count is not None else '-'} / "
+                f"{record['timing']['iteration_active_wall_seconds']:.4f} / "
+                f"{request_timing['controlled_wait_seconds']:.4f} / "
                 f"{record['timing']['iteration_total_wall_seconds']:.4f} sn"
             )
+
+            if progress_tracker.should_stop:
+                termination = {
+                    "reason": "early_stop",
+                    "early_stop": (
+                        progress_tracker.latest_early_stop
+                    ),
+                    "failed_iteration": None,
+                }
+                print(
+                    "Erken durdurma: sistem GBest gap değeri "
+                    f"%{settings.early_stop_gap_percent:g} "
+                    "eşiğine ulaştı."
+                )
+                break
         except Exception as exc:
             failure = error_record(
                 exc,
@@ -654,18 +885,40 @@ def main() -> None:
             if request is not None:
                 failure["raw_response"] = request.text
                 failure.setdefault("api_call", request.api_call)
+            request_control = getattr(
+                exc,
+                "request_control_report",
+                None,
+            )
+            if isinstance(request_control, dict):
+                failure["request_control"] = request_control
             previous_attempts = sum(
                 error.get("iteration") == iteration_number
                 for error in errors
             )
             failure["attempt"] = previous_attempts + 1
+            failure_request_timing = _request_timing(
+                failure.get("api_call"),
+                request_control=(
+                    request_control
+                    if isinstance(request_control, dict)
+                    else None
+                ),
+            )
+            failed_total = elapsed_seconds(iteration_timer)
             failure["timing"] = {
                 "prompt_preparation_seconds": (
                     iteration_prompt_seconds
                 ),
-                "failed_attempt_wall_seconds": elapsed_seconds(
-                    iteration_timer
+                **failure_request_timing,
+                "failed_attempt_active_wall_seconds": max(
+                    0.0,
+                    failed_total
+                    - failure_request_timing[
+                        "controlled_wait_seconds"
+                    ],
                 ),
+                "failed_attempt_wall_seconds": failed_total,
             }
             errors.append(failure)
             _save_checkpoint(
@@ -686,21 +939,78 @@ def main() -> None:
                 f"Critic iterasyon {iteration_number} "
                 f"tamamlanamadı: {exc}"
             )
+            termination = {
+                "reason": "iteration_failed",
+                "early_stop": (
+                    progress_tracker.latest_early_stop
+                ),
+                "failed_iteration": iteration_number,
+            }
             break
 
-    result = _result(
-        run_id=run_id,
-        problem=problem,
-        fingerprint=fingerprint,
-        provider=provider,
-        requested=args.iterations,
-        initializer=initializer,
-        iterations=iterations,
-        errors=errors,
-        input_loading_seconds=loading_seconds,
-        invocation_seconds=elapsed_seconds(invocation_timer),
-    )
-    write_json(result_path, result)
+    try:
+        observability_summary = observability.stop()
+        result = _result(
+            run_id=run_id,
+            problem=problem,
+            fingerprint=fingerprint,
+            provider=provider,
+            requested=args.iterations,
+            initializer=initializer,
+            iterations=iterations,
+            errors=errors,
+            input_loading_seconds=loading_seconds,
+            invocation_seconds=elapsed_seconds(invocation_timer),
+        )
+        result["artificial_delay_enabled"] = (
+            settings.minimum_request_interval_seconds > 0
+        )
+        result["solution_progress"] = progress_tracker.snapshot()
+        result["termination"] = termination
+        result["observability"] = observability_summary
+        result["run_summary"].update(
+            {
+                "accumulated_completed_iteration_active_wall_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "iteration_active_wall_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+                "accumulated_deliberate_delay_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "deliberate_delay_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+                "accumulated_rate_limit_backoff_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "rate_limit_backoff_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+                "accumulated_controlled_wait_seconds": sum(
+                    float(
+                        item.get("timing", {}).get(
+                            "controlled_wait_seconds",
+                            0.0,
+                        )
+                    )
+                    for item in iterations
+                ),
+            }
+        )
+        write_json(result_path, result)
+    finally:
+        observability.stop()
 
     print(
         "\nBirleşik dinamik Multi-Agent 2 durumu kaydedildi."
@@ -709,10 +1019,28 @@ def main() -> None:
     print(f"Model: {provider.model_alias}")
     print(f"Problem: {problem.name}")
     print(f"Tamamlanan iterasyon: {len(iterations)}")
-    if len(iterations) < args.iterations:
+    if termination["reason"] == "early_stop":
+        early_stop = termination["early_stop"] or {}
+        print(
+            "Durdurma: erken durdurma, sistem GBest gap="
+            f"{early_stop.get('system_gbest_gap_percent')}%"
+        )
+    elif len(iterations) < args.iterations:
         print(
             "Kalan iterasyonlar --resume ile devam ettirilebilir."
         )
+    request_summary = result["observability"]["request_control"]
+    waits = request_summary["waits"]
+    print(
+        "API denemesi/retry: "
+        f"{request_summary['request_attempt_count']}/"
+        f"{request_summary['retry_count']}"
+    )
+    print(
+        "Bilinçli bekleme / rate-limit backoff: "
+        f"{waits['deliberate_delay_seconds']:.4f} / "
+        f"{waits['rate_limit_backoff_seconds']:.4f} sn"
+    )
     print(f"Sonuç dosyası: {result_path}")
 
 
