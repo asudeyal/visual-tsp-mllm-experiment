@@ -14,7 +14,7 @@ doğrulamadır.
 
 | Klasör | Amaç |
 |---|---|
-| [`dynamic_tsp_experiment/`](dynamic_tsp_experiment/) | Yeni deneyler için güncel sistem; rastgele `N` düğümlü veya TSPLIB `EUC_2D` problemleri destekler |
+| [`dynamic_tsp_experiment/`](dynamic_tsp_experiment/) | Yeni deneyler için güncel sistem; rastgele `N` düğümlü veya TSPLIB `EUC_2D`/`GEO` problemleri destekler |
 | [`tsp10_experiment/`](tsp10_experiment/) | `seed=42` ile oluşturulan sabit 10 düğümlü ilk Gemini deneyi ve tarihsel sonuçları |
 | [`upstream_reference/`](upstream_reference/) | Özgün depodan alınan notebook, Multi-Agent çıktıları ve açıklama PDF'i |
 
@@ -24,17 +24,26 @@ Yeni çalışmalar için yalnız `dynamic_tsp_experiment/` kullanılmalıdır.
 ## Güncel sistemin özellikleri
 
 - `--num-nodes N --seed S` ile rastgele TSP üretimi
-- TSPLIB `EUC_2D` problemi ve isteğe bağlı bilinen optimum tur desteği
+- TSPLIB `EUC_2D` ve `GEO` problemleri ile isteğe bağlı bilinen optimum tur desteği
 - OR-Tools baseline ve problem manifesti
 - Gemini, Groq ve OpenRouter sağlayıcıları için ortak çalıştırma dosyaları
 - Zero-shot, Multi-Agent 1 ve Multi-Agent 2 yöntemleri
 - Her API çağrısı ve iterasyon için süre, token, geçerlilik, mesafe ve gap kaydı
+- Sistem GBest, iterasyonun en iyi adayı, scorer regret ve erken durdurma takibi
+- Kontrollü istek aralığı ile rate-limit backoff sürelerinin ayrı kaydı
+- Yerel CPU/RAM ve destekleniyorsa NVIDIA GPU kaynak profili
+- `429`, `503` ve `504` hataları için ölçümlü ve sınırlı otomatik retry
 - Kota veya ağ hatalarından checkpoint ile devam etme
 - Bütün sağlayıcı/model/yöntem sonuçlarını birleştiren tek analiz raporu
 
 Modele düğüm koordinatları, mesafe matrisi, hesaplanmış rota uzunlukları veya
 gap değerleri gönderilmez. Model yalnız problem ve rota görsellerini görür.
 Sayısal değerlendirme deneyden sonra Python tarafından yapılır.
+
+Görsel scorer, geçerli critic adaylarını yalnız rota görsellerinden karşılaştırır.
+Bu seçim özellikle `GEO` problemlerinde gerçek küresel mesafe sıralamasıyla her
+zaman örtüşmeyebilir. Sistem bu farkı `selection_regret_percent` ve gözlenen en
+iyi critic adayı alanlarıyla ayrıca kaydeder.
 
 ## Hızlı başlangıç
 

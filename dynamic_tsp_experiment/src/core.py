@@ -16,7 +16,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from src.problem_instance import ProblemInstance
-from src.problem_loader import load_tsplib_problem
+from src.problem_loader import (
+    geo_coordinate_to_radians,
+    load_tsplib_problem,
+    tsplib_edge_distance,
+)
 
 
 # Geçiş sürecinde eski importları bozmamak için korunur.
@@ -104,14 +108,19 @@ def _edge_distance(
 ) -> float:
     first_point = instance.coordinates[first]
     second_point = instance.coordinates[second]
-    distance = math.hypot(
-        first_point[0] - second_point[0],
-        first_point[1] - second_point[1],
-    )
-    if instance.edge_weight_type == "EUC_2D":
-        return float(int(distance + 0.5))
     if instance.edge_weight_type == "EUC_2D_FLOAT":
-        return distance
+        return math.hypot(
+            first_point[0] - second_point[0],
+            first_point[1] - second_point[1],
+        )
+    if instance.edge_weight_type in {"EUC_2D", "GEO"}:
+        return float(
+            tsplib_edge_distance(
+                instance.edge_weight_type,
+                first_point,
+                second_point,
+            )
+        )
     raise ValueError(
         f"Desteklenmeyen mesafe türü: {instance.edge_weight_type}"
     )
@@ -141,7 +150,7 @@ def route_distance(
         _edge_distance(instance, first, second)
         for first, second in zip(route, route[1:])
     )
-    if instance.edge_weight_type == "EUC_2D":
+    if instance.edge_weight_type in {"EUC_2D", "GEO"}:
         return int(distance)
     return distance
 
@@ -256,7 +265,11 @@ def solve_ortools(
         node_id: index for index, node_id in enumerate(ids)
     }
     raw_matrix = distance_matrix(instance)
-    scale = 1 if instance.edge_weight_type == "EUC_2D" else 1_000_000
+    scale = (
+        1
+        if instance.edge_weight_type in {"EUC_2D", "GEO"}
+        else 1_000_000
+    )
     cost_matrix = [
         [int(round(value * scale)) for value in row]
         for row in raw_matrix
@@ -310,12 +323,54 @@ def solve_ortools(
     }
 
 
+def _display_coordinates(
+    instance: ProblemInstance,
+) -> dict[int, tuple[float, float]]:
+    """Mesafe metriğini değiştirmeden çizim koordinatlarını hazırlar."""
+
+    if instance.edge_weight_type != "GEO":
+        return dict(instance.coordinates)
+
+    radians = {
+        node_id: (
+            geo_coordinate_to_radians(point[0]),
+            geo_coordinate_to_radians(point[1]),
+        )
+        for node_id, point in instance.coordinates.items()
+    }
+    latitudes = [point[0] for point in radians.values()]
+    longitudes = [point[1] for point in radians.values()]
+    mean_latitude = sum(latitudes) / len(latitudes)
+
+    # Dairesel ortalama ve normalize edilmiş boylam farkı, veri kümesi
+    # tarih değiştirme çizgisini aşsa bile görselin parçalanmasını önler.
+    longitude_center = math.atan2(
+        sum(math.sin(value) for value in longitudes),
+        sum(math.cos(value) for value in longitudes),
+    )
+
+    projected: dict[int, tuple[float, float]] = {}
+    for node_id, (latitude, longitude) in radians.items():
+        longitude_delta = (
+            (longitude - longitude_center + math.pi)
+            % (2.0 * math.pi)
+        ) - math.pi
+        projected[node_id] = (
+            longitude_delta * math.cos(mean_latitude),
+            latitude - mean_latitude,
+        )
+
+    return projected
+
+
 def _plot_nodes(
     instance: ProblemInstance,
     ax: Any,
+    *,
+    display_coordinates: dict[int, tuple[float, float]],
 ) -> None:
     for node_id in instance.node_ids:
-        x, y = instance.coordinates[node_id]
+        x, y = display_coordinates[node_id]
         if node_id == instance.depot_id:
             ax.scatter(
                 x,
@@ -349,7 +404,12 @@ def plot_problem(
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(10, 10))
-    _plot_nodes(instance, ax)
+    display_coordinates = _display_coordinates(instance)
+    _plot_nodes(
+        instance,
+        ax,
+        display_coordinates=display_coordinates,
+    )
     ax.set_title(
         f"{instance.name} — {instance.dimension} nodes — "
         f"depot {instance.depot_id}"
@@ -370,6 +430,7 @@ def plot_route(
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(10, 10))
+    display_coordinates = _display_coordinates(instance)
     legal_pairs = [
         (first, second)
         for first, second in zip(route, route[1:])
@@ -379,8 +440,8 @@ def plot_route(
         )
     ]
     for first, second in legal_pairs:
-        x1, y1 = instance.coordinates[first]
-        x2, y2 = instance.coordinates[second]
+        x1, y1 = display_coordinates[first]
+        x2, y2 = display_coordinates[second]
         ax.plot(
             [x1, x2],
             [y1, y2],
@@ -388,7 +449,11 @@ def plot_route(
             linewidth=1.4,
             zorder=1,
         )
-    _plot_nodes(instance, ax)
+    _plot_nodes(
+        instance,
+        ax,
+        display_coordinates=display_coordinates,
+    )
     ax.set_title(title)
     ax.set_aspect("equal", adjustable="box")
     ax.grid(alpha=0.18)

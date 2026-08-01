@@ -107,7 +107,7 @@ def test_unsupported_tsplib_distance_type_is_rejected(
                 "NAME: unsupported",
                 "TYPE: TSP",
                 "DIMENSION: 2",
-                "EDGE_WEIGHT_TYPE: GEO",
+                "EDGE_WEIGHT_TYPE: ATT",
                 "NODE_COORD_SECTION",
                 "1 0 0",
                 "2 1 1",
@@ -119,6 +119,6 @@ def test_unsupported_tsplib_distance_type_is_rejected(
 
     with pytest.raises(
         ValueError,
-        match="GEO desteklenmiyor",
+        match="ATT desteklenmiyor",
     ):
         load_tsplib_problem(instance_file)
