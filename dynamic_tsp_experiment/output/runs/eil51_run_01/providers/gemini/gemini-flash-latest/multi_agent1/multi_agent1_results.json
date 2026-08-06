@@ -1,0 +1,869 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_multi_agent_1_tsp",
+  "run_id": "eil51_run_01",
+  "method": "multi_agent_1",
+  "problem": {
+    "name": "eil51",
+    "dimension": 51,
+    "depot_id": 1,
+    "source_type": "tsplib",
+    "fingerprint_sha256": "32e0d97ac1c5bc1b4512a3d1afa887b26256d46a3d05de3a4acd65a849c8b08e",
+    "reference_type": "tsplib_known_optimum",
+    "reference_is_proven_optimal": true
+  },
+  "model": {
+    "provider": "gemini",
+    "alias": "gemini-flash-latest",
+    "requested_name": "gemini-flash-latest",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": true,
+      "max_images_per_request": 7,
+      "max_native_choices": 7
+    },
+    "critic_temperature": 0.7,
+    "scorer_temperature": 0.0
+  },
+  "critic_candidate_generation": {
+    "strategy": "independent_calls",
+    "single_http_request_per_iteration": false,
+    "requested_choice_count": 2
+  },
+  "candidate_count_requested": 2,
+  "requested_iterations": 30,
+  "completed_iterations": 0,
+  "artificial_delay_enabled": true,
+  "scorer_policy": {
+    "name": "feasibility_filtered_visual_scorer",
+    "python_validity_filter_enabled": true,
+    "distance_or_gap_sent_to_scorer": false,
+    "single_valid_candidate_is_selected_without_api": true,
+    "no_valid_candidate_action": "retain_previous_route"
+  },
+  "initializer": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/gemini/gemini-flash-latest/zero_shot/zero_shot_results.json",
+    "route_image": "providers/gemini/gemini-flash-latest/zero_shot/images/route.png",
+    "route": [
+      1,
+      22,
+      8,
+      26,
+      31,
+      28,
+      3,
+      36,
+      35,
+      20,
+      29,
+      21,
+      34,
+      30,
+      39,
+      33,
+      10,
+      49,
+      9,
+      50,
+      16,
+      2,
+      11,
+      38,
+      5,
+      32,
+      15,
+      45,
+      42,
+      19,
+      40,
+      41,
+      13,
+      25,
+      14,
+      24,
+      43,
+      7,
+      23,
+      48,
+      6,
+      27,
+      51,
+      46,
+      12,
+      47,
+      18,
+      4,
+      17,
+      37,
+      44,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 503,
+    "reference_distance": 426.0,
+    "gap_to_reference_percent": 18.07511737089202
+  },
+  "iterations": [],
+  "pending_iteration": null,
+  "final_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/gemini/gemini-flash-latest/zero_shot/zero_shot_results.json",
+    "route_image": "providers/gemini/gemini-flash-latest/zero_shot/images/route.png",
+    "route": [
+      1,
+      22,
+      8,
+      26,
+      31,
+      28,
+      3,
+      36,
+      35,
+      20,
+      29,
+      21,
+      34,
+      30,
+      39,
+      33,
+      10,
+      49,
+      9,
+      50,
+      16,
+      2,
+      11,
+      38,
+      5,
+      32,
+      15,
+      45,
+      42,
+      19,
+      40,
+      41,
+      13,
+      25,
+      14,
+      24,
+      43,
+      7,
+      23,
+      48,
+      6,
+      27,
+      51,
+      46,
+      12,
+      47,
+      18,
+      4,
+      17,
+      37,
+      44,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 503,
+    "reference_distance": 426.0,
+    "gap_to_reference_percent": 18.07511737089202
+  },
+  "best_valid_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/gemini/gemini-flash-latest/zero_shot/zero_shot_results.json",
+    "route_image": "providers/gemini/gemini-flash-latest/zero_shot/images/route.png",
+    "route": [
+      1,
+      22,
+      8,
+      26,
+      31,
+      28,
+      3,
+      36,
+      35,
+      20,
+      29,
+      21,
+      34,
+      30,
+      39,
+      33,
+      10,
+      49,
+      9,
+      50,
+      16,
+      2,
+      11,
+      38,
+      5,
+      32,
+      15,
+      45,
+      42,
+      19,
+      40,
+      41,
+      13,
+      25,
+      14,
+      24,
+      43,
+      7,
+      23,
+      48,
+      6,
+      27,
+      51,
+      46,
+      12,
+      47,
+      18,
+      4,
+      17,
+      37,
+      44,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 503,
+    "reference_distance": 426.0,
+    "gap_to_reference_percent": 18.07511737089202
+  },
+  "best_critic_candidate_oracle": null,
+  "errors": [
+    {
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}",
+      "phase": "critic_candidate_generation",
+      "iteration": 1,
+      "api_call": {
+        "phase": "critic_candidate_generation",
+        "model": "gemini-flash-latest",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-08-04T14:25:26.868080+00:00",
+        "finished_at_utc": "2026-08-04T14:25:27.229607+00:00",
+        "api_call_wall_seconds": 0.36137745899999996,
+        "input_image_count": 1,
+        "input_image_bytes": 184697,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null
+        },
+        "request_control": {
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 429,
+              "wall_seconds": 0.630401584,
+              "retry_planned": false,
+              "retry_reason": "daily_quota_exhausted",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "ClientError",
+              "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.630401584,
+          "total_wall_seconds": 0.630401584,
+          "final_error": {
+            "type": "ClientError",
+            "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}",
+            "status_code": 429
+          }
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      },
+      "failed_stage_wall_seconds": 0.630951833,
+      "request_control": {
+        "success": false,
+        "attempt_count": 1,
+        "retry_count": 0,
+        "attempts": [
+          {
+            "attempt_number": 1,
+            "success": false,
+            "status_code": 429,
+            "wall_seconds": 0.630401584,
+            "retry_planned": false,
+            "retry_reason": "daily_quota_exhausted",
+            "backoff_seconds": 0.0,
+            "backoff_source": null,
+            "error_type": "ClientError",
+            "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}"
+          }
+        ],
+        "waits": {
+          "event_count": 0,
+          "deliberate_delay_seconds": 0,
+          "rate_limit_backoff_seconds": 0,
+          "controlled_wait_seconds": 0,
+          "events": []
+        },
+        "active_wall_seconds": 0.630401584,
+        "total_wall_seconds": 0.630401584,
+        "final_error": {
+          "type": "ClientError",
+          "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}",
+          "status_code": 429
+        }
+      }
+    }
+  ],
+  "run_summary": {
+    "api_call_count": 1,
+    "successful_api_call_count": 0,
+    "failed_api_call_count": 1,
+    "total_api_call_wall_seconds": 0.36137745899999996,
+    "total_token_count": null,
+    "manifest_and_input_loading_seconds": 0.0004555420000000032,
+    "accumulated_completed_iteration_wall_seconds": 0,
+    "current_invocation_wall_seconds_before_result_write": 0.643319,
+    "accumulated_completed_iteration_active_wall_seconds": 0,
+    "accumulated_deliberate_delay_seconds": 0,
+    "accumulated_rate_limit_backoff_seconds": 0,
+    "accumulated_controlled_wait_seconds": 0
+  },
+  "solution_progress": {
+    "initializer": {
+      "source": "zero_shot",
+      "iteration": 0,
+      "candidate_index": null,
+      "route": [
+        1,
+        22,
+        8,
+        26,
+        31,
+        28,
+        3,
+        36,
+        35,
+        20,
+        29,
+        21,
+        34,
+        30,
+        39,
+        33,
+        10,
+        49,
+        9,
+        50,
+        16,
+        2,
+        11,
+        38,
+        5,
+        32,
+        15,
+        45,
+        42,
+        19,
+        40,
+        41,
+        13,
+        25,
+        14,
+        24,
+        43,
+        7,
+        23,
+        48,
+        6,
+        27,
+        51,
+        46,
+        12,
+        47,
+        18,
+        4,
+        17,
+        37,
+        44,
+        1
+      ],
+      "distance": 503.0,
+      "gap_to_reference_percent": 18.07511737089202,
+      "is_valid": true
+    },
+    "system_gbest": {
+      "source": "zero_shot",
+      "iteration": 0,
+      "candidate_index": null,
+      "route": [
+        1,
+        22,
+        8,
+        26,
+        31,
+        28,
+        3,
+        36,
+        35,
+        20,
+        29,
+        21,
+        34,
+        30,
+        39,
+        33,
+        10,
+        49,
+        9,
+        50,
+        16,
+        2,
+        11,
+        38,
+        5,
+        32,
+        15,
+        45,
+        42,
+        19,
+        40,
+        41,
+        13,
+        25,
+        14,
+        24,
+        43,
+        7,
+        23,
+        48,
+        6,
+        27,
+        51,
+        46,
+        12,
+        47,
+        18,
+        4,
+        17,
+        37,
+        44,
+        1
+      ],
+      "distance": 503.0,
+      "gap_to_reference_percent": 18.07511737089202,
+      "is_valid": true
+    },
+    "observed_candidate_gbest": null,
+    "early_stop": {
+      "enabled": true,
+      "eligible": true,
+      "should_stop": false,
+      "reason": "gap_above_threshold",
+      "threshold_percent": 1.0,
+      "provider": "gemini",
+      "reference_type": "tsplib_known_optimum",
+      "reference_is_proven_optimal": true,
+      "system_gbest_source": "zero_shot",
+      "system_gbest_iteration": 0,
+      "system_gbest_gap_percent": 18.07511737089202
+    },
+    "history": []
+  },
+  "termination": {
+    "reason": "critic_stage_failed",
+    "early_stop": {
+      "enabled": true,
+      "eligible": true,
+      "should_stop": false,
+      "reason": "gap_above_threshold",
+      "threshold_percent": 1.0,
+      "provider": "gemini",
+      "reference_type": "tsplib_known_optimum",
+      "reference_is_proven_optimal": true,
+      "system_gbest_source": "zero_shot",
+      "system_gbest_iteration": 0,
+      "system_gbest_gap_percent": 18.07511737089202
+    },
+    "failed_iteration": 1
+  },
+  "observability": {
+    "settings": {
+      "profile_resources": true,
+      "resource_sample_interval_seconds": 0.5,
+      "minimum_request_interval_seconds": 2.0,
+      "max_retries": 2,
+      "retry_base_delay_seconds": 2.0,
+      "retry_maximum_delay_seconds": 60.0,
+      "early_stop_enabled": true,
+      "early_stop_gap_percent": 1.0
+    },
+    "controlled_waits": {
+      "event_count": 0,
+      "deliberate_delay_seconds": 0,
+      "rate_limit_backoff_seconds": 0,
+      "controlled_wait_seconds": 0,
+      "events": []
+    },
+    "request_control": {
+      "execution_count": 1,
+      "successful_execution_count": 0,
+      "failed_execution_count": 1,
+      "request_attempt_count": 1,
+      "retry_count": 0,
+      "waits": {
+        "event_count": 0,
+        "deliberate_delay_seconds": 0,
+        "rate_limit_backoff_seconds": 0,
+        "controlled_wait_seconds": 0,
+        "events": []
+      },
+      "active_wall_seconds": 0.630401584,
+      "total_wall_seconds": 0.630401584,
+      "executions": [
+        {
+          "label": "gemini:critic_candidate_generation_01",
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 429,
+              "wall_seconds": 0.630401584,
+              "retry_planned": false,
+              "retry_reason": "daily_quota_exhausted",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "ClientError",
+              "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.630401584,
+          "total_wall_seconds": 0.630401584,
+          "final_error": {
+            "type": "ClientError",
+            "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 32.704536083s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}",
+            "status_code": 429
+          }
+        }
+      ]
+    },
+    "resources": {
+      "enabled": true,
+      "sampling_interval_seconds": 0.5,
+      "duration_seconds": 0.632530875,
+      "sample_count": 3,
+      "system": {
+        "platform": {
+          "system": "Darwin",
+          "release": "24.4.0",
+          "version": "Darwin Kernel Version 24.4.0: Fri Apr 11 18:32:50 PDT 2025; root:xnu-11417.101.15~117/RELEASE_ARM64_T6041",
+          "machine": "arm64"
+        },
+        "python": {
+          "version": "3.9.6",
+          "implementation": "CPython"
+        },
+        "cpu": {
+          "processor": "arm",
+          "physical_core_count": 12,
+          "logical_core_count": 12
+        },
+        "memory": {
+          "total_mb": 24576.0
+        },
+        "local_gpu": {
+          "available": false,
+          "backend": "nvidia_nvml",
+          "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found",
+          "devices": []
+        }
+      },
+      "overall": {
+        "sample_count": 3,
+        "metrics": {
+          "system_cpu_percent": {
+            "sample_count": 3,
+            "minimum": 0.0,
+            "maximum": 9.1,
+            "average": 3.033333333333333,
+            "last": 9.1
+          },
+          "process_cpu_percent": {
+            "sample_count": 3,
+            "minimum": 4.4,
+            "maximum": 97.8,
+            "average": 52.26666666666667,
+            "last": 4.4
+          },
+          "process_memory_rss_mb": {
+            "sample_count": 3,
+            "minimum": 59.171875,
+            "maximum": 102.359375,
+            "average": 87.90625,
+            "last": 102.359375
+          },
+          "process_memory_percent": {
+            "sample_count": 3,
+            "minimum": 0.2407709757486979,
+            "maximum": 0.41650136311848956,
+            "average": 0.3576914469401042,
+            "last": 0.41650136311848956
+          },
+          "system_memory_percent": {
+            "sample_count": 3,
+            "minimum": 51.3,
+            "maximum": 51.4,
+            "average": 51.36666666666667,
+            "last": 51.4
+          },
+          "system_memory_available_mb": {
+            "sample_count": 3,
+            "minimum": 11943.125,
+            "maximum": 11979.828125,
+            "average": 11956.088541666666,
+            "last": 11943.125
+          },
+          "local_gpu_utilization_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_used_mb": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_temperature_celsius": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          }
+        }
+      },
+      "by_phase": {
+        "api_request": {
+          "sample_count": 1,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 1,
+              "minimum": 0.0,
+              "maximum": 0.0,
+              "average": 0.0,
+              "last": 0.0
+            },
+            "process_cpu_percent": {
+              "sample_count": 1,
+              "minimum": 54.6,
+              "maximum": 54.6,
+              "average": 54.6,
+              "last": 54.6
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 1,
+              "minimum": 102.1875,
+              "maximum": 102.1875,
+              "average": 102.1875,
+              "last": 102.1875
+            },
+            "process_memory_percent": {
+              "sample_count": 1,
+              "minimum": 0.415802001953125,
+              "maximum": 0.415802001953125,
+              "average": 0.415802001953125,
+              "last": 0.415802001953125
+            },
+            "system_memory_percent": {
+              "sample_count": 1,
+              "minimum": 51.4,
+              "maximum": 51.4,
+              "average": 51.4,
+              "last": 51.4
+            },
+            "system_memory_available_mb": {
+              "sample_count": 1,
+              "minimum": 11945.3125,
+              "maximum": 11945.3125,
+              "average": 11945.3125,
+              "last": 11945.3125
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        },
+        "unclassified": {
+          "sample_count": 2,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 9.1,
+              "average": 4.55,
+              "last": 9.1
+            },
+            "process_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 4.4,
+              "maximum": 97.8,
+              "average": 51.1,
+              "last": 4.4
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 2,
+              "minimum": 59.171875,
+              "maximum": 102.359375,
+              "average": 80.765625,
+              "last": 102.359375
+            },
+            "process_memory_percent": {
+              "sample_count": 2,
+              "minimum": 0.2407709757486979,
+              "maximum": 0.41650136311848956,
+              "average": 0.32863616943359375,
+              "last": 0.41650136311848956
+            },
+            "system_memory_percent": {
+              "sample_count": 2,
+              "minimum": 51.3,
+              "maximum": 51.4,
+              "average": 51.349999999999994,
+              "last": 51.4
+            },
+            "system_memory_available_mb": {
+              "sample_count": 2,
+              "minimum": 11943.125,
+              "maximum": 11979.828125,
+              "average": 11961.4765625,
+              "last": 11943.125
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        }
+      },
+      "sampling_errors": []
+    }
+  }
+}
