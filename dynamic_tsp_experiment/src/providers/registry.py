@@ -9,16 +9,24 @@ from src.gemini import GEMINI_MODEL
 from src.providers.base import ProviderAdapter
 from src.providers.gemini_provider import GeminiProvider
 from src.providers.openrouter_provider import OpenRouterProvider
-
+from src.providers.mistral_provider import (
+    MistralProvider,
+)
 
 DEFAULT_MODELS = {
     "gemini": GEMINI_MODEL,
     "groq": "qwen/qwen3.6-27b",
+    "mistral": "mistral-small-latest",
 }
 
 
 def supported_providers() -> tuple[str, ...]:
-    return ("gemini", "openrouter", "groq")
+    return (
+        "gemini",
+        "openrouter",
+        "groq",
+        "mistral",
+    )
 
 
 def model_slug(model: str) -> str:
@@ -80,19 +88,31 @@ def create_provider(
 ) -> ProviderAdapter:
     provider_id = provider_id.lower()
     resolved = model or DEFAULT_MODELS.get(provider_id)
+
     if not resolved:
         raise ValueError(
             f"{provider_id} için --model belirtilmelidir."
         )
+
     if provider_id == "gemini":
         return GeminiProvider(resolved)
+
     if provider_id == "openrouter":
         return OpenRouterProvider(resolved)
+
+    if provider_id == "mistral":
+        return MistralProvider(resolved)
+
     if provider_id == "groq":
-        from src.providers.groq_provider import GroqProvider
+        from src.providers.groq_provider import (
+            GroqProvider,
+        )
 
         return GroqProvider(resolved)
+
     expected = ", ".join(supported_providers())
+
     raise ValueError(
-        f"Bilinmeyen provider: {provider_id}. Beklenen: {expected}"
+        f"Bilinmeyen provider: {provider_id}. "
+        f"Beklenen: {expected}"
     )
