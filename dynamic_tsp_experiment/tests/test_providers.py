@@ -22,6 +22,7 @@ from src.providers.openrouter_provider import (
 )
 
 from src.providers.registry import (
+    DEFAULT_MODELS,
     create_provider,
     model_slug,
     provider_model_root,
@@ -47,16 +48,34 @@ def test_supported_providers_and_defaults() -> None:
         "gemini",
         "openrouter",
         "groq",
+        "mistral",
     )
+
     gemini = create_provider("gemini", None)
     groq = create_provider("groq", None)
+    mistral = create_provider("mistral", None)
+
     assert gemini.provider_id == "gemini"
     assert gemini.default_candidate_strategy == (
         "native_multiple_choices"
     )
+
     assert groq.provider_id == "groq"
     assert groq.resolved_model == "qwen/qwen3.6-27b"
-    assert groq.default_candidate_strategy == "independent_calls"
+    assert groq.default_candidate_strategy == (
+        "independent_calls"
+    )
+
+    assert DEFAULT_MODELS["mistral"] == (
+        "mistral-small-latest"
+    )
+    assert mistral.provider_id == "mistral"
+    assert mistral.resolved_model == (
+        "mistral-small-latest"
+    )
+    assert mistral.default_candidate_strategy == (
+        "independent_calls"
+    )
 
 
 def test_openrouter_requires_model() -> None:

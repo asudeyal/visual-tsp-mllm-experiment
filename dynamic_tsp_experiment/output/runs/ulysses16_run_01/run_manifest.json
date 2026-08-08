@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "run_id": "ulysses16_run_01",
+  "created_at_utc": "2026-08-01T17:36:11.728391+00:00",
+  "problem": {
+    "name": "ulysses16",
+    "source_type": "tsplib",
+    "dimension": 16,
+    "depot_id": 1,
+    "edge_weight_type": "GEO",
+    "seed": null,
+    "fingerprint_sha256": "c2377172d15dfd239c882c1ec2802ac30a0cd98c118fa3fc6fb97bc158da28ba",
+    "source_file": "inputs/ulysses16.tsp",
+    "optimal_tour_file": "inputs/ulysses16.opt.tour",
+    "coordinates": [
+      {
+        "node_id": 1,
+        "x": 38.24,
+        "y": 20.42
+      },
+      {
+        "node_id": 2,
+        "x": 39.57,
+        "y": 26.15
+      },
+      {
+        "node_id": 3,
+        "x": 40.56,
+        "y": 25.32
+      },
+      {
+        "node_id": 4,
+        "x": 36.26,
+        "y": 23.12
+      },
+      {
+        "node_id": 5,
+        "x": 33.48,
+        "y": 10.54
+      },
+      {
+        "node_id": 6,
+        "x": 37.56,
+        "y": 12.19
+      },
+      {
+        "node_id": 7,
+        "x": 38.42,
+        "y": 13.11
+      },
+      {
+        "node_id": 8,
+        "x": 37.52,
+        "y": 20.44
+      },
+      {
+        "node_id": 9,
+        "x": 41.23,
+        "y": 9.1
+      },
+      {
+        "node_id": 10,
+        "x": 41.17,
+        "y": 13.05
+      },
+      {
+        "node_id": 11,
+        "x": 36.08,
+        "y": -5.21
+      },
+      {
+        "node_id": 12,
+        "x": 38.47,
+        "y": 15.13
+      },
+      {
+        "node_id": 13,
+        "x": 38.15,
+        "y": 15.35
+      },
+      {
+        "node_id": 14,
+        "x": 37.51,
+        "y": 15.17
+      },
+      {
+        "node_id": 15,
+        "x": 35.49,
+        "y": 14.32
+      },
+      {
+        "node_id": 16,
+        "x": 39.36,
+        "y": 19.56
+      }
+    ],
+    "reference": {
+      "type": "tsplib_known_optimum",
+      "distance": 6859.0,
+      "is_proven_optimal": true,
+      "route": [
+        1,
+        14,
+        13,
+        12,
+        7,
+        6,
+        15,
+        5,
+        11,
+        9,
+        10,
+        16,
+        3,
+        2,
+        4,
+        8,
+        1
+      ],
+      "source_file": "inputs/ulysses16.opt.tour"
+    }
+  },
+  "input_request": {
+    "mode": "tsplib",
+    "depot_id": 1,
+    "instance_file": "ulysses16.tsp",
+    "optimal_tour_file": "ulysses16.opt.tour"
+  },
+  "baseline": {
+    "method": "or_tools_savings_guided_local_search",
+    "time_limit_seconds": 30,
+    "distance": 6859,
+    "reference_type": "tsplib_known_optimum"
+  }
+}
