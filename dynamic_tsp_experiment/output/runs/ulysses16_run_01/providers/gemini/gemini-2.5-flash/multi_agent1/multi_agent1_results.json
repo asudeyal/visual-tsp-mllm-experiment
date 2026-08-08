@@ -1,0 +1,5827 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_multi_agent_1_tsp",
+  "run_id": "ulysses16_run_01",
+  "method": "multi_agent_1",
+  "problem": {
+    "name": "ulysses16",
+    "dimension": 16,
+    "depot_id": 1,
+    "source_type": "tsplib",
+    "fingerprint_sha256": "c2377172d15dfd239c882c1ec2802ac30a0cd98c118fa3fc6fb97bc158da28ba",
+    "reference_type": "tsplib_known_optimum",
+    "reference_is_proven_optimal": true
+  },
+  "model": {
+    "provider": "gemini",
+    "alias": "gemini-2.5-flash",
+    "requested_name": "gemini-2.5-flash",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": true,
+      "max_images_per_request": 7,
+      "max_native_choices": 7
+    },
+    "critic_temperature": 0.7,
+    "scorer_temperature": 0.0
+  },
+  "critic_candidate_generation": {
+    "strategy": "native_multiple_choices",
+    "single_http_request_per_iteration": true,
+    "requested_choice_count": 7
+  },
+  "candidate_count_requested": 7,
+  "requested_iterations": 10,
+  "completed_iterations": 5,
+  "artificial_delay_enabled": true,
+  "scorer_policy": {
+    "name": "feasibility_filtered_visual_scorer",
+    "python_validity_filter_enabled": true,
+    "distance_or_gap_sent_to_scorer": false,
+    "single_valid_candidate_is_selected_without_api": true,
+    "no_valid_candidate_action": "retain_previous_route"
+  },
+  "initializer": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/gemini/gemini-2.5-flash/zero_shot/zero_shot_results.json",
+    "route_image": "providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
+    "route": [
+      1,
+      8,
+      14,
+      15,
+      5,
+      11,
+      9,
+      10,
+      7,
+      6,
+      12,
+      13,
+      16,
+      3,
+      2,
+      4,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 6955,
+    "reference_distance": 6859.0,
+    "gap_to_reference_percent": 1.3996209359965008
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "native_multiple_choices",
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:05.837369+00:00",
+          "finished_at_utc": "2026-08-01T18:10:15.440939+00:00",
+          "api_call_wall_seconds": 9.603548699989915,
+          "input_image_count": 1,
+          "input_image_bytes": 95533,
+          "usage": {
+            "prompt_token_count": 475,
+            "candidates_token_count": 53,
+            "thoughts_token_count": 10531,
+            "cached_content_token_count": null,
+            "total_token_count": 11059
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 11.906748099951074,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 11.906748099951074,
+            "total_wall_seconds": 11.906748099951074,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:05.837369+00:00",
+            "finished_at_utc": "2026-08-01T18:10:15.440939+00:00",
+            "api_call_wall_seconds": 9.603548699989915,
+            "input_image_count": 1,
+            "input_image_bytes": 95533,
+            "usage": {
+              "prompt_token_count": 475,
+              "candidates_token_count": 53,
+              "thoughts_token_count": 10531,
+              "cached_content_token_count": null,
+              "total_token_count": 11059
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 11.906748099951074,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 11.906748099951074,
+              "total_wall_seconds": 11.906748099951074,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "token_count": 11059,
+        "timing": {
+          "api_call_wall_seconds": 9.603548699989915,
+          "response_parsing_seconds": 0.001034500077366829,
+          "validation_and_metrics_seconds": 0.000861399807035923,
+          "route_rendering_seconds": 1.634253300493583,
+          "critic_stage_wall_seconds": 13.549460700014606,
+          "api_active_wall_seconds": 11.906748099951074,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 11.906748099951074,
+          "checkpoint_write_seconds": 0.0013007998932152987
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-13-14-12-7-6-5-15-11-9-10-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-16-3-2-4-8-14-13-12-7-6-15-5-11-9-10-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-2-3-4-8-14-15-5-11-9-10-7-6-12-13-16-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-10-9-11-5-15-14-6-13-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0003171998541802168,
+              "validation_and_metrics_seconds": 9.50999092310667e-05,
+              "route_rendering_seconds": 0.22358510014601052,
+              "candidate_processing_wall_seconds": 0.22463109996169806
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-13-14-12-7-6-5-15-11-9-10-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              13,
+              14,
+              12,
+              7,
+              6,
+              5,
+              15,
+              11,
+              9,
+              10,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7394,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 7.7999708412305,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.0001596999354660511,
+              "validation_and_metrics_seconds": 0.000170400133356452,
+              "route_rendering_seconds": 0.21061299997381866,
+              "candidate_processing_wall_seconds": 0.2116509999614209
+            }
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_03.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00012330012395977974,
+              "validation_and_metrics_seconds": 0.00012450013309717178,
+              "route_rendering_seconds": 0.21653970004990697,
+              "candidate_processing_wall_seconds": 0.21746419998817146
+            }
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-16-3-2-4-8-14-13-12-7-6-15-5-11-9-10-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              16,
+              3,
+              2,
+              4,
+              8,
+              14,
+              13,
+              12,
+              7,
+              6,
+              15,
+              5,
+              11,
+              9,
+              10,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7065,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 3.0033532584924916,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_04.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00010309997014701366,
+              "validation_and_metrics_seconds": 0.00012079998850822449,
+              "route_rendering_seconds": 0.21284290007315576,
+              "candidate_processing_wall_seconds": 0.2138567001093179
+            }
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-4-8-14-15-5-11-9-10-7-6-12-13-16-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              4,
+              8,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              12,
+              13,
+              16,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7081,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 3.2366234144919086,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_05.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.440017700195312e-05,
+              "validation_and_metrics_seconds": 0.00010019983164966106,
+              "route_rendering_seconds": 0.22893030010163784,
+              "candidate_processing_wall_seconds": 0.22995759989134967
+            }
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-10-9-11-5-15-14-6-13-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              7,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              6,
+              13,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7167,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 4.490450502988774,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_06.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00012700003571808338,
+              "validation_and_metrics_seconds": 0.00011269981041550636,
+              "route_rendering_seconds": 0.21676760003902018,
+              "candidate_processing_wall_seconds": 0.21768739982508123
+            }
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/candidate_07.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00011979998089373112,
+              "validation_and_metrics_seconds": 0.00013770000077784061,
+              "route_rendering_seconds": 0.32497470011003315,
+              "candidate_processing_wall_seconds": 0.3259886000305414
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "excluded_invalid_candidate_ids": [],
+        "raw_response": "<<image1: 1, image2: 1, image3: 1, image4: 1, image5: 1, image6: 1, image7: 1>>\n<<the best route: 1>>",
+        "scores": {
+          "1": 1.0,
+          "2": 1.0,
+          "3": 1.0,
+          "4": 1.0,
+          "5": 1.0,
+          "6": 1.0,
+          "7": 1.0
+        },
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": {
+          "phase": "visual_scorer",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:17.691991+00:00",
+          "finished_at_utc": "2026-08-01T18:10:21.435040+00:00",
+          "api_call_wall_seconds": 3.743028299883008,
+          "input_image_count": 7,
+          "input_image_bytes": 649219,
+          "usage": {
+            "prompt_token_count": 2026,
+            "candidates_token_count": 52,
+            "thoughts_token_count": 511,
+            "cached_content_token_count": null,
+            "total_token_count": 2589
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 4.345000500092283,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 4.345000500092283,
+            "total_wall_seconds": 4.345000500092283,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:17.691991+00:00",
+            "finished_at_utc": "2026-08-01T18:10:21.435040+00:00",
+            "api_call_wall_seconds": 3.743028299883008,
+            "input_image_count": 7,
+            "input_image_bytes": 649219,
+            "usage": {
+              "prompt_token_count": 2026,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 511,
+              "cached_content_token_count": null,
+              "total_token_count": 2589
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 4.345000500092283,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 4.345000500092283,
+              "total_wall_seconds": 4.345000500092283,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 3.743028299883008,
+          "response_parsing_seconds": 0.0005239001475274563,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.2237404000479728,
+          "scorer_stage_wall_seconds": 4.5722937998361886,
+          "api_active_wall_seconds": 4.345000500092283,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 4.345000500092283
+        },
+        "token_count": 2589
+      },
+      "selected_solution": {
+        "route": [
+          1,
+          8,
+          4,
+          2,
+          3,
+          16,
+          12,
+          13,
+          14,
+          15,
+          5,
+          11,
+          9,
+          10,
+          7,
+          6,
+          1
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 6963,
+        "reference_distance": 6859.0,
+        "gap_to_reference_percent": 1.5162560139962094,
+        "artifacts": {
+          "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 13.549460700014606,
+        "scorer_stage_wall_seconds": 4.5722937998361886,
+        "critic_checkpoint_write_seconds": 0.0013007998932152987,
+        "completion_checkpoint_write_seconds": 0.0012908999342471361,
+        "checkpoint_write_seconds": 0.0025916998274624348,
+        "iteration_processing_wall_seconds": 18.124346199678257,
+        "local_processing_active_wall_seconds": 1.8725975996349007,
+        "iteration_active_wall_seconds": 18.124346199678257,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "iteration_observed_total_wall_seconds": 18.124346199678257
+      },
+      "solution_progress": {
+        "iteration": 1,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 1,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 1,
+          "candidate_index": 1,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 1,
+          "candidate_index": 1,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "selection_regret_percent": 0.0,
+        "selected_is_iteration_best": true,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      "iteration_best_distance": 6963.0,
+      "system_gbest_distance": 6955.0,
+      "system_gbest_gap_percent": 1.3996209359965008,
+      "observed_candidate_gbest_distance": 6963.0,
+      "selection_regret_percent": 0.0,
+      "selected_is_iteration_best": true,
+      "token_count": 13648
+    },
+    {
+      "iteration": 2,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "native_multiple_choices",
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_01/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:22.103960+00:00",
+          "finished_at_utc": "2026-08-01T18:10:31.156518+00:00",
+          "api_call_wall_seconds": 9.052535600028932,
+          "input_image_count": 1,
+          "input_image_bytes": 93650,
+          "usage": {
+            "prompt_token_count": 475,
+            "candidates_token_count": 53,
+            "thoughts_token_count": 10047,
+            "cached_content_token_count": null,
+            "total_token_count": 10575
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 9.492637400049716,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 9.492637400049716,
+            "total_wall_seconds": 9.492637400049716,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:22.103960+00:00",
+            "finished_at_utc": "2026-08-01T18:10:31.156518+00:00",
+            "api_call_wall_seconds": 9.052535600028932,
+            "input_image_count": 1,
+            "input_image_bytes": 93650,
+            "usage": {
+              "prompt_token_count": 475,
+              "candidates_token_count": 53,
+              "thoughts_token_count": 10047,
+              "cached_content_token_count": null,
+              "total_token_count": 10575
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 9.492637400049716,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 9.492637400049716,
+              "total_wall_seconds": 9.492637400049716,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "token_count": 10575,
+        "timing": {
+          "api_call_wall_seconds": 9.052535600028932,
+          "response_parsing_seconds": 0.0007067003753036261,
+          "validation_and_metrics_seconds": 0.0009792996570467949,
+          "route_rendering_seconds": 1.5293212002143264,
+          "critic_stage_wall_seconds": 11.02983390004374,
+          "api_active_wall_seconds": 9.492637400049716,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 9.492637400049716,
+          "checkpoint_write_seconds": 0.0013615998905152082
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-10-9-11-5-15-14-6-13-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-2-3-16-12-13-14-15-4-8-6-7-10-9-11-5-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-16-12-13-14-15-5-11-9-10-7-6-8-4-2-3-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-6-10-9-11-5-15-14-13-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-2-3-16-12-13-14-8-4-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              7,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              6,
+              13,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7167,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 4.490450502988774,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.330005221068859e-05,
+              "validation_and_metrics_seconds": 9.540002793073654e-05,
+              "route_rendering_seconds": 0.1960995001718402,
+              "candidate_processing_wall_seconds": 0.19689599983394146
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00014030002057552338,
+              "validation_and_metrics_seconds": 0.00022400007583200932,
+              "route_rendering_seconds": 0.21168419998139143,
+              "candidate_processing_wall_seconds": 0.21275199996307492
+            }
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-16-12-13-14-15-4-8-6-7-10-9-11-5-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              4,
+              8,
+              6,
+              7,
+              10,
+              9,
+              11,
+              5,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 8343,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 21.63580696894591,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_03.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.680019527673721e-05,
+              "validation_and_metrics_seconds": 0.00013059983029961586,
+              "route_rendering_seconds": 0.2106622001156211,
+              "candidate_processing_wall_seconds": 0.21152040013112128
+            }
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-16-12-13-14-15-5-11-9-10-7-6-8-4-2-3-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              8,
+              4,
+              2,
+              3,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7059,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 2.91587694999271,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_04.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00011400016956031322,
+              "validation_and_metrics_seconds": 0.00011119991540908813,
+              "route_rendering_seconds": 0.23252039984799922,
+              "candidate_processing_wall_seconds": 0.23339039995335042
+            }
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_05.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00010169995948672295,
+              "validation_and_metrics_seconds": 0.0001629998441785574,
+              "route_rendering_seconds": 0.21132740005850792,
+              "candidate_processing_wall_seconds": 0.21226130006834865
+            }
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-6-10-9-11-5-15-14-13-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              7,
+              6,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              13,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6875,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 0.23327015599941683,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_06.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.839997462928295e-05,
+              "validation_and_metrics_seconds": 0.00013900012709200382,
+              "route_rendering_seconds": 0.2250542000401765,
+              "candidate_processing_wall_seconds": 0.2260630999226123
+            }
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-16-12-13-14-8-4-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              8,
+              4,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 16.09564076395976,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/candidate_07.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.220000356435776e-05,
+              "validation_and_metrics_seconds": 0.00011609983630478382,
+              "route_rendering_seconds": 0.24197329999879003,
+              "candidate_processing_wall_seconds": 0.24302489985711873
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "excluded_invalid_candidate_ids": [],
+        "raw_response": "<<image1: 8, image2: 8, image3: 7, image4: 8, image5: 8, image6: 8, image7: 7>>\n<<the best route: 1>>",
+        "scores": {
+          "1": 8.0,
+          "2": 8.0,
+          "3": 7.0,
+          "4": 8.0,
+          "5": 8.0,
+          "6": 8.0,
+          "7": 7.0
+        },
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 4.247272727272727,
+        "api_call": {
+          "phase": "visual_scorer",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:33.225325+00:00",
+          "finished_at_utc": "2026-08-01T18:10:38.012342+00:00",
+          "api_call_wall_seconds": 4.786995900096372,
+          "input_image_count": 7,
+          "input_image_bytes": 648037,
+          "usage": {
+            "prompt_token_count": 2026,
+            "candidates_token_count": 52,
+            "thoughts_token_count": 511,
+            "cached_content_token_count": null,
+            "total_token_count": 2589
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 5.312551099807024,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 5.312551099807024,
+            "total_wall_seconds": 5.312551099807024,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:33.225325+00:00",
+            "finished_at_utc": "2026-08-01T18:10:38.012342+00:00",
+            "api_call_wall_seconds": 4.786995900096372,
+            "input_image_count": 7,
+            "input_image_bytes": 648037,
+            "usage": {
+              "prompt_token_count": 2026,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 511,
+              "cached_content_token_count": null,
+              "total_token_count": 2589
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 5.312551099807024,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 5.312551099807024,
+              "total_wall_seconds": 5.312551099807024,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 4.786995900096372,
+          "response_parsing_seconds": 4.2400090023875237e-05,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.20944750006310642,
+          "scorer_stage_wall_seconds": 5.525019699940458,
+          "api_active_wall_seconds": 5.312551099807024,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 5.312551099807024
+        },
+        "token_count": 2589
+      },
+      "selected_solution": {
+        "route": [
+          1,
+          8,
+          4,
+          2,
+          3,
+          16,
+          12,
+          7,
+          10,
+          9,
+          11,
+          5,
+          15,
+          14,
+          6,
+          13,
+          1
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 7167,
+        "reference_distance": 6859.0,
+        "gap_to_reference_percent": 4.490450502988774,
+        "artifacts": {
+          "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 11.02983390004374,
+        "scorer_stage_wall_seconds": 5.525019699940458,
+        "critic_checkpoint_write_seconds": 0.0013615998905152082,
+        "completion_checkpoint_write_seconds": 0.001492599956691265,
+        "checkpoint_write_seconds": 0.0028541998472064734,
+        "iteration_processing_wall_seconds": 16.557707799831405,
+        "local_processing_active_wall_seconds": 1.752519299974665,
+        "iteration_active_wall_seconds": 16.557707799831405,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "iteration_observed_total_wall_seconds": 16.557707799831405
+      },
+      "solution_progress": {
+        "iteration": 2,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 2,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            6,
+            13,
+            1
+          ],
+          "distance": 7167.0,
+          "gap_to_reference_percent": 4.490450502988774,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 2,
+          "candidate_index": 6,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            6,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 6875.0,
+          "gap_to_reference_percent": 0.23327015599941683,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 2,
+          "candidate_index": 6,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            6,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 6875.0,
+          "gap_to_reference_percent": 0.23327015599941683,
+          "is_valid": true
+        },
+        "selection_regret_percent": 4.247272727272727,
+        "selected_is_iteration_best": false,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      "iteration_best_distance": 6875.0,
+      "system_gbest_distance": 6955.0,
+      "system_gbest_gap_percent": 1.3996209359965008,
+      "observed_candidate_gbest_distance": 6875.0,
+      "selection_regret_percent": 4.247272727272727,
+      "selected_is_iteration_best": false,
+      "token_count": 13164
+    },
+    {
+      "iteration": 3,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "native_multiple_choices",
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_02/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:38.724366+00:00",
+          "finished_at_utc": "2026-08-01T18:10:48.552517+00:00",
+          "api_call_wall_seconds": 9.82813090016134,
+          "input_image_count": 1,
+          "input_image_bytes": 93674,
+          "usage": {
+            "prompt_token_count": 475,
+            "candidates_token_count": 53,
+            "thoughts_token_count": 10206,
+            "cached_content_token_count": null,
+            "total_token_count": 10734
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 10.325754800112918,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 10.325754800112918,
+            "total_wall_seconds": 10.325754800112918,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:38.724366+00:00",
+            "finished_at_utc": "2026-08-01T18:10:48.552517+00:00",
+            "api_call_wall_seconds": 9.82813090016134,
+            "input_image_count": 1,
+            "input_image_bytes": 93674,
+            "usage": {
+              "prompt_token_count": 475,
+              "candidates_token_count": 53,
+              "thoughts_token_count": 10206,
+              "cached_content_token_count": null,
+              "total_token_count": 10734
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 10.325754800112918,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 10.325754800112918,
+              "total_wall_seconds": 10.325754800112918,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "token_count": 10734,
+        "timing": {
+          "api_call_wall_seconds": 9.82813090016134,
+          "response_parsing_seconds": 0.0006642995867878199,
+          "validation_and_metrics_seconds": 0.0008215000852942467,
+          "route_rendering_seconds": 1.5268347999081016,
+          "critic_stage_wall_seconds": 11.859800699865445,
+          "api_active_wall_seconds": 10.325754800112918,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 10.325754800112918,
+          "checkpoint_write_seconds": 0.0016171000897884369
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-13-12-7-10-9-11-5-15-14-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-5-11-9-10-7-6-15-14-13-12-16-3-2-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-2-3-16-10-9-11-5-15-14-13-12-7-6-8-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-13-12-7-10-9-11-5-15-14-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-16-3-2-4-8-13-12-7-10-9-11-5-15-14-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 6.110011599957943e-05,
+              "validation_and_metrics_seconds": 8.46001785248518e-05,
+              "route_rendering_seconds": 0.20016039977781475,
+              "candidate_processing_wall_seconds": 0.2009249001275748
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-13-12-7-10-9-11-5-15-14-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              13,
+              12,
+              7,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7223,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 5.306896048986733,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.069987572729588e-05,
+              "validation_and_metrics_seconds": 0.0001230998896062374,
+              "route_rendering_seconds": 0.22328849998302758,
+              "candidate_processing_wall_seconds": 0.224283599993214
+            }
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-5-11-9-10-7-6-15-14-13-12-16-3-2-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              15,
+              14,
+              13,
+              12,
+              16,
+              3,
+              2,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7326,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 6.808572678232979,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_03.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00011519994586706161,
+              "validation_and_metrics_seconds": 0.0001137999352067709,
+              "route_rendering_seconds": 0.22613340010866523,
+              "candidate_processing_wall_seconds": 0.22711450001224875
+            }
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-16-10-9-11-5-15-14-13-12-7-6-8-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              16,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              13,
+              12,
+              7,
+              6,
+              8,
+              1
+            ],
+            "validation": {
+              "is_valid": false,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [
+                4
+              ],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6813,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": null,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_04.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00011729984544217587,
+              "validation_and_metrics_seconds": 0.00016629998572170734,
+              "route_rendering_seconds": 0.22235719999298453,
+              "candidate_processing_wall_seconds": 0.22322649997659028
+            }
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_05.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.520002640783787e-05,
+              "validation_and_metrics_seconds": 0.00011739996261894703,
+              "route_rendering_seconds": 0.21293699997477233,
+              "candidate_processing_wall_seconds": 0.2137810999993235
+            }
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-13-12-7-10-9-11-5-15-14-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              13,
+              12,
+              7,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7223,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 5.306896048986733,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_06.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.859997615218163e-05,
+              "validation_and_metrics_seconds": 0.00010380009189248085,
+              "route_rendering_seconds": 0.22377809998579323,
+              "candidate_processing_wall_seconds": 0.2246646999847144
+            }
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-16-3-2-4-8-13-12-7-10-9-11-5-15-14-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              16,
+              3,
+              2,
+              4,
+              8,
+              13,
+              12,
+              7,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7361,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 7.318851144481703,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/candidate_07.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.619980119168758e-05,
+              "validation_and_metrics_seconds": 0.00011250004172325134,
+              "route_rendering_seconds": 0.2181802000850439,
+              "candidate_processing_wall_seconds": 0.21902270009741187
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2,
+          3,
+          5,
+          6,
+          7
+        ],
+        "excluded_invalid_candidate_ids": [
+          4
+        ],
+        "raw_response": "<<image1: 10, image2: 10, image3: 10, image5: 10, image6: 10, image7: 10>>\n<<the best route: 1>>",
+        "scores": {
+          "1": 10.0,
+          "2": 10.0,
+          "3": 10.0,
+          "5": 10.0,
+          "6": 10.0,
+          "7": 10.0
+        },
+        "best_candidate_id": 1,
+        "selection_regret_percent_after_evaluation": 0.0,
+        "api_call": {
+          "phase": "visual_scorer",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:50.563656+00:00",
+          "finished_at_utc": "2026-08-01T18:10:54.358564+00:00",
+          "api_call_wall_seconds": 3.7948860998731107,
+          "input_image_count": 6,
+          "input_image_bytes": 555354,
+          "usage": {
+            "prompt_token_count": 1759,
+            "candidates_token_count": 52,
+            "thoughts_token_count": 429,
+            "cached_content_token_count": null,
+            "total_token_count": 2240
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 4.265938299940899,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 4.265938299940899,
+            "total_wall_seconds": 4.265938299940899,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:50.563656+00:00",
+            "finished_at_utc": "2026-08-01T18:10:54.358564+00:00",
+            "api_call_wall_seconds": 3.7948860998731107,
+            "input_image_count": 6,
+            "input_image_bytes": 555354,
+            "usage": {
+              "prompt_token_count": 1759,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 429,
+              "cached_content_token_count": null,
+              "total_token_count": 2240
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 4.265938299940899,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 4.265938299940899,
+              "total_wall_seconds": 4.265938299940899,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 3.7948860998731107,
+          "response_parsing_seconds": 3.9499951526522636e-05,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.2111684000119567,
+          "scorer_stage_wall_seconds": 4.479515899904072,
+          "api_active_wall_seconds": 4.265938299940899,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 4.265938299940899
+        },
+        "token_count": 2240
+      },
+      "selected_solution": {
+        "route": [
+          1,
+          8,
+          4,
+          2,
+          3,
+          16,
+          12,
+          13,
+          14,
+          15,
+          5,
+          11,
+          9,
+          10,
+          7,
+          6,
+          1
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 6963,
+        "reference_distance": 6859.0,
+        "gap_to_reference_percent": 1.5162560139962094,
+        "artifacts": {
+          "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 11.859800699865445,
+        "scorer_stage_wall_seconds": 4.479515899904072,
+        "critic_checkpoint_write_seconds": 0.0016171000897884369,
+        "completion_checkpoint_write_seconds": 0.001782699953764677,
+        "checkpoint_write_seconds": 0.003399800043553114,
+        "iteration_processing_wall_seconds": 16.34271639981307,
+        "local_processing_active_wall_seconds": 1.7510232997592539,
+        "iteration_active_wall_seconds": 16.34271639981307,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "iteration_observed_total_wall_seconds": 16.34271639981307
+      },
+      "solution_progress": {
+        "iteration": 3,
+        "valid_candidate_count": 6,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 3,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 3,
+          "candidate_index": 1,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 2,
+          "candidate_index": 6,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            6,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 6875.0,
+          "gap_to_reference_percent": 0.23327015599941683,
+          "is_valid": true
+        },
+        "selection_regret_percent": 0.0,
+        "selected_is_iteration_best": true,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      "iteration_best_distance": 6963.0,
+      "system_gbest_distance": 6955.0,
+      "system_gbest_gap_percent": 1.3996209359965008,
+      "observed_candidate_gbest_distance": 6875.0,
+      "selection_regret_percent": 0.0,
+      "selected_is_iteration_best": true,
+      "token_count": 12974
+    },
+    {
+      "iteration": 4,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "native_multiple_choices",
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_03/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:10:54.988065+00:00",
+          "finished_at_utc": "2026-08-01T18:11:04.034970+00:00",
+          "api_call_wall_seconds": 9.04688430018723,
+          "input_image_count": 1,
+          "input_image_bytes": 94054,
+          "usage": {
+            "prompt_token_count": 475,
+            "candidates_token_count": 53,
+            "thoughts_token_count": 10087,
+            "cached_content_token_count": null,
+            "total_token_count": 10615
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 9.459523200057447,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 9.459523200057447,
+            "total_wall_seconds": 9.459523200057447,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:10:54.988065+00:00",
+            "finished_at_utc": "2026-08-01T18:11:04.034970+00:00",
+            "api_call_wall_seconds": 9.04688430018723,
+            "input_image_count": 1,
+            "input_image_bytes": 94054,
+            "usage": {
+              "prompt_token_count": 475,
+              "candidates_token_count": 53,
+              "thoughts_token_count": 10087,
+              "cached_content_token_count": null,
+              "total_token_count": 10615
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 9.459523200057447,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 9.459523200057447,
+              "total_wall_seconds": 9.459523200057447,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "token_count": 10615,
+        "timing": {
+          "api_call_wall_seconds": 9.04688430018723,
+          "response_parsing_seconds": 0.0006619996856898069,
+          "validation_and_metrics_seconds": 0.0007737001869827509,
+          "route_rendering_seconds": 1.5526628997176886,
+          "critic_stage_wall_seconds": 11.019271600060165,
+          "api_active_wall_seconds": 9.459523200057447,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 9.459523200057447,
+          "checkpoint_write_seconds": 0.0019519999623298645
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-16-12-13-14-15-5-11-9-10-7-6-8-4-2-3-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-6-10-9-11-5-15-14-13-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-2-3-16-12-13-14-15-5-11-9-10-7-6-8-4-Depot\n<<end>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-6-9-10-7-Depot\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-6-7-10-9-11-5-15-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              8,
+              4,
+              2,
+              3,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7059,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 2.91587694999271,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 6.170012056827545e-05,
+              "validation_and_metrics_seconds": 8.839997462928295e-05,
+              "route_rendering_seconds": 0.19253449980169535,
+              "candidate_processing_wall_seconds": 0.19328040000982583
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.869986049830914e-05,
+              "validation_and_metrics_seconds": 9.989994578063488e-05,
+              "route_rendering_seconds": 0.2184770000167191,
+              "candidate_processing_wall_seconds": 0.21938499994575977
+            }
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-6-10-9-11-5-15-14-13-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              7,
+              6,
+              10,
+              9,
+              11,
+              5,
+              15,
+              14,
+              13,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6875,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 0.23327015599941683,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_03.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.300000965595245e-05,
+              "validation_and_metrics_seconds": 0.00010840012691915035,
+              "route_rendering_seconds": 0.21765789994969964,
+              "candidate_processing_wall_seconds": 0.21846300014294684
+            }
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-16-12-13-14-15-5-11-9-10-7-6-8-4-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              8,
+              4,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7254,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 5.758856976235603,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_04.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00010930001735687256,
+              "validation_and_metrics_seconds": 0.00012289988808333874,
+              "route_rendering_seconds": 0.22939429990947247,
+              "candidate_processing_wall_seconds": 0.23028840008191764
+            }
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "Salesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-6-9-10-7-Depot",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              6,
+              9,
+              10,
+              7,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7432,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 8.353987461729115,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_05.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.8399817943573e-05,
+              "validation_and_metrics_seconds": 0.00011110003106296062,
+              "route_rendering_seconds": 0.22302499995566905,
+              "candidate_processing_wall_seconds": 0.22390509978868067
+            }
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-9-10-7-6-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              9,
+              10,
+              7,
+              6,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6963,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.5162560139962094,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_06.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00011190003715455532,
+              "validation_and_metrics_seconds": 0.00012850016355514526,
+              "route_rendering_seconds": 0.24542500008828938,
+              "candidate_processing_wall_seconds": 0.24632430006749928
+            }
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-6-7-10-9-11-5-15-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              6,
+              7,
+              10,
+              9,
+              11,
+              5,
+              15,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 6870,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 0.16037323224959907,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/candidate_07.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.899982251226902e-05,
+              "validation_and_metrics_seconds": 0.00011450005695223808,
+              "route_rendering_seconds": 0.22614919999614358,
+              "candidate_processing_wall_seconds": 0.22714199987240136
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "excluded_invalid_candidate_ids": [],
+        "raw_response": "<<image1: 8, image2: 8, image3: 8, image4: 8, image5: 10, image6: 8, image7: 8>>\n<<the best route: 5>>",
+        "scores": {
+          "1": 8.0,
+          "2": 8.0,
+          "3": 8.0,
+          "4": 8.0,
+          "5": 10.0,
+          "6": 8.0,
+          "7": 8.0
+        },
+        "best_candidate_id": 5,
+        "selection_regret_percent_after_evaluation": 8.180494905385736,
+        "api_call": {
+          "phase": "visual_scorer",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:11:06.097400+00:00",
+          "finished_at_utc": "2026-08-01T18:11:10.729330+00:00",
+          "api_call_wall_seconds": 4.6319068998564035,
+          "input_image_count": 7,
+          "input_image_bytes": 645250,
+          "usage": {
+            "prompt_token_count": 2026,
+            "candidates_token_count": 53,
+            "thoughts_token_count": 509,
+            "cached_content_token_count": null,
+            "total_token_count": 2588
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 5.1279036002233624,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 5.1279036002233624,
+            "total_wall_seconds": 5.1279036002233624,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:11:06.097400+00:00",
+            "finished_at_utc": "2026-08-01T18:11:10.729330+00:00",
+            "api_call_wall_seconds": 4.6319068998564035,
+            "input_image_count": 7,
+            "input_image_bytes": 645250,
+            "usage": {
+              "prompt_token_count": 2026,
+              "candidates_token_count": 53,
+              "thoughts_token_count": 509,
+              "cached_content_token_count": null,
+              "total_token_count": 2588
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 5.1279036002233624,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 5.1279036002233624,
+              "total_wall_seconds": 5.1279036002233624,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 4.6319068998564035,
+          "response_parsing_seconds": 4.479987546801567e-05,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.2258256000932306,
+          "scorer_stage_wall_seconds": 5.35640519997105,
+          "api_active_wall_seconds": 5.1279036002233624,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 5.1279036002233624
+        },
+        "token_count": 2588
+      },
+      "selected_solution": {
+        "route": [
+          1,
+          8,
+          4,
+          2,
+          3,
+          16,
+          12,
+          13,
+          14,
+          15,
+          5,
+          11,
+          6,
+          9,
+          10,
+          7,
+          1
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 7432,
+        "reference_distance": 6859.0,
+        "gap_to_reference_percent": 8.353987461729115,
+        "artifacts": {
+          "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 11.019271600060165,
+        "scorer_stage_wall_seconds": 5.35640519997105,
+        "critic_checkpoint_write_seconds": 0.0019519999623298645,
+        "completion_checkpoint_write_seconds": 0.0022515999153256416,
+        "checkpoint_write_seconds": 0.004203599877655506,
+        "iteration_processing_wall_seconds": 16.37988039990887,
+        "local_processing_active_wall_seconds": 1.792453599628061,
+        "iteration_active_wall_seconds": 16.37988039990887,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "iteration_observed_total_wall_seconds": 16.37988039990887
+      },
+      "solution_progress": {
+        "iteration": 4,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 4,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            6,
+            9,
+            10,
+            7,
+            1
+          ],
+          "distance": 7432.0,
+          "gap_to_reference_percent": 8.353987461729115,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 4,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            6,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            1
+          ],
+          "distance": 6870.0,
+          "gap_to_reference_percent": 0.16037323224959907,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 4,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            6,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            1
+          ],
+          "distance": 6870.0,
+          "gap_to_reference_percent": 0.16037323224959907,
+          "is_valid": true
+        },
+        "selection_regret_percent": 8.180494905385736,
+        "selected_is_iteration_best": false,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      "iteration_best_distance": 6870.0,
+      "system_gbest_distance": 6955.0,
+      "system_gbest_gap_percent": 1.3996209359965008,
+      "observed_candidate_gbest_distance": 6870.0,
+      "selection_regret_percent": 8.180494905385736,
+      "selected_is_iteration_best": false,
+      "token_count": 13203
+    },
+    {
+      "iteration": 5,
+      "iteration_type": "critic_candidates_then_feasibility_filtered_scorer",
+      "critic": {
+        "temperature": 0.7,
+        "candidate_strategy": "native_multiple_choices",
+        "requested_candidate_count": 7,
+        "returned_candidate_count": 7,
+        "input_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_04/selected.png",
+        "api_call": {
+          "phase": "critic_candidate_generation",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.7,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:11:11.401409+00:00",
+          "finished_at_utc": "2026-08-01T18:11:22.466868+00:00",
+          "api_call_wall_seconds": 11.065437200013548,
+          "input_image_count": 1,
+          "input_image_bytes": 92855,
+          "usage": {
+            "prompt_token_count": 475,
+            "candidates_token_count": 53,
+            "thoughts_token_count": 9992,
+            "cached_content_token_count": 340,
+            "total_token_count": 10520
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 1,
+            "retry_count": 0,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 11.505047699902207,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 0,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 0,
+              "controlled_wait_seconds": 0,
+              "events": []
+            },
+            "active_wall_seconds": 11.505047699902207,
+            "total_wall_seconds": 11.505047699902207,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "critic_candidate_generation",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.7,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:11:11.401409+00:00",
+            "finished_at_utc": "2026-08-01T18:11:22.466868+00:00",
+            "api_call_wall_seconds": 11.065437200013548,
+            "input_image_count": 1,
+            "input_image_bytes": 92855,
+            "usage": {
+              "prompt_token_count": 475,
+              "candidates_token_count": 53,
+              "thoughts_token_count": 9992,
+              "cached_content_token_count": 340,
+              "total_token_count": 10520
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 1,
+              "retry_count": 0,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 11.505047699902207,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 0,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 0,
+                "controlled_wait_seconds": 0,
+                "events": []
+              },
+              "active_wall_seconds": 11.505047699902207,
+              "total_wall_seconds": 11.505047699902207,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "token_count": 10520,
+        "timing": {
+          "api_call_wall_seconds": 11.065437200013548,
+          "response_parsing_seconds": 0.0006939999293535948,
+          "validation_and_metrics_seconds": 0.0007834001444280148,
+          "route_rendering_seconds": 1.6476804995909333,
+          "critic_stage_wall_seconds": 13.166355299996212,
+          "api_active_wall_seconds": 11.505047699902207,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 0.0,
+          "controlled_wait_seconds": 0.0,
+          "api_request_total_wall_seconds": 11.505047699902207,
+          "checkpoint_write_seconds": 0.0027117999270558357
+        },
+        "candidates": [
+          {
+            "candidate_id": 1,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-16-12-7-6-9-10-11-5-15-14-13-8-4-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-6-11-5-15-14-13-10-9-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-6-9-10-7-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-2-3-4-8-14-15-5-6-9-10-7-12-13-11-16-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-13-12-7-10-9-6-11-5-15-14-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-16-3-2-4-8-14-15-5-11-6-9-10-7-12-13-Depot\n<<end>>\n<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-10-9-6-11-5-15-14-13-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              16,
+              12,
+              7,
+              6,
+              9,
+              10,
+              11,
+              5,
+              15,
+              14,
+              13,
+              8,
+              4,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7569,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 10.351363172474121,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_01.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 6.849993951618671e-05,
+              "validation_and_metrics_seconds": 8.539995178580284e-05,
+              "route_rendering_seconds": 0.20489230006933212,
+              "candidate_processing_wall_seconds": 0.21146539994515479
+            }
+          },
+          {
+            "candidate_id": 2,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-6-11-5-15-14-13-10-9-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              7,
+              6,
+              11,
+              5,
+              15,
+              14,
+              13,
+              10,
+              9,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7681,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 11.984254264470039,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_02.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 8.999998681247234e-05,
+              "validation_and_metrics_seconds": 0.00010480009950697422,
+              "route_rendering_seconds": 0.21017619990743697,
+              "candidate_processing_wall_seconds": 0.21100360015407205
+            }
+          },
+          {
+            "candidate_id": 3,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-13-14-15-5-11-6-9-10-7-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              13,
+              14,
+              15,
+              5,
+              11,
+              6,
+              9,
+              10,
+              7,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7432,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 8.353987461729115,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_03.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00010770000517368317,
+              "validation_and_metrics_seconds": 0.0001230000052601099,
+              "route_rendering_seconds": 0.21331449993886054,
+              "candidate_processing_wall_seconds": 0.21430690004490316
+            }
+          },
+          {
+            "candidate_id": 4,
+            "raw_response": "<<start>>\nSalesman1: Depot-2-3-4-8-14-15-5-6-9-10-7-12-13-11-16-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              2,
+              3,
+              4,
+              8,
+              14,
+              15,
+              5,
+              6,
+              9,
+              10,
+              7,
+              12,
+              13,
+              11,
+              16,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 8639,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 25.95130485493512,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_04.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00010819989256560802,
+              "validation_and_metrics_seconds": 0.00012409989722073078,
+              "route_rendering_seconds": 0.230677800020203,
+              "candidate_processing_wall_seconds": 0.2317088998388499
+            }
+          },
+          {
+            "candidate_id": 5,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-13-12-7-10-9-6-11-5-15-14-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              13,
+              12,
+              7,
+              10,
+              9,
+              6,
+              11,
+              5,
+              15,
+              14,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7369,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 7.435486222481411,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_05.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00010770000517368317,
+              "validation_and_metrics_seconds": 0.00012490013614296913,
+              "route_rendering_seconds": 0.324100999860093,
+              "candidate_processing_wall_seconds": 0.3250344998668879
+            }
+          },
+          {
+            "candidate_id": 6,
+            "raw_response": "<<start>>\nSalesman1: Depot-16-3-2-4-8-14-15-5-11-6-9-10-7-12-13-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              16,
+              3,
+              2,
+              4,
+              8,
+              14,
+              15,
+              5,
+              11,
+              6,
+              9,
+              10,
+              7,
+              12,
+              13,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7501,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 9.3599650094766,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_06.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 9.940005838871002e-05,
+              "validation_and_metrics_seconds": 0.00011319993063807487,
+              "route_rendering_seconds": 0.23753749998286366,
+              "candidate_processing_wall_seconds": 0.23846059991046786
+            }
+          },
+          {
+            "candidate_id": 7,
+            "raw_response": "<<start>>\nSalesman1: Depot-8-4-2-3-16-12-7-10-9-6-11-5-15-14-13-Depot\n<<end>>",
+            "parse_error": null,
+            "route": [
+              1,
+              8,
+              4,
+              2,
+              3,
+              16,
+              12,
+              7,
+              10,
+              9,
+              6,
+              11,
+              5,
+              15,
+              14,
+              13,
+              1
+            ],
+            "validation": {
+              "is_valid": true,
+              "starts_at_depot": true,
+              "ends_at_depot": true,
+              "missing_nodes": [],
+              "repeated_nodes": [],
+              "unexpected_nodes": []
+            },
+            "legal_node_ids": true,
+            "distance": 7333,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 6.910628371482724,
+            "artifacts": {
+              "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/candidate_07.png"
+            },
+            "timing": {
+              "response_parsing_seconds": 0.00011250004172325134,
+              "validation_and_metrics_seconds": 0.000108000123873353,
+              "route_rendering_seconds": 0.22698119981214404,
+              "candidate_processing_wall_seconds": 0.22790260007604957
+            }
+          }
+        ]
+      },
+      "scorer": {
+        "temperature": 0.0,
+        "selection_mode": "visual_scorer_after_feasibility_filter",
+        "eligible_candidate_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "excluded_invalid_candidate_ids": [],
+        "raw_response": "<<image1: 6, image2: 7, image3: 8, image4: 5, image5: 9, image6: 7, image7: 8>>\n<<the best route: 5>>",
+        "scores": {
+          "1": 6.0,
+          "2": 7.0,
+          "3": 8.0,
+          "4": 5.0,
+          "5": 9.0,
+          "6": 7.0,
+          "7": 8.0
+        },
+        "best_candidate_id": 5,
+        "selection_regret_percent_after_evaluation": 0.4909314059729988,
+        "api_call": {
+          "phase": "visual_scorer",
+          "model": "gemini-2.5-flash",
+          "temperature": 0.0,
+          "success": true,
+          "started_at_utc": "2026-08-01T18:12:00.838715+00:00",
+          "finished_at_utc": "2026-08-01T18:12:04.472667+00:00",
+          "api_call_wall_seconds": 3.633927999995649,
+          "input_image_count": 7,
+          "input_image_bytes": 645498,
+          "usage": {
+            "prompt_token_count": 2026,
+            "candidates_token_count": 52,
+            "thoughts_token_count": 508,
+            "cached_content_token_count": null,
+            "total_token_count": 2586
+          },
+          "request_control": {
+            "success": true,
+            "attempt_count": 2,
+            "retry_count": 1,
+            "attempts": [
+              {
+                "attempt_number": 1,
+                "success": false,
+                "status_code": 429,
+                "wall_seconds": 0.892111900029704,
+                "retry_planned": true,
+                "retry_reason": "transient_error",
+                "backoff_seconds": 35.436910921,
+                "backoff_source": "provider_retry_hint",
+                "error_type": "ClientError",
+                "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash\\nPlease retry in 35.436910921s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+              },
+              {
+                "attempt_number": 2,
+                "success": true,
+                "status_code": null,
+                "wall_seconds": 4.005888699786738,
+                "retry_planned": false,
+                "retry_reason": null,
+                "backoff_seconds": 0.0,
+                "error_type": null,
+                "error_message": null
+              }
+            ],
+            "waits": {
+              "event_count": 1,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 35.43747940007597,
+              "controlled_wait_seconds": 35.43747940007597,
+              "events": [
+                {
+                  "type": "rate_limit_backoff",
+                  "reason": "transient_error",
+                  "requested_seconds": 35.436910921,
+                  "actual_seconds": 35.43747940007597,
+                  "started_at_elapsed_seconds": 81.51763490005396,
+                  "metadata": {
+                    "label": "gemini:visual_scorer",
+                    "failed_attempt_number": 1,
+                    "status_code": 429,
+                    "backoff_source": "provider_retry_hint"
+                  }
+                }
+              ]
+            },
+            "active_wall_seconds": 4.8980005998164415,
+            "total_wall_seconds": 40.335479999892414,
+            "final_error": null
+          },
+          "provider_timing": {
+            "available": false,
+            "source": null,
+            "provider_queue_seconds": null,
+            "provider_prompt_seconds": null,
+            "provider_completion_seconds": null,
+            "provider_total_seconds": null,
+            "estimated_network_or_client_overhead_seconds": null
+          }
+        },
+        "api_calls": [
+          {
+            "phase": "visual_scorer",
+            "model": "gemini-2.5-flash",
+            "temperature": 0.0,
+            "success": true,
+            "started_at_utc": "2026-08-01T18:12:00.838715+00:00",
+            "finished_at_utc": "2026-08-01T18:12:04.472667+00:00",
+            "api_call_wall_seconds": 3.633927999995649,
+            "input_image_count": 7,
+            "input_image_bytes": 645498,
+            "usage": {
+              "prompt_token_count": 2026,
+              "candidates_token_count": 52,
+              "thoughts_token_count": 508,
+              "cached_content_token_count": null,
+              "total_token_count": 2586
+            },
+            "request_control": {
+              "success": true,
+              "attempt_count": 2,
+              "retry_count": 1,
+              "attempts": [
+                {
+                  "attempt_number": 1,
+                  "success": false,
+                  "status_code": 429,
+                  "wall_seconds": 0.892111900029704,
+                  "retry_planned": true,
+                  "retry_reason": "transient_error",
+                  "backoff_seconds": 35.436910921,
+                  "backoff_source": "provider_retry_hint",
+                  "error_type": "ClientError",
+                  "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash\\nPlease retry in 35.436910921s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+                },
+                {
+                  "attempt_number": 2,
+                  "success": true,
+                  "status_code": null,
+                  "wall_seconds": 4.005888699786738,
+                  "retry_planned": false,
+                  "retry_reason": null,
+                  "backoff_seconds": 0.0,
+                  "error_type": null,
+                  "error_message": null
+                }
+              ],
+              "waits": {
+                "event_count": 1,
+                "deliberate_delay_seconds": 0,
+                "rate_limit_backoff_seconds": 35.43747940007597,
+                "controlled_wait_seconds": 35.43747940007597,
+                "events": [
+                  {
+                    "type": "rate_limit_backoff",
+                    "reason": "transient_error",
+                    "requested_seconds": 35.436910921,
+                    "actual_seconds": 35.43747940007597,
+                    "started_at_elapsed_seconds": 81.51763490005396,
+                    "metadata": {
+                      "label": "gemini:visual_scorer",
+                      "failed_attempt_number": 1,
+                      "status_code": 429,
+                      "backoff_source": "provider_retry_hint"
+                    }
+                  }
+                ]
+              },
+              "active_wall_seconds": 4.8980005998164415,
+              "total_wall_seconds": 40.335479999892414,
+              "final_error": null
+            },
+            "provider_timing": {
+              "available": false,
+              "source": null,
+              "provider_queue_seconds": null,
+              "provider_prompt_seconds": null,
+              "provider_completion_seconds": null,
+              "provider_total_seconds": null,
+              "estimated_network_or_client_overhead_seconds": null
+            }
+          }
+        ],
+        "attempt_count": 1,
+        "timing": {
+          "reused_stored_response": false,
+          "api_call_wall_seconds": 3.633927999995649,
+          "response_parsing_seconds": 3.7499936297535896e-05,
+          "validation_and_metrics_seconds": 0.0,
+          "selected_route_rendering_seconds": 0.20515749999321997,
+          "scorer_stage_wall_seconds": 40.54418520000763,
+          "api_active_wall_seconds": 4.8980005998164415,
+          "deliberate_delay_seconds": 0.0,
+          "rate_limit_backoff_seconds": 35.43747940007597,
+          "controlled_wait_seconds": 35.43747940007597,
+          "api_request_total_wall_seconds": 40.335479999892414
+        },
+        "token_count": 2586
+      },
+      "selected_solution": {
+        "route": [
+          1,
+          8,
+          4,
+          2,
+          3,
+          16,
+          13,
+          12,
+          7,
+          10,
+          9,
+          6,
+          11,
+          5,
+          15,
+          14,
+          1
+        ],
+        "validation": {
+          "is_valid": true,
+          "starts_at_depot": true,
+          "ends_at_depot": true,
+          "missing_nodes": [],
+          "repeated_nodes": [],
+          "unexpected_nodes": []
+        },
+        "legal_node_ids": true,
+        "distance": 7369,
+        "reference_distance": 6859.0,
+        "gap_to_reference_percent": 7.435486222481411,
+        "artifacts": {
+          "route_image": "providers/gemini/gemini-2.5-flash/multi_agent1/images/iteration_05/selected.png"
+        }
+      },
+      "timing": {
+        "critic_stage_wall_seconds": 13.166355299996212,
+        "scorer_stage_wall_seconds": 40.54418520000763,
+        "critic_checkpoint_write_seconds": 0.0027117999270558357,
+        "completion_checkpoint_write_seconds": 0.002602200023829937,
+        "checkpoint_write_seconds": 0.005313999950885773,
+        "iteration_processing_wall_seconds": 53.71585449995473,
+        "local_processing_active_wall_seconds": 1.87532680016011,
+        "iteration_active_wall_seconds": 18.278375099878758,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 35.43747940007597,
+        "controlled_wait_seconds": 35.43747940007597,
+        "iteration_observed_total_wall_seconds": 53.71585449995473
+      },
+      "solution_progress": {
+        "iteration": 5,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 5,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            13,
+            12,
+            7,
+            10,
+            9,
+            6,
+            11,
+            5,
+            15,
+            14,
+            1
+          ],
+          "distance": 7369.0,
+          "gap_to_reference_percent": 7.435486222481411,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 5,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            10,
+            9,
+            6,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 7333.0,
+          "gap_to_reference_percent": 6.910628371482724,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 4,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            6,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            1
+          ],
+          "distance": 6870.0,
+          "gap_to_reference_percent": 0.16037323224959907,
+          "is_valid": true
+        },
+        "selection_regret_percent": 0.4909314059729988,
+        "selected_is_iteration_best": false,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      "iteration_best_distance": 7333.0,
+      "system_gbest_distance": 6955.0,
+      "system_gbest_gap_percent": 1.3996209359965008,
+      "observed_candidate_gbest_distance": 6870.0,
+      "selection_regret_percent": 0.4909314059729988,
+      "selected_is_iteration_best": false,
+      "token_count": 13106
+    }
+  ],
+  "pending_iteration": null,
+  "final_solution": {
+    "source": "scorer_selection",
+    "iteration": 5,
+    "route": [
+      1,
+      8,
+      4,
+      2,
+      3,
+      16,
+      13,
+      12,
+      7,
+      10,
+      9,
+      6,
+      11,
+      5,
+      15,
+      14,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 7369,
+    "reference_distance": 6859.0,
+    "gap_to_reference_percent": 7.435486222481411
+  },
+  "best_valid_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/gemini/gemini-2.5-flash/zero_shot/zero_shot_results.json",
+    "route_image": "providers/gemini/gemini-2.5-flash/zero_shot/images/route.png",
+    "route": [
+      1,
+      8,
+      14,
+      15,
+      5,
+      11,
+      9,
+      10,
+      7,
+      6,
+      12,
+      13,
+      16,
+      3,
+      2,
+      4,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 6955,
+    "reference_distance": 6859.0,
+    "gap_to_reference_percent": 1.3996209359965008
+  },
+  "best_critic_candidate_oracle": {
+    "source": "critic_candidate_oracle",
+    "iteration": 4,
+    "candidate_id": 7,
+    "route": [
+      1,
+      8,
+      4,
+      2,
+      3,
+      16,
+      12,
+      13,
+      14,
+      6,
+      7,
+      10,
+      9,
+      11,
+      5,
+      15,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 6870,
+    "reference_distance": 6859.0,
+    "gap_to_reference_percent": 0.16037323224959907
+  },
+  "errors": [
+    {
+      "type": "ClientError",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}",
+      "phase": "critic_candidate_generation",
+      "iteration": 6,
+      "api_call": {
+        "phase": "critic_candidate_generation",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-08-01T18:12:05.094495+00:00",
+        "finished_at_utc": "2026-08-01T18:12:05.368111+00:00",
+        "api_call_wall_seconds": 0.27359779994003475,
+        "input_image_count": 1,
+        "input_image_bytes": 93645,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null
+        },
+        "request_control": {
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 429,
+              "wall_seconds": 0.6821093000471592,
+              "retry_planned": false,
+              "retry_reason": "daily_quota_exhausted",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "ClientError",
+              "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.6821093000471592,
+          "total_wall_seconds": 0.6821093000471592,
+          "final_error": {
+            "type": "ClientError",
+            "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}",
+            "status_code": 429
+          }
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      },
+      "failed_stage_wall_seconds": 0.6822714000009,
+      "request_control": {
+        "success": false,
+        "attempt_count": 1,
+        "retry_count": 0,
+        "attempts": [
+          {
+            "attempt_number": 1,
+            "success": false,
+            "status_code": 429,
+            "wall_seconds": 0.6821093000471592,
+            "retry_planned": false,
+            "retry_reason": "daily_quota_exhausted",
+            "backoff_seconds": 0.0,
+            "backoff_source": null,
+            "error_type": "ClientError",
+            "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}"
+          }
+        ],
+        "waits": {
+          "event_count": 0,
+          "deliberate_delay_seconds": 0,
+          "rate_limit_backoff_seconds": 0,
+          "controlled_wait_seconds": 0,
+          "events": []
+        },
+        "active_wall_seconds": 0.6821093000471592,
+        "total_wall_seconds": 0.6821093000471592,
+        "final_error": {
+          "type": "ClientError",
+          "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}",
+          "status_code": 429
+        }
+      }
+    }
+  ],
+  "run_summary": {
+    "api_call_count": 11,
+    "successful_api_call_count": 10,
+    "failed_api_call_count": 1,
+    "total_api_call_wall_seconds": 69.46087970002554,
+    "total_token_count": 66095,
+    "manifest_and_input_loading_seconds": 0.0025373001117259264,
+    "accumulated_completed_iteration_wall_seconds": 121.12050529918633,
+    "current_invocation_wall_seconds_before_result_write": 121.92866210010834,
+    "accumulated_completed_iteration_active_wall_seconds": 85.68302589911036,
+    "accumulated_deliberate_delay_seconds": 0.0,
+    "accumulated_rate_limit_backoff_seconds": 35.43747940007597,
+    "accumulated_controlled_wait_seconds": 35.43747940007597
+  },
+  "solution_progress": {
+    "initializer": {
+      "source": "zero_shot",
+      "iteration": 0,
+      "candidate_index": null,
+      "route": [
+        1,
+        8,
+        14,
+        15,
+        5,
+        11,
+        9,
+        10,
+        7,
+        6,
+        12,
+        13,
+        16,
+        3,
+        2,
+        4,
+        1
+      ],
+      "distance": 6955.0,
+      "gap_to_reference_percent": 1.3996209359965008,
+      "is_valid": true
+    },
+    "system_gbest": {
+      "source": "zero_shot",
+      "iteration": 0,
+      "candidate_index": null,
+      "route": [
+        1,
+        8,
+        14,
+        15,
+        5,
+        11,
+        9,
+        10,
+        7,
+        6,
+        12,
+        13,
+        16,
+        3,
+        2,
+        4,
+        1
+      ],
+      "distance": 6955.0,
+      "gap_to_reference_percent": 1.3996209359965008,
+      "is_valid": true
+    },
+    "observed_candidate_gbest": {
+      "source": "critic_candidate",
+      "iteration": 4,
+      "candidate_index": 7,
+      "route": [
+        1,
+        8,
+        4,
+        2,
+        3,
+        16,
+        12,
+        13,
+        14,
+        6,
+        7,
+        10,
+        9,
+        11,
+        5,
+        15,
+        1
+      ],
+      "distance": 6870.0,
+      "gap_to_reference_percent": 0.16037323224959907,
+      "is_valid": true
+    },
+    "early_stop": {
+      "enabled": true,
+      "eligible": true,
+      "should_stop": false,
+      "reason": "gap_above_threshold",
+      "threshold_percent": 1.0,
+      "provider": "gemini",
+      "reference_type": "tsplib_known_optimum",
+      "reference_is_proven_optimal": true,
+      "system_gbest_source": "zero_shot",
+      "system_gbest_iteration": 0,
+      "system_gbest_gap_percent": 1.3996209359965008
+    },
+    "history": [
+      {
+        "iteration": 1,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 1,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 1,
+          "candidate_index": 1,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 1,
+          "candidate_index": 1,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "selection_regret_percent": 0.0,
+        "selected_is_iteration_best": true,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      {
+        "iteration": 2,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 2,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            6,
+            13,
+            1
+          ],
+          "distance": 7167.0,
+          "gap_to_reference_percent": 4.490450502988774,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 2,
+          "candidate_index": 6,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            6,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 6875.0,
+          "gap_to_reference_percent": 0.23327015599941683,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 2,
+          "candidate_index": 6,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            6,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 6875.0,
+          "gap_to_reference_percent": 0.23327015599941683,
+          "is_valid": true
+        },
+        "selection_regret_percent": 4.247272727272727,
+        "selected_is_iteration_best": false,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      {
+        "iteration": 3,
+        "valid_candidate_count": 6,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 3,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 3,
+          "candidate_index": 1,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            1
+          ],
+          "distance": 6963.0,
+          "gap_to_reference_percent": 1.5162560139962094,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 2,
+          "candidate_index": 6,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            6,
+            10,
+            9,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 6875.0,
+          "gap_to_reference_percent": 0.23327015599941683,
+          "is_valid": true
+        },
+        "selection_regret_percent": 0.0,
+        "selected_is_iteration_best": true,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      {
+        "iteration": 4,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 4,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            15,
+            5,
+            11,
+            6,
+            9,
+            10,
+            7,
+            1
+          ],
+          "distance": 7432.0,
+          "gap_to_reference_percent": 8.353987461729115,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 4,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            6,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            1
+          ],
+          "distance": 6870.0,
+          "gap_to_reference_percent": 0.16037323224959907,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 4,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            6,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            1
+          ],
+          "distance": 6870.0,
+          "gap_to_reference_percent": 0.16037323224959907,
+          "is_valid": true
+        },
+        "selection_regret_percent": 8.180494905385736,
+        "selected_is_iteration_best": false,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      },
+      {
+        "iteration": 5,
+        "valid_candidate_count": 7,
+        "candidate_count": 7,
+        "selected_solution": {
+          "source": "scorer_selection",
+          "iteration": 5,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            13,
+            12,
+            7,
+            10,
+            9,
+            6,
+            11,
+            5,
+            15,
+            14,
+            1
+          ],
+          "distance": 7369.0,
+          "gap_to_reference_percent": 7.435486222481411,
+          "is_valid": true
+        },
+        "iteration_best": {
+          "source": "critic_candidate",
+          "iteration": 5,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            7,
+            10,
+            9,
+            6,
+            11,
+            5,
+            15,
+            14,
+            13,
+            1
+          ],
+          "distance": 7333.0,
+          "gap_to_reference_percent": 6.910628371482724,
+          "is_valid": true
+        },
+        "system_gbest": {
+          "source": "zero_shot",
+          "iteration": 0,
+          "candidate_index": null,
+          "route": [
+            1,
+            8,
+            14,
+            15,
+            5,
+            11,
+            9,
+            10,
+            7,
+            6,
+            12,
+            13,
+            16,
+            3,
+            2,
+            4,
+            1
+          ],
+          "distance": 6955.0,
+          "gap_to_reference_percent": 1.3996209359965008,
+          "is_valid": true
+        },
+        "observed_candidate_gbest": {
+          "source": "critic_candidate",
+          "iteration": 4,
+          "candidate_index": 7,
+          "route": [
+            1,
+            8,
+            4,
+            2,
+            3,
+            16,
+            12,
+            13,
+            14,
+            6,
+            7,
+            10,
+            9,
+            11,
+            5,
+            15,
+            1
+          ],
+          "distance": 6870.0,
+          "gap_to_reference_percent": 0.16037323224959907,
+          "is_valid": true
+        },
+        "selection_regret_percent": 0.4909314059729988,
+        "selected_is_iteration_best": false,
+        "early_stop": {
+          "enabled": true,
+          "eligible": true,
+          "should_stop": false,
+          "reason": "gap_above_threshold",
+          "threshold_percent": 1.0,
+          "provider": "gemini",
+          "reference_type": "tsplib_known_optimum",
+          "reference_is_proven_optimal": true,
+          "system_gbest_source": "zero_shot",
+          "system_gbest_iteration": 0,
+          "system_gbest_gap_percent": 1.3996209359965008
+        }
+      }
+    ]
+  },
+  "termination": {
+    "reason": "critic_stage_failed",
+    "early_stop": {
+      "enabled": true,
+      "eligible": true,
+      "should_stop": false,
+      "reason": "gap_above_threshold",
+      "threshold_percent": 1.0,
+      "provider": "gemini",
+      "reference_type": "tsplib_known_optimum",
+      "reference_is_proven_optimal": true,
+      "system_gbest_source": "zero_shot",
+      "system_gbest_iteration": 0,
+      "system_gbest_gap_percent": 1.3996209359965008
+    },
+    "failed_iteration": 6
+  },
+  "observability": {
+    "settings": {
+      "profile_resources": true,
+      "resource_sample_interval_seconds": 0.5,
+      "minimum_request_interval_seconds": 2.0,
+      "max_retries": 2,
+      "retry_base_delay_seconds": 2.0,
+      "retry_maximum_delay_seconds": 60.0,
+      "early_stop_enabled": true,
+      "early_stop_gap_percent": 1.0
+    },
+    "controlled_waits": {
+      "event_count": 1,
+      "deliberate_delay_seconds": 0,
+      "rate_limit_backoff_seconds": 35.43747940007597,
+      "controlled_wait_seconds": 35.43747940007597,
+      "events": [
+        {
+          "type": "rate_limit_backoff",
+          "reason": "transient_error",
+          "requested_seconds": 35.436910921,
+          "actual_seconds": 35.43747940007597,
+          "started_at_elapsed_seconds": 81.51763490005396,
+          "metadata": {
+            "label": "gemini:visual_scorer",
+            "failed_attempt_number": 1,
+            "status_code": 429,
+            "backoff_source": "provider_retry_hint"
+          }
+        }
+      ]
+    },
+    "request_control": {
+      "execution_count": 11,
+      "successful_execution_count": 10,
+      "failed_execution_count": 1,
+      "request_attempt_count": 12,
+      "retry_count": 1,
+      "waits": {
+        "event_count": 1,
+        "deliberate_delay_seconds": 0,
+        "rate_limit_backoff_seconds": 35.43747940007597,
+        "controlled_wait_seconds": 35.43747940007597,
+        "events": [
+          {
+            "type": "rate_limit_backoff",
+            "reason": "transient_error",
+            "requested_seconds": 35.436910921,
+            "actual_seconds": 35.43747940007597,
+            "started_at_elapsed_seconds": 81.51763490005396,
+            "metadata": {
+              "label": "gemini:visual_scorer",
+              "failed_attempt_number": 1,
+              "status_code": 429,
+              "backoff_source": "provider_retry_hint"
+            }
+          }
+        ]
+      },
+      "active_wall_seconds": 77.32121460000053,
+      "total_wall_seconds": 112.7586940000765,
+      "executions": [
+        {
+          "label": "gemini:critic_candidate_generation_native",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 11.906748099951074,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 11.906748099951074,
+          "total_wall_seconds": 11.906748099951074,
+          "final_error": null
+        },
+        {
+          "label": "gemini:visual_scorer",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 4.345000500092283,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 4.345000500092283,
+          "total_wall_seconds": 4.345000500092283,
+          "final_error": null
+        },
+        {
+          "label": "gemini:critic_candidate_generation_native",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 9.492637400049716,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 9.492637400049716,
+          "total_wall_seconds": 9.492637400049716,
+          "final_error": null
+        },
+        {
+          "label": "gemini:visual_scorer",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 5.312551099807024,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 5.312551099807024,
+          "total_wall_seconds": 5.312551099807024,
+          "final_error": null
+        },
+        {
+          "label": "gemini:critic_candidate_generation_native",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 10.325754800112918,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 10.325754800112918,
+          "total_wall_seconds": 10.325754800112918,
+          "final_error": null
+        },
+        {
+          "label": "gemini:visual_scorer",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 4.265938299940899,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 4.265938299940899,
+          "total_wall_seconds": 4.265938299940899,
+          "final_error": null
+        },
+        {
+          "label": "gemini:critic_candidate_generation_native",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 9.459523200057447,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 9.459523200057447,
+          "total_wall_seconds": 9.459523200057447,
+          "final_error": null
+        },
+        {
+          "label": "gemini:visual_scorer",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 5.1279036002233624,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 5.1279036002233624,
+          "total_wall_seconds": 5.1279036002233624,
+          "final_error": null
+        },
+        {
+          "label": "gemini:critic_candidate_generation_native",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 11.505047699902207,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 11.505047699902207,
+          "total_wall_seconds": 11.505047699902207,
+          "final_error": null
+        },
+        {
+          "label": "gemini:visual_scorer",
+          "success": true,
+          "attempt_count": 2,
+          "retry_count": 1,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 429,
+              "wall_seconds": 0.892111900029704,
+              "retry_planned": true,
+              "retry_reason": "transient_error",
+              "backoff_seconds": 35.436910921,
+              "backoff_source": "provider_retry_hint",
+              "error_type": "ClientError",
+              "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-2.5-flash\\nPlease retry in 35.436910921s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+            },
+            {
+              "attempt_number": 2,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 4.005888699786738,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 1,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 35.43747940007597,
+            "controlled_wait_seconds": 35.43747940007597,
+            "events": [
+              {
+                "type": "rate_limit_backoff",
+                "reason": "transient_error",
+                "requested_seconds": 35.436910921,
+                "actual_seconds": 35.43747940007597,
+                "started_at_elapsed_seconds": 81.51763490005396,
+                "metadata": {
+                  "label": "gemini:visual_scorer",
+                  "failed_attempt_number": 1,
+                  "status_code": 429,
+                  "backoff_source": "provider_retry_hint"
+                }
+              }
+            ]
+          },
+          "active_wall_seconds": 4.8980005998164415,
+          "total_wall_seconds": 40.335479999892414,
+          "final_error": null
+        },
+        {
+          "label": "gemini:critic_candidate_generation_native",
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 429,
+              "wall_seconds": 0.6821093000471592,
+              "retry_planned": false,
+              "retry_reason": "daily_quota_exhausted",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "ClientError",
+              "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.6821093000471592,
+          "total_wall_seconds": 0.6821093000471592,
+          "final_error": {
+            "type": "ClientError",
+            "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}",
+            "status_code": 429
+          }
+        }
+      ]
+    },
+    "resources": {
+      "enabled": true,
+      "sampling_interval_seconds": 0.5,
+      "duration_seconds": 121.85144430003129,
+      "sample_count": 239,
+      "system": {
+        "platform": {
+          "system": "Windows",
+          "release": "11",
+          "version": "10.0.22631",
+          "machine": "AMD64"
+        },
+        "python": {
+          "version": "3.13.0",
+          "implementation": "CPython"
+        },
+        "cpu": {
+          "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+          "physical_core_count": 14,
+          "logical_core_count": 20
+        },
+        "memory": {
+          "total_mb": 16110.6171875
+        },
+        "local_gpu": {
+          "available": false,
+          "backend": "nvidia_nvml",
+          "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found",
+          "devices": []
+        }
+      },
+      "overall": {
+        "sample_count": 239,
+        "metrics": {
+          "system_cpu_percent": {
+            "sample_count": 239,
+            "minimum": 0.0,
+            "maximum": 12.1,
+            "average": 1.8602510460251047,
+            "last": 1.9
+          },
+          "process_cpu_percent": {
+            "sample_count": 239,
+            "minimum": 0.0,
+            "maximum": 96.5,
+            "average": 9.672803347280336,
+            "last": 0.0
+          },
+          "process_memory_rss_mb": {
+            "sample_count": 239,
+            "minimum": 68.59765625,
+            "maximum": 300.66015625,
+            "average": 209.65281773012552,
+            "last": 174.75
+          },
+          "process_memory_percent": {
+            "sample_count": 239,
+            "minimum": 0.43037418550169987,
+            "maximum": 1.866223700500301,
+            "average": 1.3016933925899383,
+            "last": 1.0846884260621998
+          },
+          "system_memory_percent": {
+            "sample_count": 239,
+            "minimum": 81.4,
+            "maximum": 84.9,
+            "average": 83.01548117154812,
+            "last": 81.4
+          },
+          "system_memory_available_mb": {
+            "sample_count": 239,
+            "minimum": 2439.4140625,
+            "maximum": 2993.4765625,
+            "average": 2736.8706851464435,
+            "last": 2993.15234375
+          },
+          "local_gpu_utilization_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_used_mb": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_temperature_celsius": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          }
+        }
+      },
+      "by_phase": {
+        "api_request": {
+          "sample_count": 219,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 219,
+              "minimum": 0.0,
+              "maximum": 12.1,
+              "average": 1.5963470319634705,
+              "last": 2.9
+            },
+            "process_cpu_percent": {
+              "sample_count": 219,
+              "minimum": 0.0,
+              "maximum": 92.9,
+              "average": 5.3999999999999995,
+              "last": 52.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 219,
+              "minimum": 81.9609375,
+              "maximum": 300.66015625,
+              "average": 209.0478916952055,
+              "last": 174.76171875
+            },
+            "process_memory_percent": {
+              "sample_count": 219,
+              "minimum": 0.5132727398808724,
+              "maximum": 1.866223700500301,
+              "average": 1.2978347220129076,
+              "last": 1.0847611653611577
+            },
+            "system_memory_percent": {
+              "sample_count": 219,
+              "minimum": 81.4,
+              "maximum": 84.9,
+              "average": 82.9675799086758,
+              "last": 81.4
+            },
+            "system_memory_available_mb": {
+              "sample_count": 219,
+              "minimum": 2439.4140625,
+              "maximum": 2993.4765625,
+              "average": 2744.709028966895,
+              "last": 2993.4765625
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        },
+        "route_rendering": {
+          "sample_count": 17,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 17,
+              "minimum": 1.5,
+              "maximum": 11.5,
+              "average": 5.388235294117647,
+              "last": 7.3
+            },
+            "process_cpu_percent": {
+              "sample_count": 17,
+              "minimum": 18.1,
+              "maximum": 96.5,
+              "average": 64.80588235294118,
+              "last": 82.4
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 17,
+              "minimum": 146.9453125,
+              "maximum": 300.640625,
+              "average": 223.88442095588235,
+              "last": 163.328125
+            },
+            "process_memory_percent": {
+              "sample_count": 17,
+              "minimum": 0.9145996986653308,
+              "maximum": 1.8661024683353709,
+              "average": 1.3911619127446184,
+              "last": 1.018398678278445
+            },
+            "system_memory_percent": {
+              "sample_count": 17,
+              "minimum": 81.5,
+              "maximum": 84.7,
+              "average": 83.81764705882354,
+              "last": 81.5
+            },
+            "system_memory_available_mb": {
+              "sample_count": 17,
+              "minimum": 2469.83203125,
+              "maximum": 2973.65234375,
+              "average": 2605.944393382353,
+              "last": 2973.65234375
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        },
+        "unclassified": {
+          "sample_count": 3,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 3,
+              "minimum": 0.0,
+              "maximum": 1.9,
+              "average": 1.1333333333333333,
+              "last": 1.9
+            },
+            "process_cpu_percent": {
+              "sample_count": 3,
+              "minimum": 0.0,
+              "maximum": 27.5,
+              "average": 9.166666666666666,
+              "last": 0.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 3,
+              "minimum": 68.59765625,
+              "maximum": 276.15234375,
+              "average": 173.16666666666666,
+              "last": 174.75
+            },
+            "process_memory_percent": {
+              "sample_count": 3,
+              "minimum": 0.43037418550169987,
+              "maximum": 1.7141015799460664,
+              "average": 1.0763880638366554,
+              "last": 1.0846884260621998
+            },
+            "system_memory_percent": {
+              "sample_count": 3,
+              "minimum": 81.4,
+              "maximum": 82.4,
+              "average": 81.96666666666667,
+              "last": 81.4
+            },
+            "system_memory_available_mb": {
+              "sample_count": 3,
+              "minimum": 2835.03515625,
+              "maximum": 2993.15234375,
+              "average": 2906.5872395833335,
+              "last": 2993.15234375
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        }
+      },
+      "sampling_errors": []
+    }
+  }
+}
