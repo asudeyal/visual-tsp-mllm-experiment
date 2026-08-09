@@ -14,8 +14,8 @@
   },
   "model": {
     "provider": "mistral",
-    "alias": "mistral-small-latest",
-    "requested_name": "mistral-small-latest",
+    "alias": "ministral-14b-2512",
+    "requested_name": "ministral-14b-2512",
     "capabilities": {
       "supports_vision": true,
       "supports_multiple_images": true,
@@ -36,54 +36,57 @@
     "prompt": "Inspect the provided image and find a short route for one salesman.\n\nProblem information:\n- Problem name: eil51\n- The image contains exactly 51 nodes labelled 1 through 51.\n- Node 1, marked with a black square, is the depot.\n\nImportant rules:\n- Start at the depot, visit every non-depot node exactly once, and return to the depot.\n- The required non-depot node IDs are: 2 through 51.\n- Do not omit, repeat, invent, or renumber nodes.\n- Minimize crossings and total route length.\n- Use only visual information from the image; coordinates are not provided.\n\nOutput exactly one route and no explanation:\n<<start>>\nSalesman1: Depot-2-3-4-Depot\n<<end>>\n\nThe displayed route is only a format example. Replace its order with every required\nnon-depot node. The word Depot means node 1."
   },
   "errors": [],
-  "raw_response": "<<start>>\nSalesman1: Depot-2-51-46-47-17-37-12-27-8-26-31-40-43-24-14-6-18-23-48-42-19-41-44-15-32-11-38-49-9-16-50-21-34-30-39-20-28-22-45-33-10-3-29-35-36-Depot\n<<end>>",
+  "raw_response": "<<start>>\nSalesman1: Depot-2-22-28-31-26-8-27-51-46-12-47-4-17-37-15-44-5-11-32-38-9-16-20-29-35-36-3-21-49-10-33-45-30-34-39-40-13-25-14-23-24-41-19-42-43-48-6-7-Depot\n<<end>>",
   "route": [
     1,
     2,
+    22,
+    28,
+    31,
+    26,
+    8,
+    27,
     51,
     46,
+    12,
     47,
+    4,
     17,
     37,
-    12,
-    27,
-    8,
-    26,
-    31,
-    40,
-    43,
-    24,
-    14,
-    6,
-    18,
-    23,
-    48,
-    42,
-    19,
-    41,
-    44,
     15,
-    32,
+    44,
+    5,
     11,
+    32,
     38,
-    49,
     9,
     16,
-    50,
-    21,
-    34,
-    30,
-    39,
     20,
-    28,
-    22,
-    45,
-    33,
-    10,
-    3,
     29,
     35,
     36,
+    3,
+    21,
+    49,
+    10,
+    33,
+    45,
+    30,
+    34,
+    39,
+    40,
+    13,
+    25,
+    14,
+    23,
+    24,
+    41,
+    19,
+    42,
+    43,
+    48,
+    6,
+    7,
     1
   ],
   "validation": {
@@ -91,48 +94,45 @@
     "starts_at_depot": true,
     "ends_at_depot": true,
     "missing_nodes": [
-      4,
-      5,
-      7,
-      13,
-      25
+      18,
+      50
     ],
     "repeated_nodes": [],
     "unexpected_nodes": []
   },
   "legal_node_ids": true,
-  "distance": 767,
+  "distance": 666,
   "reference_distance": 426.0,
   "gap_to_reference_percent": null,
   "gap_to_known_optimum_percent": null,
   "artifacts": {
-    "route_image": "providers/mistral/mistral-small-latest/zero_shot/images/route.png"
+    "route_image": "providers/mistral/ministral-14b-2512/zero_shot/images/route.png"
   },
   "api_calls": [
     {
       "phase": "route_generation",
       "provider": "mistral",
-      "model": "mistral-small-latest",
-      "response_model": "mistral-small-latest",
+      "model": "ministral-14b-2512",
+      "response_model": "ministral-14b-2512",
       "temperature": 0.0,
       "success": true,
-      "started_at_utc": "2026-08-08T15:22:13.372621+00:00",
-      "finished_at_utc": "2026-08-08T15:22:16.213227+00:00",
-      "api_call_wall_seconds": 2.840621199924499,
+      "started_at_utc": "2026-08-08T14:29:09.264934+00:00",
+      "finished_at_utc": "2026-08-08T14:29:11.956642+00:00",
+      "api_call_wall_seconds": 2.6917518000118434,
       "input_image_count": 1,
       "input_image_bytes": 87806,
       "max_tokens": 4096,
       "finish_reason": "stop",
       "usage": {
-        "prompt_token_count": 3293,
-        "candidates_token_count": 146,
+        "prompt_token_count": 3281,
+        "candidates_token_count": 152,
         "thoughts_token_count": null,
         "cached_content_token_count": null,
-        "total_token_count": 3439,
+        "total_token_count": 3433,
         "raw": {
-          "prompt_tokens": 3293,
-          "total_tokens": 3439,
-          "completion_tokens": 146,
+          "prompt_tokens": 3281,
+          "total_tokens": 3433,
+          "completion_tokens": 152,
           "prompt_tokens_details": {
             "cached_tokens": 0
           },
@@ -148,7 +148,7 @@
             "attempt_number": 1,
             "success": true,
             "status_code": null,
-            "wall_seconds": 2.8415111997164786,
+            "wall_seconds": 2.692791299894452,
             "retry_planned": false,
             "retry_reason": null,
             "backoff_seconds": 0.0,
@@ -163,8 +163,8 @@
           "controlled_wait_seconds": 0,
           "events": []
         },
-        "active_wall_seconds": 2.8415111997164786,
-        "total_wall_seconds": 2.8415111997164786,
+        "active_wall_seconds": 2.692791299894452,
+        "total_wall_seconds": 2.692791299894452,
         "final_error": null
       },
       "provider_timing": {
@@ -179,23 +179,23 @@
     }
   ],
   "timing": {
-    "manifest_and_input_loading_seconds": 0.0006432002410292625,
-    "prompt_preparation_seconds": 3.8700178265571594e-05,
-    "api_call_wall_seconds": 2.840621199924499,
-    "api_active_wall_seconds": 2.8415111997164786,
+    "manifest_and_input_loading_seconds": 0.0007369997911155224,
+    "prompt_preparation_seconds": 4.20999713242054e-05,
+    "api_call_wall_seconds": 2.6917518000118434,
+    "api_active_wall_seconds": 2.692791299894452,
     "controlled_wait_seconds": 0.0,
-    "api_request_total_wall_seconds": 2.8415111997164786,
-    "response_parsing_seconds": 0.0003752000629901886,
-    "validation_and_metrics_seconds": 0.00018490012735128403,
-    "route_rendering_seconds": 0.3390810997225344,
-    "total_wall_seconds_before_result_write": 3.1827683998271823
+    "api_request_total_wall_seconds": 2.692791299894452,
+    "response_parsing_seconds": 0.0004887999966740608,
+    "validation_and_metrics_seconds": 0.0002117999829351902,
+    "route_rendering_seconds": 0.3591951001435518,
+    "total_wall_seconds_before_result_write": 3.0546229002065957
   },
   "run_summary": {
     "api_call_count": 1,
     "successful_api_call_count": 1,
     "failed_api_call_count": 0,
-    "total_api_call_wall_seconds": 2.840621199924499,
-    "total_token_count": 3439
+    "total_api_call_wall_seconds": 2.6917518000118434,
+    "total_token_count": 3433
   },
   "observability": {
     "settings": {
@@ -228,8 +228,8 @@
         "controlled_wait_seconds": 0,
         "events": []
       },
-      "active_wall_seconds": 2.8415111997164786,
-      "total_wall_seconds": 2.8415111997164786,
+      "active_wall_seconds": 2.692791299894452,
+      "total_wall_seconds": 2.692791299894452,
       "executions": [
         {
           "label": "mistral:route_generation",
@@ -241,7 +241,7 @@
               "attempt_number": 1,
               "success": true,
               "status_code": null,
-              "wall_seconds": 2.8415111997164786,
+              "wall_seconds": 2.692791299894452,
               "retry_planned": false,
               "retry_reason": null,
               "backoff_seconds": 0.0,
@@ -256,8 +256,8 @@
             "controlled_wait_seconds": 0,
             "events": []
           },
-          "active_wall_seconds": 2.8415111997164786,
-          "total_wall_seconds": 2.8415111997164786,
+          "active_wall_seconds": 2.692791299894452,
+          "total_wall_seconds": 2.692791299894452,
           "final_error": null
         }
       ]
@@ -265,8 +265,8 @@
     "resources": {
       "enabled": true,
       "sampling_interval_seconds": 0.5,
-      "duration_seconds": 3.192512399982661,
-      "sample_count": 8,
+      "duration_seconds": 3.0652300999499857,
+      "sample_count": 7,
       "system": {
         "platform": {
           "system": "Windows",
@@ -294,49 +294,49 @@
         }
       },
       "overall": {
-        "sample_count": 8,
+        "sample_count": 7,
         "metrics": {
           "system_cpu_percent": {
-            "sample_count": 8,
+            "sample_count": 7,
             "minimum": 0.0,
-            "maximum": 2.9,
-            "average": 0.85,
-            "last": 1.3
+            "maximum": 1.1,
+            "average": 0.2571428571428572,
+            "last": 1.1
           },
           "process_cpu_percent": {
-            "sample_count": 8,
+            "sample_count": 7,
             "minimum": 0.0,
-            "maximum": 60.9,
-            "average": 12.175,
-            "last": 60.9
+            "maximum": 62.6,
+            "average": 8.942857142857143,
+            "last": 62.6
           },
           "process_memory_rss_mb": {
-            "sample_count": 8,
-            "minimum": 67.3203125,
-            "maximum": 88.890625,
-            "average": 75.1064453125,
-            "last": 88.890625
+            "sample_count": 7,
+            "minimum": 66.53125,
+            "maximum": 88.58203125,
+            "average": 73.02622767857143,
+            "last": 88.58203125
           },
           "process_memory_percent": {
-            "sample_count": 8,
-            "minimum": 0.4178630260809181,
-            "maximum": 0.5520427862255045,
-            "average": 0.4670529770012885,
-            "last": 0.5520427862255045
+            "sample_count": 7,
+            "minimum": 0.41674769016356156,
+            "maximum": 0.5464418602057358,
+            "average": 0.4538759066174265,
+            "last": 0.5464418602057358
           },
           "system_memory_percent": {
-            "sample_count": 8,
-            "minimum": 78.9,
-            "maximum": 79.2,
-            "average": 79.05,
-            "last": 79.0
+            "sample_count": 7,
+            "minimum": 71.5,
+            "maximum": 71.6,
+            "average": 71.51428571428572,
+            "last": 71.6
           },
           "system_memory_available_mb": {
-            "sample_count": 8,
-            "minimum": 3358.58203125,
-            "maximum": 3401.78125,
-            "average": 3377.849609375,
-            "last": 3388.28125
+            "sample_count": 7,
+            "minimum": 4580.4296875,
+            "maximum": 4590.6796875,
+            "average": 4585.98046875,
+            "last": 4580.4296875
           },
           "local_gpu_utilization_percent": {
             "sample_count": 0,
@@ -375,9 +375,9 @@
             "system_cpu_percent": {
               "sample_count": 5,
               "minimum": 0.0,
-              "maximum": 0.9,
-              "average": 0.52,
-              "last": 0.5
+              "maximum": 0.5,
+              "average": 0.13999999999999999,
+              "last": 0.2
             },
             "process_cpu_percent": {
               "sample_count": 5,
@@ -388,106 +388,31 @@
             },
             "process_memory_rss_mb": {
               "sample_count": 5,
-              "minimum": 70.90234375,
-              "maximum": 71.4296875,
-              "average": 71.32421875,
-              "last": 71.4296875
+              "minimum": 70.7265625,
+              "maximum": 71.3359375,
+              "average": 71.2140625,
+              "last": 71.3359375
             },
             "process_memory_percent": {
               "sample_count": 5,
-              "minimum": 0.443370273582202,
-              "maximum": 0.443370273582202,
-              "average": 0.44337027358220193,
-              "last": 0.443370273582202
+              "minimum": 0.44278835919053766,
+              "maximum": 0.44278835919053766,
+              "average": 0.44278835919053766,
+              "last": 0.44278835919053766
             },
             "system_memory_percent": {
               "sample_count": 5,
-              "minimum": 78.9,
-              "maximum": 79.1,
-              "average": 79.03999999999999,
-              "last": 78.9
+              "minimum": 71.5,
+              "maximum": 71.5,
+              "average": 71.5,
+              "last": 71.5
             },
             "system_memory_available_mb": {
               "sample_count": 5,
-              "minimum": 3365.84765625,
-              "maximum": 3401.78125,
-              "average": 3377.45390625,
-              "last": 3401.78125
-            },
-            "local_gpu_utilization_percent": {
-              "sample_count": 0,
-              "minimum": null,
-              "maximum": null,
-              "average": null,
-              "last": null
-            },
-            "local_gpu_memory_used_mb": {
-              "sample_count": 0,
-              "minimum": null,
-              "maximum": null,
-              "average": null,
-              "last": null
-            },
-            "local_gpu_memory_percent": {
-              "sample_count": 0,
-              "minimum": null,
-              "maximum": null,
-              "average": null,
-              "last": null
-            },
-            "local_gpu_temperature_celsius": {
-              "sample_count": 0,
-              "minimum": null,
-              "maximum": null,
-              "average": null,
-              "last": null
-            }
-          }
-        },
-        "route_rendering": {
-          "sample_count": 1,
-          "metrics": {
-            "system_cpu_percent": {
-              "sample_count": 1,
-              "minimum": 2.9,
-              "maximum": 2.9,
-              "average": 2.9,
-              "last": 2.9
-            },
-            "process_cpu_percent": {
-              "sample_count": 1,
-              "minimum": 36.5,
-              "maximum": 36.5,
-              "average": 36.5,
-              "last": 36.5
-            },
-            "process_memory_rss_mb": {
-              "sample_count": 1,
-              "minimum": 88.01953125,
-              "maximum": 88.01953125,
-              "average": 88.01953125,
-              "last": 88.01953125
-            },
-            "process_memory_percent": {
-              "sample_count": 1,
-              "minimum": 0.5496666357928753,
-              "maximum": 0.5496666357928753,
-              "average": 0.5496666357928753,
-              "last": 0.5496666357928753
-            },
-            "system_memory_percent": {
-              "sample_count": 1,
-              "minimum": 79.0,
-              "maximum": 79.0,
-              "average": 79.0,
-              "last": 79.0
-            },
-            "system_memory_available_mb": {
-              "sample_count": 1,
-              "minimum": 3388.6640625,
-              "maximum": 3388.6640625,
-              "average": 3388.6640625,
-              "last": 3388.6640625
+              "minimum": 4584.5234375,
+              "maximum": 4590.6796875,
+              "average": 4587.4859375,
+              "last": 4590.6796875
             },
             "local_gpu_utilization_percent": {
               "sample_count": 0,
@@ -525,44 +450,44 @@
             "system_cpu_percent": {
               "sample_count": 2,
               "minimum": 0.0,
-              "maximum": 1.3,
-              "average": 0.65,
-              "last": 1.3
+              "maximum": 1.1,
+              "average": 0.55,
+              "last": 1.1
             },
             "process_cpu_percent": {
               "sample_count": 2,
               "minimum": 0.0,
-              "maximum": 60.9,
-              "average": 30.45,
-              "last": 60.9
+              "maximum": 62.6,
+              "average": 31.3,
+              "last": 62.6
             },
             "process_memory_rss_mb": {
               "sample_count": 2,
-              "minimum": 67.3203125,
-              "maximum": 88.890625,
-              "average": 78.10546875,
-              "last": 88.890625
+              "minimum": 66.53125,
+              "maximum": 88.58203125,
+              "average": 77.556640625,
+              "last": 88.58203125
             },
             "process_memory_percent": {
               "sample_count": 2,
-              "minimum": 0.4178630260809181,
-              "maximum": 0.5520427862255045,
-              "average": 0.4849529061532113,
-              "last": 0.5520427862255045
+              "minimum": 0.41674769016356156,
+              "maximum": 0.5464418602057358,
+              "average": 0.48159477518464866,
+              "last": 0.5464418602057358
             },
             "system_memory_percent": {
               "sample_count": 2,
-              "minimum": 79.0,
-              "maximum": 79.2,
-              "average": 79.1,
-              "last": 79.0
+              "minimum": 71.5,
+              "maximum": 71.6,
+              "average": 71.55,
+              "last": 71.6
             },
             "system_memory_available_mb": {
               "sample_count": 2,
-              "minimum": 3358.58203125,
-              "maximum": 3388.28125,
-              "average": 3373.431640625,
-              "last": 3388.28125
+              "minimum": 4580.4296875,
+              "maximum": 4584.00390625,
+              "average": 4582.216796875,
+              "last": 4580.4296875
             },
             "local_gpu_utilization_percent": {
               "sample_count": 0,
