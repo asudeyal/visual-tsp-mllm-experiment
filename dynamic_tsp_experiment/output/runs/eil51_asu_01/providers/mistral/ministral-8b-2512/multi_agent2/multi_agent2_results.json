@@ -1,0 +1,966 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_multi_agent_2_tsp",
+  "run_id": "eil51_asu_01",
+  "method": "multi_agent_2",
+  "problem": {
+    "name": "eil51",
+    "dimension": 51,
+    "depot_id": 1,
+    "source_type": "tsplib",
+    "fingerprint_sha256": "32e0d97ac1c5bc1b4512a3d1afa887b26256d46a3d05de3a4acd65a849c8b08e",
+    "reference_type": "tsplib_known_optimum",
+    "reference_is_proven_optimal": true
+  },
+  "model": {
+    "provider": "mistral",
+    "alias": "ministral-8b-2512",
+    "requested_name": "ministral-8b-2512",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": false,
+      "max_images_per_request": 5,
+      "max_native_choices": 1
+    },
+    "inference_settings": {
+      "route_max_tokens": 4096,
+      "scorer_max_tokens": 2048,
+      "candidate_strategy": "independent_calls"
+    },
+    "critic_temperature": 0.7
+  },
+  "requested_iterations": 10,
+  "completed_iterations": 0,
+  "artificial_delay_enabled": false,
+  "initializer": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/mistral/ministral-8b-2512/zero_shot/zero_shot_results.json",
+    "route_image": "providers/mistral/ministral-8b-2512/zero_shot/images/route.png",
+    "route": [
+      1,
+      21,
+      20,
+      35,
+      36,
+      29,
+      2,
+      3,
+      22,
+      28,
+      31,
+      26,
+      8,
+      48,
+      6,
+      14,
+      18,
+      47,
+      12,
+      51,
+      46,
+      37,
+      17,
+      4,
+      11,
+      32,
+      27,
+      5,
+      38,
+      16,
+      49,
+      10,
+      9,
+      50,
+      34,
+      39,
+      33,
+      45,
+      44,
+      15,
+      42,
+      19,
+      41,
+      13,
+      40,
+      24,
+      7,
+      23,
+      30,
+      25,
+      1
+    ],
+    "validation": {
+      "is_valid": false,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [
+        43
+      ],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 680,
+    "reference_distance": 426.0,
+    "gap_to_reference_percent": null
+  },
+  "iterations": [],
+  "final_solution": {
+    "source": "zero_shot",
+    "iteration": 0,
+    "source_file": "providers/mistral/ministral-8b-2512/zero_shot/zero_shot_results.json",
+    "route_image": "providers/mistral/ministral-8b-2512/zero_shot/images/route.png",
+    "route": [
+      1,
+      21,
+      20,
+      35,
+      36,
+      29,
+      2,
+      3,
+      22,
+      28,
+      31,
+      26,
+      8,
+      48,
+      6,
+      14,
+      18,
+      47,
+      12,
+      51,
+      46,
+      37,
+      17,
+      4,
+      11,
+      32,
+      27,
+      5,
+      38,
+      16,
+      49,
+      10,
+      9,
+      50,
+      34,
+      39,
+      33,
+      45,
+      44,
+      15,
+      42,
+      19,
+      41,
+      13,
+      40,
+      24,
+      7,
+      23,
+      30,
+      25,
+      1
+    ],
+    "validation": {
+      "is_valid": false,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [
+        43
+      ],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 680,
+    "reference_distance": 426.0,
+    "gap_to_reference_percent": null
+  },
+  "best_valid_solution": null,
+  "errors": [
+    {
+      "type": "RouteParseError",
+      "message": "Salesman1 rota satırı bulunamadı.",
+      "phase": "response_parsing",
+      "iteration": 1,
+      "raw_response": "<<start>>\nDepot-16-10-49-9-38-11-32-27-26-31-28-22-3-20-29-35-36-21-40-41-19-42-44-15-17-47-4-18-14-25-24-7-23-48-5-51-12-46-50-34-30-39-33-45-6-8-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "mistral",
+        "model": "ministral-8b-2512",
+        "response_model": "ministral-8b-2512",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-08-08T13:48:54.675107+00:00",
+        "finished_at_utc": "2026-08-08T13:48:56.926527+00:00",
+        "api_call_wall_seconds": 2.25148699991405,
+        "input_image_count": 1,
+        "input_image_bytes": 254375,
+        "max_tokens": 4096,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 3287,
+          "candidates_token_count": 144,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 3431,
+          "raw": {
+            "prompt_tokens": 3287,
+            "total_tokens": 3431,
+            "completion_tokens": 144,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "service_tier": "standard"
+          }
+        },
+        "request_control": {
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 2.2551907002925873,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 2.2551907002925873,
+          "total_wall_seconds": 2.2551907002925873,
+          "final_error": null
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      },
+      "attempt": 1,
+      "timing": {
+        "prompt_preparation_seconds": 6.569968536496162e-05,
+        "api_active_wall_seconds": 2.2551907002925873,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "api_request_total_wall_seconds": 2.2551907002925873,
+        "failed_attempt_active_wall_seconds": 2.255853900220245,
+        "failed_attempt_wall_seconds": 2.255853900220245
+      }
+    },
+    {
+      "type": "RouteParseError",
+      "message": "Salesman1 rota satırı bulunamadı.",
+      "phase": "response_parsing",
+      "iteration": 1,
+      "raw_response": "<<start>>\nDepot-31-26-27-32-2-29-20-35-36-11-38-16-9-50-34-39-45-33-10-49-4-18-14-25-40-41-19-42-17-47-4-5-12-46-51-44-15-37-8-48-6-23-7-24-13-43-3-28-22-<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "mistral",
+        "model": "ministral-8b-2512",
+        "response_model": "ministral-8b-2512",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-08-08T14:56:22.618213+00:00",
+        "finished_at_utc": "2026-08-08T14:56:25.415777+00:00",
+        "api_call_wall_seconds": 2.7975853998214006,
+        "input_image_count": 1,
+        "input_image_bytes": 254375,
+        "max_tokens": 4096,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 3287,
+          "candidates_token_count": 148,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 3435,
+          "raw": {
+            "prompt_tokens": 3287,
+            "total_tokens": 3435,
+            "completion_tokens": 148,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "service_tier": "standard"
+          }
+        },
+        "request_control": {
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 2.799876700155437,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 2.799876700155437,
+          "total_wall_seconds": 2.799876700155437,
+          "final_error": null
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      },
+      "attempt": 2,
+      "timing": {
+        "prompt_preparation_seconds": 4.970002919435501e-05,
+        "api_active_wall_seconds": 2.799876700155437,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "api_request_total_wall_seconds": 2.799876700155437,
+        "failed_attempt_active_wall_seconds": 2.8004101999104023,
+        "failed_attempt_wall_seconds": 2.8004101999104023
+      }
+    },
+    {
+      "type": "RouteParseError",
+      "message": "Salesman1 rota satırı bulunamadı.",
+      "phase": "response_parsing",
+      "iteration": 1,
+      "raw_response": "<<start>>\nDepot-36-28-3-22-2-16-9-50-34-39-45-33-15-44-12-51-46-11-38-10-49-4-18-14-25-13-41-19-42-17-37-47-48-26-27-8-23-7-24-43-40-35-29-21-32-31-6-5-30-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "mistral",
+        "model": "ministral-8b-2512",
+        "response_model": "ministral-8b-2512",
+        "temperature": 0.7,
+        "success": false,
+        "started_at_utc": "2026-08-08T14:56:33.584694+00:00",
+        "finished_at_utc": "2026-08-08T14:56:36.036866+00:00",
+        "api_call_wall_seconds": 2.4521931000053883,
+        "input_image_count": 1,
+        "input_image_bytes": 254375,
+        "max_tokens": 4096,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 3287,
+          "candidates_token_count": 152,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 3439,
+          "raw": {
+            "prompt_tokens": 3287,
+            "total_tokens": 3439,
+            "completion_tokens": 152,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "service_tier": "standard"
+          }
+        },
+        "request_control": {
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 2.454484899993986,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 2.454484899993986,
+          "total_wall_seconds": 2.454484899993986,
+          "final_error": null
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      },
+      "attempt": 3,
+      "timing": {
+        "prompt_preparation_seconds": 4.220008850097656e-05,
+        "api_active_wall_seconds": 2.454484899993986,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "api_request_total_wall_seconds": 2.454484899993986,
+        "failed_attempt_active_wall_seconds": 2.4548816001042724,
+        "failed_attempt_wall_seconds": 2.4548816001042724
+      }
+    },
+    {
+      "type": "RouteParseError",
+      "message": "Salesman1 rota satırı bulunamadı.",
+      "phase": "response_parsing",
+      "iteration": 1,
+      "raw_response": "<<start>>\nDepot-16-10-49-9-38-11-32-27-26-31-28-3-22-2-29-20-21-35-36-Depot\n<<end>>",
+      "api_call": {
+        "phase": "critic_route_revision",
+        "provider": "mistral",
+        "model": "ministral-8b-2512",
+        "response_model": "ministral-8b-2512",
+        "temperature": 0.7,
+        "success": true,
+        "started_at_utc": "2026-08-08T14:56:40.056960+00:00",
+        "finished_at_utc": "2026-08-08T14:56:41.446499+00:00",
+        "api_call_wall_seconds": 1.3895507999695837,
+        "input_image_count": 1,
+        "input_image_bytes": 254375,
+        "max_tokens": 4096,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_token_count": 3287,
+          "candidates_token_count": 67,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 3354,
+          "raw": {
+            "prompt_tokens": 3287,
+            "total_tokens": 3354,
+            "completion_tokens": 67,
+            "prompt_tokens_details": {
+              "cached_tokens": 3200
+            },
+            "service_tier": "standard"
+          }
+        },
+        "request_control": {
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 1.3919061999768019,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 1.3919061999768019,
+          "total_wall_seconds": 1.3919061999768019,
+          "final_error": null
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      },
+      "attempt": 4,
+      "timing": {
+        "prompt_preparation_seconds": 4.020007327198982e-05,
+        "api_active_wall_seconds": 1.3919061999768019,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 0.0,
+        "controlled_wait_seconds": 0.0,
+        "api_request_total_wall_seconds": 1.3919061999768019,
+        "failed_attempt_active_wall_seconds": 1.3923987001180649,
+        "failed_attempt_wall_seconds": 1.3923987001180649
+      }
+    }
+  ],
+  "run_summary": {
+    "api_call_count": 4,
+    "successful_api_call_count": 1,
+    "failed_api_call_count": 3,
+    "total_api_call_wall_seconds": 8.890816299710423,
+    "total_token_count": 13659,
+    "manifest_and_input_loading_seconds": 0.002299499697983265,
+    "accumulated_completed_iteration_wall_seconds": 0,
+    "current_invocation_wall_seconds_before_result_write": 1.471738399937749,
+    "accumulated_completed_iteration_active_wall_seconds": 0,
+    "accumulated_deliberate_delay_seconds": 0,
+    "accumulated_rate_limit_backoff_seconds": 0,
+    "accumulated_controlled_wait_seconds": 0
+  },
+  "solution_progress": {
+    "initializer": {
+      "source": "zero_shot",
+      "iteration": 0,
+      "candidate_index": null,
+      "route": [
+        1,
+        21,
+        20,
+        35,
+        36,
+        29,
+        2,
+        3,
+        22,
+        28,
+        31,
+        26,
+        8,
+        48,
+        6,
+        14,
+        18,
+        47,
+        12,
+        51,
+        46,
+        37,
+        17,
+        4,
+        11,
+        32,
+        27,
+        5,
+        38,
+        16,
+        49,
+        10,
+        9,
+        50,
+        34,
+        39,
+        33,
+        45,
+        44,
+        15,
+        42,
+        19,
+        41,
+        13,
+        40,
+        24,
+        7,
+        23,
+        30,
+        25,
+        1
+      ],
+      "distance": 680.0,
+      "gap_to_reference_percent": null,
+      "is_valid": false
+    },
+    "system_gbest": null,
+    "observed_candidate_gbest": null,
+    "early_stop": {
+      "enabled": true,
+      "eligible": false,
+      "should_stop": false,
+      "reason": "provider_not_enabled",
+      "threshold_percent": 1.0,
+      "provider": "mistral",
+      "reference_type": "tsplib_known_optimum",
+      "reference_is_proven_optimal": true,
+      "system_gbest_source": null,
+      "system_gbest_iteration": null,
+      "system_gbest_gap_percent": null
+    },
+    "history": []
+  },
+  "termination": {
+    "reason": "iteration_failed",
+    "early_stop": {
+      "enabled": true,
+      "eligible": false,
+      "should_stop": false,
+      "reason": "provider_not_enabled",
+      "threshold_percent": 1.0,
+      "provider": "mistral",
+      "reference_type": "tsplib_known_optimum",
+      "reference_is_proven_optimal": true,
+      "system_gbest_source": null,
+      "system_gbest_iteration": null,
+      "system_gbest_gap_percent": null
+    },
+    "failed_iteration": 1
+  },
+  "observability": {
+    "settings": {
+      "profile_resources": true,
+      "resource_sample_interval_seconds": 0.5,
+      "minimum_request_interval_seconds": 0.0,
+      "max_retries": 2,
+      "retry_base_delay_seconds": 2.0,
+      "retry_maximum_delay_seconds": 60.0,
+      "early_stop_enabled": true,
+      "early_stop_gap_percent": 1.0
+    },
+    "controlled_waits": {
+      "event_count": 0,
+      "deliberate_delay_seconds": 0,
+      "rate_limit_backoff_seconds": 0,
+      "controlled_wait_seconds": 0,
+      "events": []
+    },
+    "request_control": {
+      "execution_count": 1,
+      "successful_execution_count": 1,
+      "failed_execution_count": 0,
+      "request_attempt_count": 1,
+      "retry_count": 0,
+      "waits": {
+        "event_count": 0,
+        "deliberate_delay_seconds": 0,
+        "rate_limit_backoff_seconds": 0,
+        "controlled_wait_seconds": 0,
+        "events": []
+      },
+      "active_wall_seconds": 1.3919061999768019,
+      "total_wall_seconds": 1.3919061999768019,
+      "executions": [
+        {
+          "label": "mistral:critic_route_revision",
+          "success": true,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": true,
+              "status_code": null,
+              "wall_seconds": 1.3919061999768019,
+              "retry_planned": false,
+              "retry_reason": null,
+              "backoff_seconds": 0.0,
+              "error_type": null,
+              "error_message": null
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 1.3919061999768019,
+          "total_wall_seconds": 1.3919061999768019,
+          "final_error": null
+        }
+      ]
+    },
+    "resources": {
+      "enabled": true,
+      "sampling_interval_seconds": 0.5,
+      "duration_seconds": 1.4232381000183523,
+      "sample_count": 4,
+      "system": {
+        "platform": {
+          "system": "Windows",
+          "release": "11",
+          "version": "10.0.22631",
+          "machine": "AMD64"
+        },
+        "python": {
+          "version": "3.13.0",
+          "implementation": "CPython"
+        },
+        "cpu": {
+          "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+          "physical_core_count": 14,
+          "logical_core_count": 20
+        },
+        "memory": {
+          "total_mb": 16110.6171875
+        },
+        "local_gpu": {
+          "available": false,
+          "backend": "nvidia_nvml",
+          "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found",
+          "devices": []
+        }
+      },
+      "overall": {
+        "sample_count": 4,
+        "metrics": {
+          "system_cpu_percent": {
+            "sample_count": 4,
+            "minimum": 0.0,
+            "maximum": 3.7,
+            "average": 1.8250000000000002,
+            "last": 3.6
+          },
+          "process_cpu_percent": {
+            "sample_count": 4,
+            "minimum": 0.0,
+            "maximum": 3.0,
+            "average": 0.75,
+            "last": 0.0
+          },
+          "process_memory_rss_mb": {
+            "sample_count": 4,
+            "minimum": 67.26171875,
+            "maximum": 73.03125,
+            "average": 71.423828125,
+            "last": 73.03125
+          },
+          "process_memory_percent": {
+            "sample_count": 4,
+            "minimum": 0.4213302659979178,
+            "maximum": 0.45331131110646655,
+            "average": 0.44524331053037136,
+            "last": 0.45331131110646655
+          },
+          "system_memory_percent": {
+            "sample_count": 4,
+            "minimum": 87.8,
+            "maximum": 87.9,
+            "average": 87.825,
+            "last": 87.8
+          },
+          "system_memory_available_mb": {
+            "sample_count": 4,
+            "minimum": 1950.625,
+            "maximum": 1963.671875,
+            "average": 1959.9130859375,
+            "last": 1962.2265625
+          },
+          "local_gpu_utilization_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_used_mb": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_temperature_celsius": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          }
+        }
+      },
+      "by_phase": {
+        "api_request": {
+          "sample_count": 2,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 3.7,
+              "average": 1.85,
+              "last": 3.7
+            },
+            "process_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 3.0,
+              "average": 1.5,
+              "last": 0.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 2,
+              "minimum": 72.39453125,
+              "maximum": 73.0078125,
+              "average": 72.701171875,
+              "last": 73.0078125
+            },
+            "process_memory_percent": {
+              "sample_count": 2,
+              "minimum": 0.4531658325085505,
+              "maximum": 0.4531658325085505,
+              "average": 0.4531658325085505,
+              "last": 0.4531658325085505
+            },
+            "system_memory_percent": {
+              "sample_count": 2,
+              "minimum": 87.8,
+              "maximum": 87.9,
+              "average": 87.85,
+              "last": 87.8
+            },
+            "system_memory_available_mb": {
+              "sample_count": 2,
+              "minimum": 1950.625,
+              "maximum": 1963.671875,
+              "average": 1957.1484375,
+              "last": 1963.671875
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        },
+        "unclassified": {
+          "sample_count": 2,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 3.6,
+              "average": 1.8,
+              "last": 3.6
+            },
+            "process_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 0.0,
+              "average": 0.0,
+              "last": 0.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 2,
+              "minimum": 67.26171875,
+              "maximum": 73.03125,
+              "average": 70.146484375,
+              "last": 73.03125
+            },
+            "process_memory_percent": {
+              "sample_count": 2,
+              "minimum": 0.4213302659979178,
+              "maximum": 0.45331131110646655,
+              "average": 0.43732078855219214,
+              "last": 0.45331131110646655
+            },
+            "system_memory_percent": {
+              "sample_count": 2,
+              "minimum": 87.8,
+              "maximum": 87.8,
+              "average": 87.8,
+              "last": 87.8
+            },
+            "system_memory_available_mb": {
+              "sample_count": 2,
+              "minimum": 1962.2265625,
+              "maximum": 1963.12890625,
+              "average": 1962.677734375,
+              "last": 1962.2265625
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        }
+      },
+      "sampling_errors": []
+    }
+  }
+}

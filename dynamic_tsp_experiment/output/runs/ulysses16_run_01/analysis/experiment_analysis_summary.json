@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "experiment": "dynamic_tsp_comparative_analysis",
   "run_id": "ulysses16_run_01",
-  "generated_at_utc": "2026-08-01T18:06:14.675869+00:00",
+  "generated_at_utc": "2026-08-09T15:19:00.492047+00:00",
   "problem": {
     "name": "ulysses16",
     "source_type": "tsplib",
@@ -37,7 +37,7 @@
         "model_alias": "gemini-2.5-flash",
         "methods": {
           "zero_shot": "completed",
-          "multi_agent_1": "not_run",
+          "multi_agent_1": "partial",
           "multi_agent_2": "completed"
         },
         "all_methods_completed": false
@@ -363,7 +363,454 @@
           "errors": []
         },
         "multi_agent_1": {
-          "status": "not_run"
+          "status": "partial",
+          "model": {
+            "provider": "gemini",
+            "alias": "gemini-2.5-flash",
+            "requested_name": "gemini-2.5-flash",
+            "capabilities": {
+              "supports_vision": true,
+              "supports_multiple_images": true,
+              "supports_native_multiple_choices": true,
+              "max_images_per_request": 7,
+              "max_native_choices": 7
+            },
+            "critic_temperature": 0.7,
+            "scorer_temperature": 0.0
+          },
+          "candidate_count_requested": 7,
+          "requested_iterations": 10,
+          "completed_iterations": 5,
+          "total_candidate_count": 35,
+          "valid_candidate_count": 34,
+          "invalid_candidate_count": 1,
+          "valid_candidate_rate_percent": 97.14285714285714,
+          "scorer_evaluated_iteration_count": 5,
+          "scorer_best_candidate_selection_count": 2,
+          "scorer_best_candidate_selection_rate_percent": 40.0,
+          "initializer": {
+            "source": "zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 6955,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.3996209359965008
+          },
+          "final_solution": {
+            "source": "scorer_selection",
+            "iteration": 5,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 7369,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 7.435486222481411
+          },
+          "best_valid_solution": {
+            "source": "zero_shot",
+            "iteration": 0,
+            "candidate_id": null,
+            "is_valid": true,
+            "distance": 6955,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 1.3996209359965008
+          },
+          "best_critic_candidate_oracle": {
+            "source": "critic_candidate_oracle",
+            "iteration": 4,
+            "candidate_id": 7,
+            "is_valid": true,
+            "distance": 6870,
+            "reference_distance": 6859.0,
+            "gap_to_reference_percent": 0.16037323224959907
+          },
+          "solution_progress": {
+            "system_gbest": {
+              "source": "zero_shot",
+              "iteration": 0,
+              "candidate_id": null,
+              "is_valid": true,
+              "distance": 6955.0,
+              "reference_distance": null,
+              "gap_to_reference_percent": 1.3996209359965008
+            },
+            "observed_candidate_gbest": {
+              "source": "critic_candidate",
+              "iteration": 4,
+              "candidate_id": null,
+              "is_valid": true,
+              "distance": 6870.0,
+              "reference_distance": null,
+              "gap_to_reference_percent": 0.16037323224959907
+            },
+            "latest_early_stop": null
+          },
+          "termination": {
+            "reason": "critic_stage_failed",
+            "failed_iteration": 6,
+            "early_stop": {
+              "enabled": true,
+              "eligible": true,
+              "should_stop": false,
+              "reason": "gap_above_threshold",
+              "threshold_percent": 1.0,
+              "system_gbest_iteration": 0,
+              "system_gbest_gap_percent": 1.3996209359965008
+            }
+          },
+          "iterations": [
+            {
+              "iteration": 1,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 6963,
+              "iteration_best_distance": 6963.0,
+              "system_gbest_distance": 6955.0,
+              "system_gbest_gap_percent": 1.3996209359965008,
+              "observed_candidate_gbest_distance": 6963.0,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 6963,
+              "selected_gap_to_reference_percent": 1.5162560139962094,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 9.603548699989915,
+                "critic_total": 13.549460700014606,
+                "scorer_api": 3.743028299883008,
+                "scorer_total": 4.5722937998361886,
+                "api_active": 16.251748600043356,
+                "local_processing_active": 1.8725975996349007,
+                "active": 18.124346199678257,
+                "deliberate_delay": 0.0,
+                "rate_limit_backoff": 0.0,
+                "controlled_wait": 0.0,
+                "checkpoint": 0.0025916998274624348,
+                "total": 18.124346199678257
+              },
+              "token_count": {
+                "critic": 11059,
+                "scorer": 2589,
+                "total": 13648
+              }
+            },
+            {
+              "iteration": 2,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 6875,
+              "iteration_best_distance": 6875.0,
+              "system_gbest_distance": 6955.0,
+              "system_gbest_gap_percent": 1.3996209359965008,
+              "observed_candidate_gbest_distance": 6875.0,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 7167,
+              "selected_gap_to_reference_percent": 4.490450502988774,
+              "selection_regret_percent": 4.247272727272727,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 9.052535600028932,
+                "critic_total": 11.02983390004374,
+                "scorer_api": 4.786995900096372,
+                "scorer_total": 5.525019699940458,
+                "api_active": 14.80518849985674,
+                "local_processing_active": 1.752519299974665,
+                "active": 16.557707799831405,
+                "deliberate_delay": 0.0,
+                "rate_limit_backoff": 0.0,
+                "controlled_wait": 0.0,
+                "checkpoint": 0.0028541998472064734,
+                "total": 16.557707799831405
+              },
+              "token_count": {
+                "critic": 10575,
+                "scorer": 2589,
+                "total": 13164
+              }
+            },
+            {
+              "iteration": 3,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 6,
+              "invalid_candidate_count": 1,
+              "best_valid_candidate_distance": 6963,
+              "iteration_best_distance": 6963.0,
+              "system_gbest_distance": 6955.0,
+              "system_gbest_gap_percent": 1.3996209359965008,
+              "observed_candidate_gbest_distance": 6875.0,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 1,
+              "selected_is_valid": true,
+              "selected_distance": 6963,
+              "selected_gap_to_reference_percent": 1.5162560139962094,
+              "selection_regret_percent": 0.0,
+              "selected_best_valid_candidate": true,
+              "timing_seconds": {
+                "critic_api": 9.82813090016134,
+                "critic_total": 11.859800699865445,
+                "scorer_api": 3.7948860998731107,
+                "scorer_total": 4.479515899904072,
+                "api_active": 14.591693100053817,
+                "local_processing_active": 1.7510232997592539,
+                "active": 16.34271639981307,
+                "deliberate_delay": 0.0,
+                "rate_limit_backoff": 0.0,
+                "controlled_wait": 0.0,
+                "checkpoint": 0.003399800043553114,
+                "total": 16.34271639981307
+              },
+              "token_count": {
+                "critic": 10734,
+                "scorer": 2240,
+                "total": 12974
+              }
+            },
+            {
+              "iteration": 4,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 6870,
+              "iteration_best_distance": 6870.0,
+              "system_gbest_distance": 6955.0,
+              "system_gbest_gap_percent": 1.3996209359965008,
+              "observed_candidate_gbest_distance": 6870.0,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 5,
+              "selected_is_valid": true,
+              "selected_distance": 7432,
+              "selected_gap_to_reference_percent": 8.353987461729115,
+              "selection_regret_percent": 8.180494905385736,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 9.04688430018723,
+                "critic_total": 11.019271600060165,
+                "scorer_api": 4.6319068998564035,
+                "scorer_total": 5.35640519997105,
+                "api_active": 14.58742680028081,
+                "local_processing_active": 1.792453599628061,
+                "active": 16.37988039990887,
+                "deliberate_delay": 0.0,
+                "rate_limit_backoff": 0.0,
+                "controlled_wait": 0.0,
+                "checkpoint": 0.004203599877655506,
+                "total": 16.37988039990887
+              },
+              "token_count": {
+                "critic": 10615,
+                "scorer": 2588,
+                "total": 13203
+              }
+            },
+            {
+              "iteration": 5,
+              "returned_candidate_count": 7,
+              "valid_candidate_count": 7,
+              "invalid_candidate_count": 0,
+              "best_valid_candidate_distance": 7333,
+              "iteration_best_distance": 7333.0,
+              "system_gbest_distance": 6955.0,
+              "system_gbest_gap_percent": 1.3996209359965008,
+              "observed_candidate_gbest_distance": 6870.0,
+              "selection_mode": "visual_scorer_after_feasibility_filter",
+              "selected_candidate_id": 5,
+              "selected_is_valid": true,
+              "selected_distance": 7369,
+              "selected_gap_to_reference_percent": 7.435486222481411,
+              "selection_regret_percent": 0.4909314059729988,
+              "selected_best_valid_candidate": false,
+              "timing_seconds": {
+                "critic_api": 11.065437200013548,
+                "critic_total": 13.166355299996212,
+                "scorer_api": 3.633927999995649,
+                "scorer_total": 40.54418520000763,
+                "api_active": 16.403048299718648,
+                "local_processing_active": 1.87532680016011,
+                "active": 18.278375099878758,
+                "deliberate_delay": 0.0,
+                "rate_limit_backoff": 35.43747940007597,
+                "controlled_wait": 35.43747940007597,
+                "checkpoint": 0.005313999950885773,
+                "total": 53.71585449995473
+              },
+              "token_count": {
+                "critic": 10520,
+                "scorer": 2586,
+                "total": 13106
+              }
+            }
+          ],
+          "timing_seconds": {
+            "api_active": 76.63910529995337,
+            "local_processing_active": 9.04392059915699,
+            "active": 85.68302589911036,
+            "deliberate_delay": 0.0,
+            "rate_limit_backoff": 35.43747940007597,
+            "controlled_wait": 35.43747940007597,
+            "total": 121.12050529918633
+          },
+          "total_token_count": 66095,
+          "observability": {
+            "settings": {
+              "resource_profiling_enabled": true,
+              "resource_sample_interval_seconds": 0.5,
+              "minimum_request_interval_seconds": 2.0,
+              "max_retries": 2,
+              "early_stop_enabled": true,
+              "early_stop_gap_percent": 1.0
+            },
+            "request_control": {
+              "execution_count": 11,
+              "request_attempt_count": 12,
+              "retry_count": 1,
+              "api_active_wall_seconds": 77.32121460000053,
+              "deliberate_delay_seconds": 0,
+              "rate_limit_backoff_seconds": 35.43747940007597,
+              "controlled_wait_seconds": 35.43747940007597,
+              "request_total_wall_seconds": 112.7586940000765
+            },
+            "resources": {
+              "enabled": true,
+              "reason": null,
+              "duration_seconds": 121.85144430003129,
+              "sample_count": 239,
+              "local_gpu": {
+                "available": false,
+                "backend": "nvidia_nvml",
+                "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found"
+              },
+              "overall_metrics": {
+                "system_cpu_percent": {
+                  "average": 1.8602510460251047,
+                  "maximum": 12.1
+                },
+                "process_cpu_percent": {
+                  "average": 9.672803347280336,
+                  "maximum": 96.5
+                },
+                "process_memory_rss_mb": {
+                  "average": 209.65281773012552,
+                  "maximum": 300.66015625
+                },
+                "system_memory_percent": {
+                  "average": 83.01548117154812,
+                  "maximum": 84.9
+                },
+                "system_memory_available_mb": {
+                  "average": 2736.8706851464435,
+                  "maximum": 2993.4765625
+                }
+              },
+              "phases": {
+                "api_request": {
+                  "sample_count": 219,
+                  "metrics": {
+                    "system_cpu_percent": {
+                      "average": 1.5963470319634705,
+                      "maximum": 12.1
+                    },
+                    "process_cpu_percent": {
+                      "average": 5.3999999999999995,
+                      "maximum": 92.9
+                    },
+                    "process_memory_rss_mb": {
+                      "average": 209.0478916952055,
+                      "maximum": 300.66015625
+                    },
+                    "system_memory_percent": {
+                      "average": 82.9675799086758,
+                      "maximum": 84.9
+                    },
+                    "system_memory_available_mb": {
+                      "average": 2744.709028966895,
+                      "maximum": 2993.4765625
+                    }
+                  }
+                },
+                "route_rendering": {
+                  "sample_count": 17,
+                  "metrics": {
+                    "system_cpu_percent": {
+                      "average": 5.388235294117647,
+                      "maximum": 11.5
+                    },
+                    "process_cpu_percent": {
+                      "average": 64.80588235294118,
+                      "maximum": 96.5
+                    },
+                    "process_memory_rss_mb": {
+                      "average": 223.88442095588235,
+                      "maximum": 300.640625
+                    },
+                    "system_memory_percent": {
+                      "average": 83.81764705882354,
+                      "maximum": 84.7
+                    },
+                    "system_memory_available_mb": {
+                      "average": 2605.944393382353,
+                      "maximum": 2973.65234375
+                    }
+                  }
+                },
+                "unclassified": {
+                  "sample_count": 3,
+                  "metrics": {
+                    "system_cpu_percent": {
+                      "average": 1.1333333333333333,
+                      "maximum": 1.9
+                    },
+                    "process_cpu_percent": {
+                      "average": 9.166666666666666,
+                      "maximum": 27.5
+                    },
+                    "process_memory_rss_mb": {
+                      "average": 173.16666666666666,
+                      "maximum": 276.15234375
+                    },
+                    "system_memory_percent": {
+                      "average": 81.96666666666667,
+                      "maximum": 82.4
+                    },
+                    "system_memory_available_mb": {
+                      "average": 2906.5872395833335,
+                      "maximum": 2993.15234375
+                    }
+                  }
+                }
+              },
+              "sampling_error_count": 0
+            }
+          },
+          "run_summary": {
+            "api_call_count": 11,
+            "successful_api_call_count": 10,
+            "failed_api_call_count": 1,
+            "total_api_call_wall_seconds": 69.46087970002554,
+            "total_token_count": 66095,
+            "manifest_and_input_loading_seconds": 0.0025373001117259264,
+            "accumulated_completed_iteration_wall_seconds": 121.12050529918633,
+            "current_invocation_wall_seconds_before_result_write": 121.92866210010834,
+            "accumulated_completed_iteration_active_wall_seconds": 85.68302589911036,
+            "accumulated_deliberate_delay_seconds": 0.0,
+            "accumulated_rate_limit_backoff_seconds": 35.43747940007597,
+            "accumulated_controlled_wait_seconds": 35.43747940007597
+          },
+          "errors": [
+            {
+              "phase": "critic_candidate_generation",
+              "iteration": 6,
+              "error_type": "ClientError",
+              "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 55.095792999s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}",
+              "api_call_success": false,
+              "api_call_wall_seconds": 0.27359779994003475,
+              "failed_stage_wall_seconds": 0.6822714000009
+            }
+          ]
         },
         "multi_agent_2": {
           "status": "completed",
@@ -891,22 +1338,22 @@
         "provider": "gemini",
         "model_alias": "gemini-2.5-flash",
         "method": "multi_agent_1",
-        "status": "not_run",
-        "completed_iterations": null,
-        "is_valid": null,
-        "distance": null,
-        "gap_to_reference_percent": null,
-        "api_call_count": null,
-        "api_wall_seconds": null,
-        "total_token_count": null,
-        "active_wall_seconds": null,
-        "deliberate_delay_seconds": null,
-        "rate_limit_backoff_seconds": null,
-        "controlled_wait_seconds": null,
-        "total_wall_seconds": null,
-        "retry_count": null,
-        "resource_profile_enabled": null,
-        "error_count": 0
+        "status": "partial",
+        "completed_iterations": 5,
+        "is_valid": true,
+        "distance": 6955,
+        "gap_to_reference_percent": 1.3996209359965008,
+        "api_call_count": 11,
+        "api_wall_seconds": 76.63910529995337,
+        "total_token_count": 66095,
+        "active_wall_seconds": 85.68302589911036,
+        "deliberate_delay_seconds": 0.0,
+        "rate_limit_backoff_seconds": 35.43747940007597,
+        "controlled_wait_seconds": 35.43747940007597,
+        "total_wall_seconds": 121.12050529918633,
+        "retry_count": 1,
+        "resource_profile_enabled": true,
+        "error_count": 1
       },
       {
         "provider": "gemini",
