@@ -1,0 +1,447 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_visual_zero_shot_tsp",
+  "run_id": "eil51_run_01",
+  "method": "zero_shot",
+  "problem": {
+    "name": "eil51",
+    "dimension": 51,
+    "depot_id": 1,
+    "source_type": "tsplib",
+    "fingerprint_sha256": "32e0d97ac1c5bc1b4512a3d1afa887b26256d46a3d05de3a4acd65a849c8b08e",
+    "reference_type": "tsplib_known_optimum",
+    "reference_is_proven_optimal": true
+  },
+  "model": {
+    "provider": "openrouter",
+    "alias": "nex-agi/nex-n2-pro:free",
+    "requested_name": "nex-agi/nex-n2-pro:free",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": true,
+      "max_images_per_request": 7,
+      "max_native_choices": 7
+    },
+    "temperature": 0.0
+  },
+  "model_input": {
+    "image": "baseline/images/points.png",
+    "coordinates_sent_to_model": false,
+    "prompt": "Inspect the provided image and find a short route for one salesman.\n\nProblem information:\n- Problem name: eil51\n- The image contains exactly 51 nodes labelled 1 through 51.\n- Node 1, marked with a black square, is the depot.\n\nImportant rules:\n- Start at the depot, visit every non-depot node exactly once, and return to the depot.\n- The required non-depot node IDs are: 2 through 51.\n- Do not omit, repeat, invent, or renumber nodes.\n- Minimize crossings and total route length.\n- Use only visual information from the image; coordinates are not provided.\n\nOutput exactly one route and no explanation:\n<<start>>\nSalesman1: Depot-2-3-4-Depot\n<<end>>\n\nThe displayed route is only a format example. Replace its order with every required\nnon-depot node. The word Depot means node 1."
+  },
+  "errors": [
+    {
+      "type": "OpenRouterAPIError",
+      "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+      "phase": "route_generation",
+      "status_code": 404,
+      "api_call": {
+        "phase": "route_generation",
+        "provider": "openrouter",
+        "model": "nex-agi/nex-n2-pro:free",
+        "temperature": 0.0,
+        "reasoning_effort": "none",
+        "max_tokens": 8192,
+        "success": false,
+        "started_at_utc": "2026-08-08T08:19:11.236464+00:00",
+        "finished_at_utc": "2026-08-08T08:19:11.668191+00:00",
+        "api_call_wall_seconds": 0.42795062500000003,
+        "input_image_count": 1,
+        "input_image_bytes": 83116,
+        "requested_candidate_count": 1,
+        "returned_candidate_count": 0,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "cost": null,
+          "is_byok": null,
+          "raw": {}
+        },
+        "request_control": {
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 404,
+              "wall_seconds": 0.43250266699999995,
+              "retry_planned": false,
+              "retry_reason": "non_retryable_status",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "OpenRouterAPIError",
+              "error_message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.43250266699999995,
+          "total_wall_seconds": 0.43250266699999995,
+          "final_error": {
+            "type": "OpenRouterAPIError",
+            "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+            "status_code": 404
+          }
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      }
+    }
+  ],
+  "api_calls": [
+    {
+      "phase": "route_generation",
+      "provider": "openrouter",
+      "model": "nex-agi/nex-n2-pro:free",
+      "temperature": 0.0,
+      "reasoning_effort": "none",
+      "max_tokens": 8192,
+      "success": false,
+      "started_at_utc": "2026-08-08T08:19:11.236464+00:00",
+      "finished_at_utc": "2026-08-08T08:19:11.668191+00:00",
+      "api_call_wall_seconds": 0.42795062500000003,
+      "input_image_count": 1,
+      "input_image_bytes": 83116,
+      "requested_candidate_count": 1,
+      "returned_candidate_count": 0,
+      "usage": {
+        "prompt_token_count": null,
+        "candidates_token_count": null,
+        "thoughts_token_count": null,
+        "cached_content_token_count": null,
+        "total_token_count": null,
+        "cost": null,
+        "is_byok": null,
+        "raw": {}
+      },
+      "request_control": {
+        "success": false,
+        "attempt_count": 1,
+        "retry_count": 0,
+        "attempts": [
+          {
+            "attempt_number": 1,
+            "success": false,
+            "status_code": 404,
+            "wall_seconds": 0.43250266699999995,
+            "retry_planned": false,
+            "retry_reason": "non_retryable_status",
+            "backoff_seconds": 0.0,
+            "backoff_source": null,
+            "error_type": "OpenRouterAPIError",
+            "error_message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}"
+          }
+        ],
+        "waits": {
+          "event_count": 0,
+          "deliberate_delay_seconds": 0,
+          "rate_limit_backoff_seconds": 0,
+          "controlled_wait_seconds": 0,
+          "events": []
+        },
+        "active_wall_seconds": 0.43250266699999995,
+        "total_wall_seconds": 0.43250266699999995,
+        "final_error": {
+          "type": "OpenRouterAPIError",
+          "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+          "status_code": 404
+        }
+      },
+      "provider_timing": {
+        "available": false,
+        "source": null,
+        "provider_queue_seconds": null,
+        "provider_prompt_seconds": null,
+        "provider_completion_seconds": null,
+        "provider_total_seconds": null,
+        "estimated_network_or_client_overhead_seconds": null
+      }
+    }
+  ],
+  "timing": {
+    "manifest_and_input_loading_seconds": 0.00016041699999999603,
+    "prompt_preparation_seconds": 1.662499999999234e-05,
+    "total_wall_seconds_before_result_write": 0.43310604199999997
+  },
+  "run_summary": {
+    "api_call_count": 1,
+    "successful_api_call_count": 0,
+    "failed_api_call_count": 1,
+    "total_api_call_wall_seconds": 0.42795062500000003,
+    "total_token_count": null
+  },
+  "observability": {
+    "settings": {
+      "profile_resources": true,
+      "resource_sample_interval_seconds": 0.5,
+      "minimum_request_interval_seconds": 0.0,
+      "max_retries": 2,
+      "retry_base_delay_seconds": 2.0,
+      "retry_maximum_delay_seconds": 60.0,
+      "early_stop_enabled": false,
+      "early_stop_gap_percent": 1.0
+    },
+    "controlled_waits": {
+      "event_count": 0,
+      "deliberate_delay_seconds": 0,
+      "rate_limit_backoff_seconds": 0,
+      "controlled_wait_seconds": 0,
+      "events": []
+    },
+    "request_control": {
+      "execution_count": 1,
+      "successful_execution_count": 0,
+      "failed_execution_count": 1,
+      "request_attempt_count": 1,
+      "retry_count": 0,
+      "waits": {
+        "event_count": 0,
+        "deliberate_delay_seconds": 0,
+        "rate_limit_backoff_seconds": 0,
+        "controlled_wait_seconds": 0,
+        "events": []
+      },
+      "active_wall_seconds": 0.43250266699999995,
+      "total_wall_seconds": 0.43250266699999995,
+      "executions": [
+        {
+          "label": "openrouter:route_generation",
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 404,
+              "wall_seconds": 0.43250266699999995,
+              "retry_planned": false,
+              "retry_reason": "non_retryable_status",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "OpenRouterAPIError",
+              "error_message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.43250266699999995,
+          "total_wall_seconds": 0.43250266699999995,
+          "final_error": {
+            "type": "OpenRouterAPIError",
+            "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: nex-agi/nex-n2-pro\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+            "status_code": 404
+          }
+        }
+      ]
+    },
+    "resources": {
+      "enabled": true,
+      "sampling_interval_seconds": 0.5,
+      "duration_seconds": 0.43382095899999995,
+      "sample_count": 2,
+      "system": {
+        "platform": {
+          "system": "Darwin",
+          "release": "24.4.0",
+          "version": "Darwin Kernel Version 24.4.0: Fri Apr 11 18:32:50 PDT 2025; root:xnu-11417.101.15~117/RELEASE_ARM64_T6041",
+          "machine": "arm64"
+        },
+        "python": {
+          "version": "3.9.6",
+          "implementation": "CPython"
+        },
+        "cpu": {
+          "processor": "arm",
+          "physical_core_count": 12,
+          "logical_core_count": 12
+        },
+        "memory": {
+          "total_mb": 24576.0
+        },
+        "local_gpu": {
+          "available": false,
+          "backend": "nvidia_nvml",
+          "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found",
+          "devices": []
+        }
+      },
+      "overall": {
+        "sample_count": 2,
+        "metrics": {
+          "system_cpu_percent": {
+            "sample_count": 2,
+            "minimum": 0.0,
+            "maximum": 4.1,
+            "average": 2.05,
+            "last": 4.1
+          },
+          "process_cpu_percent": {
+            "sample_count": 2,
+            "minimum": 2.9,
+            "maximum": 90.9,
+            "average": 46.900000000000006,
+            "last": 2.9
+          },
+          "process_memory_rss_mb": {
+            "sample_count": 2,
+            "minimum": 57.078125,
+            "maximum": 59.625,
+            "average": 58.3515625,
+            "last": 59.625
+          },
+          "process_memory_percent": {
+            "sample_count": 2,
+            "minimum": 0.2322514851888021,
+            "maximum": 0.24261474609375,
+            "average": 0.23743311564127606,
+            "last": 0.24261474609375
+          },
+          "system_memory_percent": {
+            "sample_count": 2,
+            "minimum": 57.6,
+            "maximum": 57.7,
+            "average": 57.650000000000006,
+            "last": 57.7
+          },
+          "system_memory_available_mb": {
+            "sample_count": 2,
+            "minimum": 10400.53125,
+            "maximum": 10410.25,
+            "average": 10405.390625,
+            "last": 10400.53125
+          },
+          "local_gpu_utilization_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_used_mb": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_temperature_celsius": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          }
+        }
+      },
+      "by_phase": {
+        "unclassified": {
+          "sample_count": 2,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 4.1,
+              "average": 2.05,
+              "last": 4.1
+            },
+            "process_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 2.9,
+              "maximum": 90.9,
+              "average": 46.900000000000006,
+              "last": 2.9
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 2,
+              "minimum": 57.078125,
+              "maximum": 59.625,
+              "average": 58.3515625,
+              "last": 59.625
+            },
+            "process_memory_percent": {
+              "sample_count": 2,
+              "minimum": 0.2322514851888021,
+              "maximum": 0.24261474609375,
+              "average": 0.23743311564127606,
+              "last": 0.24261474609375
+            },
+            "system_memory_percent": {
+              "sample_count": 2,
+              "minimum": 57.6,
+              "maximum": 57.7,
+              "average": 57.650000000000006,
+              "last": 57.7
+            },
+            "system_memory_available_mb": {
+              "sample_count": 2,
+              "minimum": 10400.53125,
+              "maximum": 10410.25,
+              "average": 10405.390625,
+              "last": 10400.53125
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        }
+      },
+      "sampling_errors": []
+    }
+  }
+}

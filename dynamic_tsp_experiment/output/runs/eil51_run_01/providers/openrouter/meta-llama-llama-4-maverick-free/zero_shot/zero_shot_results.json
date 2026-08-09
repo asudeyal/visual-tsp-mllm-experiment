@@ -1,0 +1,447 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_unified_visual_zero_shot_tsp",
+  "run_id": "eil51_run_01",
+  "method": "zero_shot",
+  "problem": {
+    "name": "eil51",
+    "dimension": 51,
+    "depot_id": 1,
+    "source_type": "tsplib",
+    "fingerprint_sha256": "32e0d97ac1c5bc1b4512a3d1afa887b26256d46a3d05de3a4acd65a849c8b08e",
+    "reference_type": "tsplib_known_optimum",
+    "reference_is_proven_optimal": true
+  },
+  "model": {
+    "provider": "openrouter",
+    "alias": "meta-llama/llama-4-maverick:free",
+    "requested_name": "meta-llama/llama-4-maverick:free",
+    "capabilities": {
+      "supports_vision": true,
+      "supports_multiple_images": true,
+      "supports_native_multiple_choices": true,
+      "max_images_per_request": 7,
+      "max_native_choices": 7
+    },
+    "temperature": 0.0
+  },
+  "model_input": {
+    "image": "baseline/images/points.png",
+    "coordinates_sent_to_model": false,
+    "prompt": "Inspect the provided image and find a short route for one salesman.\n\nProblem information:\n- Problem name: eil51\n- The image contains exactly 51 nodes labelled 1 through 51.\n- Node 1, marked with a black square, is the depot.\n\nImportant rules:\n- Start at the depot, visit every non-depot node exactly once, and return to the depot.\n- The required non-depot node IDs are: 2 through 51.\n- Do not omit, repeat, invent, or renumber nodes.\n- Minimize crossings and total route length.\n- Use only visual information from the image; coordinates are not provided.\n\nOutput exactly one route and no explanation:\n<<start>>\nSalesman1: Depot-2-3-4-Depot\n<<end>>\n\nThe displayed route is only a format example. Replace its order with every required\nnon-depot node. The word Depot means node 1."
+  },
+  "errors": [
+    {
+      "type": "OpenRouterAPIError",
+      "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+      "phase": "route_generation",
+      "status_code": 404,
+      "api_call": {
+        "phase": "route_generation",
+        "provider": "openrouter",
+        "model": "meta-llama/llama-4-maverick:free",
+        "temperature": 0.0,
+        "reasoning_effort": "none",
+        "max_tokens": 8192,
+        "success": false,
+        "started_at_utc": "2026-08-08T11:24:11.278829+00:00",
+        "finished_at_utc": "2026-08-08T11:24:11.671600+00:00",
+        "api_call_wall_seconds": 0.39081225,
+        "input_image_count": 1,
+        "input_image_bytes": 83116,
+        "requested_candidate_count": 1,
+        "returned_candidate_count": 0,
+        "usage": {
+          "prompt_token_count": null,
+          "candidates_token_count": null,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": null,
+          "cost": null,
+          "is_byok": null,
+          "raw": {}
+        },
+        "request_control": {
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 404,
+              "wall_seconds": 0.393251958,
+              "retry_planned": false,
+              "retry_reason": "non_retryable_status",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "OpenRouterAPIError",
+              "error_message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.393251958,
+          "total_wall_seconds": 0.393251958,
+          "final_error": {
+            "type": "OpenRouterAPIError",
+            "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+            "status_code": 404
+          }
+        },
+        "provider_timing": {
+          "available": false,
+          "source": null,
+          "provider_queue_seconds": null,
+          "provider_prompt_seconds": null,
+          "provider_completion_seconds": null,
+          "provider_total_seconds": null,
+          "estimated_network_or_client_overhead_seconds": null
+        }
+      }
+    }
+  ],
+  "api_calls": [
+    {
+      "phase": "route_generation",
+      "provider": "openrouter",
+      "model": "meta-llama/llama-4-maverick:free",
+      "temperature": 0.0,
+      "reasoning_effort": "none",
+      "max_tokens": 8192,
+      "success": false,
+      "started_at_utc": "2026-08-08T11:24:11.278829+00:00",
+      "finished_at_utc": "2026-08-08T11:24:11.671600+00:00",
+      "api_call_wall_seconds": 0.39081225,
+      "input_image_count": 1,
+      "input_image_bytes": 83116,
+      "requested_candidate_count": 1,
+      "returned_candidate_count": 0,
+      "usage": {
+        "prompt_token_count": null,
+        "candidates_token_count": null,
+        "thoughts_token_count": null,
+        "cached_content_token_count": null,
+        "total_token_count": null,
+        "cost": null,
+        "is_byok": null,
+        "raw": {}
+      },
+      "request_control": {
+        "success": false,
+        "attempt_count": 1,
+        "retry_count": 0,
+        "attempts": [
+          {
+            "attempt_number": 1,
+            "success": false,
+            "status_code": 404,
+            "wall_seconds": 0.393251958,
+            "retry_planned": false,
+            "retry_reason": "non_retryable_status",
+            "backoff_seconds": 0.0,
+            "backoff_source": null,
+            "error_type": "OpenRouterAPIError",
+            "error_message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}"
+          }
+        ],
+        "waits": {
+          "event_count": 0,
+          "deliberate_delay_seconds": 0,
+          "rate_limit_backoff_seconds": 0,
+          "controlled_wait_seconds": 0,
+          "events": []
+        },
+        "active_wall_seconds": 0.393251958,
+        "total_wall_seconds": 0.393251958,
+        "final_error": {
+          "type": "OpenRouterAPIError",
+          "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+          "status_code": 404
+        }
+      },
+      "provider_timing": {
+        "available": false,
+        "source": null,
+        "provider_queue_seconds": null,
+        "provider_prompt_seconds": null,
+        "provider_completion_seconds": null,
+        "provider_total_seconds": null,
+        "estimated_network_or_client_overhead_seconds": null
+      }
+    }
+  ],
+  "timing": {
+    "manifest_and_input_loading_seconds": 0.00017241600000000856,
+    "prompt_preparation_seconds": 1.7542000000009272e-05,
+    "total_wall_seconds_before_result_write": 0.393944584
+  },
+  "run_summary": {
+    "api_call_count": 1,
+    "successful_api_call_count": 0,
+    "failed_api_call_count": 1,
+    "total_api_call_wall_seconds": 0.39081225,
+    "total_token_count": null
+  },
+  "observability": {
+    "settings": {
+      "profile_resources": true,
+      "resource_sample_interval_seconds": 0.5,
+      "minimum_request_interval_seconds": 0.0,
+      "max_retries": 2,
+      "retry_base_delay_seconds": 2.0,
+      "retry_maximum_delay_seconds": 60.0,
+      "early_stop_enabled": false,
+      "early_stop_gap_percent": 1.0
+    },
+    "controlled_waits": {
+      "event_count": 0,
+      "deliberate_delay_seconds": 0,
+      "rate_limit_backoff_seconds": 0,
+      "controlled_wait_seconds": 0,
+      "events": []
+    },
+    "request_control": {
+      "execution_count": 1,
+      "successful_execution_count": 0,
+      "failed_execution_count": 1,
+      "request_attempt_count": 1,
+      "retry_count": 0,
+      "waits": {
+        "event_count": 0,
+        "deliberate_delay_seconds": 0,
+        "rate_limit_backoff_seconds": 0,
+        "controlled_wait_seconds": 0,
+        "events": []
+      },
+      "active_wall_seconds": 0.393251958,
+      "total_wall_seconds": 0.393251958,
+      "executions": [
+        {
+          "label": "openrouter:route_generation",
+          "success": false,
+          "attempt_count": 1,
+          "retry_count": 0,
+          "attempts": [
+            {
+              "attempt_number": 1,
+              "success": false,
+              "status_code": 404,
+              "wall_seconds": 0.393251958,
+              "retry_planned": false,
+              "retry_reason": "non_retryable_status",
+              "backoff_seconds": 0.0,
+              "backoff_source": null,
+              "error_type": "OpenRouterAPIError",
+              "error_message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}"
+            }
+          ],
+          "waits": {
+            "event_count": 0,
+            "deliberate_delay_seconds": 0,
+            "rate_limit_backoff_seconds": 0,
+            "controlled_wait_seconds": 0,
+            "events": []
+          },
+          "active_wall_seconds": 0.393251958,
+          "total_wall_seconds": 0.393251958,
+          "final_error": {
+            "type": "OpenRouterAPIError",
+            "message": "OpenRouter HTTP 404: {\"error\":{\"message\":\"This model is unavailable for free. The paid version is available now - use this slug instead: meta-llama/llama-4-maverick\",\"code\":404},\"user_id\":\"user_3GgtI4fjIX7LMpliA1JuWMxAYoW\"}",
+            "status_code": 404
+          }
+        }
+      ]
+    },
+    "resources": {
+      "enabled": true,
+      "sampling_interval_seconds": 0.5,
+      "duration_seconds": 0.39473437499999997,
+      "sample_count": 2,
+      "system": {
+        "platform": {
+          "system": "Darwin",
+          "release": "24.4.0",
+          "version": "Darwin Kernel Version 24.4.0: Fri Apr 11 18:32:50 PDT 2025; root:xnu-11417.101.15~117/RELEASE_ARM64_T6041",
+          "machine": "arm64"
+        },
+        "python": {
+          "version": "3.9.6",
+          "implementation": "CPython"
+        },
+        "cpu": {
+          "processor": "arm",
+          "physical_core_count": 12,
+          "logical_core_count": 12
+        },
+        "memory": {
+          "total_mb": 24576.0
+        },
+        "local_gpu": {
+          "available": false,
+          "backend": "nvidia_nvml",
+          "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found",
+          "devices": []
+        }
+      },
+      "overall": {
+        "sample_count": 2,
+        "metrics": {
+          "system_cpu_percent": {
+            "sample_count": 2,
+            "minimum": 0.0,
+            "maximum": 14.2,
+            "average": 7.1,
+            "last": 14.2
+          },
+          "process_cpu_percent": {
+            "sample_count": 2,
+            "minimum": 2.9,
+            "maximum": 97.8,
+            "average": 50.35,
+            "last": 2.9
+          },
+          "process_memory_rss_mb": {
+            "sample_count": 2,
+            "minimum": 58.171875,
+            "maximum": 61.078125,
+            "average": 59.625,
+            "last": 61.078125
+          },
+          "process_memory_percent": {
+            "sample_count": 2,
+            "minimum": 0.23670196533203125,
+            "maximum": 0.24852752685546875,
+            "average": 0.24261474609375,
+            "last": 0.24852752685546875
+          },
+          "system_memory_percent": {
+            "sample_count": 2,
+            "minimum": 58.3,
+            "maximum": 58.3,
+            "average": 58.3,
+            "last": 58.3
+          },
+          "system_memory_available_mb": {
+            "sample_count": 2,
+            "minimum": 10243.640625,
+            "maximum": 10248.875,
+            "average": 10246.2578125,
+            "last": 10243.640625
+          },
+          "local_gpu_utilization_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_used_mb": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_temperature_celsius": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          }
+        }
+      },
+      "by_phase": {
+        "unclassified": {
+          "sample_count": 2,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 14.2,
+              "average": 7.1,
+              "last": 14.2
+            },
+            "process_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 2.9,
+              "maximum": 97.8,
+              "average": 50.35,
+              "last": 2.9
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 2,
+              "minimum": 58.171875,
+              "maximum": 61.078125,
+              "average": 59.625,
+              "last": 61.078125
+            },
+            "process_memory_percent": {
+              "sample_count": 2,
+              "minimum": 0.23670196533203125,
+              "maximum": 0.24852752685546875,
+              "average": 0.24261474609375,
+              "last": 0.24852752685546875
+            },
+            "system_memory_percent": {
+              "sample_count": 2,
+              "minimum": 58.3,
+              "maximum": 58.3,
+              "average": 58.3,
+              "last": 58.3
+            },
+            "system_memory_available_mb": {
+              "sample_count": 2,
+              "minimum": 10243.640625,
+              "maximum": 10248.875,
+              "average": 10246.2578125,
+              "last": 10243.640625
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        }
+      },
+      "sampling_errors": []
+    }
+  }
+}

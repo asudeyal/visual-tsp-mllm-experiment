@@ -1,0 +1,536 @@
+{
+  "schema_version": "2.0",
+  "experiment": "dynamic_tsp_baseline",
+  "run_id": "eil51_llama_test",
+  "method": "baseline",
+  "problem": {
+    "name": "eil51",
+    "source_type": "tsplib",
+    "dimension": 51,
+    "depot_id": 1,
+    "edge_weight_type": "EUC_2D",
+    "fingerprint_sha256": "32e0d97ac1c5bc1b4512a3d1afa887b26256d46a3d05de3a4acd65a849c8b08e"
+  },
+  "reference_solution": {
+    "type": "tsplib_known_optimum",
+    "distance": 426.0,
+    "is_proven_optimal": true,
+    "route": [
+      1,
+      22,
+      8,
+      26,
+      31,
+      28,
+      3,
+      36,
+      35,
+      20,
+      2,
+      29,
+      21,
+      16,
+      50,
+      34,
+      30,
+      9,
+      49,
+      10,
+      39,
+      33,
+      45,
+      15,
+      44,
+      42,
+      40,
+      19,
+      41,
+      13,
+      25,
+      14,
+      24,
+      43,
+      7,
+      23,
+      48,
+      6,
+      27,
+      51,
+      46,
+      12,
+      47,
+      18,
+      4,
+      17,
+      37,
+      5,
+      38,
+      11,
+      32,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    }
+  },
+  "or_tools": {
+    "method": "or_tools_savings_guided_local_search",
+    "route": [
+      1,
+      22,
+      8,
+      26,
+      31,
+      28,
+      3,
+      36,
+      35,
+      20,
+      2,
+      29,
+      21,
+      16,
+      50,
+      34,
+      30,
+      9,
+      49,
+      10,
+      39,
+      33,
+      45,
+      15,
+      44,
+      42,
+      40,
+      19,
+      41,
+      13,
+      25,
+      14,
+      24,
+      43,
+      7,
+      23,
+      48,
+      6,
+      27,
+      51,
+      46,
+      12,
+      47,
+      18,
+      4,
+      17,
+      37,
+      5,
+      38,
+      11,
+      32,
+      1
+    ],
+    "validation": {
+      "is_valid": true,
+      "starts_at_depot": true,
+      "ends_at_depot": true,
+      "missing_nodes": [],
+      "repeated_nodes": [],
+      "unexpected_nodes": []
+    },
+    "legal_node_ids": true,
+    "distance": 426,
+    "reference_distance": 426.0,
+    "gap_to_reference_percent": 0.0,
+    "gap_to_known_optimum_percent": 0.0
+  },
+  "artifacts": {
+    "run_manifest": "run_manifest.json",
+    "points_image": "baseline/images/points.png",
+    "or_tools_route_image": "baseline/images/or_tools_route.png",
+    "reference_route_image": "baseline/images/reference_route.png"
+  },
+  "timing": {
+    "problem_loading_seconds": 0.0022656249999999933,
+    "or_tools_wall_seconds": 30.248353792000003,
+    "reference_preparation_seconds": 9.433299999983547e-05,
+    "route_rendering_seconds": 0.5425725829999983,
+    "manifest_write_seconds": 0.000631750000000153,
+    "total_wall_seconds_before_result_write": 30.798208374999998
+  },
+  "observability": {
+    "settings": {
+      "profile_resources": true,
+      "resource_sample_interval_seconds": 0.5,
+      "minimum_request_interval_seconds": 0.0,
+      "max_retries": 2,
+      "retry_base_delay_seconds": 2.0,
+      "retry_maximum_delay_seconds": 60.0,
+      "early_stop_enabled": false,
+      "early_stop_gap_percent": 1.0
+    },
+    "controlled_waits": {
+      "event_count": 0,
+      "deliberate_delay_seconds": 0,
+      "rate_limit_backoff_seconds": 0,
+      "controlled_wait_seconds": 0,
+      "events": []
+    },
+    "request_control": {
+      "execution_count": 0,
+      "successful_execution_count": 0,
+      "failed_execution_count": 0,
+      "request_attempt_count": 0,
+      "retry_count": 0,
+      "waits": {
+        "event_count": 0,
+        "deliberate_delay_seconds": 0,
+        "rate_limit_backoff_seconds": 0,
+        "controlled_wait_seconds": 0,
+        "events": []
+      },
+      "active_wall_seconds": 0,
+      "total_wall_seconds": 0,
+      "executions": []
+    },
+    "resources": {
+      "enabled": true,
+      "sampling_interval_seconds": 0.5,
+      "duration_seconds": 30.794090833,
+      "sample_count": 62,
+      "system": {
+        "platform": {
+          "system": "Darwin",
+          "release": "24.4.0",
+          "version": "Darwin Kernel Version 24.4.0: Fri Apr 11 18:32:50 PDT 2025; root:xnu-11417.101.15~117/RELEASE_ARM64_T6041",
+          "machine": "arm64"
+        },
+        "python": {
+          "version": "3.9.6",
+          "implementation": "CPython"
+        },
+        "cpu": {
+          "processor": "arm",
+          "physical_core_count": 12,
+          "logical_core_count": 12
+        },
+        "memory": {
+          "total_mb": 24576.0
+        },
+        "local_gpu": {
+          "available": false,
+          "backend": "nvidia_nvml",
+          "unavailable_reason": "NVMLError_LibraryNotFound: NVML Shared Library Not Found",
+          "devices": []
+        }
+      },
+      "overall": {
+        "sample_count": 62,
+        "metrics": {
+          "system_cpu_percent": {
+            "sample_count": 62,
+            "minimum": 0.0,
+            "maximum": 24.7,
+            "average": 9.750000000000002,
+            "last": 10.2
+          },
+          "process_cpu_percent": {
+            "sample_count": 62,
+            "minimum": 63.3,
+            "maximum": 100.0,
+            "average": 99.32580645161289,
+            "last": 100.0
+          },
+          "process_memory_rss_mb": {
+            "sample_count": 62,
+            "minimum": 55.875,
+            "maximum": 139.84375,
+            "average": 81.2179939516129,
+            "last": 139.84375
+          },
+          "process_memory_percent": {
+            "sample_count": 62,
+            "minimum": 0.22735595703125,
+            "maximum": 0.5690256754557292,
+            "average": 0.3304768634098833,
+            "last": 0.5690256754557292
+          },
+          "system_memory_percent": {
+            "sample_count": 62,
+            "minimum": 55.3,
+            "maximum": 56.6,
+            "average": 55.62741935483877,
+            "last": 55.6
+          },
+          "system_memory_available_mb": {
+            "sample_count": 62,
+            "minimum": 10676.78125,
+            "maximum": 10976.703125,
+            "average": 10905.751512096775,
+            "last": 10914.234375
+          },
+          "local_gpu_utilization_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_used_mb": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_memory_percent": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          },
+          "local_gpu_temperature_celsius": {
+            "sample_count": 0,
+            "minimum": null,
+            "maximum": null,
+            "average": null,
+            "last": null
+          }
+        }
+      },
+      "by_phase": {
+        "ortools_solve": {
+          "sample_count": 59,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 59,
+              "minimum": 0.0,
+              "maximum": 24.7,
+              "average": 9.916949152542374,
+              "last": 8.5
+            },
+            "process_cpu_percent": {
+              "sample_count": 59,
+              "minimum": 63.3,
+              "maximum": 100.0,
+              "average": 99.30847457627117,
+              "last": 100.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 59,
+              "minimum": 79.203125,
+              "maximum": 80.125,
+              "average": 79.89247881355932,
+              "last": 80.125
+            },
+            "process_memory_percent": {
+              "sample_count": 59,
+              "minimum": 0.3222783406575521,
+              "maximum": 0.32602945963541663,
+              "average": 0.32508332850569394,
+              "last": 0.32602945963541663
+            },
+            "system_memory_percent": {
+              "sample_count": 59,
+              "minimum": 55.3,
+              "maximum": 56.6,
+              "average": 55.61694915254244,
+              "last": 55.4
+            },
+            "system_memory_available_mb": {
+              "sample_count": 59,
+              "minimum": 10676.78125,
+              "maximum": 10976.703125,
+              "average": 10908.30376059322,
+              "last": 10971.234375
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        },
+        "route_rendering": {
+          "sample_count": 1,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 1,
+              "minimum": 9.2,
+              "maximum": 9.2,
+              "average": 9.2,
+              "last": 9.2
+            },
+            "process_cpu_percent": {
+              "sample_count": 1,
+              "minimum": 100.0,
+              "maximum": 100.0,
+              "average": 100.0,
+              "last": 100.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 1,
+              "minimum": 126.140625,
+              "maximum": 126.140625,
+              "average": 126.140625,
+              "last": 126.140625
+            },
+            "process_memory_percent": {
+              "sample_count": 1,
+              "minimum": 0.5132675170898438,
+              "maximum": 0.5132675170898438,
+              "average": 0.5132675170898438,
+              "last": 0.5132675170898438
+            },
+            "system_memory_percent": {
+              "sample_count": 1,
+              "minimum": 55.6,
+              "maximum": 55.6,
+              "average": 55.6,
+              "last": 55.6
+            },
+            "system_memory_available_mb": {
+              "sample_count": 1,
+              "minimum": 10922.265625,
+              "maximum": 10922.265625,
+              "average": 10922.265625,
+              "last": 10922.265625
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        },
+        "unclassified": {
+          "sample_count": 2,
+          "metrics": {
+            "system_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 0.0,
+              "maximum": 10.2,
+              "average": 5.1,
+              "last": 10.2
+            },
+            "process_cpu_percent": {
+              "sample_count": 2,
+              "minimum": 99.0,
+              "maximum": 100.0,
+              "average": 99.5,
+              "last": 100.0
+            },
+            "process_memory_rss_mb": {
+              "sample_count": 2,
+              "minimum": 55.875,
+              "maximum": 139.84375,
+              "average": 97.859375,
+              "last": 139.84375
+            },
+            "process_memory_percent": {
+              "sample_count": 2,
+              "minimum": 0.22735595703125,
+              "maximum": 0.5690256754557292,
+              "average": 0.3981908162434896,
+              "last": 0.5690256754557292
+            },
+            "system_memory_percent": {
+              "sample_count": 2,
+              "minimum": 55.6,
+              "maximum": 56.3,
+              "average": 55.95,
+              "last": 55.6
+            },
+            "system_memory_available_mb": {
+              "sample_count": 2,
+              "minimum": 10730.171875,
+              "maximum": 10914.234375,
+              "average": 10822.203125,
+              "last": 10914.234375
+            },
+            "local_gpu_utilization_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_used_mb": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_memory_percent": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            },
+            "local_gpu_temperature_celsius": {
+              "sample_count": 0,
+              "minimum": null,
+              "maximum": null,
+              "average": null,
+              "last": null
+            }
+          }
+        }
+      },
+      "sampling_errors": []
+    }
+  }
+}
