@@ -454,6 +454,34 @@ Rapor; geçerlilik, mesafe, gap, iterasyon en iyisi, Sistem GBest, token,
 scorer regret, aktif/kontrollü/backoff süreleri, yerel CPU/RAM/GPU profili ve
 kayıtlı hataları içerir.
 
+### Tarihsel GitHub Models denemeleri
+
+`eil51_run_01` çalıştırmasında GitHub Models üzerinden yapılan
+başarısız API denemeleri, deney geçmişini eksiksiz korumak amacıyla sonuç
+klasörlerinde tutulur.
+
+Başlıca kayıtlar şu dizindedir:
+
+```text
+output/runs/eil51_run_01/providers/github/
+```
+
+Bu kayıtlar arasında `Llama-3.2-90B-Vision-Instruct`,
+`meta-llama-3.2-90b-vision-instruct`,
+`meta/llama-3.2-11b-vision-instruct` ve `Phi-3.5-vision-instruct`
+modellerine yapılan istekler bulunur. İstekler HTTP `404` hatasıyla
+sonuçlandığı için geçerli rota, mesafe, gap veya token sonucu üretmemiştir.
+
+Aynı deney grubunda `providers/openai/` altında kalan başarısız bir Llama
+denemesi de üretildiği zamanki provider etiketi korunarak saklanmıştır. Bu
+kayıt, projede aktif bir OpenAI provider bulunduğu anlamına gelmez.
+
+GitHub Models, 30 Temmuz 2026 tarihinde
+[tamamen kullanımdan kaldırılmıştır](https://github.blog/changelog/2026-07-30-github-models-is-now-retired/).
+Bu nedenle `github` aktif bir provider değildir, ortak runner komutlarının
+`--provider` seçeneklerine eklenmemiştir ve bu klasörler yalnızca tarihsel
+başarısız deneme kayıtlarıdır.
+
 ## 7. Baştan sona kısa örnek
 
 ```powershell
