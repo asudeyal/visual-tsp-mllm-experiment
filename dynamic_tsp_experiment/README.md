@@ -456,7 +456,7 @@ kayıtlı hataları içerir.
 
 ### Tarihsel GitHub Models denemeleri
 
-`eil51_run_01` ve ilgili test çalıştırmalarında GitHub Models üzerinden yapılan
+`eil51_run_01` çalıştırmasında GitHub Models üzerinden yapılan
 başarısız API denemeleri, deney geçmişini eksiksiz korumak amacıyla sonuç
 klasörlerinde tutulur.
 
