@@ -39,16 +39,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _status(value: Any) -> str:
-    return {
-        "completed": "tamamlandı",
-        "partial": "kısmi",
-        "failed": "başarısız",
-        "not_run": "çalışmadı",
-        "legacy_or_incompatible": "uyumsuz",
-    }.get(str(value), str(value))
-
-
 def _method_name(value: str) -> str:
     return {
         "zero_shot": "Zero-shot",
@@ -113,7 +103,6 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
             "baseline",
             "OR-Tools",
             "Referans",
-            _status(baseline.get("status")),
             "-",
             baseline_solution.get("is_valid"),
             baseline_solution.get("distance"),
@@ -134,7 +123,6 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
                 item["provider"],
                 item["model_alias"],
                 _method_name(item["method"]),
-                _status(item["status"]),
                 item["completed_iterations"],
                 item["is_valid"],
                 item["distance"],
@@ -153,7 +141,6 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
                 "Provider",
                 "Model",
                 "Yöntem",
-                "Durum",
                 "İter.",
                 "Geçerli",
                 "Mesafe",
@@ -165,8 +152,8 @@ def _print_method_table(analysis: dict[str, Any]) -> None:
                 "Hata",
             ],
             rows,
-            right_align={4, 6, 7, 8, 9, 10, 11, 12},
-            max_widths={1: 28, 3: 12},
+            right_align={3, 5, 6, 7, 8, 9, 10, 11},
+            max_widths={1: 28},
         )
     )
 
@@ -278,9 +265,9 @@ def _print_ma1_iterations(
             item["selected_distance"],
             item.get("iteration_best_distance"),
             item.get("system_gbest_distance"),
+            item.get("system_gbest_gap_percent"),
             item.get("observed_candidate_gbest_distance"),
             item["selection_regret_percent"],
-            item["selected_best_valid_candidate"],
             (item.get("token_count") or {}).get("total"),
             item["timing_seconds"].get("active"),
             item["timing_seconds"].get("deliberate_delay"),
@@ -298,9 +285,9 @@ def _print_ma1_iterations(
                 "Seçilen",
                 "İter. en iyi",
                 "Sistem GBest",
+                "GBest gap %",
                 "Aday GBest",
                 "Regret %",
-                "Doğru seçim",
                 "Token",
                 "Aktif sn",
                 "Planlı sn",
@@ -308,7 +295,7 @@ def _print_ma1_iterations(
                 "Toplam sn",
             ],
             rows,
-            right_align={0, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12},
+            right_align={0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
             max_widths={1: 20},
         )
     )
@@ -323,15 +310,35 @@ def _print_ma1_iterations(
     scorer_best = int(
         section.get("scorer_best_candidate_selection_count") or 0
     )
-    best_system = section.get("best_valid_solution") or {}
     progress = section.get("solution_progress") or {}
+    best_system = (
+        progress.get("system_gbest")
+        or section.get("best_valid_solution")
+        or {}
+    )
     observed = progress.get("observed_candidate_gbest") or {}
     if not observed and iterations:
-        observed = {
-            "distance": iterations[-1].get(
-                "observed_candidate_gbest_distance"
+        observed_distances = [
+            (
+                item.get("observed_candidate_gbest_distance"),
+                item.get("iteration"),
             )
-        }
+            for item in iterations
+            if item.get("observed_candidate_gbest_distance")
+            is not None
+        ]
+        if observed_distances:
+            observed_distance = min(
+                value[0] for value in observed_distances
+            )
+            observed = {
+                "distance": observed_distance,
+                "iteration": next(
+                    iteration
+                    for distance, iteration in observed_distances
+                    if distance == observed_distance
+                ),
+            }
     print(
         render_summary(
             [
@@ -348,7 +355,17 @@ def _print_ma1_iterations(
                 ),
                 ("fallback", fallback_count),
                 ("sistem GBest", best_system.get("distance")),
+                (
+                    "GBest gap %",
+                    best_system.get("gap_to_reference_percent"),
+                ),
+                ("GBest iter.", best_system.get("iteration")),
                 ("gözlenen aday GBest", observed.get("distance")),
+                (
+                    "aday GBest gap %",
+                    observed.get("gap_to_reference_percent"),
+                ),
+                ("aday GBest iter.", observed.get("iteration")),
                 ("bitiş", _termination_text(section)),
             ],
             fields_per_line=3,
@@ -422,51 +439,74 @@ def _resource_sections(
 
 
 def _print_resources(analysis: dict[str, Any]) -> None:
-    rows: list[list[Any]] = []
+    records: list[tuple[list[Any], dict[str, Any]]] = []
     for provider, model, method, section in _resource_sections(analysis):
         observability = section.get("observability")
         if not isinstance(observability, dict):
             continue
         resources = observability.get("resources") or {}
-        request = observability.get("request_control") or {}
-        rows.append(
-            [
-                provider,
-                model,
-                method,
-                resources.get("enabled"),
-                resources.get("sample_count"),
-                _metric_pair(resources, "system_cpu_percent"),
-                _metric_pair(resources, "process_cpu_percent"),
-                _metric_pair(resources, "process_memory_rss_mb"),
-                _metric_pair(resources, "system_memory_percent"),
-                _gpu_status(resources),
-                request.get("retry_count"),
-            ]
+        records.append(
+            (
+                [
+                    provider,
+                    model,
+                    method,
+                    resources.get("sample_count"),
+                    _metric_pair(resources, "system_cpu_percent"),
+                    _metric_pair(resources, "process_cpu_percent"),
+                    _metric_pair(resources, "process_memory_rss_mb"),
+                    _metric_pair(resources, "system_memory_percent"),
+                ],
+                resources,
+            )
         )
-    if not rows:
+    if not records:
         return
+
+    show_gpu = any(
+        (resources.get("local_gpu") or {}).get("available") is True
+        for _, resources in records
+    )
+    headers = [
+        "Provider",
+        "Model",
+        "Yöntem",
+        "Ölçüm",
+        "Sistem CPU %",
+        "Süreç CPU %",
+        "Süreç RSS MB",
+        "Sistem RAM %",
+    ]
+    rows = [row.copy() for row, _ in records]
+    max_widths = {1: 24}
+    if show_gpu:
+        headers.append("Yerel GPU")
+        for row, (_, resources) in zip(rows, records):
+            row.append(_gpu_status(resources))
+        max_widths[8] = 30
+
     print(
         render_table(
             "Yerel kaynak kullanımı (ortalama/azami)",
-            [
-                "Provider",
-                "Model",
-                "Yöntem",
-                "Profil",
-                "Örnek",
-                "Sistem CPU %",
-                "Süreç CPU %",
-                "Süreç RSS MB",
-                "Sistem RAM %",
-                "Yerel GPU",
-                "Retry",
-            ],
+            headers,
             rows,
-            right_align={4, 10},
-            max_widths={1: 24, 9: 30},
+            right_align={3},
+            max_widths=max_widths,
         )
     )
+    if not show_gpu:
+        statuses = sorted(
+            {
+                _gpu_status(resources)
+                for _, resources in records
+            }
+        )
+        print(
+            render_note(
+                "Yerel GPU",
+                ["; ".join(statuses)],
+            )
+        )
 
 
 def _print_errors(analysis: dict[str, Any]) -> None:
