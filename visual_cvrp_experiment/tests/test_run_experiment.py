@@ -233,6 +233,56 @@ def test_color_intensity_validate_only_creates_artifacts(
     ).read_text(encoding="utf-8")
 
 
+def test_bar_length_validate_only_creates_artifacts(
+    tmp_path: Path,
+) -> None:
+    fake_client = FakeGeminiClient()
+
+    result, result_path = execute_experiment(
+        run_id="bar_length_validation_run",
+        output_dir=tmp_path,
+        model="gemini-test",
+        encoding="bar_length",
+        validate_only=True,
+        client=fake_client,
+    )
+
+    run_dir = (
+        tmp_path
+        / "runs"
+        / "bar_length_validation_run"
+    )
+
+    assert result["encoding"] == "bar_length"
+    assert result["api_call_performed"] is False
+    assert fake_client.calls == []
+    assert (
+        run_dir
+        / "inputs"
+        / "problem_bar_length.png"
+    ).is_file()
+    assert result_path == (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "bar_length"
+        / "single_call_results.json"
+    )
+    prompt = (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "bar_length"
+        / "prompt.txt"
+    ).read_text(encoding="utf-8")
+    assert "fixed-width bar below" in prompt
+    assert "filled fraction is demand divided by Q" in (
+        prompt
+    )
+
+
 def test_completed_response_is_validated_and_scored(
     tmp_path: Path,
 ) -> None:

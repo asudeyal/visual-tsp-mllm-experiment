@@ -74,6 +74,23 @@ def test_color_intensity_prompt_explains_blue_scale(
     assert "419.727" not in prompt
 
 
+def test_bar_length_prompt_explains_capacity_ratio(
+) -> None:
+    prompt = build_solver_prompt(
+        encoding="bar_length"
+    )
+
+    assert "filled length" in prompt
+    assert "fixed-width bar below" in prompt
+    assert "empty bar represents zero demand" in prompt
+    assert "filled bar represents vehicle capacity Q" in prompt
+    assert "filled fraction is demand divided by Q" in prompt
+    assert "equal-sized blue circle" in prompt
+    assert "d=<value>" not in prompt
+    assert "total demand is 18" not in prompt.lower()
+    assert "419.727" not in prompt
+
+
 def test_parse_direct_json_response() -> None:
     parsed = parse_model_response(
         '{"routes": [[0, 1, 2, 0], [0, 3, 0]]}'

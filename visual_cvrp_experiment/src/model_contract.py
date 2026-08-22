@@ -64,6 +64,17 @@ _ENCODING_GUIDANCE = {
         "means demand 3. No numeric demand label is "
         "printed next to a customer."
     ),
+    DemandEncoding.BAR_LENGTH: (
+        "Each equal-sized blue circle is a customer. "
+        "The integer inside the circle is the customer "
+        "node ID. Customer demand is encoded only by "
+        "the filled length of the fixed-width bar below "
+        "the circle. An empty bar represents zero "
+        "demand and a completely filled bar represents "
+        "vehicle capacity Q, so the filled fraction is "
+        "demand divided by Q. No numeric demand label "
+        "is printed next to a customer."
+    ),
 }
 
 _JSON_FENCE_PATTERN = re.compile(

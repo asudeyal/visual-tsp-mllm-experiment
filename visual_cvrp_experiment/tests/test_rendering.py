@@ -10,6 +10,7 @@ from PIL import Image
 from src.instances import build_capacity_demo_10
 from src.rendering import (
     DemandEncoding,
+    _capacity_bar_fill_fractions,
     _customer_marker_colors,
     _customer_marker_areas,
     render_problem,
@@ -196,6 +197,53 @@ def test_color_intensity_uses_ordered_blue_scale(
         2: "#3B82F6",
         3: "#1D4ED8",
     }
+    assert len(set(areas)) == 1
+
+
+def test_bar_length_render_creates_valid_png(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+    output_path = tmp_path / "bar_length.png"
+
+    render_problem(
+        problem,
+        output_path,
+        encoding=DemandEncoding.BAR_LENGTH,
+    )
+
+    with Image.open(output_path) as image:
+        assert image.format == "PNG"
+        assert image.size == (1600, 1200)
+
+
+def test_bar_length_uses_demand_capacity_ratio(
+) -> None:
+    problem = build_capacity_demo_10()
+
+    fill_fractions = _capacity_bar_fill_fractions(
+        problem
+    )
+    demand_to_fraction = {
+        customer.demand: fill_fraction
+        for customer, fill_fraction in zip(
+            problem.customers,
+            fill_fractions,
+            strict=True,
+        )
+    }
+    areas = _customer_marker_areas(
+        problem,
+        encoding=DemandEncoding.BAR_LENGTH,
+    )
+
+    assert demand_to_fraction == pytest.approx(
+        {
+            1: 1 / 6,
+            2: 2 / 6,
+            3: 3 / 6,
+        }
+    )
     assert len(set(areas)) == 1
 
 

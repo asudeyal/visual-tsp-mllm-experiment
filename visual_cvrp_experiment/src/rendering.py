@@ -11,6 +11,8 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+from matplotlib.offsetbox import AnnotationBbox, DrawingArea
+from matplotlib.patches import Rectangle
 from matplotlib.lines import Line2D
 
 from .problem import CVRPProblem
@@ -23,6 +25,7 @@ class DemandEncoding(str, Enum):
     SIZE = "size"
     COLOR = "color"
     COLOR_INTENSITY = "color_intensity"
+    BAR_LENGTH = "bar_length"
 
 
 _ROUTE_COLORS = (
@@ -37,6 +40,12 @@ _ROUTE_COLORS = (
 _NUMERIC_MARKER_AREA = 850.0
 _SIZE_MARKER_AREA_PER_DEMAND_UNIT = 500.0
 _DEFAULT_CUSTOMER_COLOR = "#2F80ED"
+_CAPACITY_BAR_WIDTH = 48.0
+_CAPACITY_BAR_HEIGHT = 8.0
+_CAPACITY_BAR_OFFSET_Y = -29.0
+_CAPACITY_BAR_BACKGROUND_COLOR = "#E5E7EB"
+_CAPACITY_BAR_FILL_COLOR = "#2563EB"
+_CAPACITY_BAR_EDGE_COLOR = "#12355B"
 _DEMAND_COLORS = {
     1: "#2F80ED",
     2: "#F2994A",
@@ -236,6 +245,85 @@ def _customer_label_colors(
     ]
 
 
+def _capacity_bar_fill_fractions(
+    problem: CVRPProblem,
+) -> list[float]:
+    """Müşteri taleplerini kapasiteye göre normalize et."""
+
+    return [
+        customer.demand / problem.vehicle_capacity
+        for customer in problem.customers
+    ]
+
+
+def _draw_capacity_bars(
+    axis,
+    problem: CVRPProblem,
+) -> None:
+    """Her müşterinin altına sabit genişlikte talep çubuğu çiz."""
+
+    fill_fractions = _capacity_bar_fill_fractions(
+        problem
+    )
+
+    for customer, fill_fraction in zip(
+        problem.customers,
+        fill_fractions,
+        strict=True,
+    ):
+        drawing_area = DrawingArea(
+            _CAPACITY_BAR_WIDTH,
+            _CAPACITY_BAR_HEIGHT,
+            clip=False,
+        )
+        drawing_area.add_artist(
+            Rectangle(
+                (0.0, 0.0),
+                _CAPACITY_BAR_WIDTH,
+                _CAPACITY_BAR_HEIGHT,
+                facecolor=(
+                    _CAPACITY_BAR_BACKGROUND_COLOR
+                ),
+                edgecolor="none",
+            )
+        )
+        drawing_area.add_artist(
+            Rectangle(
+                (0.0, 0.0),
+                (
+                    _CAPACITY_BAR_WIDTH
+                    * fill_fraction
+                ),
+                _CAPACITY_BAR_HEIGHT,
+                facecolor=_CAPACITY_BAR_FILL_COLOR,
+                edgecolor="none",
+            )
+        )
+        drawing_area.add_artist(
+            Rectangle(
+                (0.0, 0.0),
+                _CAPACITY_BAR_WIDTH,
+                _CAPACITY_BAR_HEIGHT,
+                facecolor="none",
+                edgecolor=_CAPACITY_BAR_EDGE_COLOR,
+                linewidth=1.1,
+            )
+        )
+        axis.add_artist(
+            AnnotationBbox(
+                drawing_area,
+                (customer.x, customer.y),
+                xybox=(0.0, _CAPACITY_BAR_OFFSET_Y),
+                xycoords="data",
+                boxcoords="offset points",
+                box_alignment=(0.5, 0.5),
+                frameon=False,
+                pad=0.0,
+                zorder=5,
+            )
+        )
+
+
 def _draw_nodes(
     axis,
     problem: CVRPProblem,
@@ -308,6 +396,12 @@ def _draw_nodes(
                 },
                 zorder=5,
             )
+
+    if encoding is DemandEncoding.BAR_LENGTH:
+        _draw_capacity_bars(
+            axis,
+            problem,
+        )
 
     depot = problem.depot
 
