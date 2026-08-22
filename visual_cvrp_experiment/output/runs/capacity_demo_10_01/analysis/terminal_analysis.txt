@@ -31,3 +31,7 @@ gemini / gemini-2.5-flash / numeric rotaları
 |    3 | 0 -> 6 -> 7 -> 8 -> 0 |   6/6 |    0 | 157.4878 | evet    |
 +------+-----------------------+-------+------+----------+---------+
 Kısıt özeti: eksik=- | tekrar=- | bilinmeyen=- | kapasite aşımı=0 | filo aşımı=hayır
+
+Görsel çıktılar
+- analysis/images/baseline_exact_routes.png
+- analysis/images/gemini_gemini-2.5-flash_numeric_routes.png

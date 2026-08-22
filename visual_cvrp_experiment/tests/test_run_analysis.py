@@ -42,6 +42,7 @@ def create_run(
             "name": "capacity_demo_10",
             "dimension": 10,
             "customer_count": 9,
+            "depot_id": 0,
             "vehicle_capacity": 6,
             "vehicle_count": 3,
             "total_demand": 18,
@@ -50,16 +51,19 @@ def create_run(
                     "id": 0,
                     "x": 0.0,
                     "y": 0.0,
+                    "demand": 0,
                 },
                 {
                     "id": 1,
                     "x": 3.0,
                     "y": 0.0,
+                    "demand": 3,
                 },
                 {
                     "id": 2,
                     "x": 3.0,
                     "y": 4.0,
+                    "demand": 3,
                 },
             ],
         },
@@ -205,7 +209,22 @@ def test_main_writes_terminal_report(
         / "terminal_analysis.txt"
     )
     assert report_path.is_file()
+    assert (
+        run_dir
+        / "analysis"
+        / "images"
+        / "baseline_exact_routes.png"
+    ).is_file()
+    assert (
+        run_dir
+        / "analysis"
+        / "images"
+        / "gemini_gemini-test_numeric_routes.png"
+    ).is_file()
     assert "gemini-test" in report_path.read_text(
         encoding="utf-8"
+    )
+    assert "Görsel çıktılar" in (
+        report_path.read_text(encoding="utf-8")
     )
     assert "Rapor dosyası:" in capsys.readouterr().out

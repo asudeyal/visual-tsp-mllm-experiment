@@ -10,6 +10,12 @@ from math import hypot
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
+from src.problem import CVRPProblem, Node
+from src.rendering import (
+    DemandEncoding,
+    render_solution,
+)
+
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = ROOT / "output"
@@ -161,6 +167,156 @@ def _load_results(
         _load_json(path)
         for path in result_paths
     ]
+
+
+def _problem_from_payload(
+    payload: dict[str, Any],
+) -> CVRPProblem:
+    depot_id = int(payload["depot_id"])
+    nodes = tuple(
+        Node(
+            node_id=int(node["id"]),
+            x=float(node["x"]),
+            y=float(node["y"]),
+            demand=int(node["demand"]),
+        )
+        for node in payload["nodes"]
+    )
+    depot = next(
+        (
+            node
+            for node in nodes
+            if node.node_id == depot_id
+        ),
+        None,
+    )
+    if depot is None:
+        raise ValueError(
+            "Problem JSON'unda depo düğümü bulunamadı."
+        )
+
+    return CVRPProblem(
+        name=str(payload["name"]),
+        depot=depot,
+        customers=tuple(
+            node
+            for node in nodes
+            if node.node_id != depot_id
+        ),
+        vehicle_capacity=int(
+            payload["vehicle_capacity"]
+        ),
+        vehicle_count=(
+            int(payload["vehicle_count"])
+            if payload.get("vehicle_count") is not None
+            else None
+        ),
+    )
+
+
+def _safe_file_component(value: Any) -> str:
+    normalized = re.sub(
+        r"[^A-Za-z0-9._-]+",
+        "-",
+        str(value).strip(),
+    ).strip("-.")
+    return normalized or "unknown"
+
+
+def generate_route_images(
+    run_dir: Path,
+) -> list[Path]:
+    """Kayıtlı baseline ve model rotalarından PNG üret."""
+
+    problem_payload = _load_json(
+        run_dir / "inputs" / "problem.json"
+    )
+    baseline = _load_json(
+        run_dir
+        / "baseline"
+        / "exact_results.json"
+    )
+    results = _load_results(run_dir)
+    problem = _problem_from_payload(
+        problem_payload
+    )
+    images_dir = run_dir / "analysis" / "images"
+    generated_paths = []
+
+    baseline_path = (
+        images_dir / "baseline_exact_routes.png"
+    )
+    render_solution(
+        problem,
+        baseline.get("routes") or [],
+        baseline_path,
+        title=(
+            "Exact CVRP baseline — distance "
+            f"{_format_number(baseline.get('total_distance'))}"
+        ),
+        route_loads=(
+            baseline.get("route_loads") or None
+        ),
+        encoding=DemandEncoding.NUMERIC,
+    )
+    generated_paths.append(baseline_path)
+
+    for result in results:
+        validation = result.get("validation")
+        if (
+            result.get("status") != "completed"
+            or not isinstance(validation, dict)
+            or not validation.get("routes")
+        ):
+            continue
+
+        provider = _safe_file_component(
+            result.get("provider", "unknown")
+        )
+        model = _safe_file_component(
+            result.get("model", "unknown")
+        )
+        encoding = DemandEncoding(
+            result.get("encoding", "numeric")
+        )
+        result_path = images_dir / (
+            f"{provider}_{model}_"
+            f"{encoding.value}_routes.png"
+        )
+        distance = validation.get(
+            "total_distance"
+        )
+        gap = result.get(
+            "optimality_gap_percent"
+        )
+        title = (
+            f"{result.get('provider', '-')} / "
+            f"{result.get('model', '-')} / "
+            f"{encoding.value} — distance "
+            f"{_format_number(distance)}"
+        )
+        if gap is not None:
+            title += (
+                f" — gap {_format_number(gap)}%"
+            )
+
+        render_solution(
+            problem,
+            [
+                route.get("route") or []
+                for route in validation["routes"]
+            ],
+            result_path,
+            title=title,
+            route_loads=[
+                int(route.get("load", 0))
+                for route in validation["routes"]
+            ],
+            encoding=encoding,
+        )
+        generated_paths.append(result_path)
+
+    return generated_paths
 
 
 def _summary_rows(
@@ -352,7 +508,11 @@ def _baseline_route_table(
     )
 
 
-def build_report(run_dir: Path) -> str:
+def build_report(
+    run_dir: Path,
+    *,
+    image_paths: Sequence[Path] = (),
+) -> str:
     """Bir run klasöründeki bütün kayıtlı sonuçları raporla."""
 
     problem = _load_json(
@@ -497,6 +657,21 @@ def build_report(run_dir: Path) -> str:
             ]
         )
 
+    if image_paths:
+        lines.extend(
+            [
+                "",
+                "Görsel çıktılar",
+                *[
+                    "- "
+                    + path.resolve().relative_to(
+                        run_dir.resolve()
+                    ).as_posix()
+                    for path in image_paths
+                ],
+            ]
+        )
+
     return "\n".join(lines) + "\n"
 
 
@@ -516,7 +691,13 @@ def main(
             f"Run klasörü bulunamadı: {run_dir}"
         )
 
-    report = build_report(run_dir)
+    image_paths = generate_route_images(
+        run_dir
+    )
+    report = build_report(
+        run_dir,
+        image_paths=image_paths,
+    )
     analysis_path = (
         run_dir
         / "analysis"

@@ -11,6 +11,7 @@ from src.instances import build_capacity_demo_10
 from src.rendering import (
     DemandEncoding,
     render_problem,
+    render_solution,
 )
 
 
@@ -107,4 +108,91 @@ def test_non_png_output_is_rejected(
         render_problem(
             problem,
             tmp_path / "problem.jpg",
+        )
+
+
+def test_solution_render_creates_valid_png(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+    output_path = tmp_path / "solution.png"
+
+    result_path = render_solution(
+        problem,
+        (
+            (0, 9, 2, 1, 0),
+            (0, 8, 5, 3, 0),
+            (0, 7, 6, 4, 0),
+        ),
+        output_path,
+        title="Exact CVRP baseline",
+        route_loads=(6, 6, 6),
+    )
+
+    assert result_path == output_path
+
+    with Image.open(output_path) as image:
+        assert image.format == "PNG"
+        assert image.size == (1600, 1200)
+        assert image.mode in {
+            "RGB",
+            "RGBA",
+        }
+
+
+def test_solution_render_calculates_loads(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+    output_path = tmp_path / "solution.png"
+
+    render_solution(
+        problem,
+        (
+            (0, 9, 2, 1, 0),
+            (0, 8, 5, 3, 0),
+            (0, 7, 6, 4, 0),
+        ),
+        output_path,
+        title="Calculated loads",
+    )
+
+    assert output_path.is_file()
+
+
+def test_solution_render_rejects_unknown_node(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+
+    with pytest.raises(
+        ValueError,
+        match="bilinmeyen düğümler",
+    ):
+        render_solution(
+            problem,
+            ((0, 99, 0),),
+            tmp_path / "invalid.png",
+            title="Invalid",
+        )
+
+
+def test_solution_render_rejects_load_count_mismatch(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+
+    with pytest.raises(
+        ValueError,
+        match="Rota yüklerinin sayısı",
+    ):
+        render_solution(
+            problem,
+            (
+                (0, 1, 0),
+                (0, 2, 0),
+            ),
+            tmp_path / "invalid.png",
+            title="Invalid",
+            route_loads=(2,),
         )
