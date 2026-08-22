@@ -2,7 +2,7 @@ Solve the Capacitated Vehicle Routing Problem shown in the image.
 
 Image interpretation:
 - The black square with node ID 0 is the depot.
-- Each blue circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by circle area: the smallest circles have demand 1, medium circles have demand 2, and the largest circles have demand 3. No numeric demand label is printed next to a customer.
+- Each blue circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by circle diameter. The two reference circles shown in the image anchor the minimum supported diameter at zero demand and the maximum supported diameter at vehicle capacity Q. Circle diameter changes continuously and linearly with demand divided by Q. No numeric demand label is printed next to a customer.
 - Vehicle capacity Q and the maximum number of available vehicles K are shown above the problem area.
 
 Solution requirements:

@@ -113,7 +113,7 @@
     "vehicle_count": 3,
     "total_distance": 419.7278467775164
   },
-  "prompt": "Solve the Capacitated Vehicle Routing Problem shown in the image.\n\nImage interpretation:\n- The black square with node ID 0 is the depot.\n- Each blue circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by circle area: the smallest circles have demand 1, medium circles have demand 2, and the largest circles have demand 3. No numeric demand label is printed next to a customer.\n- Vehicle capacity Q and the maximum number of available vehicles K are shown above the problem area.\n\nSolution requirements:\n- Every route must start at depot 0 and end at depot 0.\n- Visit every customer exactly once across all routes.\n- Do not invent, omit, or repeat customer IDs.\n- The sum of customer demands on each route must not exceed Q.\n- Use no more than K routes.\n- Minimize the sum of Euclidean route distances.\n\nReturn exactly one JSON object with a field named \"routes\". The value of \"routes\" must be an array of integer arrays. Do not include markdown, commentary, calculations, or any text outside the JSON object.",
+  "prompt": "Solve the Capacitated Vehicle Routing Problem shown in the image.\n\nImage interpretation:\n- The black square with node ID 0 is the depot.\n- Each blue circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by circle diameter. The two reference circles shown in the image anchor the minimum supported diameter at zero demand and the maximum supported diameter at vehicle capacity Q. Circle diameter changes continuously and linearly with demand divided by Q. No numeric demand label is printed next to a customer.\n- Vehicle capacity Q and the maximum number of available vehicles K are shown above the problem area.\n\nSolution requirements:\n- Every route must start at depot 0 and end at depot 0.\n- Visit every customer exactly once across all routes.\n- Do not invent, omit, or repeat customer IDs.\n- The sum of customer demands on each route must not exceed Q.\n- Use no more than K routes.\n- Minimize the sum of Euclidean route distances.\n\nReturn exactly one JSON object with a field named \"routes\". The value of \"routes\" must be an array of integer arrays. Do not include markdown, commentary, calculations, or any text outside the JSON object.",
   "artifacts": {
     "problem": "inputs/problem.json",
     "problem_image": "inputs/problem_size.png",
@@ -122,80 +122,57 @@
   },
   "model_response": {
     "model": "gemini-2.5-flash",
-    "text": "{\n  \"routes\": [\n    [0, 8, 5, 7, 0],\n    [0, 4, 1, 6, 0],\n    [0, 2, 9, 3, 0]\n  ]\n}",
-    "elapsed_seconds": 36.60518859978765,
+    "text": "{\n  \"routes\": [\n    [0, 1, 2, 9, 0],\n    [0, 3, 5, 8, 0],\n    [0, 4, 6, 7, 0]\n  ]\n}",
+    "elapsed_seconds": 47.851541799958795,
     "usage": {
-      "prompt_token_count": 496,
+      "prompt_token_count": 510,
       "output_token_count": 63,
-      "thoughts_token_count": 8512,
-      "total_token_count": 9071
+      "thoughts_token_count": 11076,
+      "total_token_count": 11649
     }
   },
   "parsed_solution": {
     "routes": [
       [
         0,
-        8,
+        1,
+        2,
+        9,
+        0
+      ],
+      [
+        0,
+        3,
         5,
-        7,
+        8,
         0
       ],
       [
         0,
         4,
-        1,
         6,
-        0
-      ],
-      [
-        0,
-        2,
-        9,
-        3,
+        7,
         0
       ]
     ]
   },
   "validation": {
-    "valid": false,
+    "valid": true,
     "route_count": 3,
     "routes": [
       {
         "route_index": 1,
         "route": [
           0,
-          8,
-          5,
-          7,
+          1,
+          2,
+          9,
           0
         ],
         "customer_ids": [
-          8,
-          5,
-          7
-        ],
-        "starts_at_depot": true,
-        "ends_at_depot": true,
-        "has_internal_depot": false,
-        "unknown_node_ids": [],
-        "load": 7,
-        "capacity_excess": 1,
-        "distance": 176.41939603322837,
-        "valid": false
-      },
-      {
-        "route_index": 2,
-        "route": [
-          0,
-          4,
           1,
-          6,
-          0
-        ],
-        "customer_ids": [
-          4,
-          1,
-          6
+          2,
+          9
         ],
         "starts_at_depot": true,
         "ends_at_depot": true,
@@ -203,30 +180,53 @@
         "unknown_node_ids": [],
         "load": 6,
         "capacity_excess": 0,
-        "distance": 184.94330826898363,
+        "distance": 123.15237477055304,
+        "valid": true
+      },
+      {
+        "route_index": 2,
+        "route": [
+          0,
+          3,
+          5,
+          8,
+          0
+        ],
+        "customer_ids": [
+          3,
+          5,
+          8
+        ],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "has_internal_depot": false,
+        "unknown_node_ids": [],
+        "load": 6,
+        "capacity_excess": 0,
+        "distance": 153.4075944416836,
         "valid": true
       },
       {
         "route_index": 3,
         "route": [
           0,
-          2,
-          9,
-          3,
+          4,
+          6,
+          7,
           0
         ],
         "customer_ids": [
-          2,
-          9,
-          3
+          4,
+          6,
+          7
         ],
         "starts_at_depot": true,
         "ends_at_depot": true,
         "has_internal_depot": false,
         "unknown_node_ids": [],
-        "load": 5,
+        "load": 6,
         "capacity_excess": 0,
-        "distance": 144.00427039014346,
+        "distance": 143.16787756527972,
         "valid": true
       }
     ],
@@ -235,9 +235,9 @@
     "unknown_node_ids": [],
     "fleet_limit": 3,
     "fleet_limit_exceeded": false,
-    "total_capacity_excess": 1,
-    "total_distance": 505.3669746923555
+    "total_capacity_excess": 0,
+    "total_distance": 419.7278467775164
   },
-  "optimality_gap_percent": null,
+  "optimality_gap_percent": 0.0,
   "error": null
 }
