@@ -10,6 +10,7 @@ from PIL import Image
 from src.instances import build_capacity_demo_10
 from src.rendering import (
     DemandEncoding,
+    _customer_marker_areas,
     render_problem,
     render_solution,
 )
@@ -58,6 +59,54 @@ def test_rendered_image_is_not_blank(
         minimum != maximum
         for minimum, maximum in extrema
     )
+
+
+def test_size_render_creates_valid_png(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+    output_path = tmp_path / "size.png"
+
+    render_problem(
+        problem,
+        output_path,
+        encoding=DemandEncoding.SIZE,
+    )
+
+    with Image.open(output_path) as image:
+        assert image.format == "PNG"
+        assert image.size == (1600, 1200)
+
+
+def test_size_marker_area_is_proportional_to_demand(
+) -> None:
+    problem = build_capacity_demo_10()
+
+    size_areas = _customer_marker_areas(
+        problem,
+        encoding=DemandEncoding.SIZE,
+    )
+    numeric_areas = _customer_marker_areas(
+        problem,
+        encoding=DemandEncoding.NUMERIC,
+    )
+
+    demand_to_area = {
+        customer.demand: area
+        for customer, area in zip(
+            problem.customers,
+            size_areas,
+            strict=True,
+        )
+    }
+
+    assert demand_to_area[2] == pytest.approx(
+        demand_to_area[1] * 2
+    )
+    assert demand_to_area[3] == pytest.approx(
+        demand_to_area[1] * 3
+    )
+    assert len(set(numeric_areas)) == 1
 
 
 def test_render_creates_parent_directories(

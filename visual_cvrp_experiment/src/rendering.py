@@ -20,6 +20,7 @@ class DemandEncoding(str, Enum):
     """Müşteri talebinin görselde gösterim yöntemi."""
 
     NUMERIC = "numeric"
+    SIZE = "size"
 
 
 _ROUTE_COLORS = (
@@ -30,6 +31,9 @@ _ROUTE_COLORS = (
     "#3A86FF",
     "#8A5A44",
 )
+
+_NUMERIC_MARKER_AREA = 850.0
+_SIZE_MARKER_AREA_PER_DEMAND_UNIT = 500.0
 
 
 def _normalize_encoding(
@@ -119,6 +123,26 @@ def _create_canvas(
     return figure, axis
 
 
+def _customer_marker_areas(
+    problem: CVRPProblem,
+    *,
+    encoding: DemandEncoding,
+) -> list[float]:
+    if encoding is DemandEncoding.SIZE:
+        return [
+            (
+                _SIZE_MARKER_AREA_PER_DEMAND_UNIT
+                * customer.demand
+            )
+            for customer in problem.customers
+        ]
+
+    return [
+        _NUMERIC_MARKER_AREA
+        for _ in problem.customers
+    ]
+
+
 def _draw_nodes(
     axis,
     problem: CVRPProblem,
@@ -136,7 +160,10 @@ def _draw_nodes(
             customer.y
             for customer in customers
         ],
-        s=850,
+        s=_customer_marker_areas(
+            problem,
+            encoding=encoding,
+        ),
         marker="o",
         color="#2F80ED",
         edgecolors="#12355B",

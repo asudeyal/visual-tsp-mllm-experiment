@@ -103,6 +103,48 @@ def test_validate_only_creates_artifacts_without_api(
     )
 
 
+def test_size_validate_only_creates_size_artifacts(
+    tmp_path: Path,
+) -> None:
+    fake_client = FakeGeminiClient()
+
+    result, result_path = execute_experiment(
+        run_id="size_validation_run",
+        output_dir=tmp_path,
+        model="gemini-test",
+        encoding="size",
+        validate_only=True,
+        client=fake_client,
+    )
+
+    run_dir = (
+        tmp_path / "runs" / "size_validation_run"
+    )
+
+    assert result["encoding"] == "size"
+    assert result["api_call_performed"] is False
+    assert fake_client.calls == []
+    assert (
+        run_dir / "inputs" / "problem_size.png"
+    ).is_file()
+    assert result_path == (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "size"
+        / "single_call_results.json"
+    )
+    assert "circle area" in (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "size"
+        / "prompt.txt"
+    ).read_text(encoding="utf-8")
+
+
 def test_completed_response_is_validated_and_scored(
     tmp_path: Path,
 ) -> None:

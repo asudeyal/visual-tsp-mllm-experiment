@@ -37,6 +37,15 @@ _ENCODING_GUIDANCE = {
         "node ID. The label d=<value> above the circle "
         "is that customer's demand."
     ),
+    DemandEncoding.SIZE: (
+        "Each blue circle is a customer. "
+        "The integer inside the circle is the customer "
+        "node ID. Customer demand is encoded only by "
+        "circle area: the smallest circles have demand "
+        "1, medium circles have demand 2, and the "
+        "largest circles have demand 3. No numeric "
+        "demand label is printed next to a customer."
+    ),
 }
 
 _JSON_FENCE_PATTERN = re.compile(

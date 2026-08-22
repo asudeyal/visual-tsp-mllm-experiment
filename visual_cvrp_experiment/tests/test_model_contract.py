@@ -29,6 +29,20 @@ def test_numeric_prompt_describes_constraints() -> None:
     assert "419.727" not in prompt
 
 
+def test_size_prompt_explains_visual_scale() -> None:
+    prompt = build_solver_prompt(
+        encoding="size"
+    )
+
+    assert "encoded only by circle area" in prompt
+    assert "smallest circles have demand 1" in prompt
+    assert "medium circles have demand 2" in prompt
+    assert "largest circles have demand 3" in prompt
+    assert "d=<value>" not in prompt
+    assert "total demand is 18" not in prompt.lower()
+    assert "419.727" not in prompt
+
+
 def test_parse_direct_json_response() -> None:
     parsed = parse_model_response(
         '{"routes": [[0, 1, 2, 0], [0, 3, 0]]}'
