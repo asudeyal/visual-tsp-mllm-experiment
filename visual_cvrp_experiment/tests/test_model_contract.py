@@ -34,25 +34,14 @@ def test_size_prompt_explains_visual_scale() -> None:
         encoding="size"
     )
 
-    assert "encoded only by circle area" in prompt
-    assert "smallest circles have demand 1" in prompt
-    assert "medium circles have demand 2" in prompt
-    assert "largest circles have demand 3" in prompt
-    assert "d=<value>" not in prompt
-    assert "total demand is 18" not in prompt.lower()
-    assert "419.727" not in prompt
-
-
-def test_color_prompt_explains_visual_palette() -> None:
-    prompt = build_solver_prompt(
-        encoding="color"
-    )
-
-    assert "encoded only by fill color" in prompt
-    assert "blue means demand 1" in prompt
-    assert "orange means demand 2" in prompt
-    assert "purple means demand 3" in prompt
-    assert "equal-sized circle" in prompt
+    assert "encoded only by circle diameter" in prompt
+    assert "two reference circles" in prompt
+    assert "zero demand" in prompt
+    assert "vehicle capacity Q" in prompt
+    assert "demand divided by Q" in prompt
+    assert "demand 1" not in prompt
+    assert "demand 2" not in prompt
+    assert "demand 3" not in prompt
     assert "d=<value>" not in prompt
     assert "total demand is 18" not in prompt.lower()
     assert "419.727" not in prompt
@@ -65,10 +54,14 @@ def test_color_intensity_prompt_explains_blue_scale(
     )
 
     assert "encoded only by blue fill intensity" in prompt
-    assert "light blue means demand 1" in prompt
-    assert "medium blue means demand 2" in prompt
-    assert "dark blue means demand 3" in prompt
+    assert "two reference colors" in prompt
+    assert "lightest blue at zero demand" in prompt
+    assert "darkest blue at vehicle capacity Q" in prompt
+    assert "demand divided by Q" in prompt
     assert "equal-sized blue circle" in prompt
+    assert "demand 1" not in prompt
+    assert "demand 2" not in prompt
+    assert "demand 3" not in prompt
     assert "d=<value>" not in prompt
     assert "total demand is 18" not in prompt.lower()
     assert "419.727" not in prompt
@@ -81,6 +74,7 @@ def test_bar_length_prompt_explains_capacity_ratio(
     )
 
     assert "filled length" in prompt
+    assert "two reference bars" in prompt
     assert "fixed-width bar below" in prompt
     assert "empty bar represents zero demand" in prompt
     assert "filled bar represents vehicle capacity Q" in prompt

@@ -11,9 +11,10 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import to_hex
+from matplotlib.lines import Line2D
 from matplotlib.offsetbox import AnnotationBbox, DrawingArea
 from matplotlib.patches import Rectangle
-from matplotlib.lines import Line2D
 
 from .problem import CVRPProblem
 
@@ -23,7 +24,6 @@ class DemandEncoding(str, Enum):
 
     NUMERIC = "numeric"
     SIZE = "size"
-    COLOR = "color"
     COLOR_INTENSITY = "color_intensity"
     BAR_LENGTH = "bar_length"
 
@@ -38,7 +38,8 @@ _ROUTE_COLORS = (
 )
 
 _NUMERIC_MARKER_AREA = 850.0
-_SIZE_MARKER_AREA_PER_DEMAND_UNIT = 500.0
+_SIZE_ZERO_DIAMETER = 14.0
+_SIZE_CAPACITY_DIAMETER = 36.0
 _DEFAULT_CUSTOMER_COLOR = "#2F80ED"
 _CAPACITY_BAR_WIDTH = 48.0
 _CAPACITY_BAR_HEIGHT = 8.0
@@ -46,26 +47,15 @@ _CAPACITY_BAR_OFFSET_Y = -29.0
 _CAPACITY_BAR_BACKGROUND_COLOR = "#E5E7EB"
 _CAPACITY_BAR_FILL_COLOR = "#2563EB"
 _CAPACITY_BAR_EDGE_COLOR = "#12355B"
-_DEMAND_COLORS = {
-    1: "#2F80ED",
-    2: "#F2994A",
-    3: "#9B51E0",
-}
-_DEMAND_LABEL_COLORS = {
-    1: "white",
-    2: "#111827",
-    3: "white",
-}
-_DEMAND_INTENSITY_COLORS = {
-    1: "#93C5FD",
-    2: "#3B82F6",
-    3: "#1D4ED8",
-}
-_DEMAND_INTENSITY_LABEL_COLORS = {
-    1: "#111827",
-    2: "white",
-    3: "white",
-}
+_BLUE_SCALE = plt.get_cmap("Blues")
+_BLUE_SCALE_MINIMUM = 0.10
+_BLUE_SCALE_MAXIMUM = 0.95
+_COLOR_INTENSITY_ZERO = to_hex(
+    _BLUE_SCALE(_BLUE_SCALE_MINIMUM)
+).upper()
+_COLOR_INTENSITY_CAPACITY = to_hex(
+    _BLUE_SCALE(_BLUE_SCALE_MAXIMUM)
+).upper()
 
 
 def _normalize_encoding(
@@ -162,11 +152,11 @@ def _customer_marker_areas(
 ) -> list[float]:
     if encoding is DemandEncoding.SIZE:
         return [
-            (
-                _SIZE_MARKER_AREA_PER_DEMAND_UNIT
-                * customer.demand
+            diameter**2
+            for diameter in _customer_marker_diameters(
+                problem,
+                encoding=encoding,
             )
-            for customer in problem.customers
         ]
 
     return [
@@ -175,28 +165,46 @@ def _customer_marker_areas(
     ]
 
 
-def _demand_palette_values(
+def _customer_marker_diameters(
     problem: CVRPProblem,
-    palette: dict[int, str],
-) -> list[str]:
-    unsupported_demands = sorted(
-        {
-            customer.demand
-            for customer in problem.customers
-            if customer.demand not in palette
-        }
-    )
-    if unsupported_demands:
-        raise ValueError(
-            "Renk kodlaması yalnızca 1, 2 ve 3 "
-            "talep değerlerini destekler. "
-            f"Desteklenmeyenler: {unsupported_demands}"
+    *,
+    encoding: DemandEncoding,
+) -> list[float]:
+    if encoding is DemandEncoding.SIZE:
+        diameter_span = (
+            _SIZE_CAPACITY_DIAMETER
+            - _SIZE_ZERO_DIAMETER
         )
+        return [
+            (
+                _SIZE_ZERO_DIAMETER
+                + diameter_span
+                * customer.demand
+                / problem.vehicle_capacity
+            )
+            for customer in problem.customers
+        ]
 
     return [
-        palette[customer.demand]
-        for customer in problem.customers
+        _NUMERIC_MARKER_AREA**0.5
+        for _ in problem.customers
     ]
+
+
+def _color_intensity_value(
+    fraction: float,
+) -> str:
+    color_position = (
+        _BLUE_SCALE_MINIMUM
+        + (
+            _BLUE_SCALE_MAXIMUM
+            - _BLUE_SCALE_MINIMUM
+        )
+        * fraction
+    )
+    return to_hex(
+        _BLUE_SCALE(color_position)
+    ).upper()
 
 
 def _customer_marker_colors(
@@ -204,17 +212,14 @@ def _customer_marker_colors(
     *,
     encoding: DemandEncoding,
 ) -> list[str]:
-    if encoding is DemandEncoding.COLOR:
-        return _demand_palette_values(
-            problem,
-            _DEMAND_COLORS,
-        )
-
     if encoding is DemandEncoding.COLOR_INTENSITY:
-        return _demand_palette_values(
-            problem,
-            _DEMAND_INTENSITY_COLORS,
-        )
+        return [
+            _color_intensity_value(
+                customer.demand
+                / problem.vehicle_capacity,
+            )
+            for customer in problem.customers
+        ]
 
     return [
         _DEFAULT_CUSTOMER_COLOR
@@ -227,17 +232,17 @@ def _customer_label_colors(
     *,
     encoding: DemandEncoding,
 ) -> list[str]:
-    if encoding is DemandEncoding.COLOR:
-        return _demand_palette_values(
-            problem,
-            _DEMAND_LABEL_COLORS,
-        )
-
     if encoding is DemandEncoding.COLOR_INTENSITY:
-        return _demand_palette_values(
-            problem,
-            _DEMAND_INTENSITY_LABEL_COLORS,
-        )
+        return [
+            (
+                "#111827"
+                if customer.demand
+                / problem.vehicle_capacity
+                < 0.45
+                else "white"
+            )
+            for customer in problem.customers
+        ]
 
     return [
         "white"
@@ -445,6 +450,7 @@ def _draw_header(
     problem: CVRPProblem,
     *,
     title: str,
+    encoding: DemandEncoding,
 ) -> None:
     vehicle_count_text = (
         str(problem.vehicle_count)
@@ -483,6 +489,96 @@ def _draw_header(
         zorder=6,
     )
 
+    if encoding is DemandEncoding.SIZE:
+        handles = (
+            Line2D(
+                [],
+                [],
+                marker="o",
+                linestyle="none",
+                markersize=_SIZE_ZERO_DIAMETER,
+                markerfacecolor=_DEFAULT_CUSTOMER_COLOR,
+                markeredgecolor="#12355B",
+                label="0",
+            ),
+            Line2D(
+                [],
+                [],
+                marker="o",
+                linestyle="none",
+                markersize=_SIZE_CAPACITY_DIAMETER,
+                markerfacecolor=_DEFAULT_CUSTOMER_COLOR,
+                markeredgecolor="#12355B",
+                label="Q",
+            ),
+        )
+    elif encoding is DemandEncoding.COLOR_INTENSITY:
+        handles = (
+            Line2D(
+                [],
+                [],
+                marker="o",
+                linestyle="none",
+                markersize=11,
+                markerfacecolor=_COLOR_INTENSITY_ZERO,
+                markeredgecolor="#12355B",
+                label="0",
+            ),
+            Line2D(
+                [],
+                [],
+                marker="o",
+                linestyle="none",
+                markersize=11,
+                markerfacecolor=(
+                    _COLOR_INTENSITY_CAPACITY
+                ),
+                markeredgecolor="#12355B",
+                label="Q",
+            ),
+        )
+    elif encoding is DemandEncoding.BAR_LENGTH:
+        handles = (
+            Rectangle(
+                (0.0, 0.0),
+                1.0,
+                1.0,
+                facecolor=(
+                    _CAPACITY_BAR_BACKGROUND_COLOR
+                ),
+                edgecolor=_CAPACITY_BAR_EDGE_COLOR,
+                linewidth=1.0,
+                label="0",
+            ),
+            Rectangle(
+                (0.0, 0.0),
+                1.0,
+                1.0,
+                facecolor=_CAPACITY_BAR_FILL_COLOR,
+                edgecolor=_CAPACITY_BAR_EDGE_COLOR,
+                linewidth=1.0,
+                label="Q",
+            ),
+        )
+    else:
+        return
+
+    figure.legend(
+        handles=handles,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.845),
+        ncol=2,
+        frameon=False,
+        fontsize=9,
+        handletextpad=1.0,
+        columnspacing=1.5,
+        handlelength=(
+            2.8
+            if encoding is DemandEncoding.BAR_LENGTH
+            else 2.0
+        ),
+    )
+
 
 def _save_figure(
     figure,
@@ -492,6 +588,7 @@ def _save_figure(
     *,
     dpi: int,
     bottom: float,
+    top: float,
 ) -> None:
     x_min, x_max, y_min, y_max = _plot_bounds(
         problem
@@ -508,7 +605,7 @@ def _save_figure(
         left=0.03,
         right=0.97,
         bottom=bottom,
-        top=0.82,
+        top=top,
     )
     figure.savefig(
         path,
@@ -548,6 +645,7 @@ def render_problem(
         figure,
         problem,
         title="Capacitated Vehicle Routing Problem",
+        encoding=normalized_encoding,
     )
     _save_figure(
         figure,
@@ -556,6 +654,16 @@ def render_problem(
         path,
         dpi=dpi,
         bottom=0.04,
+        top=(
+            0.77
+            if normalized_encoding
+            in {
+                DemandEncoding.SIZE,
+                DemandEncoding.COLOR_INTENSITY,
+                DemandEncoding.BAR_LENGTH,
+            }
+            else 0.82
+        ),
     )
     return path
 
@@ -695,6 +803,7 @@ def render_solution(
         figure,
         problem,
         title=title,
+        encoding=normalized_encoding,
     )
     axis.legend(
         handles=legend_handles,
@@ -713,5 +822,15 @@ def render_solution(
         path,
         dpi=dpi,
         bottom=0.14,
+        top=(
+            0.77
+            if normalized_encoding
+            in {
+                DemandEncoding.SIZE,
+                DemandEncoding.COLOR_INTENSITY,
+                DemandEncoding.BAR_LENGTH,
+            }
+            else 0.82
+        ),
     )
     return path

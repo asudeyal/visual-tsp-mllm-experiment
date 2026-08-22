@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
+from matplotlib.colors import to_rgb
 from PIL import Image
 
 from src.instances import build_capacity_demo_10
@@ -12,6 +14,7 @@ from src.rendering import (
     DemandEncoding,
     _capacity_bar_fill_fractions,
     _customer_marker_colors,
+    _customer_marker_diameters,
     _customer_marker_areas,
     render_problem,
     render_solution,
@@ -80,78 +83,68 @@ def test_size_render_creates_valid_png(
         assert image.size == (1600, 1200)
 
 
-def test_size_marker_area_is_proportional_to_demand(
+def test_size_diameter_is_normalized_by_capacity(
 ) -> None:
     problem = build_capacity_demo_10()
 
-    size_areas = _customer_marker_areas(
+    diameters = _customer_marker_diameters(
         problem,
         encoding=DemandEncoding.SIZE,
+    )
+    larger_capacity_problem = replace(
+        problem,
+        vehicle_capacity=12,
+    )
+    larger_capacity_diameters = (
+        _customer_marker_diameters(
+            larger_capacity_problem,
+            encoding=DemandEncoding.SIZE,
+        )
     )
     numeric_areas = _customer_marker_areas(
         problem,
         encoding=DemandEncoding.NUMERIC,
     )
 
-    demand_to_area = {
-        customer.demand: area
-        for customer, area in zip(
+    demand_to_diameter = {
+        customer.demand: diameter
+        for customer, diameter in zip(
             problem.customers,
-            size_areas,
+            diameters,
+            strict=True,
+        )
+    }
+    larger_capacity_by_demand = {
+        customer.demand: diameter
+        for customer, diameter in zip(
+            larger_capacity_problem.customers,
+            larger_capacity_diameters,
             strict=True,
         )
     }
 
-    assert demand_to_area[2] == pytest.approx(
-        demand_to_area[1] * 2
+    first_step = (
+        demand_to_diameter[2]
+        - demand_to_diameter[1]
     )
-    assert demand_to_area[3] == pytest.approx(
-        demand_to_area[1] * 3
+    second_step = (
+        demand_to_diameter[3]
+        - demand_to_diameter[2]
+    )
+    larger_capacity_span = (
+        larger_capacity_by_demand[3]
+        - larger_capacity_by_demand[1]
+    )
+    original_span = (
+        demand_to_diameter[3]
+        - demand_to_diameter[1]
+    )
+
+    assert first_step == pytest.approx(second_step)
+    assert larger_capacity_span == pytest.approx(
+        original_span / 2
     )
     assert len(set(numeric_areas)) == 1
-
-
-def test_color_render_creates_valid_png(
-    tmp_path: Path,
-) -> None:
-    problem = build_capacity_demo_10()
-    output_path = tmp_path / "color.png"
-
-    render_problem(
-        problem,
-        output_path,
-        encoding=DemandEncoding.COLOR,
-    )
-
-    with Image.open(output_path) as image:
-        assert image.format == "PNG"
-        assert image.size == (1600, 1200)
-
-
-def test_color_encoding_uses_one_color_per_demand(
-) -> None:
-    problem = build_capacity_demo_10()
-
-    colors = _customer_marker_colors(
-        problem,
-        encoding=DemandEncoding.COLOR,
-    )
-    areas = _customer_marker_areas(
-        problem,
-        encoding=DemandEncoding.COLOR,
-    )
-    demand_to_color = {
-        customer.demand: color
-        for customer, color in zip(
-            problem.customers,
-            colors,
-            strict=True,
-        )
-    }
-
-    assert len(demand_to_color) == 3
-    assert len(set(demand_to_color.values())) == 3
-    assert len(set(areas)) == 1
 
 
 def test_color_intensity_render_creates_valid_png(
@@ -171,15 +164,11 @@ def test_color_intensity_render_creates_valid_png(
         assert image.size == (1600, 1200)
 
 
-def test_color_intensity_uses_ordered_blue_scale(
+def test_color_intensity_is_normalized_by_capacity(
 ) -> None:
     problem = build_capacity_demo_10()
 
     colors = _customer_marker_colors(
-        problem,
-        encoding=DemandEncoding.COLOR_INTENSITY,
-    )
-    areas = _customer_marker_areas(
         problem,
         encoding=DemandEncoding.COLOR_INTENSITY,
     )
@@ -191,13 +180,36 @@ def test_color_intensity_uses_ordered_blue_scale(
             strict=True,
         )
     }
-
-    assert demand_to_color == {
-        1: "#93C5FD",
-        2: "#3B82F6",
-        3: "#1D4ED8",
+    brightness_by_demand = {
+        demand: sum(to_rgb(color))
+        for demand, color in demand_to_color.items()
     }
-    assert len(set(areas)) == 1
+    larger_capacity_problem = replace(
+        problem,
+        vehicle_capacity=12,
+    )
+    larger_capacity_colors = _customer_marker_colors(
+        larger_capacity_problem,
+        encoding=DemandEncoding.COLOR_INTENSITY,
+    )
+    larger_capacity_by_demand = {
+        customer.demand: color
+        for customer, color in zip(
+            larger_capacity_problem.customers,
+            larger_capacity_colors,
+            strict=True,
+        )
+    }
+
+    assert brightness_by_demand[1] > (
+        brightness_by_demand[2]
+    )
+    assert brightness_by_demand[2] > (
+        brightness_by_demand[3]
+    )
+    assert sum(
+        to_rgb(larger_capacity_by_demand[3])
+    ) > sum(to_rgb(demand_to_color[3]))
 
 
 def test_bar_length_render_creates_valid_png(
