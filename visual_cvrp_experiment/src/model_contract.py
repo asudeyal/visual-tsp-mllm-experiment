@@ -55,6 +55,15 @@ _ENCODING_GUIDANCE = {
         "numeric demand label is printed next to a "
         "customer."
     ),
+    DemandEncoding.COLOR_INTENSITY: (
+        "Each equal-sized blue circle is a customer. "
+        "The integer inside the circle is the customer "
+        "node ID. Customer demand is encoded only by "
+        "blue fill intensity: light blue means demand "
+        "1, medium blue means demand 2, and dark blue "
+        "means demand 3. No numeric demand label is "
+        "printed next to a customer."
+    ),
 }
 
 _JSON_FENCE_PATTERN = re.compile(

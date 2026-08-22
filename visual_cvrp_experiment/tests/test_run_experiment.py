@@ -187,6 +187,52 @@ def test_color_validate_only_creates_color_artifacts(
     ).read_text(encoding="utf-8")
 
 
+def test_color_intensity_validate_only_creates_artifacts(
+    tmp_path: Path,
+) -> None:
+    fake_client = FakeGeminiClient()
+
+    result, result_path = execute_experiment(
+        run_id="color_intensity_validation_run",
+        output_dir=tmp_path,
+        model="gemini-test",
+        encoding="color_intensity",
+        validate_only=True,
+        client=fake_client,
+    )
+
+    run_dir = (
+        tmp_path
+        / "runs"
+        / "color_intensity_validation_run"
+    )
+
+    assert result["encoding"] == "color_intensity"
+    assert result["api_call_performed"] is False
+    assert fake_client.calls == []
+    assert (
+        run_dir
+        / "inputs"
+        / "problem_color_intensity.png"
+    ).is_file()
+    assert result_path == (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "color_intensity"
+        / "single_call_results.json"
+    )
+    assert "blue fill intensity" in (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "color_intensity"
+        / "prompt.txt"
+    ).read_text(encoding="utf-8")
+
+
 def test_completed_response_is_validated_and_scored(
     tmp_path: Path,
 ) -> None:

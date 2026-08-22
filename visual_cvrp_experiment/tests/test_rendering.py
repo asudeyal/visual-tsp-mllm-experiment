@@ -153,6 +153,52 @@ def test_color_encoding_uses_one_color_per_demand(
     assert len(set(areas)) == 1
 
 
+def test_color_intensity_render_creates_valid_png(
+    tmp_path: Path,
+) -> None:
+    problem = build_capacity_demo_10()
+    output_path = tmp_path / "color_intensity.png"
+
+    render_problem(
+        problem,
+        output_path,
+        encoding=DemandEncoding.COLOR_INTENSITY,
+    )
+
+    with Image.open(output_path) as image:
+        assert image.format == "PNG"
+        assert image.size == (1600, 1200)
+
+
+def test_color_intensity_uses_ordered_blue_scale(
+) -> None:
+    problem = build_capacity_demo_10()
+
+    colors = _customer_marker_colors(
+        problem,
+        encoding=DemandEncoding.COLOR_INTENSITY,
+    )
+    areas = _customer_marker_areas(
+        problem,
+        encoding=DemandEncoding.COLOR_INTENSITY,
+    )
+    demand_to_color = {
+        customer.demand: color
+        for customer, color in zip(
+            problem.customers,
+            colors,
+            strict=True,
+        )
+    }
+
+    assert demand_to_color == {
+        1: "#93C5FD",
+        2: "#3B82F6",
+        3: "#1D4ED8",
+    }
+    assert len(set(areas)) == 1
+
+
 def test_render_creates_parent_directories(
     tmp_path: Path,
 ) -> None:

@@ -58,6 +58,22 @@ def test_color_prompt_explains_visual_palette() -> None:
     assert "419.727" not in prompt
 
 
+def test_color_intensity_prompt_explains_blue_scale(
+) -> None:
+    prompt = build_solver_prompt(
+        encoding="color_intensity"
+    )
+
+    assert "encoded only by blue fill intensity" in prompt
+    assert "light blue means demand 1" in prompt
+    assert "medium blue means demand 2" in prompt
+    assert "dark blue means demand 3" in prompt
+    assert "equal-sized blue circle" in prompt
+    assert "d=<value>" not in prompt
+    assert "total demand is 18" not in prompt.lower()
+    assert "419.727" not in prompt
+
+
 def test_parse_direct_json_response() -> None:
     parsed = parse_model_response(
         '{"routes": [[0, 1, 2, 0], [0, 3, 0]]}'

@@ -22,6 +22,7 @@ class DemandEncoding(str, Enum):
     NUMERIC = "numeric"
     SIZE = "size"
     COLOR = "color"
+    COLOR_INTENSITY = "color_intensity"
 
 
 _ROUTE_COLORS = (
@@ -44,6 +45,16 @@ _DEMAND_COLORS = {
 _DEMAND_LABEL_COLORS = {
     1: "white",
     2: "#111827",
+    3: "white",
+}
+_DEMAND_INTENSITY_COLORS = {
+    1: "#93C5FD",
+    2: "#3B82F6",
+    3: "#1D4ED8",
+}
+_DEMAND_INTENSITY_LABEL_COLORS = {
+    1: "#111827",
+    2: "white",
     3: "white",
 }
 
@@ -190,6 +201,12 @@ def _customer_marker_colors(
             _DEMAND_COLORS,
         )
 
+    if encoding is DemandEncoding.COLOR_INTENSITY:
+        return _demand_palette_values(
+            problem,
+            _DEMAND_INTENSITY_COLORS,
+        )
+
     return [
         _DEFAULT_CUSTOMER_COLOR
         for _ in problem.customers
@@ -205,6 +222,12 @@ def _customer_label_colors(
         return _demand_palette_values(
             problem,
             _DEMAND_LABEL_COLORS,
+        )
+
+    if encoding is DemandEncoding.COLOR_INTENSITY:
+        return _demand_palette_values(
+            problem,
+            _DEMAND_INTENSITY_LABEL_COLORS,
         )
 
     return [
