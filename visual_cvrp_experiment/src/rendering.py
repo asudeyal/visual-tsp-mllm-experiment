@@ -21,6 +21,7 @@ class DemandEncoding(str, Enum):
 
     NUMERIC = "numeric"
     SIZE = "size"
+    COLOR = "color"
 
 
 _ROUTE_COLORS = (
@@ -34,6 +35,17 @@ _ROUTE_COLORS = (
 
 _NUMERIC_MARKER_AREA = 850.0
 _SIZE_MARKER_AREA_PER_DEMAND_UNIT = 500.0
+_DEFAULT_CUSTOMER_COLOR = "#2F80ED"
+_DEMAND_COLORS = {
+    1: "#2F80ED",
+    2: "#F2994A",
+    3: "#9B51E0",
+}
+_DEMAND_LABEL_COLORS = {
+    1: "white",
+    2: "#111827",
+    3: "white",
+}
 
 
 def _normalize_encoding(
@@ -143,6 +155,64 @@ def _customer_marker_areas(
     ]
 
 
+def _demand_palette_values(
+    problem: CVRPProblem,
+    palette: dict[int, str],
+) -> list[str]:
+    unsupported_demands = sorted(
+        {
+            customer.demand
+            for customer in problem.customers
+            if customer.demand not in palette
+        }
+    )
+    if unsupported_demands:
+        raise ValueError(
+            "Renk kodlaması yalnızca 1, 2 ve 3 "
+            "talep değerlerini destekler. "
+            f"Desteklenmeyenler: {unsupported_demands}"
+        )
+
+    return [
+        palette[customer.demand]
+        for customer in problem.customers
+    ]
+
+
+def _customer_marker_colors(
+    problem: CVRPProblem,
+    *,
+    encoding: DemandEncoding,
+) -> list[str]:
+    if encoding is DemandEncoding.COLOR:
+        return _demand_palette_values(
+            problem,
+            _DEMAND_COLORS,
+        )
+
+    return [
+        _DEFAULT_CUSTOMER_COLOR
+        for _ in problem.customers
+    ]
+
+
+def _customer_label_colors(
+    problem: CVRPProblem,
+    *,
+    encoding: DemandEncoding,
+) -> list[str]:
+    if encoding is DemandEncoding.COLOR:
+        return _demand_palette_values(
+            problem,
+            _DEMAND_LABEL_COLORS,
+        )
+
+    return [
+        "white"
+        for _ in problem.customers
+    ]
+
+
 def _draw_nodes(
     axis,
     problem: CVRPProblem,
@@ -165,20 +235,32 @@ def _draw_nodes(
             encoding=encoding,
         ),
         marker="o",
-        color="#2F80ED",
+        color=_customer_marker_colors(
+            problem,
+            encoding=encoding,
+        ),
         edgecolors="#12355B",
         linewidths=1.8,
         zorder=3,
     )
 
-    for customer in customers:
+    label_colors = _customer_label_colors(
+        problem,
+        encoding=encoding,
+    )
+
+    for customer, label_color in zip(
+        customers,
+        label_colors,
+        strict=True,
+    ):
         axis.text(
             customer.x,
             customer.y,
             str(customer.node_id),
             horizontalalignment="center",
             verticalalignment="center",
-            color="white",
+            color=label_color,
             fontsize=12,
             fontweight="bold",
             zorder=4,

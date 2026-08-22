@@ -145,6 +145,48 @@ def test_size_validate_only_creates_size_artifacts(
     ).read_text(encoding="utf-8")
 
 
+def test_color_validate_only_creates_color_artifacts(
+    tmp_path: Path,
+) -> None:
+    fake_client = FakeGeminiClient()
+
+    result, result_path = execute_experiment(
+        run_id="color_validation_run",
+        output_dir=tmp_path,
+        model="gemini-test",
+        encoding="color",
+        validate_only=True,
+        client=fake_client,
+    )
+
+    run_dir = (
+        tmp_path / "runs" / "color_validation_run"
+    )
+
+    assert result["encoding"] == "color"
+    assert result["api_call_performed"] is False
+    assert fake_client.calls == []
+    assert (
+        run_dir / "inputs" / "problem_color.png"
+    ).is_file()
+    assert result_path == (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "color"
+        / "single_call_results.json"
+    )
+    assert "fill color" in (
+        run_dir
+        / "providers"
+        / "gemini"
+        / "gemini-test"
+        / "color"
+        / "prompt.txt"
+    ).read_text(encoding="utf-8")
+
+
 def test_completed_response_is_validated_and_scored(
     tmp_path: Path,
 ) -> None:

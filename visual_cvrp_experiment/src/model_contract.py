@@ -46,6 +46,15 @@ _ENCODING_GUIDANCE = {
         "largest circles have demand 3. No numeric "
         "demand label is printed next to a customer."
     ),
+    DemandEncoding.COLOR: (
+        "Each equal-sized circle is a customer. "
+        "The integer inside the circle is the customer "
+        "node ID. Customer demand is encoded only by "
+        "fill color: blue means demand 1, orange means "
+        "demand 2, and purple means demand 3. No "
+        "numeric demand label is printed next to a "
+        "customer."
+    ),
 }
 
 _JSON_FENCE_PATTERN = re.compile(
