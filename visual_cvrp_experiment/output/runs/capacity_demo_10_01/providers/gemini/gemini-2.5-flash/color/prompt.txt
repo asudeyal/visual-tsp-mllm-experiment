@@ -1,0 +1,16 @@
+Solve the Capacitated Vehicle Routing Problem shown in the image.
+
+Image interpretation:
+- The black square with node ID 0 is the depot.
+- Each equal-sized circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by fill color: blue means demand 1, orange means demand 2, and purple means demand 3. No numeric demand label is printed next to a customer.
+- Vehicle capacity Q and the maximum number of available vehicles K are shown above the problem area.
+
+Solution requirements:
+- Every route must start at depot 0 and end at depot 0.
+- Visit every customer exactly once across all routes.
+- Do not invent, omit, or repeat customer IDs.
+- The sum of customer demands on each route must not exceed Q.
+- Use no more than K routes.
+- Minimize the sum of Euclidean route distances.
+
+Return exactly one JSON object with a field named "routes". The value of "routes" must be an array of integer arrays. Do not include markdown, commentary, calculations, or any text outside the JSON object.
