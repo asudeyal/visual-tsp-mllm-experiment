@@ -11,6 +11,7 @@ Genel sonuçlar
 +----------+------------------+---------+---------+------+----------+--------+---------+--------+-------+---------+--------+
 | baseline | Exact DP         | -       | evet    |    3 | 419.7278 | 0.0000 |       - |      - |     - |       - |      - |
 | gemini   | gemini-2.5-flash | numeric | evet    |    3 | 432.6964 | 3.0898 | 34.8340 |    468 |    63 |    9080 |   9611 |
+| gemini   | gemini-2.5-flash | size    | hayır   |    3 | 505.3670 |      - | 36.6052 |    496 |    63 |    8512 |   9071 |
 +----------+------------------+---------+---------+------+----------+--------+---------+--------+-------+---------+--------+
 
 Kesin optimum rotaları
@@ -32,6 +33,17 @@ gemini / gemini-2.5-flash / numeric rotaları
 +------+-----------------------+-------+------+----------+---------+
 Kısıt özeti: eksik=- | tekrar=- | bilinmeyen=- | kapasite aşımı=0 | filo aşımı=hayır
 
+gemini / gemini-2.5-flash / size rotaları
++------+-----------------------+-------+------+----------+---------+
+| Rota | Yol                   | Yük/Q | Aşım |   Mesafe | Geçerli |
++------+-----------------------+-------+------+----------+---------+
+|    1 | 0 -> 8 -> 5 -> 7 -> 0 |   7/6 |    1 | 176.4194 | hayır   |
+|    2 | 0 -> 4 -> 1 -> 6 -> 0 |   6/6 |    0 | 184.9433 | evet    |
+|    3 | 0 -> 2 -> 9 -> 3 -> 0 |   5/6 |    0 | 144.0043 | evet    |
++------+-----------------------+-------+------+----------+---------+
+Kısıt özeti: eksik=- | tekrar=- | bilinmeyen=- | kapasite aşımı=1 | filo aşımı=hayır
+
 Görsel çıktılar
 - analysis/images/baseline_exact_routes.png
 - analysis/images/gemini_gemini-2.5-flash_numeric_routes.png
+- analysis/images/gemini_gemini-2.5-flash_size_routes.png
