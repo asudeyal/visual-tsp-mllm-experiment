@@ -17,24 +17,24 @@ Yöntem sonuç özeti
 +--------+----------+------------------+----------+-------------+---------------+--------------+-----------------------+
 
 İterasyon gelişimi
-+--------+----------+------------------+------+-------------+---------+----------------+----------+---------+---------+-------+
-| Yöntem | Provider | Model            | İter | Aşama       | Geçerli | Kapasite aşımı |   Mesafe |   Gap % |  API sn | Token |
-+--------+----------+------------------+------+-------------+---------+----------------+----------+---------+---------+-------+
-| bar    | gemini   | gemini-2.5-flash |    1 | başlangıç   | hayır   |              2 | 452.9644 |       - | 48.9574 | 11862 |
-| bar    | gemini   | gemini-2.5-flash |    2 | iyileştirme | evet    |              0 | 479.3855 | 14.2134 | 31.7698 |  8551 |
-| bar    | gemini   | gemini-2.5-flash |    3 | iyileştirme | evet    |              0 | 475.4497 | 13.2757 | 34.4637 |  9524 |
-| bar    | gemini   | gemini-2.5-flash |    4 | iyileştirme | hayır   |              2 | 489.0572 |       - | 55.8975 | 14208 |
-| bar    | gemini   | gemini-2.5-flash |    5 | iyileştirme | hayır   |              1 | 464.3444 |       - | 53.1186 | 13391 |
-| bar    | gemini   | gemini-2.5-flash |    6 | iyileştirme | evet    |              0 | 476.0093 | 13.4090 | 40.8270 | 10806 |
-| bar    | gemini   | gemini-2.5-flash |    7 | iyileştirme | evet    |              0 | 419.7278 |  0.0000 | 45.0004 | 12894 |
-| color  | gemini   | gemini-2.5-flash |    1 | başlangıç   | hayır   |              5 | 398.1098 |       - | 38.2184 |  9909 |
-| color  | gemini   | gemini-2.5-flash |    2 | iyileştirme | hayır   |              1 | 507.8409 |       - | 38.5957 | 10473 |
-| color  | gemini   | gemini-2.5-flash |    3 | iyileştirme | evet    |              0 | 479.0425 | 14.1317 | 37.3926 |  9223 |
-| color  | gemini   | gemini-2.5-flash |    4 | iyileştirme | evet    |              0 | 429.8553 |  2.4129 | 65.7491 | 16270 |
-| color  | gemini   | gemini-2.5-flash |    5 | iyileştirme | evet    |              0 | 419.7278 |  0.0000 | 61.4965 | 14902 |
-| size   | gemini   | gemini-2.5-flash |    1 | başlangıç   | evet    |              0 | 475.4497 | 13.2757 | 31.8600 |  8452 |
-| size   | gemini   | gemini-2.5-flash |    2 | iyileştirme | evet    |              0 | 419.7278 |  0.0000 | 57.2519 | 15165 |
-+--------+----------+------------------+------+-------------+---------+----------------+----------+---------+---------+-------+
++--------+----------+------------------+------+-------------+---------+----------------+----------+---------+----------+---------+-------+
+| Yöntem | Provider | Model            | İter | Aşama       | Geçerli | Kapasite aşımı |   Mesafe |   Gap % |    GBest |  API sn | Token |
++--------+----------+------------------+------+-------------+---------+----------------+----------+---------+----------+---------+-------+
+| bar    | gemini   | gemini-2.5-flash |    1 | başlangıç   | hayır   |              2 | 452.9644 |       - |        - | 48.9574 | 11862 |
+| bar    | gemini   | gemini-2.5-flash |    2 | iyileştirme | evet    |              0 | 479.3855 | 14.2134 | 479.3855 | 31.7698 |  8551 |
+| bar    | gemini   | gemini-2.5-flash |    3 | iyileştirme | evet    |              0 | 475.4497 | 13.2757 | 475.4497 | 34.4637 |  9524 |
+| bar    | gemini   | gemini-2.5-flash |    4 | iyileştirme | hayır   |              2 | 489.0572 |       - | 475.4497 | 55.8975 | 14208 |
+| bar    | gemini   | gemini-2.5-flash |    5 | iyileştirme | hayır   |              1 | 464.3444 |       - | 475.4497 | 53.1186 | 13391 |
+| bar    | gemini   | gemini-2.5-flash |    6 | iyileştirme | evet    |              0 | 476.0093 | 13.4090 | 475.4497 | 40.8270 | 10806 |
+| bar    | gemini   | gemini-2.5-flash |    7 | iyileştirme | evet    |              0 | 419.7278 |  0.0000 | 419.7278 | 45.0004 | 12894 |
+| color  | gemini   | gemini-2.5-flash |    1 | başlangıç   | hayır   |              5 | 398.1098 |       - |        - | 38.2184 |  9909 |
+| color  | gemini   | gemini-2.5-flash |    2 | iyileştirme | hayır   |              1 | 507.8409 |       - |        - | 38.5957 | 10473 |
+| color  | gemini   | gemini-2.5-flash |    3 | iyileştirme | evet    |              0 | 479.0425 | 14.1317 | 479.0425 | 37.3926 |  9223 |
+| color  | gemini   | gemini-2.5-flash |    4 | iyileştirme | evet    |              0 | 429.8553 |  2.4129 | 429.8553 | 65.7491 | 16270 |
+| color  | gemini   | gemini-2.5-flash |    5 | iyileştirme | evet    |              0 | 419.7278 |  0.0000 | 419.7278 | 61.4965 | 14902 |
+| size   | gemini   | gemini-2.5-flash |    1 | başlangıç   | evet    |              0 | 475.4497 | 13.2757 | 475.4497 | 31.8600 |  8452 |
+| size   | gemini   | gemini-2.5-flash |    2 | iyileştirme | evet    |              0 | 419.7278 |  0.0000 | 419.7278 | 57.2519 | 15165 |
++--------+----------+------------------+------+-------------+---------+----------------+----------+---------+----------+---------+-------+
 
 Kesin optimum rotaları
 +------+-----------------------+-------+------+----------+---------+

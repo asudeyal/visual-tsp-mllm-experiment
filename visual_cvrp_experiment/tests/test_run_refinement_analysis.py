@@ -161,6 +161,72 @@ def test_iteration_rows_are_grouped_by_encoding() -> None:
     ]
 
 
+def test_iteration_rows_tracks_gbest_from_valid_solutions_only() -> None:
+    iterations = [
+        {
+            "provider": "gemini",
+            "model": "gemini-test",
+            "encoding": "bar_length",
+            "iteration": 1,
+            "phase": "initial",
+            "status": "completed",
+            "validation": {
+                "valid": False,
+                "total_distance": 452.9644,
+            },
+            "optimality_gap_percent": None,
+        },
+        {
+            "provider": "gemini",
+            "model": "gemini-test",
+            "encoding": "bar_length",
+            "iteration": 2,
+            "phase": "refinement",
+            "status": "completed",
+            "validation": {
+                "valid": True,
+                "total_distance": 479.3855,
+            },
+            "optimality_gap_percent": 14.2134,
+        },
+        {
+            "provider": "gemini",
+            "model": "gemini-test",
+            "encoding": "bar_length",
+            "iteration": 3,
+            "phase": "refinement",
+            "status": "completed",
+            "validation": {
+                "valid": True,
+                "total_distance": 475.4497,
+            },
+            "optimality_gap_percent": 13.2757,
+        },
+        {
+            "provider": "gemini",
+            "model": "gemini-test",
+            "encoding": "bar_length",
+            "iteration": 4,
+            "phase": "refinement",
+            "status": "completed",
+            "validation": {
+                "valid": False,
+                "total_distance": 464.3444,
+            },
+            "optimality_gap_percent": None,
+        },
+    ]
+
+    rows = _iteration_rows(iterations)
+
+    assert [row[9] for row in rows] == [
+        "-",
+        "479.3855",
+        "475.4497",
+        "475.4497",
+    ]
+
+
 def test_method_summary_keeps_providers_separate() -> None:
     manifest = {
         "methods": [

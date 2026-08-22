@@ -96,6 +96,7 @@ def _iteration_rows(
 ) -> list[list[str]]:
     labels = method_labels or {}
     rows = []
+    gbest_by_method: dict[tuple[str, str, str], float] = {}
     for result in sorted(
         iterations,
         key=lambda item: (
@@ -113,6 +114,15 @@ def _iteration_rows(
         response = result.get("model_response") or {}
         usage = _usage(result)
         identity = (provider, model, encoding)
+        if (
+            result.get("status") == "completed"
+            and validation.get("valid") is True
+            and isinstance(distance, (int, float))
+        ):
+            previous_gbest = gbest_by_method.get(identity)
+            if previous_gbest is None or distance < previous_gbest:
+                gbest_by_method[identity] = float(distance)
+        gbest = gbest_by_method.get(identity)
         method_label = labels.get(
             identity,
             " / ".join(identity),
@@ -132,6 +142,7 @@ def _iteration_rows(
                 _format_number(
                     result.get("optimality_gap_percent")
                 ),
+                _format_number(gbest),
                 _format_number(
                     response.get("elapsed_seconds")
                 ),
@@ -580,6 +591,7 @@ def build_refinement_report(
                     "Kapasite aşımı",
                     "Mesafe",
                     "Gap %",
+                    "GBest",
                     "API sn",
                     "Token",
                 ],
@@ -587,7 +599,7 @@ def build_refinement_report(
                     iterations,
                     method_labels=method_labels,
                 ),
-                right_aligned={3, 6, 7, 8, 9, 10},
+                right_aligned={3, 6, 7, 8, 9, 10, 11},
             )
             if iterations
             else "Kayıtlı iterasyon bulunamadı.",
