@@ -30,7 +30,9 @@ birleşik görsel kodlama yöntemleri karşılaştırılacaktır.
 
 - `src/problem.py`: CVRP düğüm ve problem veri modeli
 - `src/validation.py`: deterministik rota ve çözüm doğrulaması
-- `tests/`: problem modeli ve doğrulama testleri
+- `src/instances.py`: sabit 10 düğümlü araştırma örneği
+- `src/rendering.py`: CVRP problem görseli üretimi
+- `tests/`: problem, doğrulama, instance ve görselleştirme testleri
 
 Doğrulayıcı şu kuralları denetler:
 
@@ -54,5 +56,5 @@ cd visual_cvrp_experiment
     -q
 ```
 
-Henüz model API entegrasyonu veya görsel üretim bileşeni
-eklenmemiştir.
+İlk nümerik talep görselleştirmesi hazırdır. Henüz model API
+entegrasyonu ve deney çalıştırıcısı eklenmemiştir.
