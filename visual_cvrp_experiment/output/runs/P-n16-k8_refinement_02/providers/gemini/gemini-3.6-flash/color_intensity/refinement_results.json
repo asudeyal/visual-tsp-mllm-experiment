@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "experiment": "visual_cvrp_refinement_method",
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "encoding": "color_intensity",
+  "status": "paused",
+  "stop_reason": "request_failed",
+  "maximum_iterations": 8,
+  "recorded_iterations": [
+    1,
+    2,
+    3
+  ],
+  "final_iteration": 3,
+  "best_valid_iteration": 2
+}

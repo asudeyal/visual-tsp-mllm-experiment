@@ -9,11 +9,10 @@ from pathlib import Path
 from typing import Any
 
 from src.exact_solver import solve_exact_cvrp
-from src.gemini_client import (
-    DEFAULT_GEMINI_MODEL,
-    GeminiClientError,
-    GeminiVisionClient,
-)
+
+from src.providers import get_provider
+from src.providers.gemini import DEFAULT_GEMINI_MODEL, GeminiClientError
+
 from src.instances import build_capacity_demo_10
 from src.model_contract import (
     ModelResponseParseError,
@@ -271,7 +270,7 @@ def execute_experiment(
     gemini_client = (
         client
         if client is not None
-        else GeminiVisionClient(model=model)
+        else get_provider("gemini", model=model)
     )
 
     try:

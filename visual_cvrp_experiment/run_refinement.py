@@ -16,12 +16,14 @@ from run_experiment import (
     _write_json,
 )
 from src.exact_solver import solve_exact_cvrp
-from src.gemini_client import (
-    DEFAULT_GEMINI_MODEL,
-    GeminiClientError,
-    GeminiVisionClient,
+
+from src.providers import get_provider
+from src.providers.gemini import DEFAULT_GEMINI_MODEL, GeminiClientError
+
+from src.instances import (
+    build_capacity_demo_10,
+    build_cvrplib_problem,
 )
-from src.instances import build_capacity_demo_10
 from src.model_contract import (
     ModelResponseParseError,
     build_solver_prompt,
@@ -118,6 +120,15 @@ def parse_args(
             "Var olan run'a yeni kodlamaları kontrollü "
             "olarak ekler. Yalnızca --resume ile "
             "kullanılabilir."
+        ),
+    )
+    parser.add_argument(
+        "--instance-file",
+        type=Path,
+        default=None,
+        help=(
+            "CVRPLIB .vrp dosyasının yolu. "
+            "Verilmezse capacity_demo_10 kullanılır."
         ),
     )
     return parser.parse_args(argv)
@@ -634,6 +645,7 @@ def _write_manifest(
 
 def execute_refinement(
     *,
+    instance_file: Path | str | None = None,
     run_id: str,
     historical_run_id: str,
     output_dir: Path | str,
@@ -688,7 +700,12 @@ def execute_refinement(
     problem_path = inputs_dir / "problem.json"
     baseline_path = baseline_dir / "exact_results.json"
 
-    problem = build_capacity_demo_10()
+    if instance_file is None:
+        problem = build_capacity_demo_10()
+    else:
+        problem = build_cvrplib_problem(
+            instance_file
+        )
     exact_solution = solve_exact_cvrp(problem)
     _validate_existing_manifest(
         manifest_path=manifest_path,
@@ -783,7 +800,7 @@ def execute_refinement(
     gemini_client = (
         client
         if client is not None
-        else GeminiVisionClient(model=model)
+        else get_provider("gemini", model=model)
     )
     blocked: set[DemandEncoding] = set()
     maximum_total_calls = (
@@ -1086,8 +1103,10 @@ def main(
     argv: list[str] | None = None,
 ) -> None:
     args = parse_args(argv)
+    instance_file=args.instance_file,
     try:
         manifest, manifest_path = execute_refinement(
+            instance_file=args.instance_file,
             run_id=args.run_id,
             historical_run_id=args.historical_run_id,
             output_dir=args.output_dir,
