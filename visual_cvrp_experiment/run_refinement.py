@@ -43,6 +43,8 @@ SUPPORTED_ENCODINGS = (
     DemandEncoding.BAR_LENGTH,
     DemandEncoding.COLOR_INTENSITY,
     DemandEncoding.SIZE,
+    DemandEncoding.SCALE_POSITION,
+    DemandEncoding.RADIAL_FILL,
 )
 OPTIMAL_GAP_TOLERANCE = 1e-9
 
@@ -772,20 +774,29 @@ def execute_refinement(
     for encoding in normalized_encodings:
         method_dir = method_dirs[encoding]
         image_path = image_paths[encoding]
-        render_problem(
-            problem,
-            image_path,
-            encoding=encoding,
-        )
+        initial_prompt_path = method_dir / "initial_prompt.txt"
+        if not (
+            extend_encodings
+            and image_path.is_file()
+        ):
+            render_problem(
+                problem,
+                image_path,
+                encoding=encoding,
+            )
         initial_prompt = build_solver_prompt(
             encoding=encoding,
             depot_id=problem.depot.node_id,
         )
         method_dir.mkdir(parents=True, exist_ok=True)
-        (method_dir / "initial_prompt.txt").write_text(
-            initial_prompt + "\n",
-            encoding="utf-8",
-        )
+        if not (
+            extend_encodings
+            and initial_prompt_path.is_file()
+        ):
+            initial_prompt_path.write_text(
+                initial_prompt + "\n",
+                encoding="utf-8",
+            )
 
     empty_summaries = [
         _method_summary(

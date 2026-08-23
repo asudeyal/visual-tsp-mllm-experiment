@@ -72,6 +72,32 @@ _ENCODING_GUIDANCE = {
         "demand divided by Q. No numeric demand label "
         "is printed next to a customer."
     ),
+    DemandEncoding.SCALE_POSITION: (
+        "Each equal-sized blue circle is a customer. "
+        "The integer inside the circle is the customer "
+        "node ID. Customer demand is encoded only by "
+        "the vertical position of a triangular pointer "
+        "on the fixed-length scale beside the circle. "
+        "The bottom endpoint represents zero demand and "
+        "the top endpoint represents vehicle capacity Q. "
+        "Every customer scale has the same length. "
+        "Pointer position changes linearly with demand "
+        "divided by Q. No numeric demand label is printed "
+        "next to a customer."
+    ),
+    DemandEncoding.RADIAL_FILL: (
+        "Each equal-sized blue circle is a customer. "
+        "The integer inside the circle is the customer "
+        "node ID. Customer demand is encoded only by "
+        "the amber filled arc of the fixed-size ring "
+        "surrounding the circle. The empty gray ring "
+        "represents zero demand and a completely amber "
+        "ring represents vehicle capacity Q. The filled "
+        "arc starts at 12 o'clock and increases clockwise. "
+        "Its filled fraction is demand divided by Q. "
+        "No numeric demand label is printed next to a "
+        "customer."
+    ),
 }
 
 _JSON_FENCE_PATTERN = re.compile(

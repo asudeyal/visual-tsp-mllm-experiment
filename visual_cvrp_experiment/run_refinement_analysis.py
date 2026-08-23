@@ -305,6 +305,8 @@ def _method_labels(
         "bar_length": "bar",
         "color_intensity": "color",
         "size": "size",
+        "scale_position": "scale",
+        "radial_fill": "radial",
     }
     return {
         identity: display_names.get(

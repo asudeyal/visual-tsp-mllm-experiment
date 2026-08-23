@@ -14,7 +14,12 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import to_hex
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import AnnotationBbox, DrawingArea
-from matplotlib.patches import Rectangle
+from matplotlib.patches import (
+    Circle,
+    Polygon,
+    Rectangle,
+    Wedge,
+)
 
 from .problem import CVRPProblem
 
@@ -26,6 +31,8 @@ class DemandEncoding(str, Enum):
     SIZE = "size"
     COLOR_INTENSITY = "color_intensity"
     BAR_LENGTH = "bar_length"
+    SCALE_POSITION = "scale_position"
+    RADIAL_FILL = "radial_fill"
 
 
 _ROUTE_COLORS = (
@@ -47,6 +54,18 @@ _CAPACITY_BAR_OFFSET_Y = -29.0
 _CAPACITY_BAR_BACKGROUND_COLOR = "#E5E7EB"
 _CAPACITY_BAR_FILL_COLOR = "#2563EB"
 _CAPACITY_BAR_EDGE_COLOR = "#12355B"
+_SCALE_POSITION_WIDTH = 18.0
+_SCALE_POSITION_HEIGHT = 46.0
+_SCALE_POSITION_OFFSET_X = 28.0
+_SCALE_POSITION_LINE_X = 5.0
+_SCALE_POSITION_POINTER_HALF_HEIGHT = 4.0
+_SCALE_POSITION_EDGE_COLOR = "#12355B"
+_SCALE_POSITION_POINTER_COLOR = "#2563EB"
+_RADIAL_RING_DIAMETER = 44.0
+_RADIAL_RING_WIDTH = 5.0
+_RADIAL_RING_BACKGROUND_COLOR = "#E5E7EB"
+_RADIAL_RING_FILL_COLOR = "#F59E0B"
+_RADIAL_RING_EDGE_COLOR = "#12355B"
 _BLUE_SCALE = plt.get_cmap("Blues")
 _BLUE_SCALE_MINIMUM = 0.10
 _BLUE_SCALE_MAXIMUM = 0.95
@@ -329,6 +348,159 @@ def _draw_capacity_bars(
         )
 
 
+def _draw_scale_positions(
+    axis,
+    problem: CVRPProblem,
+) -> None:
+    """Talebi sabit ölçek üzerindeki işaretçi konumuyla göster."""
+
+    fill_fractions = _capacity_bar_fill_fractions(
+        problem
+    )
+    scale_bottom = 4.0
+    scale_top = _SCALE_POSITION_HEIGHT - 4.0
+
+    for customer, fill_fraction in zip(
+        problem.customers,
+        fill_fractions,
+        strict=True,
+    ):
+        drawing_area = DrawingArea(
+            _SCALE_POSITION_WIDTH,
+            _SCALE_POSITION_HEIGHT,
+            clip=False,
+        )
+        line_x = _SCALE_POSITION_LINE_X
+        drawing_area.add_artist(
+            Line2D(
+                [line_x, line_x],
+                [scale_bottom, scale_top],
+                color=_SCALE_POSITION_EDGE_COLOR,
+                linewidth=1.5,
+            )
+        )
+        for tick_y in (scale_bottom, scale_top):
+            drawing_area.add_artist(
+                Line2D(
+                    [line_x - 2.5, line_x + 2.5],
+                    [tick_y, tick_y],
+                    color=_SCALE_POSITION_EDGE_COLOR,
+                    linewidth=1.4,
+                )
+            )
+
+        pointer_y = (
+            scale_bottom
+            + (scale_top - scale_bottom)
+            * fill_fraction
+        )
+        drawing_area.add_artist(
+            Polygon(
+                (
+                    (line_x + 0.5, pointer_y),
+                    (
+                        line_x + 8.5,
+                        pointer_y
+                        + _SCALE_POSITION_POINTER_HALF_HEIGHT,
+                    ),
+                    (
+                        line_x + 8.5,
+                        pointer_y
+                        - _SCALE_POSITION_POINTER_HALF_HEIGHT,
+                    ),
+                ),
+                closed=True,
+                facecolor=_SCALE_POSITION_POINTER_COLOR,
+                edgecolor=_SCALE_POSITION_EDGE_COLOR,
+                linewidth=0.8,
+            )
+        )
+        axis.add_artist(
+            AnnotationBbox(
+                drawing_area,
+                (customer.x, customer.y),
+                xybox=(_SCALE_POSITION_OFFSET_X, 0.0),
+                xycoords="data",
+                boxcoords="offset points",
+                box_alignment=(0.5, 0.5),
+                frameon=False,
+                pad=0.0,
+                zorder=5,
+            )
+        )
+
+
+def _draw_radial_fills(
+    axis,
+    problem: CVRPProblem,
+) -> None:
+    """Talebi sabit halkadaki saat yönlü doluluk oranıyla göster."""
+
+    fill_fractions = _capacity_bar_fill_fractions(
+        problem
+    )
+    center = _RADIAL_RING_DIAMETER / 2.0
+    outer_radius = center - 2.0
+    inner_radius = outer_radius - _RADIAL_RING_WIDTH
+
+    for customer, fill_fraction in zip(
+        problem.customers,
+        fill_fractions,
+        strict=True,
+    ):
+        drawing_area = DrawingArea(
+            _RADIAL_RING_DIAMETER,
+            _RADIAL_RING_DIAMETER,
+            clip=False,
+        )
+        drawing_area.add_artist(
+            Wedge(
+                (center, center),
+                outer_radius,
+                0.0,
+                360.0,
+                width=_RADIAL_RING_WIDTH,
+                facecolor=_RADIAL_RING_BACKGROUND_COLOR,
+                edgecolor="none",
+            )
+        )
+        if fill_fraction > 0.0:
+            drawing_area.add_artist(
+                Wedge(
+                    (center, center),
+                    outer_radius,
+                    90.0 - 360.0 * fill_fraction,
+                    90.0,
+                    width=_RADIAL_RING_WIDTH,
+                    facecolor=_RADIAL_RING_FILL_COLOR,
+                    edgecolor="none",
+                )
+            )
+        for radius in (outer_radius, inner_radius):
+            drawing_area.add_artist(
+                Circle(
+                    (center, center),
+                    radius,
+                    fill=False,
+                    edgecolor=_RADIAL_RING_EDGE_COLOR,
+                    linewidth=0.9,
+                )
+            )
+        axis.add_artist(
+            AnnotationBbox(
+                drawing_area,
+                (customer.x, customer.y),
+                xybox=(0.0, 0.0),
+                xycoords="data",
+                boxcoords="offset points",
+                box_alignment=(0.5, 0.5),
+                frameon=False,
+                pad=0.0,
+                zorder=2.6,
+            )
+        )
+
+
 def _draw_nodes(
     axis,
     problem: CVRPProblem,
@@ -336,6 +508,12 @@ def _draw_nodes(
     encoding: DemandEncoding,
 ) -> None:
     customers = problem.customers
+
+    if encoding is DemandEncoding.RADIAL_FILL:
+        _draw_radial_fills(
+            axis,
+            problem,
+        )
 
     axis.scatter(
         [
@@ -404,6 +582,11 @@ def _draw_nodes(
 
     if encoding is DemandEncoding.BAR_LENGTH:
         _draw_capacity_bars(
+            axis,
+            problem,
+        )
+    elif encoding is DemandEncoding.SCALE_POSITION:
+        _draw_scale_positions(
             axis,
             problem,
         )
@@ -560,6 +743,73 @@ def _draw_header(
                 label="Q",
             ),
         )
+    elif encoding is DemandEncoding.SCALE_POSITION:
+        scale_x = 0.5
+        scale_bottom = 0.823
+        scale_top = 0.855
+        tick_half_width = 0.006
+
+        figure.add_artist(
+            Line2D(
+                [scale_x, scale_x],
+                [scale_bottom, scale_top],
+                transform=figure.transFigure,
+                color=_SCALE_POSITION_EDGE_COLOR,
+                linewidth=1.6,
+            )
+        )
+        for tick_y in (scale_bottom, scale_top):
+            figure.add_artist(
+                Line2D(
+                    [
+                        scale_x - tick_half_width,
+                        scale_x + tick_half_width,
+                    ],
+                    [tick_y, tick_y],
+                    transform=figure.transFigure,
+                    color=_SCALE_POSITION_EDGE_COLOR,
+                    linewidth=1.6,
+                )
+            )
+
+        figure.text(
+            scale_x + 0.012,
+            scale_top,
+            "Q",
+            horizontalalignment="left",
+            verticalalignment="center",
+            fontsize=9,
+            color="#111827",
+        )
+        figure.text(
+            scale_x + 0.012,
+            scale_bottom,
+            "0",
+            horizontalalignment="left",
+            verticalalignment="center",
+            fontsize=9,
+            color="#111827",
+        )
+        return
+    elif encoding is DemandEncoding.RADIAL_FILL:
+        handles = (
+            Circle(
+                (0.0, 0.0),
+                1.0,
+                facecolor=_RADIAL_RING_BACKGROUND_COLOR,
+                edgecolor=_RADIAL_RING_EDGE_COLOR,
+                linewidth=1.0,
+                label="0",
+            ),
+            Circle(
+                (0.0, 0.0),
+                1.0,
+                facecolor=_RADIAL_RING_FILL_COLOR,
+                edgecolor=_RADIAL_RING_EDGE_COLOR,
+                linewidth=1.0,
+                label="Q",
+            ),
+        )
     else:
         return
 
@@ -661,6 +911,8 @@ def render_problem(
                 DemandEncoding.SIZE,
                 DemandEncoding.COLOR_INTENSITY,
                 DemandEncoding.BAR_LENGTH,
+                DemandEncoding.SCALE_POSITION,
+                DemandEncoding.RADIAL_FILL,
             }
             else 0.82
         ),
@@ -829,6 +1081,8 @@ def render_solution(
                 DemandEncoding.SIZE,
                 DemandEncoding.COLOR_INTENSITY,
                 DemandEncoding.BAR_LENGTH,
+                DemandEncoding.SCALE_POSITION,
+                DemandEncoding.RADIAL_FILL,
             }
             else 0.82
         ),
