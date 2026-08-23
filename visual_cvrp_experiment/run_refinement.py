@@ -43,8 +43,9 @@ SUPPORTED_ENCODINGS = (
     DemandEncoding.BAR_LENGTH,
     DemandEncoding.COLOR_INTENSITY,
     DemandEncoding.SIZE,
-    DemandEncoding.SCALE_POSITION,
-    DemandEncoding.RADIAL_FILL,
+    DemandEncoding.HATCHING_DENSITY,
+    DemandEncoding.LINE_THICKNESS,
+    DemandEncoding.DOT_DENSITY,
 )
 OPTIMAL_GAP_TOLERANCE = 1e-9
 
@@ -490,7 +491,7 @@ def _iteration_result(
             prompt=prompt,
             image_path=image_path,
         )
-    except GeminiClientError as error:
+    except Exception as error:
         result["status"] = "request_failed"
         result["api_call_performed"] = True
         result["error"] = {
@@ -1135,6 +1136,15 @@ def main(
     argv: list[str] | None = None,
 ) -> None:
     args = parse_args(argv)
+    
+    # Mistral/Pixtral seçildiyse ilgili client'ı başlat
+    active_client = None
+    if "pixtral" in args.model.lower() or "mistral" in args.model.lower():
+        # Not: Dosyanı src/providers/mistral.py olarak kaydettiğini varsayıyoruz. 
+        # Eğer klasör adı sadece "provider" ise buradaki "providers" kelimesini ona göre düzeltmelisin.
+        from src.providers.mistral import MistralVisionProvider
+        active_client = MistralVisionProvider(model=args.model)
+
     try:
         manifest, manifest_path = execute_refinement(
             instance_file=args.instance_file,
@@ -1149,6 +1159,7 @@ def main(
             validate_only=args.validate_only,
             resume=args.resume,
             extend_encodings=args.extend_encodings,
+            client=active_client,  # <-- BURASI EKLENDİ
         )
     except KeyboardInterrupt:
         print(

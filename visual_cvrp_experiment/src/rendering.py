@@ -31,6 +31,9 @@ class DemandEncoding(str, Enum):
     SIZE = "size"
     COLOR_INTENSITY = "color_intensity"
     BAR_LENGTH = "bar_length"
+    HATCHING_DENSITY = "hatching_density"
+    LINE_THICKNESS = "line_thickness"
+    DOT_DENSITY = "dot_density"
     SCALE_POSITION = "scale_position"
     RADIAL_FILL = "radial_fill"
 
