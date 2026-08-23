@@ -101,6 +101,7 @@ def build_solver_prompt(
     encoding: DemandEncoding | str = (
         DemandEncoding.NUMERIC
     ),
+    depot_id: int = 0,
 ) -> str:
     """Tek çağrılık görsel CVRP çözüm prompt'unu oluştur."""
 
@@ -115,14 +116,14 @@ def build_solver_prompt(
         "Solve the Capacitated Vehicle Routing Problem "
         "shown in the image.\n\n"
         "Image interpretation:\n"
-        "- The black square with node ID 0 is the depot.\n"
+        f"- The black square with node ID {depot_id} is the depot.\n"
         f"- {encoding_guidance}\n"
         "- Vehicle capacity Q and the maximum number of "
         "available vehicles K are shown above the "
         "problem area.\n\n"
         "Solution requirements:\n"
-        "- Every route must start at depot 0 and end at "
-        "depot 0.\n"
+        f"- Every route must start at depot {depot_id} and end at "
+        f"depot {depot_id}.\n"
         "- Visit every customer exactly once across all "
         "routes.\n"
         "- Do not invent, omit, or repeat customer IDs.\n"
