@@ -9,13 +9,15 @@
   "encodings": [
     "bar_length",
     "color_intensity",
-    "size"
+    "size",
+    "scale_position",
+    "radial_fill"
   ],
   "initial_calls_per_encoding": 1,
   "maximum_refinement_iterations": 7,
   "maximum_iterations_per_encoding": 8,
-  "maximum_total_calls": 24,
-  "actual_api_calls": 16,
+  "maximum_total_calls": 40,
+  "actual_api_calls": 30,
   "problem": {
     "name": "capacity_demo_10",
     "dimension": 10,
@@ -120,7 +122,7 @@
       6
     ],
     "vehicle_count": 3,
-    "total_distance": 419.72784677751633
+    "total_distance": 419.7278467775164
   },
   "methods": [
     {
@@ -178,6 +180,48 @@
       ],
       "final_iteration": 2,
       "best_valid_iteration": 2
+    },
+    {
+      "schema_version": "1.0",
+      "experiment": "visual_cvrp_refinement_method",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "encoding": "scale_position",
+      "status": "early_stopped",
+      "stop_reason": "proven_baseline_matched",
+      "maximum_iterations": 8,
+      "recorded_iterations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "final_iteration": 7,
+      "best_valid_iteration": 7
+    },
+    {
+      "schema_version": "1.0",
+      "experiment": "visual_cvrp_refinement_method",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "encoding": "radial_fill",
+      "status": "early_stopped",
+      "stop_reason": "proven_baseline_matched",
+      "maximum_iterations": 8,
+      "recorded_iterations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "final_iteration": 7,
+      "best_valid_iteration": 7
     }
   ]
 }

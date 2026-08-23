@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "experiment": "visual_cvrp_single_call",
+  "run_id": "capacity_demo_10_01",
+  "status": "completed",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "encoding": "radial_fill",
+  "api_call_performed": true,
+  "problem": {
+    "name": "capacity_demo_10",
+    "dimension": 10,
+    "customer_count": 9,
+    "depot_id": 0,
+    "vehicle_capacity": 6,
+    "vehicle_count": 3,
+    "total_demand": 18,
+    "vehicle_count_lower_bound": 3,
+    "nodes": [
+      {
+        "id": 0,
+        "x": 50.0,
+        "y": 50.0,
+        "demand": 0
+      },
+      {
+        "id": 1,
+        "x": 15.0,
+        "y": 82.0,
+        "demand": 2
+      },
+      {
+        "id": 2,
+        "x": 48.0,
+        "y": 90.0,
+        "demand": 3
+      },
+      {
+        "id": 3,
+        "x": 84.0,
+        "y": 80.0,
+        "demand": 1
+      },
+      {
+        "id": 4,
+        "x": 12.0,
+        "y": 48.0,
+        "demand": 3
+      },
+      {
+        "id": 5,
+        "x": 88.0,
+        "y": 52.0,
+        "demand": 2
+      },
+      {
+        "id": 6,
+        "x": 18.0,
+        "y": 16.0,
+        "demand": 1
+      },
+      {
+        "id": 7,
+        "x": 50.0,
+        "y": 10.0,
+        "demand": 2
+      },
+      {
+        "id": 8,
+        "x": 82.0,
+        "y": 18.0,
+        "demand": 3
+      },
+      {
+        "id": 9,
+        "x": 55.0,
+        "y": 65.0,
+        "demand": 1
+      }
+    ]
+  },
+  "exact_baseline": {
+    "method": "exact_subset_dynamic_programming",
+    "proven_optimal": true,
+    "routes": [
+      [
+        0,
+        9,
+        2,
+        1,
+        0
+      ],
+      [
+        0,
+        8,
+        5,
+        3,
+        0
+      ],
+      [
+        0,
+        7,
+        6,
+        4,
+        0
+      ]
+    ],
+    "route_loads": [
+      6,
+      6,
+      6
+    ],
+    "vehicle_count": 3,
+    "total_distance": 419.7278467775164
+  },
+  "prompt": "Solve the Capacitated Vehicle Routing Problem shown in the image.\n\nImage interpretation:\n- The black square with node ID 0 is the depot.\n- Each equal-sized blue circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by the amber filled arc of the fixed-size ring surrounding the circle. The empty gray ring represents zero demand and a completely amber ring represents vehicle capacity Q. The filled arc starts at 12 o'clock and increases clockwise. Its filled fraction is demand divided by Q. No numeric demand label is printed next to a customer.\n- Vehicle capacity Q and the maximum number of available vehicles K are shown above the problem area.\n\nSolution requirements:\n- Every route must start at depot 0 and end at depot 0.\n- Visit every customer exactly once across all routes.\n- Do not invent, omit, or repeat customer IDs.\n- The sum of customer demands on each route must not exceed Q.\n- Use no more than K routes.\n- Minimize the sum of Euclidean route distances.\n\nReturn exactly one JSON object with a field named \"routes\". The value of \"routes\" must be an array of integer arrays. Do not include markdown, commentary, calculations, or any text outside the JSON object.",
+  "artifacts": {
+    "problem": "inputs/problem.json",
+    "problem_image": "inputs/problem_radial_fill.png",
+    "exact_baseline": "baseline/exact_results.json",
+    "prompt": "providers/gemini/gemini-2.5-flash/radial_fill/prompt.txt"
+  },
+  "model_response": {
+    "model": "gemini-2.5-flash",
+    "text": "{\"routes\": [\n  [0, 2, 1, 4, 0],\n  [0, 5, 8, 7, 0],\n  [0, 3, 9, 6, 0]\n]}",
+    "elapsed_seconds": 50.88532639993355,
+    "usage": {
+      "prompt_token_count": 527,
+      "output_token_count": 57,
+      "thoughts_token_count": 12823,
+      "total_token_count": 13407
+    }
+  },
+  "parsed_solution": {
+    "routes": [
+      [
+        0,
+        2,
+        1,
+        4,
+        0
+      ],
+      [
+        0,
+        5,
+        8,
+        7,
+        0
+      ],
+      [
+        0,
+        3,
+        9,
+        6,
+        0
+      ]
+    ]
+  },
+  "validation": {
+    "valid": false,
+    "route_count": 3,
+    "routes": [
+      {
+        "route_index": 1,
+        "route": [
+          0,
+          2,
+          1,
+          4,
+          0
+        ],
+        "customer_ids": [
+          2,
+          1,
+          4
+        ],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "has_internal_depot": false,
+        "unknown_node_ids": [],
+        "load": 8,
+        "capacity_excess": 2,
+        "distance": 146.1905139943338,
+        "valid": false
+      },
+      {
+        "route_index": 2,
+        "route": [
+          0,
+          5,
+          8,
+          7,
+          0
+        ],
+        "customer_ids": [
+          5,
+          8,
+          7
+        ],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "has_internal_depot": false,
+        "unknown_node_ids": [],
+        "load": 7,
+        "capacity_excess": 1,
+        "distance": 145.5627931890863,
+        "valid": false
+      },
+      {
+        "route_index": 3,
+        "route": [
+          0,
+          3,
+          9,
+          6,
+          0
+        ],
+        "customer_ids": [
+          3,
+          9,
+          6
+        ],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "has_internal_depot": false,
+        "unknown_node_ids": [],
+        "load": 3,
+        "capacity_excess": 0,
+        "distance": 186.08358748139756,
+        "valid": true
+      }
+    ],
+    "missing_customer_ids": [],
+    "duplicated_customer_ids": [],
+    "unknown_node_ids": [],
+    "fleet_limit": 3,
+    "fleet_limit_exceeded": false,
+    "total_capacity_excess": 3,
+    "total_distance": 477.8368946648177
+  },
+  "optimality_gap_percent": null,
+  "error": null
+}

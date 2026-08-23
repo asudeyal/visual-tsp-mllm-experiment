@@ -2,7 +2,7 @@ Solve the Capacitated Vehicle Routing Problem shown in the image.
 
 Image interpretation:
 - The black square with node ID 0 is the depot.
-- Each blue circle is a customer. The integer inside the circle is the customer node ID. The label d=<value> above the circle is that customer's demand.
+- Each equal-sized blue circle is a customer. The integer inside the circle is the customer node ID. Customer demand is encoded only by the amber filled arc of the fixed-size ring surrounding the circle. The empty gray ring represents zero demand and a completely amber ring represents vehicle capacity Q. The filled arc starts at 12 o'clock and increases clockwise. Its filled fraction is demand divided by Q. No numeric demand label is printed next to a customer.
 - Vehicle capacity Q and the maximum number of available vehicles K are shown above the problem area.
 
 Solution requirements:
