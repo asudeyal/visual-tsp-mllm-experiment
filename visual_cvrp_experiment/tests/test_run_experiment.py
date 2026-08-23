@@ -8,10 +8,8 @@ from pathlib import Path
 import pytest
 
 from run_experiment import execute_experiment
-from src.gemini_client import (
-    GeminiClientError,
-    GeminiModelResponse,
-)
+from src.providers.base import ModelResponse
+from src.providers.gemini import GeminiClientError
 
 
 EXACT_RESPONSE = """
@@ -41,7 +39,7 @@ class FakeGeminiClient:
         *,
         prompt: str,
         image_path: Path | str,
-    ) -> GeminiModelResponse:
+    ) -> ModelResponse:
         self.calls.append(
             {
                 "prompt": prompt,
@@ -52,7 +50,7 @@ class FakeGeminiClient:
         if self.error is not None:
             raise self.error
 
-        return GeminiModelResponse(
+        return ModelResponse(
             model="gemini-test",
             text=self.text,
             elapsed_seconds=1.25,

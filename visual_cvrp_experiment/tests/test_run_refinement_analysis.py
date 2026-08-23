@@ -14,8 +14,7 @@ from run_refinement_analysis import (
     generate_refinement_images,
     main,
 )
-from src.gemini_client import GeminiModelResponse
-
+from src.providers.base import ModelResponse
 
 EXACT_RESPONSE = (
     '{"routes": [[0,9,2,1,0], [0,8,5,3,0], '
@@ -29,8 +28,8 @@ class ExactClient:
         *,
         prompt: str,
         image_path: Path | str,
-    ) -> GeminiModelResponse:
-        return GeminiModelResponse(
+    ) -> ModelResponse:
+        return ModelResponse(
             model="gemini-test",
             text=EXACT_RESPONSE,
             elapsed_seconds=2.0,

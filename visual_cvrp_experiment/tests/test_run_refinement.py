@@ -11,10 +11,8 @@ from run_refinement import (
     build_refinement_prompt,
     execute_refinement,
 )
-from src.gemini_client import (
-    GeminiClientError,
-    GeminiModelResponse,
-)
+from src.providers.base import ModelResponse
+from src.providers.gemini import GeminiClientError
 
 
 EXACT_RESPONSE = """
@@ -58,7 +56,7 @@ class SequencedGeminiClient:
         *,
         prompt: str,
         image_path: Path | str,
-    ) -> GeminiModelResponse:
+    ) -> ModelResponse:
         path = Path(image_path)
         encoding = path.stem.removeprefix("problem_")
         self.calls.append(
@@ -71,7 +69,7 @@ class SequencedGeminiClient:
         item = self.responses[encoding].pop(0)
         if isinstance(item, Exception):
             raise item
-        return GeminiModelResponse(
+        return ModelResponse(
             model="gemini-test",
             text=item,
             elapsed_seconds=1.5,

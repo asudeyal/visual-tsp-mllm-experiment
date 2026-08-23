@@ -8,9 +8,9 @@ from typing import Any
 import pytest
 from PIL import Image
 
-from src.gemini_client import (
+from src.providers.gemini import (
     GeminiClientError,
-    GeminiVisionClient,
+    GeminiVisionProvider,
 )
 
 
@@ -94,7 +94,7 @@ def test_generate_returns_text_and_usage(
             '{"routes": [[0, 1, 0]]}'
         )
     )
-    client = GeminiVisionClient(
+    client = GeminiVisionProvider(
         model="gemini-test-model",
         temperature=0.0,
         client=FakeClient(fake_models),
@@ -134,7 +134,7 @@ def test_missing_image_is_rejected(
     fake_models = FakeModels(
         response=FakeResponse("{}")
     )
-    client = GeminiVisionClient(
+    client = GeminiVisionProvider(
         client=FakeClient(fake_models)
     )
 
@@ -156,7 +156,7 @@ def test_empty_response_is_rejected(
     fake_models = FakeModels(
         response=FakeResponse("   ")
     )
-    client = GeminiVisionClient(
+    client = GeminiVisionProvider(
         client=FakeClient(fake_models),
         clock=FakeClock([1.0, 2.0]),
     )
@@ -180,7 +180,7 @@ def test_api_error_is_wrapped(
     fake_models = FakeModels(
         error=RuntimeError("quota exceeded")
     )
-    client = GeminiVisionClient(
+    client = GeminiVisionProvider(
         client=FakeClient(fake_models),
         clock=FakeClock([1.0]),
     )
@@ -204,7 +204,7 @@ def test_invalid_temperature_is_rejected() -> None:
         ValueError,
         match="Temperature",
     ):
-        GeminiVisionClient(
+        GeminiVisionProvider(
             temperature=2.5,
             client=FakeClient(fake_models),
         )
