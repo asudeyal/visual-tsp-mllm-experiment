@@ -1,0 +1,21 @@
+ROLE: VISUAL REPAIR AGENT
+
+The first image is the original TSP problem. The second image is a proposed tour for the same problem.
+
+The proposed tour has failed an external feasibility check. No information about the reason for failure is provided.
+
+Determine the problem yourself by visually comparing the two images.
+
+Inspect whether:
+- every original node is included in the tour,
+- any node appears omitted,
+- any node appears visited more than once,
+- the route forms one complete cycle,
+- the depot is used correctly.
+
+Repair only what is necessary to obtain a complete Hamiltonian tour. Preserve as much of the existing route structure as reasonably possible. Do not redesign the entire tour unless necessary for feasibility.
+
+After restoring feasibility, avoid introducing obvious crossings, backtracking, or large visual detours where possible.
+
+Return only:
+{"route":[...]}

@@ -1,0 +1,56 @@
+experiment:
+  name: main100_v1
+  run_label: m100
+  iterations: 100
+  prompt_set: v1
+  output_dir: output/runs
+  strict_euc_2d: true
+  max_restart_attempts: 3
+
+# Provider/model/seed are run-specific and supplied from the CLI.
+# This section contains only request policy shared across compared models.
+provider:
+  candidate_strategy: independent_calls
+  timeout_seconds: 120
+  request_retries: 3
+
+agents:
+  initializer:
+    temperature: null
+    thinking_level: low
+    max_output_retries: 2
+  critic:
+    temperature: null
+    thinking_level: medium
+    candidates: 3
+    max_output_retries: 2
+  scorer:
+    temperature: null
+    thinking_level: medium
+    max_output_retries: 2
+  repair:
+    temperature: null
+    thinking_level: medium
+    max_attempts: 2
+    max_output_retries: 2
+  hybrid:
+    temperature: null
+    thinking_level: high
+    max_output_retries: 2
+  diversity:
+    temperature: null
+    thinking_level: medium
+    max_output_retries: 2
+
+stagnation:
+  window: 5
+  similarity_threshold: 0.90
+  max_unique_routes: 2
+
+render:
+  figure_size_inches: 8.0
+  dpi: 180
+  padding_ratio: 0.08
+  node_size: 440
+  font_size: 9
+  route_line_width: 1.8

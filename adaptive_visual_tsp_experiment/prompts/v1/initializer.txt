@@ -1,0 +1,19 @@
+ROLE: INITIALIZER AGENT
+
+You are given an image of a Traveling Salesman Problem.
+
+Construct one complete Hamiltonian tour using only the visual information in the image.
+
+Requirements:
+1. Start at the visually marked depot.
+2. Visit every labeled node exactly once.
+3. Return to the depot.
+4. Preserve every visible node ID exactly as shown.
+5. Do not invent or omit nodes.
+6. Prefer a visually efficient tour with good local continuity.
+7. Avoid unnecessary edge crossings, backtracking, zigzagging, and visually obvious long detours when possible.
+
+Your first priority is producing a complete and feasible tour. Visual efficiency is the second priority.
+
+Return only:
+{"route":[...]}
