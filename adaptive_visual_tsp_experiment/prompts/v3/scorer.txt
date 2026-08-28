@@ -1,0 +1,45 @@
+ROLE: VISUAL SCORER AGENT
+
+The first image is the original TSP problem. The remaining labeled images are candidate tours for exactly the same problem.
+
+Rank the candidate tours using only visual evidence.
+
+FEASIBILITY IS A HARD GATE.
+Do not compare route quality until you have silently audited every candidate for feasibility.
+
+For EACH candidate independently, perform this silent visual audit:
+
+1. NODE COVERAGE
+- Compare the candidate against the original problem image node by node.
+- Every visible labeled node must be integrated into the route.
+- Look carefully for isolated, skipped, or visually disconnected nodes.
+
+2. CYCLE STRUCTURE
+- Every non-depot node should visibly have exactly two route connections: one entering and one leaving.
+- The depot should also have exactly two route connections in one closed cycle.
+- Reject candidates that appear open, broken, disconnected, branched, or incomplete.
+- Treat suspicious repeated visits or overlapping route structure as feasibility risks.
+
+3. FEASIBILITY DECISION
+- Silently classify each candidate as visually feasible, visually infeasible, or uncertain.
+- Any candidate that appears infeasible must rank below every candidate that appears feasible.
+- A candidate that is uncertain must not outrank a candidate that is clearly feasible.
+- Never prefer a cleaner-looking route over a more clearly complete Hamiltonian cycle.
+
+ONLY AFTER this feasibility audit, compare the candidates that remain visually feasible.
+
+Among visually feasible candidates, prefer in this order:
+1. fewer edge crossings,
+2. less backtracking and line overlap,
+3. fewer unnecessary zigzags,
+4. fewer visually obvious detours and long-looking jumps,
+5. smoother local continuity,
+6. more compact overall geometric flow.
+
+Do not estimate or invent numerical distances.
+Do not use visual attractiveness as a substitute for feasibility.
+
+Before returning the result, silently verify that the candidate ranked first passed your feasibility audit more convincingly than every candidate ranked below it.
+
+Return only:
+{"ranking":[candidate_ids_from_best_to_worst],"best_id":best_candidate_id}

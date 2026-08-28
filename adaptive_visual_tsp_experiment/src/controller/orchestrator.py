@@ -99,6 +99,10 @@ class AdaptiveVisualTSPOrchestrator:
             value = getattr(error, attribute, None)
             if value is not None and not callable(value):
                 return value
+        response = getattr(error, "response", None)
+        value = getattr(response, "status_code", None)
+        if value is not None:
+            return value
         return None
 
     def _context(self, **values: Any) -> dict[str, Any]:
@@ -169,6 +173,7 @@ class AdaptiveVisualTSPOrchestrator:
             else:
                 event_name = "provider_error"
             status = self._status_code(exc)
+            wait_metadata = getattr(exc, "_avma_wait_metadata", {}) or {}
             error = {
                 "phase": phase,
                 **context,
@@ -178,6 +183,9 @@ class AdaptiveVisualTSPOrchestrator:
                 "status_code": status,
                 "message": str(exc),
                 "transient_http_status": status in {408, 429, 500, 502, 503, 504},
+                "request_delay_wait_seconds": wait_metadata.get("request_delay_wait_seconds", 0.0),
+                "retry_backoff_wait_seconds": wait_metadata.get("retry_backoff_wait_seconds", 0.0),
+                "provider_wait_seconds": wait_metadata.get("provider_wait_seconds", 0.0),
             }
             self.trace.append({"event": event_name, **error})
             update_state(
@@ -187,6 +195,58 @@ class AdaptiveVisualTSPOrchestrator:
                 last_error=error,
             )
             raise
+
+    def _is_recoverable_agent_failure(self, error: Exception) -> bool:
+        """Only malformed/unusable model output is an absorbable stage failure.
+
+        Provider availability failures are experiment interruptions, not model
+        proposals. After provider-level retry/backoff is exhausted, 429/5xx,
+        transport timeouts and connection failures must bubble out so the
+        invocation remains partial and ``--resume`` retries the same stage.
+        """
+
+        return isinstance(error, ModelOutputError)
+
+    def _invoke_recoverable(
+        self,
+        context: dict[str, Any],
+        phase: str,
+        operation: Callable[[], T],
+        *,
+        resume: bool = False,
+    ) -> T | None:
+        cached_failure = None
+        if resume:
+            cached_failure = self.trace.find_last(
+                "recoverable_agent_failure",
+                phase=phase,
+                **context,
+            )
+            if cached_failure is None:
+                cached_failure = self.trace.find_last(
+                    "model_output_failure",
+                    phase=phase,
+                    **context,
+                )
+        if cached_failure is not None:
+            return None
+
+        try:
+            return self._invoke_with_error_record(context, phase, operation)
+        except Exception as exc:
+            if not self._is_recoverable_agent_failure(exc):
+                raise
+            self.trace.append(
+                {
+                    "event": "recoverable_agent_failure",
+                    "phase": phase,
+                    **context,
+                    "error_type": type(exc).__name__,
+                    "status_code": self._status_code(exc),
+                    "message": str(exc),
+                }
+            )
+            return None
 
     def _observe(self, route: tuple[int, ...]) -> ObserverEvaluation:
         evaluation = evaluate_route(self.problem, route)
@@ -270,7 +330,7 @@ class AdaptiveVisualTSPOrchestrator:
                     repaired = RouteCandidate(1, parse_route(raw_text), "repair_resume_raw", raw_text)
                     repaired, evaluation = self._render_and_observe(repaired, image_path)
                 else:
-                    result = self._invoke_with_error_record(
+                    result = self._invoke_recoverable(
                         context,
                         f"repair_attempt_{attempt:02d}",
                         lambda: self.repair.run(
@@ -279,7 +339,18 @@ class AdaptiveVisualTSPOrchestrator:
                             allowed_node_ids=self.allowed_node_ids,
                             attempt=attempt,
                         ),
+                        resume=resume,
                     )
+                    if result is None:
+                        trace = {
+                            "attempt": attempt,
+                            "input_route": list(current.route),
+                            "output_route": None,
+                            "evaluation": None,
+                            "status": "agent_failure",
+                        }
+                        traces.append(trace)
+                        continue
                     self._record_call(context, result.call)
                     repaired, evaluation = self._render_and_observe(result.candidate, image_path)
 
@@ -314,6 +385,7 @@ class AdaptiveVisualTSPOrchestrator:
         image_dir: Path,
         image_prefix: str,
         resume: bool = False,
+        incumbent: tuple[RouteCandidate, ObserverEvaluation] | None = None,
     ) -> tuple[RouteCandidate, ObserverEvaluation, dict[str, Any]]:
         restart_trace: dict[str, Any] = {"attempts": []}
         for restart_attempt in range(1, self.config.max_restart_attempts + 1):
@@ -336,6 +408,27 @@ class AdaptiveVisualTSPOrchestrator:
                 )
                 item = dict(cached.get("result") or {})
             else:
+                cached_failure = (
+                    self.trace.find_last(
+                        "recoverable_agent_failure",
+                        phase="diversity_restart",
+                        **context,
+                    )
+                    if resume
+                    else None
+                )
+                if cached_failure is not None:
+                    restart_trace["attempts"].append(
+                        {
+                            "restart_attempt": restart_attempt,
+                            "global_restart_count": self.restart_count,
+                            "route": None,
+                            "evaluation": None,
+                            "status": "agent_failure",
+                        }
+                    )
+                    continue
+
                 self.restart_count += 1
                 cached_call = self._last_call("diversity", scope=scope, restart_attempt=restart_attempt) if resume else None
                 if cached_call is not None:
@@ -343,14 +436,26 @@ class AdaptiveVisualTSPOrchestrator:
                     candidate = RouteCandidate(1, parse_route(raw_text), "diversity_resume_raw", raw_text)
                     candidate, evaluation = self._render_and_observe(candidate, image_path)
                 else:
-                    result = self._invoke_with_error_record(
+                    result = self._invoke_recoverable(
                         context,
                         "diversity_restart",
                         lambda: self.diversity.run(
                             self.problem_image,
                             allowed_node_ids=self.allowed_node_ids,
                         ),
+                        resume=resume,
                     )
+                    if result is None:
+                        restart_trace["attempts"].append(
+                            {
+                                "restart_attempt": restart_attempt,
+                                "global_restart_count": self.restart_count,
+                                "route": None,
+                                "evaluation": None,
+                                "status": "agent_failure",
+                            }
+                        )
+                        continue
                     self._record_call(context, result.call)
                     candidate, evaluation = self._render_and_observe(result.candidate, image_path)
 
@@ -394,6 +499,29 @@ class AdaptiveVisualTSPOrchestrator:
             item["repair"] = "failed"
             restart_trace["attempts"].append(item)
 
+        restart_trace["exhausted"] = True
+        restart_trace["max_attempts"] = self.config.max_restart_attempts
+        restart_trace["fallback_action"] = (
+            "retain_incumbent" if incumbent is not None else "hard_fail_no_incumbent"
+        )
+
+        if not (resume and self.trace.find_last("restart_exhausted", scope=scope)):
+            self.trace.append(
+                {
+                    "event": "restart_exhausted",
+                    "scope": scope,
+                    "max_attempts": self.config.max_restart_attempts,
+                    "fallback_action": restart_trace["fallback_action"],
+                }
+            )
+
+        if incumbent is not None:
+            retained, retained_eval = incumbent
+            if not retained_eval.validation.valid:
+                raise RuntimeError("Restart fallback incumbent geçerli değil")
+            restart_trace["retained_route"] = list(retained.route)
+            return retained, retained_eval, restart_trace
+
         raise RuntimeError(
             f"Diversity Restart {self.config.max_restart_attempts} denemede geçerli rota üretemedi"
         )
@@ -416,6 +544,8 @@ class AdaptiveVisualTSPOrchestrator:
         image_dir = self.routes_dir / "initializer"
         image_path = image_dir / "candidate.png"
         cached = self.trace.find_last("initializer_candidate") if resume else None
+        candidate: RouteCandidate | None = None
+        evaluation: ObserverEvaluation | None = None
 
         if cached is not None:
             call = self._last_call("initializer")
@@ -435,54 +565,72 @@ class AdaptiveVisualTSPOrchestrator:
                 candidate, evaluation = self._render_and_observe(candidate, image_path)
             else:
                 context: dict[str, Any] = {}
-                result = self._invoke_with_error_record(
+                result = self._invoke_recoverable(
                     context,
                     "initializer",
                     lambda: self.initializer.run(
                         self.problem_image,
                         allowed_node_ids=self.allowed_node_ids,
                     ),
-                )
-                self._record_call(context, result.call)
-                candidate, evaluation = self._render_and_observe(result.candidate, image_path)
-
-            self.trace.append(
-                {
-                    "event": "initializer_candidate",
-                    "route": list(candidate.route),
-                    "evaluation": evaluation.to_dict(),
-                    "image": relative_artifact(candidate.image_path, self.run_dir),
-                }
-            )
-
-        trace: dict[str, Any] = {
-            "route": list(candidate.route),
-            "evaluation": evaluation.to_dict(),
-            "resumed": resume,
-        }
-        accepted = candidate
-        accepted_eval = evaluation
-
-        if not evaluation.validation.valid:
-            repaired = self._repair_until_valid(
-                candidate,
-                Path(candidate.image_path or image_path),
-                scope="initializer",
-                image_dir=image_dir,
-                image_prefix="repair",
-                resume=resume,
-            )
-            if repaired is not None:
-                accepted, accepted_eval, repair_trace = repaired
-                trace["repair"] = repair_trace
-            else:
-                accepted, accepted_eval, restart_trace = self._restart_until_valid(
-                    scope="initializer.fallback",
-                    image_dir=image_dir,
-                    image_prefix="restart",
                     resume=resume,
                 )
-                trace["restart"] = restart_trace
+                if result is not None:
+                    self._record_call(context, result.call)
+                    candidate, evaluation = self._render_and_observe(result.candidate, image_path)
+
+            if candidate is not None and evaluation is not None:
+                self.trace.append(
+                    {
+                        "event": "initializer_candidate",
+                        "route": list(candidate.route),
+                        "evaluation": evaluation.to_dict(),
+                        "image": relative_artifact(candidate.image_path, self.run_dir),
+                    }
+                )
+
+        if candidate is None or evaluation is None:
+            trace: dict[str, Any] = {
+                "route": None,
+                "evaluation": None,
+                "resumed": resume,
+                "initializer_output_failure": True,
+            }
+            accepted, accepted_eval, restart_trace = self._restart_until_valid(
+                scope="initializer.fallback",
+                image_dir=image_dir,
+                image_prefix="restart",
+                resume=resume,
+            )
+            trace["restart"] = restart_trace
+        else:
+            trace = {
+                "route": list(candidate.route),
+                "evaluation": evaluation.to_dict(),
+                "resumed": resume,
+            }
+            accepted = candidate
+            accepted_eval = evaluation
+
+            if not evaluation.validation.valid:
+                repaired = self._repair_until_valid(
+                    candidate,
+                    Path(candidate.image_path or image_path),
+                    scope="initializer",
+                    image_dir=image_dir,
+                    image_prefix="repair",
+                    resume=resume,
+                )
+                if repaired is not None:
+                    accepted, accepted_eval, repair_trace = repaired
+                    trace["repair"] = repair_trace
+                else:
+                    accepted, accepted_eval, restart_trace = self._restart_until_valid(
+                        scope="initializer.fallback",
+                        image_dir=image_dir,
+                        image_prefix="restart",
+                        resume=resume,
+                    )
+                    trace["restart"] = restart_trace
 
         self.trace.append(
             {
@@ -549,14 +697,34 @@ class AdaptiveVisualTSPOrchestrator:
                 candidate = RouteCandidate(1, route, "hybrid_resume_raw", raw_text)
                 candidate, evaluation = self._render_and_observe(candidate, image_path)
             else:
-                result = self._invoke_with_error_record(
+                result = self._invoke_recoverable(
                     context,
                     "hybrid_visual_two_opt",
                     lambda: self.hybrid.run(
                         working_image,
                         allowed_node_ids=self.allowed_node_ids,
                     ),
+                    resume=resume,
                 )
+                if result is None:
+                    trace: dict[str, Any] = {
+                        "input_route": list(working.route),
+                        "output_route": None,
+                        "evaluation": None,
+                        "two_opt_audit": None,
+                        "hybrid_agent_failure": True,
+                    }
+                    restarted, restarted_eval, restart_trace = self._restart_until_valid(
+                        scope=f"{scope}.fallback",
+                        image_dir=image_dir,
+                        image_prefix="hybrid_restart",
+                        resume=resume,
+                        incumbent=(working, evaluate_route(self.problem, working.route)),
+                    )
+                    trace["restart"] = restart_trace
+                    if restart_trace.get("fallback_action") == "retain_incumbent":
+                        trace["fallback_action"] = "retain_incumbent"
+                    return restarted, restarted_eval, trace
                 self._record_call(context, result.call)
                 candidate, evaluation = self._render_and_observe(result.candidate, image_path)
                 selected_edges = result.selected_edges
@@ -603,8 +771,11 @@ class AdaptiveVisualTSPOrchestrator:
             image_dir=image_dir,
             image_prefix="hybrid_restart",
             resume=resume,
+            incumbent=(working, evaluate_route(self.problem, working.route)),
         )
         trace["restart"] = restart_trace
+        if restart_trace.get("fallback_action") == "retain_incumbent":
+            trace["fallback_action"] = "retain_incumbent"
         return restarted, restarted_eval, trace
 
     def _checkpoint(self, iteration: int, working: RouteCandidate) -> None:
@@ -702,7 +873,7 @@ class AdaptiveVisualTSPOrchestrator:
                     candidate = RouteCandidate(candidate_id, parse_route(raw_text), "critic_resume_raw", raw_text)
                     candidate, evaluation = self._render_and_observe(candidate, image_path)
                 else:
-                    result = self._invoke_with_error_record(
+                    result = self._invoke_recoverable(
                         context,
                         f"critic_candidate_{candidate_id:02d}",
                         lambda candidate_id=candidate_id: self.critic.run_one(
@@ -710,7 +881,18 @@ class AdaptiveVisualTSPOrchestrator:
                             allowed_node_ids=self.allowed_node_ids,
                             candidate_id=candidate_id,
                         ),
+                        resume=resume,
                     )
+                    if result is None:
+                        critic_records.append(
+                            {
+                                "candidate_id": candidate_id,
+                                "route": None,
+                                "evaluation": None,
+                                "output_failure": True,
+                            }
+                        )
+                        continue
                     self._record_call(context, result.call)
                     candidate, evaluation = self._render_and_observe(result.candidate, image_path)
 
@@ -740,8 +922,10 @@ class AdaptiveVisualTSPOrchestrator:
         rendered_candidates: dict[int, tuple[RouteCandidate, ObserverEvaluation, Path]],
         *,
         resume: bool,
-    ) -> tuple[list[int], list[int], int]:
+    ) -> tuple[list[int], list[int], int | None]:
         shuffled_ids = list(rendered_candidates)
+        if not shuffled_ids:
+            return [], [], None
         random.Random(self.config.seed + iteration).shuffle(shuffled_ids)
         expected = set(shuffled_ids)
         cached = self.trace.find_last("scorer_result", iteration=iteration) if resume else None
@@ -767,11 +951,14 @@ class AdaptiveVisualTSPOrchestrator:
                 (candidate_id, rendered_candidates[candidate_id][2])
                 for candidate_id in shuffled_ids
             ]
-            scorer_result = self._invoke_with_error_record(
+            scorer_result = self._invoke_recoverable(
                 context,
                 "visual_scorer",
                 lambda: self.scorer.run(self.problem_image, scorer_input),
+                resume=resume,
             )
+            if scorer_result is None:
+                return shuffled_ids, [], None
             self._record_call(context, scorer_result.call)
             ranking = scorer_result.ranking
             best_id = scorer_result.best_id
@@ -825,41 +1012,75 @@ class AdaptiveVisualTSPOrchestrator:
                 resume=resume,
             )
 
-            selected, selected_eval, selected_image = rendered_candidates[scorer_best_id]
-            selected_before_repair = {
-                "candidate_id": selected.candidate_id,
-                "route": list(selected.route),
-                "evaluation": selected_eval.to_dict(),
-            }
             repair_trace = None
             restart_trace = None
+            feasibility_fallback = None
             iteration_image_dir = self.routes_dir / f"iteration_{iteration:03d}"
+            transition_accepted = True
 
-            if not selected_eval.validation.valid:
-                repaired = self._repair_until_valid(
-                    selected,
-                    selected_image,
-                    scope=f"iteration_{iteration:03d}.selected",
-                    image_dir=iteration_image_dir,
-                    image_prefix="repair",
-                    resume=resume,
-                )
-                if repaired is not None:
-                    selected, selected_eval, repair_trace = repaired
-                    selected_image = Path(selected.image_path or selected_image)
-                else:
-                    selected, selected_eval, restart_trace = self._restart_until_valid(
-                        scope=f"iteration_{iteration:03d}.selected_restart",
+            if scorer_best_id is None:
+                selected = working
+                selected_eval = working_eval
+                selected_image = input_image
+                selected_before_repair: dict[str, Any] = {
+                    "candidate_id": None,
+                    "route": None,
+                    "evaluation": None,
+                    "selection_status": "agent_failure",
+                }
+                transition_accepted = False
+                feasibility_fallback = {
+                    "triggered": True,
+                    "reason": (
+                        "all_critic_outputs_failed"
+                        if not rendered_candidates
+                        else "scorer_output_failure"
+                    ),
+                    "action": "retain_previous_working_route",
+                }
+            else:
+                selected, selected_eval, selected_image = rendered_candidates[scorer_best_id]
+                selected_before_repair = {
+                    "candidate_id": selected.candidate_id,
+                    "route": list(selected.route),
+                    "evaluation": selected_eval.to_dict(),
+                }
+
+                if not selected_eval.validation.valid:
+                    repaired = self._repair_until_valid(
+                        selected,
+                        selected_image,
+                        scope=f"iteration_{iteration:03d}.selected",
                         image_dir=iteration_image_dir,
-                        image_prefix="restart",
+                        image_prefix="repair",
                         resume=resume,
                     )
-                    selected_image = Path(selected.image_path or selected_image)
+                    if repaired is not None:
+                        selected, selected_eval, repair_trace = repaired
+                        selected_image = Path(selected.image_path or selected_image)
+                    else:
+                        selected, selected_eval, restart_trace = self._restart_until_valid(
+                            scope=f"iteration_{iteration:03d}.selected_restart",
+                            image_dir=iteration_image_dir,
+                            image_prefix="restart",
+                            resume=resume,
+                            incumbent=(working, working_eval),
+                        )
+                        selected_image = Path(selected.image_path or selected_image)
+                        if restart_trace.get("fallback_action") == "retain_incumbent":
+                            transition_accepted = False
+                            feasibility_fallback = {
+                                "triggered": True,
+                                "reason": "restart_attempts_exhausted",
+                                "action": "retain_previous_working_route",
+                                "restart_attempts": self.config.max_restart_attempts,
+                            }
 
             working = selected
             working_eval = selected_eval
             self._observe_selected(working.route, working_eval)
-            self.structural_history.append(working.route)
+            if transition_accepted:
+                self.structural_history.append(working.route)
 
             stagnation = detect_structural_stagnation(
                 self.structural_history,
@@ -870,7 +1091,7 @@ class AdaptiveVisualTSPOrchestrator:
             )
             escape: dict[str, Any] | None = None
 
-            if stagnation.stagnated:
+            if transition_accepted and stagnation.stagnated:
                 action = self.state_machine.action_for_stagnation()
                 if action == "hybrid":
                     before_hybrid = working
@@ -882,9 +1103,15 @@ class AdaptiveVisualTSPOrchestrator:
                         resume=resume,
                     )
                     self._observe_selected(working.route, working_eval)
-                    self.structural_history = [working.route]
+                    hybrid_retained = hybrid_trace.get("fallback_action") == "retain_incumbent"
+                    if not hybrid_retained:
+                        self.structural_history = [working.route]
                     escape = {
-                        "action": "hybrid",
+                        "action": (
+                            "hybrid_failed_retain_incumbent"
+                            if hybrid_retained
+                            else "hybrid"
+                        ),
                         "input_route": list(before_hybrid.route),
                         "trace": hybrid_trace,
                     }
@@ -894,10 +1121,20 @@ class AdaptiveVisualTSPOrchestrator:
                         image_dir=iteration_image_dir,
                         image_prefix="escape_restart",
                         resume=resume,
+                        incumbent=(working, working_eval),
                     )
                     self._observe_selected(working.route, working_eval)
-                    self.structural_history = [working.route]
-                    escape = {"action": "restart", "trace": diversity_trace}
+                    restart_retained = diversity_trace.get("fallback_action") == "retain_incumbent"
+                    if not restart_retained:
+                        self.structural_history = [working.route]
+                    escape = {
+                        "action": (
+                            "restart_failed_retain_incumbent"
+                            if restart_retained
+                            else "restart"
+                        ),
+                        "trace": diversity_trace,
+                    }
 
             iteration_result = {
                 "iteration": iteration,
@@ -910,6 +1147,7 @@ class AdaptiveVisualTSPOrchestrator:
                 "selected_before_repair": selected_before_repair,
                 "repair": repair_trace,
                 "restart_after_failed_repair": restart_trace,
+                "feasibility_fallback": feasibility_fallback,
                 "working_route_after_iteration": list(working.route),
                 "working_evaluation": working_eval.to_dict(),
                 "structural_stagnation": stagnation.to_dict(),

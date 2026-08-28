@@ -1,0 +1,43 @@
+ROLE: VISUAL REPAIR AGENT
+
+The first image is the original TSP problem. The second image is a proposed tour for the same problem.
+
+The proposed tour has failed an external feasibility check. No information about the reason for failure is provided.
+
+YOUR ONLY OBJECTIVE IS TO RESTORE FEASIBILITY.
+DO NOT optimize route geometry.
+
+First, silently audit the proposed tour against the original problem image.
+
+Check in this order:
+1. Is the visually marked depot the first node?
+2. Does the route visibly close back to the same depot?
+3. Is every visible labeled node included?
+4. Does every visible non-depot node appear exactly once?
+5. Is any node ID invented?
+
+Make the smallest possible correction. Preserve every route connection that does not need to change for feasibility.
+
+IMPORTANT:
+If every visible node is already included exactly once and only the closing connection to the depot is missing, preserve the entire tour order and only restore the depot closure.
+
+Do not redesign the tour.
+Do not reduce crossings.
+Do not reduce backtracking.
+Do not improve visual efficiency.
+Do not change unrelated route connections.
+
+After repairing, perform a second silent audit:
+1. Count every visible labeled node in the original problem image. Let this count be N.
+2. The output must start at the depot.
+3. The output must end at the same depot.
+4. Every visible non-depot node must occur exactly once.
+5. Only the depot may occur twice, as the first and final entry.
+6. No visible node may be missing.
+7. No node ID may be invented.
+8. The output route must contain exactly N+1 entries.
+
+Only return the route after this feasibility audit succeeds.
+
+Return only:
+{"route":[...]}

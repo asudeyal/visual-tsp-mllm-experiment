@@ -141,6 +141,15 @@ def update_state(path: str | Path, **updates: Any) -> dict[str, Any]:
     return state
 
 
+def _usage_total_tokens(usage: dict[str, Any]) -> int | None:
+    """Normalize Gemini and OpenAI-compatible token usage fields."""
+    for key in ("total_token_count", "total_tokens"):
+        value = usage.get(key)
+        if value is not None:
+            return int(value)
+    return None
+
+
 def trace_api_metrics(events: Iterable[dict[str, Any]]) -> tuple[int, int | None, float | None, int]:
     """Return requests, tokens, active latency and recorded errors for trace events."""
 
@@ -168,7 +177,7 @@ def trace_api_metrics(events: Iterable[dict[str, Any]]) -> tuple[int, int | None
                 continue
             api_calls += 1
             usage = call.get("usage") or {}
-            token_count = usage.get("total_token_count")
+            token_count = _usage_total_tokens(usage)
             if token_count is not None:
                 total_tokens += int(token_count)
                 saw_tokens = True
@@ -181,7 +190,7 @@ def trace_api_metrics(events: Iterable[dict[str, Any]]) -> tuple[int, int | None
             api_calls += 1
             response = event.get("provider_response") or {}
             usage = response.get("usage") or {}
-            token_count = usage.get("total_token_count")
+            token_count = _usage_total_tokens(usage)
             if token_count is not None:
                 total_tokens += int(token_count)
                 saw_tokens = True
@@ -197,3 +206,22 @@ def trace_api_metrics(events: Iterable[dict[str, Any]]) -> tuple[int, int | None
     tokens = total_tokens if saw_tokens else None
     active = active_seconds if api_calls > 0 and latency_complete else None
     return api_calls, tokens, active, errors
+
+
+def trace_provider_wait_seconds(events: Iterable[dict[str, Any]]) -> float:
+    """Sum deliberate provider throttling/backoff waits recorded in the trace."""
+
+    total = 0.0
+    for event in events:
+        kind = event.get("event")
+        if kind == "agent_call":
+            call = event.get("call") or {}
+            metadata = call.get("raw_metadata") or {}
+            total += float(metadata.get("provider_wait_seconds") or 0.0)
+        elif kind == "model_output_attempt":
+            response = event.get("provider_response") or {}
+            metadata = response.get("raw_metadata") or {}
+            total += float(metadata.get("provider_wait_seconds") or 0.0)
+        elif kind == "provider_error":
+            total += float(event.get("provider_wait_seconds") or 0.0)
+    return total

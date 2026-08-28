@@ -38,26 +38,49 @@ def output_attempt_record(
     }
 
 
-def extract_json_object(text: str) -> dict[str, Any]:
+def extract_json_object(
+    text: str,
+    *,
+    required_keys: set[str] | None = None,
+) -> dict[str, Any]:
+    """Extract the first decodable JSON object that matches the expected shape.
+
+    Models sometimes return a valid JSON object followed by prose or a second
+    JSON block. ``json.loads(first_brace:last_brace)`` rejects that with
+    ``Extra data`` even though a usable object is present. Scanning with
+    ``raw_decode`` accepts surrounding/trailing text without correcting any
+    field values or route semantics.
+    """
+
     stripped = text.strip()
-    if stripped.startswith("```"):
-        lines = stripped.splitlines()
-        if lines and lines[0].startswith("```"):
-            lines = lines[1:]
-        if lines and lines[-1].strip().startswith("```"):
-            lines = lines[:-1]
-        stripped = "\n".join(lines).strip()
-    start = stripped.find("{")
-    end = stripped.rfind("}")
-    if start < 0 or end < start:
+    if not stripped:
         raise ModelOutputError("JSON object bulunamadı")
-    try:
-        value = json.loads(stripped[start : end + 1])
-    except json.JSONDecodeError as exc:
-        raise ModelOutputError(f"Geçersiz JSON: {exc}") from exc
-    if not isinstance(value, dict):
-        raise ModelOutputError("JSON çıktı object olmalıdır")
-    return value
+
+    decoder = json.JSONDecoder()
+    saw_object = False
+    last_decode_error: json.JSONDecodeError | None = None
+
+    for start, character in enumerate(stripped):
+        if character != "{":
+            continue
+        try:
+            value, _ = decoder.raw_decode(stripped[start:])
+        except json.JSONDecodeError as exc:
+            last_decode_error = exc
+            continue
+        if not isinstance(value, dict):
+            continue
+        saw_object = True
+        if required_keys is not None and not required_keys.issubset(value):
+            continue
+        return value
+
+    if saw_object and required_keys:
+        missing = ", ".join(sorted(required_keys))
+        raise ModelOutputError(f"Beklenen JSON alanları bulunamadı: {missing}")
+    if last_decode_error is not None:
+        raise ModelOutputError(f"Geçersiz JSON: {last_decode_error}") from last_decode_error
+    raise ModelOutputError("JSON object bulunamadı")
 
 
 def _strict_integer(value: Any, *, field: str) -> int:
@@ -72,7 +95,7 @@ def _strict_integer(value: Any, *, field: str) -> int:
 
 
 def parse_route(text: str) -> tuple[int, ...]:
-    value = extract_json_object(text)
+    value = extract_json_object(text, required_keys={"route"})
     route = value.get("route")
     if not isinstance(route, list) or len(route) < 2:
         raise ModelOutputError("route en az iki elemanlı liste olmalıdır")
@@ -80,7 +103,7 @@ def parse_route(text: str) -> tuple[int, ...]:
 
 
 def parse_scorer(text: str, expected_ids: set[int]) -> tuple[list[int], int]:
-    value = extract_json_object(text)
+    value = extract_json_object(text, required_keys={"ranking", "best_id"})
     ranking_raw = value.get("ranking")
     if not isinstance(ranking_raw, list):
         raise ModelOutputError("ranking integer liste olmalıdır")
@@ -94,7 +117,7 @@ def parse_scorer(text: str, expected_ids: set[int]) -> tuple[list[int], int]:
 
 
 def parse_hybrid(text: str) -> tuple[tuple[int, ...], tuple[tuple[int, int], tuple[int, int]]]:
-    value = extract_json_object(text)
+    value = extract_json_object(text, required_keys={"route", "selected_edges"})
     route_raw = value.get("route")
     edges_raw = value.get("selected_edges")
     if not isinstance(route_raw, list) or len(route_raw) < 2:

@@ -49,6 +49,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--validate-only", action="store_true", help="No API calls; validate config/instance/rendering")
+    parser.add_argument(
+        "--request-delay-seconds",
+        type=float,
+        default=0.0,
+        help="Minimum delay between provider request starts; runtime-only, does not change protocol config.",
+    )
+    parser.add_argument(
+        "--timeout-seconds",
+        type=int,
+        default=None,
+        help="Per-request provider timeout override; runtime-only, does not change protocol config.",
+    )
     return parser.parse_args()
 
 
@@ -139,6 +151,10 @@ def _prepare_model_state(model_dir: Path, *, config, run_root: Path, resume: boo
 def main() -> None:
     load_dotenv(PROJECT_ROOT / ".env")
     args = parse_args()
+    if args.request_delay_seconds < 0:
+        raise SystemExit("--request-delay-seconds negatif olamaz")
+    if args.timeout_seconds is not None and args.timeout_seconds < 1:
+        raise SystemExit("--timeout-seconds en az 1 olmalıdır")
     config = load_config(
         _resolve_from_root(args.config),
         provider_name=args.provider,
@@ -185,6 +201,17 @@ def main() -> None:
     )
 
     provider = create_provider(config.provider)
+    if args.timeout_seconds is not None:
+        provider.timeout_seconds = args.timeout_seconds
+    provider.configure_request_delay(args.request_delay_seconds)
+    update_state(
+        model_dir / "state.json",
+        runtime_request_policy={
+            "request_delay_seconds": args.request_delay_seconds,
+            "timeout_seconds": provider.timeout_seconds,
+            "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors",
+        },
+    )
     orchestrator = AdaptiveVisualTSPOrchestrator(
         config=config,
         problem=problem,

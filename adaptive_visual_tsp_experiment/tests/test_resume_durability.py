@@ -148,14 +148,25 @@ def test_failed_model_output_keeps_every_raw_attempt(tmp_path):
         run_dir=tmp_path / "run",
     )
 
-    with pytest.raises(Exception, match="integer"):
+    # Structured-output exhaustion is recoverable at the agent-stage boundary.
+    # This fake provider always returns malformed output, so initializer
+    # recovery eventually exhausts all Diversity Restart attempts.
+    with pytest.raises(RuntimeError, match="Diversity Restart 3"):
         orchestrator._initial_route(resume=False)
 
-    assert provider.calls == config.initializer.max_output_retries + 1
+    expected_calls = (
+        config.initializer.max_output_retries
+        + 1
+        + config.max_restart_attempts * (config.diversity.max_output_retries + 1)
+    )
+    assert provider.calls == expected_calls
+
     attempts = orchestrator.trace.matching("model_output_attempt")
     assert len(attempts) == provider.calls
     for attempt in attempts:
         assert attempt["raw_response"] == '{"route":["1","node 2","3","4","1"]}'
         assert "integer" in attempt["error_message"]
         assert attempt["provider_response"]["usage"]["total_token_count"] == 17
-    assert orchestrator.trace.find_last("model_output_failure") is not None
+
+    assert len(orchestrator.trace.matching("model_output_failure")) == 1 + config.max_restart_attempts
+    assert len(orchestrator.trace.matching("recoverable_agent_failure")) == 1 + config.max_restart_attempts

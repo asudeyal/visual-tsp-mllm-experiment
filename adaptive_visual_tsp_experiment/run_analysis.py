@@ -11,7 +11,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.experiment.compact import TraceStore, read_state, trace_api_metrics
+from src.experiment.compact import (
+    TraceStore,
+    read_state,
+    trace_api_metrics,
+    trace_provider_wait_seconds,
+)
 from src.experiment.layout import (
     discover_model_runs,
     is_compact_model_run,
@@ -452,11 +457,13 @@ def _execution_summary(run_dir: Path, artifacts: dict[str, Any]) -> dict[str, An
     if artifacts["mode"] == "compact":
         trace: TraceStore = artifacts["trace"]
         api_calls, tokens, active, errors = trace_api_metrics(trace.events)
+        provider_wait = trace_provider_wait_seconds(trace.events)
         provider_errors = trace.matching("provider_error")
         state = artifacts["state"]
         current = state.get("current") or {}
     else:
         api_calls, tokens, active, errors = _legacy_execution_metrics(run_dir)
+        provider_wait = None
         provider_errors = _legacy_provider_errors(run_dir)
         current = {}
         if provider_errors:
@@ -469,7 +476,7 @@ def _execution_summary(run_dir: Path, artifacts: dict[str, Any]) -> dict[str, An
 
     breakdown = Counter()
     for error in provider_errors:
-        code = error.get("status_code")
+        code = _error_status_code(error)
         kind = error.get("error_type") or "Error"
         key = f"{code} {kind}" if code is not None else str(kind)
         breakdown[key] += 1
@@ -478,10 +485,20 @@ def _execution_summary(run_dir: Path, artifacts: dict[str, Any]) -> dict[str, An
         "api_calls": api_calls,
         "total_tokens": tokens,
         "active_seconds": active,
+        "provider_wait_seconds": provider_wait,
         "error_count": errors,
         "provider_error_breakdown": dict(breakdown),
         "last_stage": current,
     }
+
+
+def _error_status_code(error: dict[str, Any]) -> int | str | None:
+    code = error.get("status_code")
+    if code is not None:
+        return code
+    import re
+    match = re.search(r"\b([45]\d{2})\b", str(error.get("message") or ""))
+    return int(match.group(1)) if match else None
 
 
 def _iteration_from_artifact(value: Any) -> int | None:
@@ -655,12 +672,19 @@ def _last_stage_text(stage: dict[str, Any]) -> str:
     if not stage:
         return "-"
     parts: list[str] = []
-    if stage.get("iteration") is not None:
-        parts.append(f"Iteration {stage['iteration']}")
+    iteration = stage.get("iteration")
+    if iteration is None and stage.get("scope"):
+        iteration = _iteration_from_scope(str(stage["scope"]))
+    if iteration is not None:
+        parts.append(f"Iteration {iteration}")
     if stage.get("phase"):
         parts.append(str(stage["phase"]))
     if stage.get("candidate") is not None:
         parts.append(f"C{stage['candidate']}")
+    if stage.get("attempt") is not None:
+        parts.append(f"Attempt {stage['attempt']}")
+    if stage.get("restart_attempt") is not None:
+        parts.append(f"Restart {stage['restart_attempt']}")
     if stage.get("scope") and not parts:
         parts.append(str(stage["scope"]))
     return " / ".join(parts) if parts else "-"
@@ -800,6 +824,8 @@ def build_report(summary: dict[str, Any], rows: list[dict[str, Any]]) -> str:
     lines.append(f"  Toplam API çağrısı      = {_cell(execution.get('api_calls'))}")
     lines.append(f"  Toplam token            = {_cell(execution.get('total_tokens'))}")
     lines.append(f"  Toplam aktif süre (sn)  = {_cell(execution.get('active_seconds'))}")
+    if execution.get("provider_wait_seconds") is not None:
+        lines.append(f"  Rate-limit bekleme (sn) = {_cell(execution.get('provider_wait_seconds'))}")
     lines.append(f"  Kayıtlı hata            = {_cell(execution.get('error_count'))}")
     breakdown = execution.get("provider_error_breakdown") or {}
     if breakdown:
@@ -877,8 +903,17 @@ def write_analysis(run_dir: Path, summary: dict[str, Any], rows: list[dict[str, 
 def main() -> None:
     args = parse_args()
     run_dir = resolve_analysis_run_dir(args.run_dir, provider=args.provider, model=args.model)
-    summary, rows, report = build_analysis(run_dir)
-    outputs = write_analysis(run_dir, summary, rows, report)
+    if is_compact_model_run(run_dir):
+        from src.experiment.compact_analysis import (
+            build_compact_analysis,
+            write_compact_analysis,
+        )
+
+        summary, rows, report = build_compact_analysis(run_dir)
+        outputs = write_compact_analysis(run_dir, summary, rows, report)
+    else:
+        summary, rows, report = build_analysis(run_dir)
+        outputs = write_analysis(run_dir, summary, rows, report)
 
     print(report, end="")
     print("\nDosyalar")
