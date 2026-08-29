@@ -1,0 +1,70 @@
+AVMA-TSP ANALİZ RAPORU
+================================================================================
+
+RUN BİLGİLERİ
+┌─────────┬───────┬────────┬──────────┬──────────────────┬──────────┬───────┬────────────┐
+│ Problem │ Düğüm │ Tür    │ Provider │ Model            │ Referans │ İter. │ Durum      │
+├─────────┼───────┼────────┼──────────┼──────────────────┼──────────┼───────┼────────────┤
+│ eil51   │    51 │ EUC_2D │ gemini   │ gemini-3.6-flash │ 426.0000 │     3 │ tamamlandı │
+└─────────┴───────┴────────┴──────────┴──────────────────┴──────────┴───────┴────────────┘
+
+INITIALIZER
+
+  İlk çıktı geçerli       = evet
+  Repair gerekli          = hayır
+  Repair denemesi         = 0
+  Repair sonucu           = yok
+  Fallback restart        = 0
+  Kabul edilen kaynak     = initializer
+  Başlangıç mesafesi      = 485.0000
+
+İTERASYONLAR
+
+┌───────┬──────────────┬────────┬──────────┬──────────────┬──────────────┬─────────┬────────┬─────┬───────┬──────────┬──────┐
+│ İter. │ Critic Valid │ Scorer │  Seçilen │ Sistem GBest │ Oracle GBest │   Gap % │ Regret │ API │ Token │ Aktif sn │ Hata │
+├───────┼──────────────┼────────┼──────────┼──────────────┼──────────────┼─────────┼────────┼─────┼───────┼──────────┼──────┤
+│     1 │ 3/3          │ C2     │ 476.0000 │     476.0000 │     473.0000 │ 11.7371 │ 3.0000 │   4 │ 45305 │ 216.5263 │    0 │
+│     2 │ 3/3          │ C1     │ 470.0000 │     470.0000 │     464.0000 │ 10.3286 │ 6.0000 │   4 │ 44886 │ 215.9982 │    0 │
+│     3 │ 3/3          │ C3     │ 460.0000 │     460.0000 │     458.0000 │  7.9812 │ 2.0000 │   4 │ 42576 │ 198.4049 │    0 │
+└───────┴──────────────┴────────┴──────────┴──────────────┴──────────────┴─────────┴────────┴─────┴───────┴──────────┴──────┘
+
+REPAIR
+
+  İterasyon içi aktivasyon = 0
+  Toplam deneme             = 0
+  Başarılı                  = 0
+  Başarısız                 = 0
+
+CRITIC
+
+  Toplam aday           = 9
+  Geçerli               = 9/9 (%100.0)
+  Geçersiz              = 0
+  İterasyon bestleri    = 473.0000 → 464.0000 → 458.0000
+
+SCORER
+
+  Toplam seçim          = 3
+  Geçersiz seçim        = 0
+  Critic Best seçimi    = 0/3 (%0.0)
+  Ortalama regret       = 3.6667
+  Maksimum regret       = 6.0000
+
+HYBRID & RESTART
+
+  Structural stagnation = 0
+  Hybrid                = 0
+  Geçerli Hybrid 2-opt  = 0/0
+  Search restart        = 0
+
+RUN EXECUTION
+
+  Tamamlanan iterasyon    = 3/3
+  Toplam API çağrısı      = 13
+  Toplam token            = 135930
+  Toplam aktif süre (sn)  = 640.9828
+  Kayıtlı hata            = 0
+  Son ulaşılan aşama      = completed
+  Durum                    = tamamlandı
+
+================================================================================

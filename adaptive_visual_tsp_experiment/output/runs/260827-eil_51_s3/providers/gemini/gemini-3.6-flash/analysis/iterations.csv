@@ -1,0 +1,4 @@
+﻿iteration,selected_candidate,selected_valid,selected_distance,selected_gap_percent,working_distance,working_gap_percent,iteration_oracle_distance,selection_regret,selected_best_so_far,system_gbest_gap_percent,observed_oracle_best_so_far,working_crossings,valid_candidates,total_candidates,repair_used,stagnation_detected,mean_similarity,hybrid_used,restart_used,escape_action,working_valid,api_calls,total_tokens,active_seconds,provider_errors
+1,2,True,476.0,11.737089201877934,476.0,11.737089201877934,473.0,3.0,476.0,11.737089201877934,473.0,0,3,3,False,False,0.0,False,False,,True,4,45305,216.52628860017285,0
+2,1,True,470.0,10.328638497652582,470.0,10.328638497652582,464.0,6.0,470.0,10.328638497652582,464.0,0,3,3,False,False,0.0,False,False,,True,4,44886,215.9981737001799,0
+3,3,True,460.0,7.981220657276995,460.0,7.981220657276995,458.0,2.0,460.0,7.981220657276995,458.0,0,3,3,False,False,0.0,False,False,,True,4,42576,198.40494569996372,0

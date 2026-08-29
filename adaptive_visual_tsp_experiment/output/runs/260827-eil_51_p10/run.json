@@ -1,0 +1,138 @@
+{
+  "architecture_version": "avma-tsp-v1",
+  "information_policy": "visual_only_llm_passive_numeric_observer",
+  "created_at_utc": "2026-08-27T10:13:00.947238+00:00",
+  "git_commit_sha": "48f4f9f939127150a3e349d7ba0e4231b747afe4",
+  "config": {
+    "experiment": {
+      "name": "pilot10_v1",
+      "run_label": "p10",
+      "iterations": 10,
+      "prompt_set": "v1",
+      "output_dir": "output/runs",
+      "strict_euc_2d": true,
+      "max_restart_attempts": 3
+    },
+    "provider": {
+      "candidate_strategy": "independent_calls",
+      "timeout_seconds": 120,
+      "request_retries": 3
+    },
+    "agents": {
+      "initializer": {
+        "temperature": null,
+        "thinking_level": "low",
+        "max_output_retries": 2
+      },
+      "critic": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "candidates": 3,
+        "max_output_retries": 2
+      },
+      "scorer": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_output_retries": 2
+      },
+      "repair": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_attempts": 2,
+        "max_output_retries": 2
+      },
+      "hybrid": {
+        "temperature": null,
+        "thinking_level": "high",
+        "max_output_retries": 2
+      },
+      "diversity": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_output_retries": 2
+      }
+    },
+    "stagnation": {
+      "window": 5,
+      "similarity_threshold": 0.9,
+      "max_unique_routes": 2
+    },
+    "render": {
+      "figure_size_inches": 8.0,
+      "dpi": 180,
+      "padding_ratio": 0.08,
+      "node_size": 440,
+      "font_size": 9,
+      "route_line_width": 1.8
+    }
+  },
+  "config_sha256": "49702c7bcf0e14f4ea4ad3cd41b9e5ad6cbb2d77680925ea78753167765fa204",
+  "run_parameters": {
+    "seed": 42,
+    "protocol_name": "pilot10_v1",
+    "run_label": "p10"
+  },
+  "prompt_set": "v1",
+  "prompt_sha256": {
+    "common_policy.txt": "a23706c4c97417aa62c8a78defdcd1f360a60a4f1f7a7927b73e5ccb8c6133d4",
+    "critic.txt": "3be4c4edb0a551b1bf93cdde9d73284410bca7b711bf94cc3292d1cba5cb6630",
+    "diversity.txt": "bebb4c66316af5bb3e6b7250cd614c720feeb891eb2a110d61e0b75da2e945f0",
+    "hybrid.txt": "c518160d9c2fb6336899c57016a291d4a1c8789d84790d4a7df2dd86a4c64cb5",
+    "initializer.txt": "d44444ec9b10d1bf43b5cb47b412687537ee2a2f016a2b792c69f1e1c477852a",
+    "repair.txt": "2a982b7dbf25ec7dd73a668478fe6b9dba091194d1aa50ffb5cb4ec6790e2b8a",
+    "scorer.txt": "f809858d5f427a33a3a45985b5dcdb9e5d77af9386fd48078ca18211415efd52"
+  },
+  "problem": {
+    "name": "eil51",
+    "dimension": 51,
+    "depot": 1,
+    "edge_weight_type": "EUC_2D",
+    "source_path": "D:\\Projects\\visual-tsp-mllm-experiment\\adaptive_visual_tsp_experiment\\data\\tsplib\\eil51.tsp",
+    "source_sha256": "2081d397a69ef55b88a50a9c96d96462bcb74a3367ca969fde71573b53779bc2",
+    "reference_optimum": 426.0
+  },
+  "llm_input_policy": {
+    "allowed": [
+      "problem images",
+      "route images",
+      "candidate images",
+      "visible node labels",
+      "visible depot marker",
+      "agent task instructions"
+    ],
+    "forbidden": [
+      "coordinates",
+      "distance matrix",
+      "numeric edge lengths",
+      "numeric tour length",
+      "gap",
+      "known optimum",
+      "optimal route",
+      "GBest",
+      "textual current route as model input",
+      "missing-node list",
+      "validation reason"
+    ]
+  },
+  "layout_version": "compact_v3",
+  "provider_policy": {
+    "candidate_strategy": "independent_calls",
+    "timeout_seconds": 120,
+    "request_retries": 3
+  },
+  "supported_providers": [
+    "gemini",
+    "groq",
+    "mistral",
+    "openrouter"
+  ],
+  "prompts": {
+    "common_policy": "VISUAL REASONING POLICY\n\nSolve the task using only the visual information provided in the images.\n\nDo not request, assume, invent, or use node coordinates, a distance matrix, numerical edge lengths, numerical tour lengths, an optimal/reference solution, an optimality gap, hidden validation results, or a textual representation of the current route.\n\nReason only from visible node positions, visible node labels, the depot marker, route geometry, and visible route connections.\n\nDo not invent node IDs that are not visible in the images.\n\nReturn only the requested JSON object. Do not include explanations, calculations, markdown fences, or additional text.",
+    "critic": "ROLE: VISUAL CRITIC AGENT\n\nYou are given an image showing the current TSP tour.\n\nInspect the route geometry carefully and produce one alternative complete tour that is visually more efficient.\n\nPay particular attention to:\n- edge crossings,\n- unnecessary backtracking,\n- excessive zigzagging,\n- visually obvious detours,\n- poor local continuity,\n- unnecessarily long-looking jumps between regions.\n\nModify the route only when the visual geometry suggests a meaningful improvement.\n\nRequirements:\n1. Start and end at the visually marked depot.\n2. Visit every labeled node exactly once.\n3. Preserve all visible node IDs.\n4. Do not invent or omit nodes.\n5. Produce a complete alternative tour.\n6. Prefer structural improvement rather than arbitrary reordering.\n7. Avoid merely reversing the direction of the same tour.\n\nReturn only:\n{\"route\":[...]}",
+    "diversity": "ROLE: DIVERSITY RESTART AGENT\n\nYou are given the original TSP problem image.\n\nConstruct a fresh complete Hamiltonian tour from scratch. This is a diversification step. Do not attempt to reconstruct or preserve any earlier solution.\n\nRequirements:\n1. Start and end at the visually marked depot.\n2. Visit every labeled node exactly once.\n3. Preserve every visible node ID.\n4. Do not invent or omit nodes.\n5. Seek a fresh geometric traversal of the problem.\n6. Prefer a visually coherent tour with limited crossings, backtracking, zigzagging, and obvious detours.\n\nPrioritize obtaining a structurally diverse but feasible new starting tour.\n\nReturn only:\n{\"route\":[...]}",
+    "hybrid": "ROLE: VISUAL HYBRID AGENT\n\nYou are given an image of a TSP tour that has become structurally stagnant.\n\nPerform exactly one visual 2-opt modification to create a new complete tour.\n\nStep 1:\nInspect the route geometry and identify two distinct, non-adjacent route edges whose replacement appears promising because of one or more visible problems such as an edge crossing, backtracking, a strong zigzag, an obvious detour, poor geometric continuity, or an unnecessarily long-looking connection.\n\nStep 2:\nChoose exactly two existing non-adjacent edges from the current tour.\n\nStep 3:\nApply a standard 2-opt transformation: remove the two selected edges, reverse the route segment between the cuts, and reconnect the tour to form one complete Hamiltonian cycle.\n\nRequirements:\n- Perform exactly one 2-opt operation.\n- Do not perform arbitrary additional route rearrangements.\n- Preserve every visible node exactly once.\n- Preserve the depot as the start/end node.\n- Do not invent or omit nodes.\n\nReturn only:\n{\"selected_edges\":[[a,b],[c,d]],\"route\":[...]}",
+    "initializer": "ROLE: INITIALIZER AGENT\n\nYou are given an image of a Traveling Salesman Problem.\n\nConstruct one complete Hamiltonian tour using only the visual information in the image.\n\nRequirements:\n1. Start at the visually marked depot.\n2. Visit every labeled node exactly once.\n3. Return to the depot.\n4. Preserve every visible node ID exactly as shown.\n5. Do not invent or omit nodes.\n6. Prefer a visually efficient tour with good local continuity.\n7. Avoid unnecessary edge crossings, backtracking, zigzagging, and visually obvious long detours when possible.\n\nYour first priority is producing a complete and feasible tour. Visual efficiency is the second priority.\n\nReturn only:\n{\"route\":[...]}",
+    "repair": "ROLE: VISUAL REPAIR AGENT\n\nThe first image is the original TSP problem. The second image is a proposed tour for the same problem.\n\nThe proposed tour has failed an external feasibility check. No information about the reason for failure is provided.\n\nDetermine the problem yourself by visually comparing the two images.\n\nInspect whether:\n- every original node is included in the tour,\n- any node appears omitted,\n- any node appears visited more than once,\n- the route forms one complete cycle,\n- the depot is used correctly.\n\nRepair only what is necessary to obtain a complete Hamiltonian tour. Preserve as much of the existing route structure as reasonably possible. Do not redesign the entire tour unless necessary for feasibility.\n\nAfter restoring feasibility, avoid introducing obvious crossings, backtracking, or large visual detours where possible.\n\nReturn only:\n{\"route\":[...]}",
+    "scorer": "ROLE: VISUAL SCORER AGENT\n\nThe first image is the original TSP problem. The remaining labeled images are candidate tours for exactly the same problem.\n\nCompare all candidate tours using only visual evidence and rank them from best to worst.\n\nEvaluate in this priority order:\n\n1. COMPLETENESS AND FEASIBILITY\n- Does the tour appear to visit every visible node?\n- Does every node appear properly integrated into one complete cycle?\n- Does the tour start and end at the depot?\n- Are there visible omissions, disconnected nodes, or suspicious repeated visits?\n\n2. ROUTE GEOMETRY\n- Prefer fewer edge crossings.\n- Prefer less backtracking and line overlap.\n- Prefer fewer unnecessary zigzags.\n- Prefer fewer visually obvious detours and long-looking jumps.\n\n3. LOCAL CONTINUITY\n- Prefer routes that connect nearby regions smoothly.\n- Prefer coherent geometric flow rather than abrupt changes in direction.\n\n4. OVERALL VISUAL EFFICIENCY\n- Among visually feasible candidates, prefer the route that appears most compact and geometrically efficient.\n\nDo not estimate or invent numerical distances. A visually attractive route must not be preferred over a route that appears more complete and feasible.\n\nReturn only:\n{\"ranking\":[candidate_ids_from_best_to_worst],\"best_id\":best_candidate_id}"
+  }
+}

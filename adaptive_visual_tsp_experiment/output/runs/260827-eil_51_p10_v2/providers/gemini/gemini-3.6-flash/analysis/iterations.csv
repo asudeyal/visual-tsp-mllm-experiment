@@ -1,0 +1,5 @@
+﻿iteration,valid_candidates,total_candidates,critic_best_distance,selected_candidate,selected_valid,working_distance,working_gap_percent,observed_oracle_best_so_far,working_regret,selection_regret,api_calls,total_tokens,active_seconds,wait_seconds,total_seconds,output_failures,provider_failures
+1,3,3,478.0,1,True,478.0,12.206572769953052,478.0,0.0,0.0,4,33145,144.90270039904863,0.0,144.90270039904863,0,0
+2,3,3,465.0,1,True,465.0,9.15492957746479,465.0,0.0,0.0,4,37199,150.16233220044523,0.0,150.16233220044523,0,0
+3,3,3,461.0,3,True,463.0,8.685446009389672,461.0,2.0,2.0,4,38256,196.76297789998353,0.0,196.76297789998353,0,0
+4,2,3,459.0,3,True,463.0,8.685446009389672,459.0,4.0,0.0,4,41792,235.55269639845937,0.0,235.55269639845937,0,1

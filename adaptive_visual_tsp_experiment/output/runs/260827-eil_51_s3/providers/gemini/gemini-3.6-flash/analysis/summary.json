@@ -1,0 +1,76 @@
+{
+  "run": {
+    "instance": "eil51",
+    "dimension": 51,
+    "edge_weight_type": "EUC_2D",
+    "provider": "gemini",
+    "model": "gemini-3.6-flash",
+    "config": "smoke_eil51_gemini36_v1",
+    "target_iterations": 3,
+    "completed_iterations": 3
+  },
+  "reference": {
+    "distance": 426.0
+  },
+  "performance": {
+    "final_working_distance": 460.0,
+    "selected_best_distance": 460.0,
+    "selected_best_gap_percent": 7.981220657276995,
+    "observed_oracle_best_distance": 458.0,
+    "observed_oracle_best_gap_percent": 7.511737089201878
+  },
+  "initializer": {
+    "valid_on_first_attempt": true,
+    "repair_required": false,
+    "repair_attempt_count": 0,
+    "repair_result": "yok",
+    "fallback_restart_count": 0,
+    "accepted_source": "initializer",
+    "initial_distance": 485.0,
+    "accepted_distance": 485.0
+  },
+  "critic": {
+    "total_candidate_count": 9,
+    "valid_candidate_count": 9,
+    "invalid_candidate_count": 0,
+    "iteration_best_distances": [
+      473.0,
+      464.0,
+      458.0
+    ]
+  },
+  "scorer": {
+    "selection_count": 3,
+    "invalid_selection_count": 0,
+    "oracle_selection_count": 0,
+    "mean_selection_regret": 3.6666666666666665,
+    "max_selection_regret": 6.0
+  },
+  "repair": {
+    "activation_count": 0,
+    "successful_repair_count": 0,
+    "failed_repair_count": 0,
+    "total_attempt_count": 0,
+    "iterations": []
+  },
+  "adaptive_search": {
+    "structural_stagnation_count": 0,
+    "hybrid_activation_count": 0,
+    "valid_hybrid_two_opt_count": 0,
+    "diversity_restart_count": 0,
+    "initializer_fallback_restart_count": 0
+  },
+  "execution": {
+    "api_calls": 13,
+    "total_tokens": 135930,
+    "active_seconds": 640.9827697006986,
+    "error_count": 0,
+    "provider_error_breakdown": {},
+    "last_stage": {
+      "phase": "completed"
+    }
+  },
+  "termination": {
+    "status": "completed"
+  }
+}
