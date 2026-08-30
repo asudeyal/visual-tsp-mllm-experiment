@@ -8,14 +8,14 @@
     "config": "pilot10_v1",
     "prompt_set": "v1",
     "target_iterations": 10,
-    "completed_iterations": 3,
-    "partial_iteration": 4
+    "completed_iterations": 8,
+    "partial_iteration": 9
   },
   "reference": {
     "distance": 426.0
   },
   "performance": {
-    "final_working_distance": 439.0,
+    "final_working_distance": 455.0,
     "selected_best_distance": 439.0,
     "selected_best_gap_percent": 3.051643192488263,
     "observed_oracle_best_distance": 438.0,
@@ -31,19 +31,19 @@
     "accepted_distance": 460.0
   },
   "critic": {
-    "total_candidate_count": 9,
-    "valid_candidate_count": 7,
-    "invalid_candidate_count": 2,
-    "valid_iteration_count": 3
+    "total_candidate_count": 24,
+    "valid_candidate_count": 21,
+    "invalid_candidate_count": 3,
+    "valid_iteration_count": 8
   },
   "scorer": {
-    "selection_count": 3,
-    "valid_possible_iteration_count": 3,
-    "valid_selection_when_possible_count": 3,
+    "selection_count": 8,
+    "valid_possible_iteration_count": 8,
+    "valid_selection_when_possible_count": 8,
     "avoidable_invalid_selection_count": 0,
-    "comparable_iteration_count": 3,
-    "critic_best_selection_count": 2,
-    "mean_selection_regret": 0.3333333333333333,
+    "comparable_iteration_count": 8,
+    "critic_best_selection_count": 7,
+    "mean_selection_regret": 0.125,
     "max_selection_regret": 1.0
   },
   "recovery": {
@@ -61,13 +61,13 @@
     "by_agent": {},
     "parse_failure_count": 0,
     "timeout_count": 0,
-    "transient_http_count": 1
+    "transient_http_count": 2
   },
   "adaptive_search": {
-    "structural_stagnation_count": 0,
-    "hybrid_activation_count": 0,
-    "valid_hybrid_two_opt_count": 0,
-    "stagnation_restart_count": 0
+    "structural_stagnation_count": 2,
+    "hybrid_activation_count": 1,
+    "valid_hybrid_two_opt_count": 1,
+    "stagnation_restart_count": 1
   },
   "iteration_cost": [
     {
@@ -108,39 +108,102 @@
     },
     {
       "iteration": 4,
-      "label": "4*",
-      "partial": true,
-      "api_calls": 2,
-      "total_tokens": 43342,
-      "active_seconds": 178.8836725000292,
+      "label": "4",
+      "partial": false,
+      "api_calls": 5,
+      "total_tokens": 109944,
+      "active_seconds": 498.61513059958816,
       "wait_seconds": 0.0,
-      "total_seconds": 178.8836725000292,
+      "total_seconds": 498.61513059958816,
+      "output_failures": 0,
+      "provider_failures": 1
+    },
+    {
+      "iteration": 5,
+      "label": "5",
+      "partial": false,
+      "api_calls": 4,
+      "total_tokens": 48461,
+      "active_seconds": 233.32898810040206,
+      "wait_seconds": 0.0,
+      "total_seconds": 233.32898810040206,
+      "output_failures": 0,
+      "provider_failures": 0
+    },
+    {
+      "iteration": 6,
+      "label": "6",
+      "partial": false,
+      "api_calls": 4,
+      "total_tokens": 52624,
+      "active_seconds": 260.59995619859546,
+      "wait_seconds": 0.0,
+      "total_seconds": 260.59995619859546,
+      "output_failures": 0,
+      "provider_failures": 0
+    },
+    {
+      "iteration": 7,
+      "label": "7",
+      "partial": false,
+      "api_calls": 4,
+      "total_tokens": 34223,
+      "active_seconds": 153.36479330062866,
+      "wait_seconds": 0.0,
+      "total_seconds": 153.36479330062866,
+      "output_failures": 0,
+      "provider_failures": 0
+    },
+    {
+      "iteration": 8,
+      "label": "8",
+      "partial": false,
+      "api_calls": 5,
+      "total_tokens": 53360,
+      "active_seconds": 231.91107499971986,
+      "wait_seconds": 0.0,
+      "total_seconds": 231.91107499971986,
+      "output_failures": 0,
+      "provider_failures": 0
+    },
+    {
+      "iteration": 9,
+      "label": "9*",
+      "partial": true,
+      "api_calls": 0,
+      "total_tokens": null,
+      "active_seconds": null,
+      "wait_seconds": 0.0,
+      "total_seconds": null,
       "output_failures": 0,
       "provider_failures": 1
     }
   ],
   "execution": {
-    "api_calls": 21,
-    "total_tokens": 235491,
-    "active_seconds": 1056.9195845997892,
+    "api_calls": 41,
+    "total_tokens": 490761,
+    "active_seconds": 2255.855855298694,
     "provider_wait_seconds": 0.0,
-    "error_count": 1,
+    "error_count": 2,
     "provider_error_breakdown": {
-      "429 ClientError": 1
+      "429 ClientError": 1,
+      "503 ServerError": 1
     },
     "interruption": {
       "event": "provider_error",
-      "iteration": 4,
-      "candidate": 3,
-      "phase": "critic_candidate_03",
+      "phase": "critic_candidate_01",
+      "iteration": 9,
+      "candidate": 1,
       "provider": "gemini",
       "model": "gemini-3.6-flash",
-      "error_type": "ClientError",
-      "status_code": 429,
-      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash\\nPlease retry in 53.061554544s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '53s'}]}}",
+      "error_type": "ServerError",
+      "status_code": 503,
+      "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
       "transient_http_status": true,
-      "legacy_source": "iterations/iteration_004/candidates/candidate_03/provider_error.json",
-      "seq": 47
+      "request_delay_wait_seconds": 0.0,
+      "retry_backoff_wait_seconds": 0.0,
+      "provider_wait_seconds": 0.0,
+      "seq": 93
     }
   },
   "termination": {

@@ -4,8 +4,3 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
-output/runs/*
-!output/runs/.gitkeep
-output/*.json
-output/*.csv
-output/*.png
