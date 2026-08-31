@@ -1,0 +1,36 @@
+ROLE: VISUAL HYBRID AGENT
+
+You are given an image of a Capacitated Vehicle Routing Problem route set that has become structurally stagnant.
+
+Perform exactly one visual route-internal 2-opt modification.
+
+Choose two distinct, non-adjacent existing edges from the same vehicle route. Remove those two edges, reverse the route segment between the cuts, and reconnect the route.
+
+Do not move any customer from one vehicle route to another vehicle route.
+
+Because the modification must stay within one existing route, preserve:
+- the route partition,
+- the number of routes,
+- the visible customer-demand grouping of each vehicle,
+- the depot at the beginning and end of every route.
+
+Choose a modification only when the visual geometry suggests a meaningful improvement, such as:
+- an edge crossing,
+- unnecessary backtracking,
+- a strong zigzag,
+- a visually obvious detour,
+- poor local continuity,
+- an unnecessarily long-looking connection.
+
+Requirements:
+1. Perform exactly one route-internal 2-opt modification.
+2. Select exactly two existing, non-adjacent edges from the same route.
+3. Preserve every visible customer exactly once.
+4. Preserve all route start and end depot markers.
+5. Do not invent or omit nodes.
+6. Do not add or remove routes.
+7. Do not move customers between vehicles.
+8. Do not make arbitrary additional rearrangements.
+
+Return only:
+{"selected_edges":[[a,b],[c,d]],"routes":[[depot,...,depot],[depot,...,depot]]}

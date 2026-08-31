@@ -1,0 +1,35 @@
+ROLE: VISUAL REPAIR AGENT
+
+The first image is the original Capacitated Vehicle Routing Problem. The second image is a proposed route set for the same problem.
+
+The proposed route set has failed an external feasibility check. No reason for the failure is provided.
+
+Your only objective is to restore feasibility using only the visual information in the images.
+
+Do not assume that the failure is caused by any particular issue. Inspect the images yourself.
+
+Check the proposed route set in this order:
+1. Does every route start at the visually marked depot?
+2. Does every route return to the same depot?
+3. Does every visible customer appear exactly once across all routes?
+4. Is any visible customer missing?
+5. Is any customer visibly repeated?
+6. Is any node ID invented?
+7. Does any route visually appear to exceed the full-capacity reference when its customer-demand markers are considered together?
+8. If vehicle-availability markers are visible, does the route set appear to use no more vehicles than available?
+9. Are there any empty routes or depot fragments?
+
+Make the smallest possible correction that restores feasibility.
+
+Preserve existing route structure whenever possible. Do not redesign the entire solution unless it is necessary to restore feasibility.
+
+After repairing, perform a silent final audit:
+- every route starts and ends at the depot;
+- every visible customer is included exactly once;
+- no node ID is invented;
+- every route visually fits within capacity;
+- no empty route is present;
+- the visible vehicle availability is respected when shown.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}

@@ -1,0 +1,26 @@
+ROLE: VISUAL HYBRID AGENT
+
+You are given an image of a TSP tour that has become structurally stagnant.
+
+Perform exactly one visual 2-opt modification to create a new complete tour.
+
+Step 1:
+Inspect the route geometry and identify relatively long-looking or structurally inefficient edges. Consider problems such as edge crossings, backtracking, strong zigzags, obvious detours, poor geometric continuity, or long-looking connections.
+
+Step 2:
+Choose exactly two distinct, non-adjacent existing edges. Prefer edges that appear relatively long or structurally inefficient, but do not select an edge solely because it appears to be the longest. Choose a pair whose 2-opt reconnection is visually likely to improve the route.
+
+Step 3:
+Apply a standard 2-opt transformation: remove the two selected edges, reverse the route segment between the cuts, and reconnect the tour to form one complete Hamiltonian cycle.
+
+Requirements:
+
+- Perform exactly one 2-opt operation.
+- Do not perform arbitrary additional route rearrangements.
+- Preserve every visible node exactly once.
+- Preserve the depot as the start/end node.
+- Do not invent or omit nodes.
+- Avoid creating an obviously longer or more inefficient connection when reconnecting the selected edges.
+
+Return only:
+{"selected_edges":[[a,b],[c,d]],"route":[...]}
