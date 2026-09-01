@@ -1,0 +1,68 @@
+AVMA-TSP ANALİZ RAPORU
+====================================================================================================
+
+RUN BİLGİLERİ
+┌──────────┬───────┬────────┬──────────┬──────────────────┬──────────────────┬──────────┬───────┬───────┐
+│ Problem  │ Düğüm │ Tür    │ Provider │ Model            │ Prompt Set       │ Referans │ İter. │ Durum │
+├──────────┼───────┼────────┼──────────┼──────────────────┼──────────────────┼──────────┼───────┼───────┤
+│ E-n51-k5 │    51 │ EUC_2D │ gemini   │ gemini-3.6-flash │ cvrp_capacity_v1 │        - │ 0/10  │ kısmi │
+└──────────┴───────┴────────┴──────────┴──────────────────┴──────────────────┴──────────┴───────┴───────┘
+
+SEARCH TRAJECTORY
+┌───────┬──────────────┬─────────────┬────────┬─────────┬───────┬───────────────┬────────┐
+│ İter. │ Critic Valid │ Critic Best │ Scorer │ Working │ Gap % │ Observer Best │ Regret │
+├───────┼──────────────┼─────────────┼────────┼─────────┼───────┼───────────────┼────────┤
+│ Kayıt yok. │              │             │        │         │       │               │        │
+└───────┴──────────────┴─────────────┴────────┴─────────┴───────┴───────────────┴────────┘
+
+INITIALIZER                                  CRITIC
+┌─────────────────────┬──────────────────┐   ┌──────────────────────────────┬───────┐
+│ Metrik              │ Sonuç            │   │ Metrik                       │ Sonuç │
+├─────────────────────┼──────────────────┤   ├──────────────────────────────┼───────┤
+│ İlk çıktı           │ invalid          │   │ Toplam aday                  │ 0     │
+│ Repair gerekli      │ evet             │   │ Geçerli                      │ 0/0   │
+│ Repair denemesi     │ 2                │   │ Geçersiz                     │ 0/0   │
+│ Diversity Restart   │ 3                │   │ Valid aday bulunan iterasyon │ 0/0   │
+│ Kabul edilen kaynak │ fallback restart │   └──────────────────────────────┴───────┘
+│ Kabul edilen mesafe │ -                │   
+└─────────────────────┴──────────────────┘
+
+SCORER                                              RECOVERY
+┌───────────────────────────────────────┬───────┐   ┌──────────────────────────────┬───────┐
+│ Metrik                                │ Sonuç │   │ Metrik                       │ Sonuç │
+├───────────────────────────────────────┼───────┤   ├──────────────────────────────┼───────┤
+│ Toplam seçim                          │ 0     │   │ Repair aktivasyonu           │ 0     │
+│ Valid seçimin mümkün olduğu iterasyon │ 0     │   │ Toplam Repair denemesi       │ 0     │
+│ Bu durumlarda valid seçim             │ 0/0   │   │ Repair ile kurtarılan        │ 0/0   │
+│ Kaçınılabilir invalid seçim           │ 0     │   │ Repair ile kurtarılamayan    │ 0/0   │
+│ Critic-best / comparable              │ 0/0   │   │ Feasibility Restart denemesi │ 0     │
+│ Selection regret ortalama             │ -     │   │ Restart ile kurtarılan       │ 0     │
+│ Selection regret maksimum             │ -     │   │ Restart exhaustion           │ 0     │
+└───────────────────────────────────────┴───────┘   │ Incumbent retained           │ 0     │
+                                                    └──────────────────────────────┴───────┘
+
+MODEL ROBUSTNESS                       ADAPTIVE SEARCH
+┌───────────────────────────┬──────┐   ┌──────────────────────────────┬───────┐
+│ Olay                      │ Adet │   │ Metrik                       │ Sonuç │
+├───────────────────────────┼──────┤   ├──────────────────────────────┼───────┤
+│ Recoverable model failure │    0 │   │ Structural stagnation        │ 0     │
+│ ├─ Initializer            │    0 │   │ Hybrid activation            │ 0     │
+│ ├─ Critic                 │    0 │   │ Valid exact 2-opt            │ 0/0   │
+│ ├─ Scorer                 │    0 │   │ Stagnation Diversity Restart │ 0     │
+│ ├─ Repair                 │    0 │   └──────────────────────────────┴───────┘
+│ ├─ Diversity              │    0 │   
+│ └─ Hybrid                 │    0 │   
+│                           │      │   
+│ Parse / malformed output  │    0 │   
+│ Timeout                   │    0 │   
+│ Transient HTTP            │    0 │   
+└───────────────────────────┴──────┘
+
+ITERATION COST
+┌───────┬─────┬───────┬──────────┬─────────┬──────────┬─────────────┬───────────────┐
+│ İter. │ API │ Token │ Aktif sn │ Wait sn │ Total sn │ Output Fail │ Provider Fail │
+├───────┼─────┼───────┼──────────┼─────────┼──────────┼─────────────┼───────────────┤
+│ Kayıt yok. │     │       │          │         │          │             │               │
+└───────┴─────┴───────┴──────────┴─────────┴──────────┴─────────────┴───────────────┘
+
+====================================================================================================
