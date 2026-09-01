@@ -25,7 +25,13 @@ from ..providers.base import ProviderAdapter
 from ..prompts import PromptSet
 from ..rendering import render_problem, render_routes
 from ..schemas import CheckpointState, ObserverEvaluation, ProblemInstance, RouteCandidate
-from ..search import detect_structural_stagnation, is_exact_two_opt_transition, undirected_edge_set
+from ..search import (
+    canonicalize_routes,
+    detect_structural_stagnation,
+    edge_similarity,
+    is_exact_two_opt_transition,
+    undirected_edge_set,
+)
 from .state_machine import EscapeStateMachine
 
 
@@ -268,7 +274,14 @@ class AdaptiveVisualCVRPOrchestrator:
             raise ValueError(f"Compact trace image alanı eksik: {image_key}")
         candidate = RouteCandidate(candidate_id, routes, source, raw_text, str(image))
         if not image.exists():
-            render_routes(self.problem, routes, image, self.config.render)
+            render_routes(
+                self.problem, 
+                routes, 
+                image, 
+                self.config.render,
+                demand_encoding=self.config.demand_encoding,
+                route_rendering=self.config.route_rendering
+            )
         evaluation = self._observe(routes)
         return candidate, evaluation, image
 
@@ -457,6 +470,17 @@ class AdaptiveVisualCVRPOrchestrator:
                 )
 
             if evaluation.validation.valid:
+                # DIVERSITY KONTROLÜ: Eğer incumbent (mevcut iyi rota) ile yeni rota tamamen aynıysa 
+                # bu diversity (çeşitlilik) sağlamaz, bu yüzden es geçilip bir sonraki restart'a devam edilir.
+                if (
+                    incumbent is not None
+                    and canonicalize_routes(candidate.routes, self.problem.depot)
+                    == canonicalize_routes(incumbent[0].routes, self.problem.depot)
+                ):
+                    item["repair"] = "skipped_identical_to_incumbent"
+                    restart_trace["attempts"].append(item)
+                    continue
+                
                 restart_trace["attempts"].append(item)
                 self.state_machine.mark_restart()
                 return candidate, evaluation, restart_trace
@@ -628,15 +652,80 @@ class AdaptiveVisualCVRPOrchestrator:
         new_routes: tuple[tuple[int, ...], ...],
         selected_edges: tuple[tuple[int, int], tuple[int, int]],
     ) -> dict[str, Any]:
-        old_edges = undirected_edge_set(old_routes)
-        normalized = [tuple(sorted(edge)) for edge in selected_edges]
-        selected_exist = all(edge in old_edges for edge in normalized)
-        non_adjacent = len(set(selected_edges[0]) & set(selected_edges[1])) == 0
+        """Audit that a Hybrid output is exactly one intra-route 2-opt move.
+
+        The selected edges must be two distinct, non-adjacent edges from the
+        same input route, and they must be exactly the two edges removed by
+        the observed transition.  The generic transition audit additionally
+        verifies that the resulting route set can be obtained by reversing
+        one contiguous segment of that same route, with no inter-route
+        customer exchange.
+        """
+        old = tuple(tuple(route) for route in old_routes)
+        new = tuple(tuple(route) for route in new_routes)
+        selected = tuple(
+            tuple(sorted((int(edge[0]), int(edge[1]))))
+            for edge in selected_edges
+        )
+
+        old_edges = undirected_edge_set(old)
+        new_edges = undirected_edge_set(new)
+
+        selected_exist = all(edge in old_edges for edge in selected)
+        selected_distinct = len(set(selected)) == 2
+
+        same_input_route = False
+        non_adjacent = False
+        if selected_distinct:
+            for route in old:
+                route_edges = {
+                    tuple(sorted((a, b)))
+                    for a, b in zip(route, route[1:])
+                    if a != b
+                }
+                if all(edge in route_edges for edge in selected):
+                    same_input_route = True
+                    positions = []
+                    for edge in selected:
+                        for index, (a, b) in enumerate(zip(route, route[1:])):
+                            if tuple(sorted((a, b))) == edge:
+                                positions.append(index)
+                                break
+                    non_adjacent = (
+                        len(positions) == 2
+                        and abs(positions[0] - positions[1]) > 1
+                    )
+                    break
+
+        removed_edges = old_edges - new_edges
+        added_edges = new_edges - old_edges
+        selected_are_exactly_removed = (
+            selected_distinct
+            and frozenset(selected) == removed_edges
+            and len(removed_edges) == 2
+            and len(added_edges) == 2
+        )
+
+        transition_is_exact = is_exact_two_opt_transition(old, new)
+        is_exact = (
+            transition_is_exact
+            and selected_exist
+            and same_input_route
+            and non_adjacent
+            and selected_are_exactly_removed
+        )
+
         return {
             "selected_edges": [list(edge) for edge in selected_edges],
             "selected_edges_exist_in_input_route": selected_exist,
+            "selected_edges_distinct": selected_distinct,
+            "selected_edges_same_input_route": same_input_route,
             "selected_edges_non_adjacent": non_adjacent,
-            "exact_single_two_opt_transition": is_exact_two_opt_transition(old_routes, new_routes),
+            "removed_edges": [list(edge) for edge in sorted(removed_edges)],
+            "added_edges": [list(edge) for edge in sorted(added_edges)],
+            "selected_edges_are_exactly_removed": selected_are_exactly_removed,
+            "transition_is_exact_single_two_opt": transition_is_exact,
+            "exact_single_two_opt_transition": is_exact,
         }
 
     def _run_hybrid_escape(
@@ -729,21 +818,31 @@ class AdaptiveVisualCVRPOrchestrator:
             "two_opt_audit": audit,
         }
 
-        if evaluation.validation.valid:
+        if evaluation.validation.valid and audit["exact_single_two_opt_transition"]:
             return candidate, evaluation, trace
 
-        repaired = self._repair_until_valid(
-            candidate,
-            Path(candidate.image_path or image_path),
-            scope=scope,
-            image_dir=image_dir,
-            image_prefix="hybrid_repair",
-            resume=resume,
+        # A feasible candidate that violates the Hybrid operator contract
+        # must not be repaired: Repair could produce a different operator
+        # transition and would therefore invalidate the Hybrid protocol.
+        if not evaluation.validation.valid:
+            repaired = self._repair_until_valid(
+                candidate,
+                Path(candidate.image_path or image_path),
+                scope=scope,
+                image_dir=image_dir,
+                image_prefix="hybrid_repair",
+                resume=resume,
+            )
+            if repaired is not None:
+                repaired_candidate, repaired_eval, repair_trace = repaired
+                trace["repair"] = repair_trace
+                return repaired_candidate, repaired_eval, trace
+
+        trace["hybrid_contract_violation"] = (
+            "feasible_but_not_exact_single_intra_route_two_opt"
+            if evaluation.validation.valid
+            else "invalid_hybrid_candidate"
         )
-        if repaired is not None:
-            repaired_candidate, repaired_eval, repair_trace = repaired
-            trace["repair"] = repair_trace
-            return repaired_candidate, repaired_eval, trace
 
         restarted, restarted_eval, restart_trace = self._restart_until_valid(
             scope=f"{scope}.fallback",

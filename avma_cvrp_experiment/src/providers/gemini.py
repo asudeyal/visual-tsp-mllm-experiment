@@ -8,6 +8,7 @@ advertises supports_temperature=False and uses thinking_level when configured.
 from __future__ import annotations
 
 import os
+import time
 from pathlib import Path
 from typing import Sequence
 
@@ -103,14 +104,30 @@ class GeminiProvider(ProviderAdapter):
         temperature: float | None,
         thinking_level: str | None,
     ) -> ProviderResponse:
-        response = self._client.models.generate_content(
-            model=self.model,
-            contents=self._contents(parts),
-            config=self._config(candidate_count=1, thinking_level=thinking_level),
-        )
+        from google.genai import errors
+
+        max_retries = 3
+        response = None
+        
+        for attempt in range(max_retries):
+            try:
+                response = self._client.models.generate_content(
+                    model=self.model,
+                    contents=self._contents(parts),
+                    config=self._config(candidate_count=1, thinking_level=thinking_level),
+                )
+                break
+            except errors.ServerError as e:
+                if ("503" in str(e) or "UNAVAILABLE" in str(e)) and attempt < max_retries - 1:
+                    print(f"API yoğunluğu (503). 30 saniye bekleniyor... (Deneme {attempt + 1}/{max_retries})")
+                    time.sleep(30)
+                else:
+                    raise e
+
         text = getattr(response, "text", None)
         if not text and getattr(response, "candidates", None):
             text = self._candidate_text(response.candidates[0])
+            
         return ProviderResponse(
             text=str(text or ""),
             provider=self.provider_id,
@@ -129,11 +146,26 @@ class GeminiProvider(ProviderAdapter):
         temperature: float | None,
         thinking_level: str | None,
     ) -> ProviderManyResponse:
-        response = self._client.models.generate_content(
-            model=self.model,
-            contents=self._contents(parts),
-            config=self._config(candidate_count=count, thinking_level=thinking_level),
-        )
+        from google.genai import errors
+
+        max_retries = 3
+        response = None
+        
+        for attempt in range(max_retries):
+            try:
+                response = self._client.models.generate_content(
+                    model=self.model,
+                    contents=self._contents(parts),
+                    config=self._config(candidate_count=count, thinking_level=thinking_level),
+                )
+                break
+            except errors.ServerError as e:
+                if ("503" in str(e) or "UNAVAILABLE" in str(e)) and attempt < max_retries - 1:
+                    print(f"API yoğunluğu (503). 30 saniye bekleniyor... (Deneme {attempt + 1}/{max_retries})")
+                    time.sleep(30)
+                else:
+                    raise e
+
         usage = self._usage(response)
         candidates = getattr(response, "candidates", None) or []
         responses = [

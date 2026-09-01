@@ -4,33 +4,51 @@ You are given an image of a Capacitated Vehicle Routing Problem route set that h
 
 Perform exactly one visual route-internal 2-opt modification.
 
-Choose two distinct, non-adjacent existing edges from the same vehicle route. Remove those two edges, reverse the route segment between the cuts, and reconnect the route.
+Step 1:
+Inspect the geometry of each vehicle route and identify two distinct, non-adjacent edges within the same vehicle route that appear most promising for improvement.
 
-Do not move any customer from one vehicle route to another vehicle route.
-
-Because the modification must stay within one existing route, preserve:
-- the route partition,
-- the number of routes,
-- the visible customer-demand grouping of each vehicle,
-- the depot at the beginning and end of every route.
-
-Choose a modification only when the visual geometry suggests a meaningful improvement, such as:
+Give priority to edges that appear relatively long in the visual representation, especially when they also exhibit visible inefficiencies such as:
 - an edge crossing,
 - unnecessary backtracking,
 - a strong zigzag,
-- a visually obvious detour,
-- poor local continuity,
-- an unnecessarily long-looking connection.
+- an obvious detour,
+- poor geometric continuity,
+- or an unnecessarily long-looking connection.
+
+The objective is to prioritize visually long and structurally inefficient connections because replacing such edges may produce a more efficient vehicle route.
+
+Do not calculate numerical distances and do not use explicit edge-length values. Estimate relative edge length only from the image.
+
+Step 2:
+Choose exactly two distinct, non-adjacent existing edges from the SAME vehicle route.
+
+Prefer the longest-looking promising edges within that route, but consider the geometry of the resulting 2-opt reconnection. Do not select an edge solely because it appears long if the resulting reconnection is clearly geometrically unfavorable.
+
+Step 3:
+Apply a standard intra-route 2-opt transformation: remove the two selected edges, reverse the route segment between the cuts, and reconnect the same vehicle route.
+
+Do not move any customer between vehicle routes.
+
+Preserve:
+- the route partition,
+- the number of vehicle routes,
+- the customer assignment of each vehicle,
+- the depot at the beginning and end of every route,
+- and the visible demand encoding of the customers.
 
 Requirements:
 1. Perform exactly one route-internal 2-opt modification.
-2. Select exactly two existing, non-adjacent edges from the same route.
+2. Select exactly two existing, non-adjacent edges from the same vehicle route.
 3. Preserve every visible customer exactly once.
 4. Preserve all route start and end depot markers.
 5. Do not invent or omit nodes.
 6. Do not add or remove routes.
 7. Do not move customers between vehicles.
-8. Do not make arbitrary additional rearrangements.
+8. Do not perform arbitrary additional rearrangements.
+9. Do not use numerical distance calculations.
+10. Do not receive or infer explicit edge-length values from external information.
+11. Prefer visually long and structurally inefficient edges as the 2-opt candidates.
+12. Avoid creating an obviously longer or more inefficient connection when reconnecting the selected edges.
 
 Return only:
 {"selected_edges":[[a,b],[c,d]],"routes":[[depot,...,depot],[depot,...,depot]]}

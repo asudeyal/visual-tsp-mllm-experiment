@@ -1,7 +1,7 @@
 experiment:
   name: cvrp_pilot10_dot_density_v1
   run_label: p10_dot_density
-  iterations: 1
+  iterations: 10
   prompt_set: cvrp_capacity_v1
   output_dir: output/runs
   strict_euc_2d: true

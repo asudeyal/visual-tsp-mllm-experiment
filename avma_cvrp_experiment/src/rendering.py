@@ -254,15 +254,18 @@ def _demand_colormap(
 def _draw_size_reference(
     ax: Axes,
     demand_encoding: DemandEncodingConfig,
+    style: _RenderStyle,
 ) -> None:
-    small_area = 100.0 * demand_encoding.size_min_factor
-    full_area = 100.0 * demand_encoding.size_max_factor
+    # Gerçek haritadaki (Axes) oranlarla lejant (Header Axes) oranlarını birebir eşitlemek
+    # için marker alanları doğrudan style.base_node_size kullanılarak hesaplanmıştır.
+    small_area = style.base_node_size * demand_encoding.size_min_factor
+    full_area = style.base_node_size * demand_encoding.size_max_factor
 
     ax.scatter(
         [0.40, 0.56],
         [0.50, 0.50],
         s=[small_area, full_area],
-        facecolors=DEMAND_FILL_COLOR,  
+        facecolors=DEMAND_FILL_COLOR,
         edgecolors=NODE_EDGE_COLOR,
         linewidths=1.3,
         transform=ax.transAxes,
@@ -306,36 +309,52 @@ def _draw_bar_reference(ax: Axes) -> None:
     ax.add_patch(full_fill)
 
 
-def _draw_dot_reference(ax: Axes) -> None:
-    aspect = 9.41  # header_ax fiziksel en/boy oranı (8.0 / 0.85)
-    for center_x, dense in ((0.40, False), (0.58, True)):
+def _draw_dot_reference(
+    ax: Axes,
+    demand_encoding: DemandEncodingConfig,
+    style: _RenderStyle,
+) -> None:
+    radius = 0.055
+    grid_size = demand_encoding.dot_grid_size
+    dot_area = max(
+        4.0,
+        (demand_encoding.dot_radius_points * 2.0) ** 2,
+    )
+
+    for center_x, ratio in ((0.40, 0.0), (0.58, 1.0)):
         ax.scatter(
-            [center_x], [0.50],
-            s=[600],
+            [center_x],
+            [0.50],
+            s=style.base_node_size,
             facecolors=NODE_FILL_COLOR,
             edgecolors=NODE_EDGE_COLOR,
             linewidths=1.2,
             transform=ax.transAxes,
             zorder=2,
         )
-        if dense:
-            dots_x: list[float] = []
-            dots_y: list[float] = []
-            for row in range(5):
-                for column in range(5):
-                    rel_x = -0.015 + column * 0.0075
-                    rel_y = (-0.015 + row * 0.0075) * aspect
-                    if rel_x**2 + (rel_y / aspect)**2 <= 0.018**2:
-                        dots_x.append(center_x + rel_x)
-                        dots_y.append(0.50 + rel_y)
-            ax.scatter(
-                dots_x,
-                dots_y,
-                s=7,
-                color=NODE_EDGE_COLOR,
-                transform=ax.transAxes,
-                zorder=3,
-            )
+
+        offsets = _dot_positions(
+            node=0,
+            ratio=ratio,
+            radius=radius,
+            grid_size=grid_size,
+        )
+
+        if not offsets:
+            continue
+
+        dots_x = [center_x + offset_x for offset_x, _ in offsets]
+        dots_y = [0.50 + offset_y for _, offset_y in offsets]
+
+        ax.scatter(
+            dots_x,
+            dots_y,
+            s=dot_area,
+            facecolors=NODE_EDGE_COLOR,
+            edgecolors="none",
+            transform=ax.transAxes,
+            zorder=3,
+        )
 
 
 def _draw_color_reference(
@@ -363,15 +382,16 @@ def _draw_color_reference(
 def _draw_visual_demand_legend(
     ax: Axes,
     demand_encoding: DemandEncodingConfig,
+    style: _RenderStyle,
 ) -> None:
     """Draw a visual-only low-to-full reference with no numerical labels."""
 
     if demand_encoding.mode == "size":
-        _draw_size_reference(ax, demand_encoding)
+        _draw_size_reference(ax, demand_encoding, style)
     elif demand_encoding.mode == "bar":
         _draw_bar_reference(ax)
     elif demand_encoding.mode == "dot_density":
-        _draw_dot_reference(ax)
+        _draw_dot_reference(ax, demand_encoding, style)
     elif demand_encoding.mode == "color":
         _draw_color_reference(ax, demand_encoding)
 
@@ -428,6 +448,7 @@ def _draw_header(
     ax: Axes | None,
     problem: ProblemInstance,
     demand_encoding: DemandEncodingConfig,
+    style: _RenderStyle,
 ) -> None:
     if ax is None:
         return
@@ -436,7 +457,7 @@ def _draw_header(
         demand_encoding.mode != "none"
         and demand_encoding.show_visual_legend
     ):
-        _draw_visual_demand_legend(ax, demand_encoding)
+        _draw_visual_demand_legend(ax, demand_encoding, style)
 
     if (
         demand_encoding.show_vehicle_icons
@@ -790,7 +811,7 @@ def render_problem(
         cfg,
         active_encoding,
     )
-    _draw_header(header_ax, problem, active_encoding)
+    _draw_header(header_ax, problem, active_encoding, style)
     _draw_nodes(ax, problem, style, active_encoding)
 
     fig.savefig(output_path, bbox_inches="tight", pad_inches=0.08)
@@ -824,7 +845,8 @@ def render_routes(
         cfg,
         active_encoding,
     )
-    _draw_header(header_ax, problem, active_encoding)
+    _draw_header(header_ax, problem, active_encoding, style)
+    _draw_nodes(ax, problem, style, active_encoding)
     _draw_routes(
         ax,
         problem,
@@ -870,7 +892,8 @@ def render_diagnostic_routes(
         cfg,
         active_encoding,
     )
-    _draw_header(header_ax, problem, active_encoding)
+    _draw_header(header_ax, problem, active_encoding, style)
+    _draw_nodes(ax, problem, style, active_encoding)
     _draw_routes(
         ax,
         problem,

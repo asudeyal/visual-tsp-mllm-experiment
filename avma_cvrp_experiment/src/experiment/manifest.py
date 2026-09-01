@@ -137,6 +137,7 @@ def assert_shared_manifest_compatible(
     checks = {
         "architecture_version": (existing.get("architecture_version"), expected.get("architecture_version")),
         "information_policy": (existing.get("information_policy"), expected.get("information_policy")),
+        "git_commit_sha": (existing.get("git_commit_sha"), expected.get("git_commit_sha")),
         "config_sha256": (existing.get("config_sha256"), expected.get("config_sha256")),
         "prompt_set": (existing.get("prompt_set"), expected.get("prompt_set")),
         "prompt_sha256": (existing.get("prompt_sha256"), expected.get("prompt_sha256")),
