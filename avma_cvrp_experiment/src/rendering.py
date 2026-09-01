@@ -24,9 +24,11 @@ import matplotlib
 
 matplotlib.use("Agg")
 
+import matplotlib.patheffects as path_effects
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
+from matplotlib.offsetbox import AnnotationBbox, DrawingArea
 from matplotlib.patches import Circle, Rectangle
 
 from .config import (
@@ -120,7 +122,7 @@ def _render_style(
     return _RenderStyle(
         figure_size_inches=figure_size_inches,
         base_node_size=base_node_size,
-        depot_size=base_node_size * 1.35,
+        depot_size=base_node_size * 0.85,
         font_size=font_size,
         node_line_width=node_line_width,
         depot_line_width=depot_line_width,
@@ -273,111 +275,114 @@ def _draw_size_reference(
     )
 
 
-def _draw_bar_reference(ax: Axes) -> None:
-    empty = Rectangle(
-        (0.36, 0.43),
-        0.10,
-        0.14,
-        transform=ax.transAxes,
-        facecolor=NODE_FILL_COLOR,
-        edgecolor=NODE_EDGE_COLOR,
-        linewidth=1.2,
-        zorder=2,
-    )
-    full_outline = Rectangle(
-        (0.54, 0.43),
-        0.10,
-        0.14,
-        transform=ax.transAxes,
-        facecolor=NODE_FILL_COLOR,
-        edgecolor=NODE_EDGE_COLOR,
-        linewidth=1.2,
-        zorder=2,
-    )
-    full_fill = Rectangle(
-        (0.54, 0.43),
-        0.10,
-        0.14,
-        transform=ax.transAxes,
-        facecolor=DEMAND_FILL_COLOR,
-        edgecolor="none",
-        zorder=3,
-    )
+def _draw_bar_reference(
+    ax: Axes,
+    demand_encoding: DemandEncodingConfig,
+) -> None:
+    width_points = float(demand_encoding.bar_width_points)
+    height_points = float(demand_encoding.bar_height_points)
 
-    ax.add_patch(empty)
-    ax.add_patch(full_outline)
-    ax.add_patch(full_fill)
+    for center_x, full in ((0.40, False), (0.58, True)):
+        drawing = DrawingArea(width_points, height_points, 0, 0, clip=False)
 
+        outline = Rectangle(
+            (0.0, 0.0),
+            width_points,
+            height_points,
+            facecolor=NODE_FILL_COLOR,
+            edgecolor=NODE_EDGE_COLOR,
+            linewidth=1.0,
+        )
+        drawing.add_artist(outline)
+
+        if full:
+            fill = Rectangle(
+                (0.0, 0.0),
+                width_points,
+                height_points,
+                facecolor=DEMAND_FILL_COLOR,
+                edgecolor="none",
+            )
+            drawing.add_artist(fill)
+
+        artist = AnnotationBbox(
+            drawing,
+            (center_x, 0.50),
+            xycoords=ax.transAxes,
+            frameon=False,
+            box_alignment=(0.5, 0.5),
+            pad=0.0,
+            zorder=3,
+        )
+        ax.add_artist(artist)
 
 def _draw_dot_reference(
     ax: Axes,
     demand_encoding: DemandEncodingConfig,
     style: _RenderStyle,
 ) -> None:
-    radius = 0.055
-    grid_size = demand_encoding.dot_grid_size
-    dot_area = max(
-        4.0,
-        (demand_encoding.dot_radius_points * 2.0) ** 2,
-    )
+    diameter_points = math.sqrt(style.base_node_size)
+    padding_points = 1.5
+    drawing_size = diameter_points + (2.0 * padding_points)
+    marker_radius = diameter_points * 0.50
 
     for center_x, ratio in ((0.40, 0.0), (0.58, 1.0)):
-        ax.scatter(
-            [center_x],
-            [0.50],
-            s=style.base_node_size,
-            facecolors=NODE_FILL_COLOR,
-            edgecolors=NODE_EDGE_COLOR,
-            linewidths=1.2,
-            transform=ax.transAxes,
-            zorder=2,
+        drawing = DrawingArea(drawing_size, drawing_size, 0, 0, clip=False)
+        center = padding_points + marker_radius
+
+        outline = Circle(
+            (center, center),
+            marker_radius,
+            facecolor=NODE_FILL_COLOR,
+            edgecolor=NODE_EDGE_COLOR,
+            linewidth=style.node_line_width,
         )
+        drawing.add_artist(outline)
 
         offsets = _dot_positions(
             node=0,
             ratio=ratio,
-            radius=radius,
-            grid_size=grid_size,
+            radius=marker_radius,
+            grid_size=demand_encoding.dot_grid_size,
         )
 
-        if not offsets:
-            continue
+        for offset_x, offset_y in offsets:
+            dot = Circle(
+                (center + offset_x, center + offset_y),
+                demand_encoding.dot_radius_points,
+                facecolor=NODE_EDGE_COLOR,
+                edgecolor="none",
+            )
+            drawing.add_artist(dot)
 
-        dots_x = [center_x + offset_x for offset_x, _ in offsets]
-        dots_y = [0.50 + offset_y for _, offset_y in offsets]
-
-        ax.scatter(
-            dots_x,
-            dots_y,
-            s=dot_area,
-            facecolors=NODE_EDGE_COLOR,
-            edgecolors="none",
-            transform=ax.transAxes,
+        artist = AnnotationBbox(
+            drawing,
+            (center_x, 0.50),
+            xycoords=ax.transAxes,
+            frameon=False,
+            box_alignment=(0.5, 0.5),
+            pad=0.0,
             zorder=3,
         )
-
+        ax.add_artist(artist)
 
 def _draw_color_reference(
     ax: Axes,
     demand_encoding: DemandEncodingConfig,
+    style: _RenderStyle,
 ) -> None:
-    colors = demand_encoding.color_stops
-    width = 0.28 / len(colors)
-    start_x = 0.36
-
-    for index, color in enumerate(colors):
-        swatch = Rectangle(
-            (start_x + index * width, 0.43),
-            width,
-            0.14,
-            transform=ax.transAxes,
-            facecolor=color,
-            edgecolor=NODE_EDGE_COLOR,
-            linewidth=0.8,
-            zorder=2,
-        )
-        ax.add_patch(swatch)
-
+    # Only empty/full color endpoints.
+    color_map = _demand_colormap(demand_encoding)
+    ax.scatter(
+        [0.40, 0.58],
+        [0.50, 0.50],
+        s=[style.base_node_size, style.base_node_size],
+        facecolors=[color_map(0.0), color_map(1.0)],
+        edgecolors=NODE_EDGE_COLOR,
+        linewidths=1.2,
+        transform=ax.transAxes,
+        zorder=2,
+    )
 
 def _draw_visual_demand_legend(
     ax: Axes,
@@ -389,11 +394,11 @@ def _draw_visual_demand_legend(
     if demand_encoding.mode == "size":
         _draw_size_reference(ax, demand_encoding, style)
     elif demand_encoding.mode == "bar":
-        _draw_bar_reference(ax)
+        _draw_bar_reference(ax, demand_encoding)
     elif demand_encoding.mode == "dot_density":
         _draw_dot_reference(ax, demand_encoding, style)
     elif demand_encoding.mode == "color":
-        _draw_color_reference(ax, demand_encoding)
+        _draw_color_reference(ax, demand_encoding, style)
 
 
 def _draw_vehicle_icons(
@@ -499,12 +504,18 @@ def _draw_bar_marker(
         x_limits,
         y_limits,
     )
-    node_radius = _node_radius_data(style, x_limits, y_limits)
+
+    x_span = x_limits[1] - x_limits[0]
+    y_span = y_limits[1] - y_limits[0]
+    usable_axis_points = style.figure_size_inches * 72.0 * 0.78
+    data_per_point = min(x_span, y_span) / max(usable_axis_points, 1.0)
+    bar_node_area = max(18.0, style.base_node_size * 0.08)
+    node_radius = data_per_point * math.sqrt(bar_node_area) * 0.50
 
     left = x - width / 2.0
     bottom = max(
         y_limits[0],
-        y - node_radius - (height * 1.75),
+        y - node_radius - (height * 1.25),
     )
 
     outline = Rectangle(
@@ -528,7 +539,6 @@ def _draw_bar_marker(
     ax.add_patch(outline)
     ax.add_patch(fill)
 
-
 def _dot_positions(
     *,
     node: int,
@@ -536,8 +546,6 @@ def _dot_positions(
     radius: float,
     grid_size: int,
 ) -> list[tuple[float, float]]:
-    """Build deterministic interior dot positions for one customer marker."""
-
     candidates: list[tuple[float, float]] = []
     denominator = max(grid_size - 1, 1)
 
@@ -547,16 +555,20 @@ def _dot_positions(
             relative_y = -0.78 + 1.56 * row / denominator
             distance = math.hypot(relative_x, relative_y)
 
-            # Preserve a clear centre area for the visible node label.
-            if 0.28 <= distance <= 0.88:
-                candidates.append((relative_x * radius, relative_y * radius))
+            if distance <= 0.88:
+                candidates.append(
+                    (relative_x * radius, relative_y * radius)
+                )
 
     generator = random.Random(f"avma-cvrp-dot-density-{node}")
     generator.shuffle(candidates)
 
-    count = int(round(ratio * len(candidates)))
-    return candidates[:count]
+    if ratio <= 0.0:
+        count = 0
+    else:
+        count = max(1, int(round(ratio * len(candidates))))
 
+    return candidates[:count]
 
 def _draw_dot_density_marker(
     ax: Axes,
@@ -611,7 +623,8 @@ def _draw_customer_node(
 
     marker_area = style.base_node_size
     fill_color = NODE_FILL_COLOR
-    label_color = "#111827"
+    marker_edge_color = NODE_EDGE_COLOR
+    marker_line_width = style.node_line_width
 
     if demand_encoding.mode == "size":
         scale = (
@@ -623,12 +636,17 @@ def _draw_customer_node(
             * ratio
         )
         marker_area = style.base_node_size * scale
-        fill_color = DEMAND_FILL_COLOR  
-        label_color = "white"
+        fill_color = DEMAND_FILL_COLOR
 
     elif demand_encoding.mode == "color" and color_map is not None:
         fill_color = color_map(ratio)
-        label_color = _label_color(fill_color)
+
+    elif demand_encoding.mode == "bar":
+        # Position only. Demand is encoded exclusively by the bar.
+        marker_area = max(18.0, style.base_node_size * 0.08)
+        fill_color = NODE_EDGE_COLOR
+        marker_edge_color = NODE_EDGE_COLOR
+        marker_line_width = 0.8
 
     ax.scatter(
         [x],
@@ -636,8 +654,8 @@ def _draw_customer_node(
         s=marker_area,
         marker="o",
         facecolors=fill_color,
-        edgecolors=NODE_EDGE_COLOR,
-        linewidths=style.node_line_width,
+        edgecolors=marker_edge_color,
+        linewidths=marker_line_width,
         zorder=3,
     )
 
@@ -666,18 +684,22 @@ def _draw_customer_node(
             y_limits=y_limits,
         )
 
-    ax.text(
-        x,
-        y,
+    # Same ID presentation for every encoding.
+    label = ax.annotate(
         str(node),
-        ha="center",
-        va="center",
+        xy=(x, y),
+        xytext=(4.0, 4.0),
+        textcoords="offset points",
+        ha="left",
+        va="bottom",
         fontsize=style.font_size,
-        color=label_color,
+        color="#111827",
         weight="bold",
-        zorder=5,
+        zorder=6,
     )
-
+    label.set_path_effects(
+        [path_effects.withStroke(linewidth=2.0, foreground="white")]
+    )
 
 def _draw_depot(
     ax: Axes,

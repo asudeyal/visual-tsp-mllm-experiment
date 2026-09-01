@@ -66,8 +66,8 @@ demand_encoding:
   size_max_factor: 1.00
   bar_width_points: 30
   bar_height_points: 5
-  dot_grid_size: 7
-  dot_radius_points: 1.2
+  dot_grid_size: 9
+  dot_radius_points: 0.9
   color_stops:
     - "#FFFFFF"
     - "#C6DBEF"

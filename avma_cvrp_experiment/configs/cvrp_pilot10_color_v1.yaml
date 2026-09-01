@@ -70,10 +70,10 @@ demand_encoding:
   dot_radius_points: 1.2
   color_stops:
     - "#FFFFFF"
-    - "#C6DBEF"
-    - "#6BAED6"
-    - "#DE2D26"
-    - "#111111"
+    - "#4F8DF7"
+    - "#1F5FD0"
+    - "#123B8C"
+    - "#061B4A"
 
 route_rendering:
   palette:
