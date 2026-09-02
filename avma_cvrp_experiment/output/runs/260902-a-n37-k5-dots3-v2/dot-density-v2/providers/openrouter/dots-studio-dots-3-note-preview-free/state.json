@@ -1,0 +1,269 @@
+{
+  "provider": "openrouter",
+  "model": "dots-studio/dots-3-note-preview:free",
+  "shared_run_id": "dot-density-v2",
+  "status": "running",
+  "config_sha256": "aacbbd1dcf04aa8527baf5ed8c83b8424834cfc8f1ae304d23e8337bf917effe",
+  "seed": 42,
+  "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36",
+  "max_vehicles": 5,
+  "demand_encoding_mode": "dot_density",
+  "checkpoint": {
+    "completed_iteration": 0,
+    "working_routes": [
+      [
+        1,
+        26,
+        36,
+        19,
+        32,
+        27,
+        31,
+        1
+      ],
+      [
+        1,
+        16,
+        4,
+        37,
+        35,
+        33,
+        30,
+        29,
+        8,
+        5,
+        34,
+        1
+      ],
+      [
+        1,
+        25,
+        10,
+        12,
+        28,
+        9,
+        24,
+        21,
+        15,
+        18,
+        1
+      ],
+      [
+        1,
+        20,
+        3,
+        7,
+        11,
+        13,
+        1
+      ],
+      [
+        1,
+        2,
+        22,
+        17,
+        23,
+        14,
+        6,
+        1
+      ]
+    ],
+    "structural_history": [
+      [
+        [
+          1,
+          26,
+          36,
+          19,
+          32,
+          27,
+          31,
+          1
+        ],
+        [
+          1,
+          16,
+          4,
+          37,
+          35,
+          33,
+          30,
+          29,
+          8,
+          5,
+          34,
+          1
+        ],
+        [
+          1,
+          25,
+          10,
+          12,
+          28,
+          9,
+          24,
+          21,
+          15,
+          18,
+          1
+        ],
+        [
+          1,
+          20,
+          3,
+          7,
+          11,
+          13,
+          1
+        ],
+        [
+          1,
+          2,
+          22,
+          17,
+          23,
+          14,
+          6,
+          1
+        ]
+      ]
+    ],
+    "hybrid_used_since_restart": false,
+    "restart_count": 0,
+    "observed_oracle_best_distance": 880.0,
+    "observed_oracle_best_routes": [
+      [
+        1,
+        26,
+        36,
+        19,
+        32,
+        27,
+        31,
+        1
+      ],
+      [
+        1,
+        16,
+        4,
+        37,
+        35,
+        33,
+        30,
+        29,
+        8,
+        5,
+        34,
+        1
+      ],
+      [
+        1,
+        25,
+        10,
+        12,
+        28,
+        9,
+        24,
+        21,
+        15,
+        18,
+        1
+      ],
+      [
+        1,
+        20,
+        3,
+        7,
+        11,
+        13,
+        1
+      ],
+      [
+        1,
+        2,
+        22,
+        17,
+        23,
+        14,
+        6,
+        1
+      ]
+    ],
+    "selected_best_distance": 880.0,
+    "selected_best_routes": [
+      [
+        1,
+        26,
+        36,
+        19,
+        32,
+        27,
+        31,
+        1
+      ],
+      [
+        1,
+        16,
+        4,
+        37,
+        35,
+        33,
+        30,
+        29,
+        8,
+        5,
+        34,
+        1
+      ],
+      [
+        1,
+        25,
+        10,
+        12,
+        28,
+        9,
+        24,
+        21,
+        15,
+        18,
+        1
+      ],
+      [
+        1,
+        20,
+        3,
+        7,
+        11,
+        13,
+        1
+      ],
+      [
+        1,
+        2,
+        22,
+        17,
+        23,
+        14,
+        6,
+        1
+      ]
+    ],
+    "config_sha256": "aacbbd1dcf04aa8527baf5ed8c83b8424834cfc8f1ae304d23e8337bf917effe",
+    "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36"
+  },
+  "working_image": "routes/initializer/candidate.png",
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "critic_candidate_02",
+    "iteration": 1,
+    "candidate": 2
+  },
+  "completed_iterations": 0
+}

@@ -1,0 +1,26 @@
+{
+  "provider": "mistral",
+  "model": "mistral-small-2603",
+  "shared_run_id": "size-v1",
+  "status": "running",
+  "config_sha256": "45699d26dbb7138caa6e6c24341297aa80093b6236ceeac3dc94490e1acdc9cd",
+  "seed": 42,
+  "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36",
+  "max_vehicles": 5,
+  "demand_encoding_mode": "size",
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "repair_attempt_02",
+    "scope": "initializer.fallback.restart_03",
+    "attempt": 2
+  }
+}

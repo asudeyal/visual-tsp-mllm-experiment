@@ -25,8 +25,11 @@ def create_provider(config: ProviderConfig) -> ProviderAdapter:
     if name == "openrouter":
         from .openrouter import OpenRouterProvider
         return OpenRouterProvider(**kwargs)
+    if name == "cohere":
+        from .cohere import CohereProvider
+        return CohereProvider(**kwargs)
     raise ValueError(f"Desteklenmeyen provider: {config.name}")
 
 
 def supported_providers() -> tuple[str, ...]:
-    return ("gemini", "groq", "mistral", "openrouter")
+    return ("gemini", "groq", "mistral", "openrouter", "cohere")

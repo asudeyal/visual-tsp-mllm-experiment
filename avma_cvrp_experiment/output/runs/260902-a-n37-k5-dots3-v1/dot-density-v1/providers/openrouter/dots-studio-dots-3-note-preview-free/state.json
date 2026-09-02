@@ -1,0 +1,26 @@
+{
+  "provider": "openrouter",
+  "model": "dots-studio/dots-3-note-preview:free",
+  "shared_run_id": "dot-density-v1",
+  "status": "running",
+  "config_sha256": "26732d60b9d4177711d31f93ae15e42b4c6478c71ab14b4d4b89b70e39d7d79d",
+  "seed": 42,
+  "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36",
+  "max_vehicles": 5,
+  "demand_encoding_mode": "dot_density",
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "repair_attempt_01",
+    "scope": "initializer",
+    "attempt": 1
+  }
+}

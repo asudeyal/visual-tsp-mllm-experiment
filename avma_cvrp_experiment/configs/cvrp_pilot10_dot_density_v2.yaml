@@ -1,0 +1,85 @@
+experiment:
+  name: cvrp_pilot10_dot_density_v2
+  run_label: p10_dot_density
+  iterations: 10
+  prompt_set: cvrp_capacity_v2
+  output_dir: output/runs
+  strict_euc_2d: true
+  max_restart_attempts: 3
+
+provider:
+  candidate_strategy: independent_calls
+  timeout_seconds: 120
+  request_retries: 3
+
+agents:
+  initializer:
+    temperature: null
+    thinking_level: low
+    max_output_retries: 2
+
+  critic:
+    temperature: null
+    thinking_level: medium
+    candidates: 3
+    max_output_retries: 2
+
+  scorer:
+    temperature: null
+    thinking_level: medium
+    max_output_retries: 2
+
+  repair:
+    temperature: null
+    thinking_level: medium
+    max_attempts: 2
+    max_output_retries: 2
+
+  hybrid:
+    temperature: null
+    thinking_level: high
+    max_output_retries: 2
+
+  diversity:
+    temperature: null
+    thinking_level: medium
+    max_output_retries: 2
+
+stagnation:
+  window: 5
+  similarity_threshold: 0.90
+  max_unique_routes: 2
+
+render:
+  figure_size_inches: 8.0
+  dpi: 180
+  padding_ratio: 0.10
+  node_size: 440
+  font_size: 9
+  route_line_width: 1.8
+
+demand_encoding:
+  mode: dot_density
+  show_visual_legend: true
+  show_vehicle_icons: true
+  size_min_factor: 0.42
+  size_max_factor: 1.00
+  bar_width_points: 30
+  bar_height_points: 5
+  dot_grid_size: 9
+  dot_radius_points: 0.9
+  color_stops:
+    - "#FFFFFF"
+    - "#C6DBEF"
+    - "#6BAED6"
+    - "#DE2D26"
+    - "#111111"
+
+route_rendering:
+  palette:
+    - "#E15759"
+    - "#4E79A7"
+    - "#59A14F"
+    - "#B07AA1"
+    - "#F28E2B"
+    - "#76B7B2"

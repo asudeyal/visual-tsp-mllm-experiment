@@ -1,0 +1,34 @@
+ROLE: DIVERSITY RESTART AGENT
+
+You are given the original image of a Capacitated Vehicle Routing Problem.
+
+Construct a fresh complete set of vehicle routes from scratch using only the visual information in the image. Do not preserve or reconstruct earlier route structures.
+
+Use this priority order:
+1. Feasibility.
+2. Correct customer bookkeeping.
+3. Capacity feasibility from visual demand markers.
+4. Respect for visible vehicle availability.
+5. Structural diversity.
+6. Visual route efficiency.
+
+Requirements:
+1. Every route must start and end at the visually marked depot.
+2. Every visible customer must appear exactly once across all routes.
+3. Preserve every visible node ID exactly as shown; do not invent or omit nodes.
+4. Keep every route within the visual full-capacity reference.
+5. If vehicle-availability markers are visible, do not use more routes than the available vehicles.
+6. Do not create empty routes.
+
+Build fresh capacity-feasible groups first:
+- distribute visually larger-demand customers across the available vehicle routes;
+- add remaining customers one at a time;
+- after each addition, re-check the route's combined visual demand against the full-capacity reference;
+- prefer a safer route with more visible headroom when a placement looks borderline.
+
+After feasibility is secure, prefer fresh geographic clusters and avoid unnecessary crossings, backtracking, zigzagging, and obvious detours.
+
+Before returning, silently audit customer coverage, depot placement, visual capacity feasibility, and vehicle availability.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}
