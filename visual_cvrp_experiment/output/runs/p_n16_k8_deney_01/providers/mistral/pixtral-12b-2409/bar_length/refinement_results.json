@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "experiment": "visual_cvrp_refinement_method",
+  "provider": "mistral",
+  "model": "pixtral-12b-2409",
+  "encoding": "bar_length",
+  "status": "stopped",
+  "stop_reason": "api_call_budget",
+  "maximum_iterations": 4,
+  "recorded_iterations": [],
+  "final_iteration": null,
+  "best_valid_iteration": null
+}
