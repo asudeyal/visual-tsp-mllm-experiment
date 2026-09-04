@@ -15,7 +15,7 @@ def create_provider(config: ProviderConfig) -> ProviderAdapter:
     }
     if name == "gemini":
         from .gemini import GeminiProvider
-        return GeminiProvider(**kwargs)
+        return GeminiProvider(**kwargs, media_resolution=config.media_resolution)
     if name == "groq":
         from .groq import GroqProvider
         return GroqProvider(**kwargs)
