@@ -1,0 +1,98 @@
+{
+  "run": {
+    "instance": "A-n37-k5",
+    "dimension": 37,
+    "edge_weight_type": "EUC_2D",
+    "provider": "gemini",
+    "model": "gemini-3.6-flash",
+    "config": "cvrp_pilot10_bar_v2",
+    "prompt_set": "cvrp_capacity_v2",
+    "target_iterations": 10,
+    "completed_iterations": 1,
+    "partial_iteration": null
+  },
+  "reference": {
+    "distance": 669.0
+  },
+  "performance": {
+    "final_working_distance": 746.0,
+    "selected_best_distance": 746.0,
+    "selected_best_gap_percent": 11.509715994020926,
+    "observed_oracle_best_distance": 746.0,
+    "observed_oracle_best_gap_percent": 11.509715994020926
+  },
+  "initializer": {
+    "valid_on_first_attempt": false,
+    "repair_required": true,
+    "repair_attempt_count": 2,
+    "repair_result": "başarısız",
+    "fallback_restart_count": 1,
+    "accepted_source": "fallback restart",
+    "accepted_distance": 746.0
+  },
+  "critic": {
+    "total_candidate_count": 3,
+    "valid_candidate_count": 0,
+    "invalid_candidate_count": 3,
+    "valid_iteration_count": 0
+  },
+  "scorer": {
+    "selection_count": 1,
+    "valid_possible_iteration_count": 0,
+    "valid_selection_when_possible_count": 0,
+    "avoidable_invalid_selection_count": 0,
+    "comparable_iteration_count": 0,
+    "critic_best_selection_count": 0,
+    "mean_selection_regret": null,
+    "max_selection_regret": null
+  },
+  "recovery": {
+    "activation_count": 1,
+    "successful_repair_count": 0,
+    "failed_repair_count": 1,
+    "total_attempt_count": 2,
+    "feasibility_restart_attempt_count": 1,
+    "restart_rescue_count": 1,
+    "restart_exhaustion_count": 0,
+    "incumbent_retained_count": 0
+  },
+  "model_robustness": {
+    "recoverable_model_failure_count": 0,
+    "by_agent": {},
+    "parse_failure_count": 0,
+    "timeout_count": 0,
+    "transient_http_count": 0
+  },
+  "adaptive_search": {
+    "structural_stagnation_count": 0,
+    "hybrid_activation_count": 0,
+    "valid_hybrid_two_opt_count": 0,
+    "stagnation_restart_count": 0
+  },
+  "iteration_cost": [
+    {
+      "iteration": 1,
+      "label": "1",
+      "partial": false,
+      "api_calls": 7,
+      "total_tokens": 62989,
+      "active_seconds": 441.0299692004919,
+      "wait_seconds": 0.0,
+      "total_seconds": 441.0299692004919,
+      "output_failures": 0,
+      "provider_failures": 0
+    }
+  ],
+  "execution": {
+    "api_calls": 13,
+    "total_tokens": 130124,
+    "active_seconds": 869.9666081024334,
+    "provider_wait_seconds": 0.0,
+    "error_count": 0,
+    "provider_error_breakdown": {},
+    "interruption": null
+  },
+  "termination": {
+    "status": "partial"
+  }
+}
