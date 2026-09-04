@@ -1,0 +1,35 @@
+{
+  "provider": "openrouter",
+  "model": "dots-studio-dots-3-note-preview-free",
+  "shared_run_id": "260903-a-n_37_openrouter",
+  "status": "partial",
+  "config_sha256": "c73d86c543ff413ff036570835c3c7349f03b9e22b9ef7560d80957d3a7b97eb",
+  "seed": 42,
+  "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36",
+  "max_vehicles": 5,
+  "demand_encoding_mode": "bar",
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": {
+    "phase": "initializer",
+    "provider": "openrouter",
+    "model": "dots-studio-dots-3-note-preview-free",
+    "error_type": "HTTPError",
+    "status_code": 400,
+    "message": "400 Client Error: Bad Request for url: https://openrouter.ai/api/v1/chat/completions",
+    "transient_http_status": false,
+    "request_delay_wait_seconds": 0.0,
+    "retry_backoff_wait_seconds": 0.0,
+    "provider_wait_seconds": 0.0
+  },
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "initializer"
+  }
+}
