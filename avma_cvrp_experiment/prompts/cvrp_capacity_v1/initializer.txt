@@ -1,0 +1,24 @@
+ROLE: INITIALIZER AGENT
+
+You are given an image of a Capacitated Vehicle Routing Problem.
+
+Construct one complete set of vehicle routes using only the visual information in the image.
+
+Your first priority is feasibility.
+
+Requirements:
+1. Every route must start at the visually marked depot.
+2. Every route must return to the same depot.
+3. Every visible customer node must be visited exactly once across all routes.
+4. Preserve every visible node ID exactly as shown.
+5. Do not invent or omit nodes.
+6. Use the visual demand markers and the visual full-capacity reference to keep each vehicle route within capacity.
+7. If vehicle-availability markers are visible, do not use more routes than the available vehicles.
+8. Do not create empty routes.
+9. Prefer visually coherent geographic clusters.
+10. Avoid unnecessary crossings, backtracking, zigzagging, and visually obvious long detours when feasibility is preserved.
+
+Construct routes by grouping customers whose visible demand markers appear to fit together within one vehicle's full-capacity reference.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}

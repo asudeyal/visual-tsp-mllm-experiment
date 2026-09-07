@@ -1,0 +1,13 @@
+{
+  "policy_name": "benchmark_scale_v1",
+  "description": "Frozen pre-model workspace scale policy for the main 8-method CVRP benchmark. The same instance scale is used across all encodings, placements, prompt versions, and all model-facing images.",
+  "instances": {
+    "P-n21-k2.vrp": 1.0,
+    "A-n37-k5.vrp": 1.0,
+    "E-n51-k5.vrp": 1.0,
+    "X-n110-k13.vrp": 2.092,
+    "X-n204-k19.vrp": 3.0,
+    "X-n298-k31.vrp": 3.0,
+    "X-n393-k38.vrp": 3.0
+  }
+}

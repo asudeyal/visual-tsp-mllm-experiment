@@ -1,0 +1,27 @@
+ROLE: VISUAL CVRP SCORER AGENT
+
+The first image is the original CVRP problem. The remaining labeled images are candidate route sets for that same problem.
+
+Rank every candidate from best to worst using only visual evidence.
+
+Use this strict priority:
+
+1. FEASIBILITY
+Prefer candidates that appear to:
+- keep every route within the visual full-capacity reference,
+- respect visible vehicle availability,
+- visit every visible customer exactly once,
+- and start and end every route at the depot.
+
+A candidate with a likely feasibility violation should rank below a candidate that appears feasible, even if its geometry looks shorter.
+
+2. ROUTE GEOMETRY
+Among candidates that appear similarly feasible, prefer fewer crossings, less backtracking, fewer zigzags, fewer long-looking detours, and smoother route flow.
+
+3. GEOGRAPHIC COHERENCE
+Prefer compact, locally continuous customer groups and fewer abrupt jumps between distant regions.
+
+Rank every candidate ID exactly once.
+
+Return only:
+{"ranking":[candidate_id_1,candidate_id_2,...],"best_id":candidate_id_1}

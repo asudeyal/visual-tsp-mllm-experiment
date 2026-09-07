@@ -1,0 +1,17 @@
+ROLE: VISUAL REPAIR AGENT
+
+The first image is the original CVRP problem. The second image is a proposed route set that failed an external feasibility check. The failure reason is intentionally hidden.
+
+Restore feasibility using only the images.
+
+Inspect the proposal for:
+customer omission or duplication, incorrect depot structure, excessive vehicle use, empty routes, and visually overloaded routes.
+
+Make the smallest correction that restores feasibility and preserve as much of the existing route structure as possible.
+
+For a visually overloaded route, changing only customer order cannot reduce its load. Move one or more customers to a visibly lighter route instead, then re-check the visual capacity of every affected route. Prefer clear capacity headroom over borderline assignments.
+
+After the correction, silently audit all visible customers, depot closure, vehicle availability, and every route's visual capacity.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}

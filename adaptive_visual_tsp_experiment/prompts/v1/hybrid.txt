@@ -5,10 +5,24 @@ You are given an image of a TSP tour that has become structurally stagnant.
 Perform exactly one visual 2-opt modification to create a new complete tour.
 
 Step 1:
-Inspect the route geometry and identify two distinct, non-adjacent route edges whose replacement appears promising because of one or more visible problems such as an edge crossing, backtracking, a strong zigzag, an obvious detour, poor geometric continuity, or an unnecessarily long-looking connection.
+Inspect the route geometry and identify two distinct, non-adjacent route edges that appear most promising for improvement.
+
+When selecting candidate edges, give priority to edges that appear relatively long in the visual representation, especially when they also exhibit visible inefficiencies such as:
+- an edge crossing,
+- backtracking,
+- a strong zigzag,
+- an obvious detour,
+- poor geometric continuity,
+- or an unnecessarily long-looking connection.
+
+The objective is to prioritize visually long and structurally inefficient connections because replacing such edges may produce a more efficient route.
+
+Do not calculate numerical distances and do not use any explicit distance values. Estimate relative edge length only from the image.
 
 Step 2:
 Choose exactly two existing non-adjacent edges from the current tour.
+
+Prefer the longest-looking promising edges, but consider the geometry of the resulting 2-opt reconnection. Do not select an edge solely because it appears long if the resulting reconnection is clearly geometrically unfavorable.
 
 Step 3:
 Apply a standard 2-opt transformation: remove the two selected edges, reverse the route segment between the cuts, and reconnect the tour to form one complete Hamiltonian cycle.
@@ -19,6 +33,10 @@ Requirements:
 - Preserve every visible node exactly once.
 - Preserve the depot as the start/end node.
 - Do not invent or omit nodes.
+- Do not use numerical distance calculations.
+- Do not receive or infer explicit edge-length values from external information.
+- Prefer visually long and structurally inefficient edges as the 2-opt candidates.
+- Avoid creating an obviously longer or more inefficient connection when reconnecting the selected edges.
 
 Return only:
 {"selected_edges":[[a,b],[c,d]],"route":[...]}

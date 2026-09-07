@@ -1,0 +1,18 @@
+ROLE: INITIALIZER AGENT
+
+Construct one complete feasible route set for the CVRP shown in the image.
+
+Feasibility comes before route length.
+
+First form capacity-safe customer groups:
+- identify the visually higher-demand customers and distribute them across routes;
+- add remaining customers while repeatedly comparing each route's combined visual demand with the full-capacity reference;
+- when a route looks close to full, place the customer in a route with clearer visual headroom instead.
+
+Then order the customers within each route geographically. Prefer compact local flow and avoid obvious crossings, backtracking, zigzags, and long-looking detours.
+
+Before returning, silently verify:
+every visible customer appears exactly once, every route starts and ends at the depot, no route looks overloaded, visible vehicle availability is respected, and no route is empty.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}

@@ -1,0 +1,80 @@
+experiment:
+  name: cvrp_main_8method
+  run_label: size_sidepanel
+  iterations: 10
+  seed: 42
+  prompt_set: cvrp_capacity_v3
+  output_dir: output/runs
+  strict_euc_2d: true
+  max_restart_attempts: 3
+provider:
+  name: gemini
+  model: gemini-3.8-flash
+  media_resolution: high
+  candidate_strategy: independent_calls
+  timeout_seconds: 120
+  request_retries: 3
+agents:
+  initializer:
+    temperature: null
+    thinking_level: low
+    max_output_retries: 2
+  critic:
+    temperature: null
+    thinking_level: medium
+    candidates: 3
+    max_output_retries: 2
+  scorer:
+    temperature: null
+    thinking_level: medium
+    max_output_retries: 2
+  repair:
+    temperature: null
+    thinking_level: medium
+    max_attempts: 2
+    max_output_retries: 2
+  hybrid:
+    temperature: null
+    thinking_level: high
+    max_output_retries: 2
+  diversity:
+    temperature: null
+    thinking_level: medium
+    max_output_retries: 2
+stagnation:
+  window: 5
+  similarity_threshold: 0.9
+  max_unique_routes: 2
+render:
+  figure_size_inches: 8.0
+  dpi: 180
+  padding_ratio: 0.1
+  node_size: 440
+  font_size: 9
+  route_line_width: 1.8
+  fixed_canvas: true
+  canvas_width_px: 1920
+  canvas_height_px: 1280
+  map_width_px: 1280
+  panel_width_px: 640
+  panel_header_height_px: 120
+demand_encoding:
+  mode: size
+  bar_layout: side_panel
+  show_visual_legend: true
+  show_vehicle_icons: true
+  bar_width_points: 30
+  bar_height_points: 5
+  side_panel_width_inches: 3.0
+  side_panel_columns: 0
+  side_bar_width_points: 48
+  side_bar_height_points: 7
+  placement: side_panel
+route_rendering:
+  palette:
+  - '#E15759'
+  - '#4E79A7'
+  - '#59A14F'
+  - '#B07AA1'
+  - '#F28E2B'
+  - '#76B7B2'

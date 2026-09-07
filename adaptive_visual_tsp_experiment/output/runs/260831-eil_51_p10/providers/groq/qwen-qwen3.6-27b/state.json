@@ -1,0 +1,37 @@
+{
+  "provider": "groq",
+  "model": "qwen/qwen3.6-27b",
+  "shared_run_id": "260831-eil_51_p10",
+  "status": "partial",
+  "config_sha256": "49702c7bcf0e14f4ea4ad3cd41b9e5ad6cbb2d77680925ea78753167765fa204",
+  "seed": 42,
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": {
+    "phase": "diversity_restart",
+    "scope": "initializer.fallback",
+    "restart_attempt": 3,
+    "provider": "groq",
+    "model": "qwen/qwen3.6-27b",
+    "error_type": "ModelOutputError",
+    "status_code": null,
+    "message": "Diversity kullanılır çıktı üretemedi: JSON object bulunamadı",
+    "transient_http_status": false,
+    "request_delay_wait_seconds": 0.0,
+    "retry_backoff_wait_seconds": 0.0,
+    "provider_wait_seconds": 0.0
+  },
+  "layout_version": "compact_v3",
+  "instance_sha256": "66c05ad077ffd64d5778e358bbd16be049f8c8ae880cbd24f034487331d1ccce",
+  "runtime_request_policy": {
+    "request_delay_seconds": 10.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "diversity_restart",
+    "scope": "initializer.fallback",
+    "restart_attempt": 3
+  }
+}

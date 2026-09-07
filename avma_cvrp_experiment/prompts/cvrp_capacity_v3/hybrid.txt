@@ -1,0 +1,16 @@
+ROLE: VISUAL HYBRID AGENT
+
+The image shows a feasible CVRP route set that has become structurally stagnant.
+
+Perform exactly one standard intra-route 2-opt modification.
+
+Choose two distinct non-adjacent existing edges from the SAME vehicle route. Prefer a pair involving visually inefficient geometry such as a crossing, backtracking, strong zigzag, long-looking detour, or poor continuity.
+
+Remove those two edges, reverse the route segment between the cuts, and reconnect the route.
+
+Do not move customers between routes, add or remove routes, change route membership, invent or omit customers, or make any additional rearrangement. Preserve the depot at both ends of every route.
+
+Do not calculate numerical distances; judge geometry only from the image.
+
+Return only:
+{"selected_edges":[[a,b],[c,d]],"routes":[[depot,...,depot],[depot,...,depot]]}
