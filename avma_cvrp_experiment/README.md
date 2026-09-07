@@ -54,7 +54,7 @@ The model must not receive hidden numeric problem information such as:
 - missing-node lists,
 - or validation reasons.
 
-Python may compute these values for validation and analysis, but they are not returned to the model.
+Python may compute these values for validation and analysis, but they are not returned to the model. `--reference-optimum` is observer-only metadata used to compute `gap_percent`; it is not included in model-facing prompts or images.
 
 ## Multi-agent protocol
 
@@ -148,7 +148,7 @@ The effective prompt version and prompt hashes are recorded in run provenance.
 
 ## Versioned scale policies
 
-Image workspace scale is also independent from the visual condition and prompt version.
+Image workspace scale is independent from the visual condition and prompt version.
 
 Default policy:
 
@@ -210,6 +210,20 @@ data/cvrplib/
 
 The 500-customer level is currently held out.
 
+Observer-side benchmark metadata used for main runs:
+
+| Instance | `--max-vehicles` | `--reference-optimum` |
+|---|---:|---:|
+| `P-n21-k2.vrp` | 2 | 211 |
+| `A-n37-k5.vrp` | 5 | 669 |
+| `E-n51-k5.vrp` | 5 | 521 |
+| `X-n110-k13.vrp` | 13 | 14971 |
+| `X-n204-k19.vrp` | 19 | 19565 |
+| `X-n298-k31.vrp` | 31 | 34231 |
+| `X-n393-k38.vrp` | 38 | 38260 |
+
+The reference optimum/BKS is used only by the Python observer for distance-gap reporting. It does not alter the visual search protocol.
+
 ## Setup
 
 PowerShell:
@@ -235,6 +249,16 @@ MISTRAL_API_KEY=
 OPENROUTER_API_KEY=
 ```
 
+## Main model
+
+The frozen Gemini model for the current main benchmark is:
+
+```text
+gemini-3.7-flash
+```
+
+Do not change the model within the main benchmark batch. A model change should be treated as a separate experiment/version.
+
 ## API-free validation
 
 Validate the full config / prompt / instance / render path without making an API call:
@@ -244,8 +268,9 @@ python run_adaptive_multi_agent.py `
   --instance data/cvrplib/P-n21-k2.vrp `
   --config configs/main_8method/bar_collision.yaml `
   --provider gemini `
-  --model gemini-3.6-flash `
+  --model gemini-3.7-flash `
   --max-vehicles 2 `
+  --reference-optimum 211 `
   --validate-only
 ```
 
@@ -257,15 +282,17 @@ python run_adaptive_multi_agent.py `
   --config configs/main_8method/bar_collision.yaml `
   --prompt-set cvrp_capacity_v2 `
   --provider gemini `
-  --model gemini-3.6-flash `
+  --model gemini-3.7-flash `
   --max-vehicles 2 `
+  --reference-optimum 211 `
   --validate-only
 ```
 
 ## Main run
 
-Default prompt set: `cvrp_capacity_v3`
-Default scale policy: `benchmark_scale_v1`
+Default prompt set: `cvrp_capacity_v3`  
+Default scale policy: `benchmark_scale_v1`  
+Frozen model: `gemini-3.7-flash`
 
 Example:
 
@@ -274,26 +301,29 @@ python run_adaptive_multi_agent.py `
   --instance data/cvrplib/P-n21-k2.vrp `
   --config configs/main_8method/bar_collision.yaml `
   --provider gemini `
-  --model gemini-3.6-flash `
-  --max-vehicles 2
+  --model gemini-3.7-flash `
+  --max-vehicles 2 `
+  --reference-optimum 211 `
+  --run-id main-v3-p21-bar-collision-r01
 ```
 
 For reproducible named runs, use `--run-id`.
 
-Resume an interrupted provider/model run with the same frozen conditions:
+Resume an interrupted provider/model run with the exact same frozen conditions used when that run was created:
 
 ```powershell
 python run_adaptive_multi_agent.py `
-  --run-id <existing-run-id> `
+  --run-id main-v3-p21-bar-collision-r01 `
   --instance data/cvrplib/P-n21-k2.vrp `
   --config configs/main_8method/bar_collision.yaml `
   --provider gemini `
-  --model gemini-3.6-flash `
+  --model gemini-3.7-flash `
   --max-vehicles 2 `
+  --reference-optimum 211 `
   --resume
 ```
 
-The runner rejects incompatible reuse of a run when frozen experiment conditions change.
+The runner rejects incompatible reuse when frozen experiment conditions or run metadata change. Therefore, if an older run was originally created without `--reference-optimum`, do **not** add it during resume. Use the analysis-only `--reference-optimum` override for that legacy run instead.
 
 ## Outputs
 
@@ -310,7 +340,8 @@ The shared run records:
 - prompt/config/problem hashes and metadata,
 - effective render policy,
 - scale-policy name/hash,
-- and effective pixel dimensions.
+- effective pixel dimensions,
+- and observer-side reference optimum metadata when supplied.
 
 Provider/model-specific state, traces, route images, and analysis artifacts live below the shared run directory.
 
@@ -328,22 +359,57 @@ output/baseline/
 
 ## Analysis
 
-Generate the compact run report with:
-
-```powershell
-python run_analysis.py --run-dir output/runs/<run-id>
-```
-
-When a shared run contains multiple provider/model results:
+Generate the report and progress graph for a run with:
 
 ```powershell
 python run_analysis.py `
-  --run-dir output/runs/<run-id> `
+  --run-id main-v3-p21-bar-collision-r01 `
   --provider gemini `
-  --model gemini-3.6-flash
+  --model gemini-3.7-flash
 ```
 
-Primary reported metrics include:
+If the run metadata does not contain a reference optimum/BKS, supply an **analysis-only** override:
+
+```powershell
+python run_analysis.py `
+  --run-id main-v3-p21-bar-collision-r01 `
+  --provider gemini `
+  --model gemini-3.7-flash `
+  --reference-optimum 211
+```
+
+The override changes only the analysis output. It does not modify `run.json`, `state.json`, or `trace.jsonl`.
+
+Analysis artifacts are written under the provider/model run directory:
+
+```text
+analysis/
+├── report.txt
+└── search_progress.png
+```
+
+`search_progress.png` uses a non-interactive Matplotlib backend and plots:
+
+- **Observer GBest**: best valid objective value Python has observed among generated solutions,
+- **Selected GBest**: best valid objective value that reached the accepted/working search path,
+- and the reference optimum/BKS when available.
+
+This distinction is especially important for partial iterations: a Critic candidate may improve Observer GBest before the Scorer has selected it.
+
+The text report includes:
+
+- run status and reference optimum/BKS,
+- Observer GBest and Observer GBest gap,
+- Selected GBest and Selected GBest gap,
+- final distance and final gap for completed runs,
+- initializer feasibility, distance, gap, capacity violations and excess severity,
+- per-iteration Critic valid count, iteration-best distance/gap, selected distance/gap, GBest values and selection regret,
+- recovery/adaptive events,
+- agent-level token/call/latency totals,
+- total API usage,
+- and errors/interruption status.
+
+Primary benchmark metrics include:
 
 - initializer first-shot feasibility,
 - capacity violation count,
@@ -353,13 +419,14 @@ Primary reported metrics include:
 - final valid rate,
 - Scorer oracle agreement,
 - selection regret,
+- Observer GBest / Selected GBest,
 - valid-only distance / gap / crossings,
 - tokens,
 - latency,
 - calls,
 - and estimated cost.
 
-`observed_oracle_best` is analysis-only: it means the best valid objective value Python happened to observe among generated candidates. It never changes the model's search path.
+Observer GBest is analysis-only and never changes the model's search path.
 
 ## Baseline
 
@@ -377,11 +444,12 @@ For a main benchmark batch, freeze together:
 - visual-condition configs,
 - prompt version,
 - scale-policy version,
-- model,
+- model (`gemini-3.7-flash` for the current main batch),
 - media resolution,
 - repair / Critic counts,
 - restart and stagnation policy,
 - seed / replicate policy,
+- reference-optimum/BKS metadata policy,
 - and benchmark instance set.
 
-New prompt or scale experiments should create a new version instead of modifying an already-used frozen version.
+New prompt, scale, model, or protocol experiments should create a new version instead of modifying an already-used frozen version.
