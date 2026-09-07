@@ -14,7 +14,10 @@ def _find_project() -> Path:
     for candidate in (cwd, cwd / "avma_cvrp_experiment"):
         if (candidate / "run_analysis.py").exists() and (candidate / "src").exists():
             return candidate
-    raise SystemExit("avma_cvrp_experiment bulunamadı")
+    raise SystemExit(
+        "avma_cvrp_experiment bulunamadı. "
+        "Komutu repo kökünden veya avma_cvrp_experiment klasöründen çalıştır."
+    )
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -33,11 +36,11 @@ def _read_trace(path: Path) -> list[dict[str, Any]]:
             if not raw:
                 continue
             try:
-                obj = json.loads(raw)
+                event = json.loads(raw)
             except json.JSONDecodeError as exc:
                 raise SystemExit(f"{path} satır {lineno} JSON değil: {exc}") from exc
-            if isinstance(obj, dict):
-                events.append(obj)
+            if isinstance(event, dict):
+                events.append(event)
     return events
 
 
@@ -70,7 +73,13 @@ def _truncate(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[: max(1, limit - 1)] + "…"
 
 
-def _table(title: str, headers: list[str], rows: list[list[Any]], *, max_widths: dict[int, int] | None = None) -> str:
+def _table(
+    title: str,
+    headers: list[str],
+    rows: list[list[Any]],
+    *,
+    max_widths: dict[int, int] | None = None,
+) -> str:
     limits = max_widths or {}
     rendered: list[list[str]] = []
     for row in rows:
@@ -79,19 +88,26 @@ def _table(title: str, headers: list[str], rows: list[list[Any]], *, max_widths:
             if i in limits:
                 values[i] = _truncate(value, limits[i])
         rendered.append(values)
+
     widths = [len(h) for h in headers]
     for row in rendered:
         for i, value in enumerate(row):
             widths[i] = max(widths[i], len(value))
+
     def border(left: str, mid: str, right: str) -> str:
         return left + mid.join("─" * (w + 2) for w in widths) + right
+
     def line(values: list[str]) -> str:
-        return "│" + "│".join(f" {values[i].ljust(widths[i])} " for i in range(len(headers))) + "│"
+        return "│" + "│".join(
+            f" {values[i].ljust(widths[i])} " for i in range(len(headers))
+        ) + "│"
+
     out = [title, border("┌", "┬", "┐"), line(headers), border("├", "┼", "┤")]
     if rendered:
         out.extend(line(row) for row in rendered)
     else:
-        out.append(line(["(no records)"] + [""] * (len(headers) - 1)))
+        empty = ["(no records)"] + [""] * (len(headers) - 1)
+        out.append(line(empty))
     out.append(border("└", "┴", "┘"))
     return "\n".join(out)
 
@@ -114,7 +130,7 @@ def _event_iteration(event: dict[str, Any]) -> int | None:
     return int(digits) if digits else None
 
 
-def _metrics(evaluation: dict[str, Any] | None) -> dict[str, Any]:
+def _eval_metrics(evaluation: dict[str, Any] | None) -> dict[str, Any]:
     evaluation = evaluation or {}
     validation = evaluation.get("validation") or {}
     ratios_raw = validation.get("route_capacity_ratios") or []
@@ -129,56 +145,116 @@ def _metrics(evaluation: dict[str, Any] | None) -> dict[str, Any]:
     return {
         "valid": validation.get("valid"),
         "reasons": validation.get("reasons") or [],
-        "loads": validation.get("route_loads") or [],
+        "route_loads": validation.get("route_loads") or [],
         "ratios": ratios_raw,
         "violations": len(exceeded),
         "excess_sum": sum(excesses) if ratios else None,
         "excess_max": max(excesses) if ratios else None,
+        "missing": validation.get("missing_nodes") or [],
+        "duplicates": validation.get("duplicate_nodes") or [],
+        "unknown": validation.get("unknown_nodes") or [],
+        "vehicle_count": validation.get("vehicle_count"),
         "distance": evaluation.get("distance"),
+        "gap": evaluation.get("gap_percent"),
         "crossings": evaluation.get("crossings"),
     }
 
 
-def _calls(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    rows = []
+def _call_rows(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
     for event in events:
         if event.get("event") != "agent_call":
             continue
         call = event.get("call") or {}
         usage = call.get("usage") or {}
         rows.append({
-            "agent": event.get("agent") or "unknown",
-            "latency": float(call.get("latency_seconds") or 0.0),
-            "prompt": int(usage.get("prompt_token_count") or 0),
-            "output": int(usage.get("candidates_token_count") or 0),
-            "thought": int(usage.get("thoughts_token_count") or 0),
-            "total": int(usage.get("total_token_count") or 0),
+            "seq": event.get("seq"),
+            "agent": event.get("agent"),
+            "phase": call.get("phase"),
+            "scope": event.get("scope"),
+            "iteration": _event_iteration(event),
+            "candidate": event.get("candidate"),
+            "attempt": event.get("attempt"),
+            "restart_attempt": event.get("restart_attempt"),
+            "latency": call.get("latency_seconds"),
+            "prompt_tokens": usage.get("prompt_token_count"),
+            "candidate_tokens": usage.get("candidates_token_count"),
+            "thought_tokens": usage.get("thoughts_token_count"),
+            "total_tokens": usage.get("total_token_count"),
         })
     return rows
 
 
-def _initializer_rows(events: list[dict[str, Any]], ref: float | None) -> list[dict[str, Any]]:
-    rows = []
+def _initializer_rows(
+    events: list[dict[str, Any]],
+    reference_optimum: float | None,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+
     for event in events:
         kind = event.get("event")
         scope = str(event.get("scope") or "")
-        stage = route = evaluation = None
+        stage = None
+        route = None
+        evaluation = None
+
         if kind == "initializer_candidate":
-            stage, route, evaluation = "Initializer", event.get("route"), event.get("evaluation")
+            stage = "Initializer"
+            route = event.get("route")
+            evaluation = event.get("evaluation")
         elif kind == "repair_result" and scope == "initializer":
-            stage, route, evaluation = f"Initializer Repair {event.get('attempt') or '?'}", event.get("output_route"), event.get("evaluation")
+            stage = f"Initializer Repair {event.get('attempt') or '?'}"
+            route = event.get("output_route")
+            evaluation = event.get("evaluation")
         elif kind == "diversity_result" and scope == "initializer.fallback":
-            stage, route, evaluation = f"Fallback Restart {event.get('restart_attempt') or '?'}", event.get("route"), event.get("evaluation")
+            stage = f"Fallback Restart {event.get('restart_attempt') or '?'}"
+            route = event.get("route")
+            evaluation = event.get("evaluation")
+        elif kind == "repair_result" and scope.startswith("initializer.fallback.restart_"):
+            restart = "?"
+            tail = scope.split("initializer.fallback.restart_", 1)[1]
+            digits = "".join(ch for ch in tail if ch.isdigit())
+            if digits:
+                restart = str(int(digits))
+            stage = f"Restart {restart} Repair {event.get('attempt') or '?'}"
+            route = event.get("output_route")
+            evaluation = event.get("evaluation")
         elif kind == "initializer_result":
-            stage, route, evaluation = "ACCEPTED", event.get("accepted_route"), event.get("evaluation")
+            stage = "ACCEPTED"
+            route = event.get("accepted_route")
+            evaluation = event.get("evaluation")
+
         if stage is None:
             continue
-        m = _metrics(evaluation)
-        rows.append({"seq": event.get("seq"), "stage": stage, "route": route, **m, "gap": _gap(m["distance"], ref) if m["valid"] is True else None})
+
+        metrics = _eval_metrics(evaluation)
+        rows.append({
+            "seq": event.get("seq"),
+            "stage": stage,
+            "valid": metrics["valid"],
+            "violations": metrics["violations"],
+            "excess_sum": metrics["excess_sum"],
+            "excess_max": metrics["excess_max"],
+            "loads": metrics["route_loads"],
+            "ratios": metrics["ratios"],
+            "reasons": metrics["reasons"],
+            "missing": metrics["missing"],
+            "duplicates": metrics["duplicates"],
+            "unknown": metrics["unknown"],
+            "crossings": metrics["crossings"],
+            "distance": metrics["distance"],
+            "gap": _gap(metrics["distance"], reference_optimum)
+            if metrics["valid"] is True else None,
+            "route": route,
+        })
+
     return rows
 
 
-def _critics(events: list[dict[str, Any]], ref: float | None) -> dict[int, list[dict[str, Any]]]:
+def _critic_by_iteration(
+    events: list[dict[str, Any]],
+    reference_optimum: float | None,
+) -> dict[int, list[dict[str, Any]]]:
     grouped: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for event in events:
         if event.get("event") != "critic_result":
@@ -186,172 +262,357 @@ def _critics(events: list[dict[str, Any]], ref: float | None) -> dict[int, list[
         iteration = _event_iteration(event)
         if iteration is None:
             continue
-        m = _metrics(event.get("evaluation"))
+        metrics = _eval_metrics(event.get("evaluation"))
         grouped[iteration].append({
             "seq": event.get("seq"),
             "candidate": int(event.get("candidate") or 0),
-            **m,
-            "gap": _gap(m["distance"], ref) if m["valid"] is True else None,
+            "valid": metrics["valid"],
+            "violations": metrics["violations"],
+            "excess_sum": metrics["excess_sum"],
+            "distance": metrics["distance"],
+            "gap": _gap(metrics["distance"], reference_optimum)
+            if metrics["valid"] is True else None,
+            "crossings": metrics["crossings"],
+            "reasons": metrics["reasons"],
+            "route": event.get("route"),
         })
     for iteration in grouped:
         grouped[iteration].sort(key=lambda row: row["candidate"])
     return grouped
 
 
-def _scorers(events: list[dict[str, Any]]) -> dict[int, dict[str, Any]]:
-    result = {}
+def _scorer_by_iteration(events: list[dict[str, Any]]) -> dict[int, dict[str, Any]]:
+    result: dict[int, dict[str, Any]] = {}
     for event in events:
-        if event.get("event") == "scorer_result":
-            iteration = _event_iteration(event)
-            if iteration is not None:
-                result[iteration] = event
+        if event.get("event") != "scorer_result":
+            continue
+        iteration = _event_iteration(event)
+        if iteration is not None:
+            result[iteration] = event
     return result
 
 
-def _working_by_iteration(events: list[dict[str, Any]]) -> dict[int, float]:
-    result = {}
+def _accepted_initializer_distance(events: list[dict[str, Any]]) -> float | None:
+    for event in reversed(events):
+        if event.get("event") != "initializer_result":
+            continue
+        metrics = _eval_metrics(event.get("evaluation"))
+        if metrics["valid"] is True and metrics["distance"] is not None:
+            return float(metrics["distance"])
+    return None
+
+
+def _iteration_working_distances(events: list[dict[str, Any]]) -> dict[int, float]:
+    result: dict[int, float] = {}
     for event in events:
         if event.get("event") != "iteration_result":
             continue
         iteration = _event_iteration(event)
+        if iteration is None:
+            continue
         payload = event.get("result") or {}
-        m = _metrics(payload.get("working_evaluation"))
-        if iteration is not None and m["valid"] is True and m["distance"] is not None:
-            result[iteration] = float(m["distance"])
+        metrics = _eval_metrics(payload.get("working_evaluation"))
+        if metrics["valid"] is True and metrics["distance"] is not None:
+            result[iteration] = float(metrics["distance"])
     return result
 
 
-def _accepted_initializer(events: list[dict[str, Any]]) -> float | None:
-    for event in reversed(events):
-        if event.get("event") == "initializer_result":
-            m = _metrics(event.get("evaluation"))
-            if m["valid"] is True and m["distance"] is not None:
-                return float(m["distance"])
-    return None
+def _other_observed_by_iteration(events: list[dict[str, Any]]) -> dict[int, list[float]]:
+    grouped: dict[int, list[float]] = defaultdict(list)
+    for event in events:
+        kind = event.get("event")
+        if kind not in {"repair_result", "diversity_result", "hybrid_result", "iteration_result"}:
+            continue
+        iteration = _event_iteration(event)
+        if iteration is None:
+            continue
+        if kind == "iteration_result":
+            payload = event.get("result") or {}
+            evaluations = [
+                payload.get("working_evaluation"),
+                (payload.get("selected_before_repair") or {}).get("evaluation"),
+            ]
+        else:
+            evaluations = [event.get("evaluation")]
+        for evaluation in evaluations:
+            if not isinstance(evaluation, dict):
+                continue
+            metrics = _eval_metrics(evaluation)
+            if metrics["valid"] is True and metrics["distance"] is not None:
+                grouped[iteration].append(float(metrics["distance"]))
+    return grouped
 
 
-def _progress(events: list[dict[str, Any]], ref: float | None) -> list[dict[str, Any]]:
-    critics = _critics(events, ref)
-    working = _working_by_iteration(events)
-    init = _accepted_initializer(events)
-    observed_best = selected_best = init
-    rows = [{"stage": "Initializer", "iteration": 0, "observed": observed_best, "selected": selected_best}]
-    for iteration in sorted(set(critics) | set(working)):
-        valid = [float(r["distance"]) for r in critics.get(iteration, []) if r["valid"] is True and r["distance"] is not None]
-        if valid:
-            observed_best = min([x for x in [observed_best, min(valid)] if x is not None])
+def _progress_rows(
+    events: list[dict[str, Any]],
+    reference_optimum: float | None,
+) -> list[dict[str, Any]]:
+    critics = _critic_by_iteration(events, reference_optimum)
+    working = _iteration_working_distances(events)
+    other = _other_observed_by_iteration(events)
+    initializer_distance = _accepted_initializer_distance(events)
+    iterations = sorted(set(critics) | set(working) | set(other))
+
+    rows: list[dict[str, Any]] = []
+    observed_best = initializer_distance
+    selected_best = initializer_distance
+    rows.append({
+        "stage": "Initializer",
+        "iteration": 0,
+        "partial": False,
+        "observed_gbest": observed_best,
+        "selected_gbest": selected_best,
+        "observed_gap": _gap(observed_best, reference_optimum),
+        "selected_gap": _gap(selected_best, reference_optimum),
+    })
+
+    completed_iterations = set(working)
+    for iteration in iterations:
+        observed_distances: list[float] = []
+        for row in critics.get(iteration, []):
+            if row["valid"] is True and row["distance"] is not None:
+                observed_distances.append(float(row["distance"]))
+        observed_distances.extend(other.get(iteration, []))
+        if observed_distances:
+            iteration_best = min(observed_distances)
+            observed_best = iteration_best if observed_best is None else min(observed_best, iteration_best)
         if iteration in working:
-            selected_best = min([x for x in [selected_best, working[iteration]] if x is not None])
+            selected_best = working[iteration] if selected_best is None else min(selected_best, working[iteration])
+        partial = iteration not in completed_iterations
         rows.append({
-            "stage": f"Iter {iteration}{'*' if iteration not in working else ''}",
+            "stage": f"Iter {iteration}{'*' if partial else ''}",
             "iteration": iteration,
-            "observed": observed_best,
-            "selected": selected_best,
+            "partial": partial,
+            "observed_gbest": observed_best,
+            "selected_gbest": selected_best,
+            "observed_gap": _gap(observed_best, reference_optimum),
+            "selected_gap": _gap(selected_best, reference_optimum),
         })
     return rows
 
 
-def _critic_table(events: list[dict[str, Any]], ref: float | None) -> list[list[Any]]:
-    critics = _critics(events, ref)
-    scorers = _scorers(events)
-    progress = {row["iteration"]: row for row in _progress(events, ref)}
-    rows = []
-    for iteration in sorted(set(critics) | set(scorers)):
+def _critic_scorer_rows(
+    events: list[dict[str, Any]],
+    reference_optimum: float | None,
+) -> list[list[Any]]:
+    critics = _critic_by_iteration(events, reference_optimum)
+    scorers = _scorer_by_iteration(events)
+    progress = {
+        int(row["iteration"]): row
+        for row in _progress_rows(events, reference_optimum)
+        if int(row["iteration"]) > 0
+    }
+    iterations = sorted(set(critics) | set(scorers))
+    rows: list[list[Any]] = []
+
+    for iteration in iterations:
         candidates = critics.get(iteration, [])
-        valid = [row for row in candidates if row["valid"] is True and row["distance"] is not None]
-        oracle = min(valid, key=lambda row: float(row["distance"])) if valid else None
-        by_id = {row["candidate"]: row for row in candidates}
         scorer = scorers.get(iteration)
-        selected_distance = selected_gap = regret = None
-        scorer_text = "NOT REACHED"
+        candidate_texts: list[str] = []
+        valid_candidates: list[dict[str, Any]] = []
+        by_id = {row["candidate"]: row for row in candidates}
+
+        for row in candidates:
+            if row["valid"] is True and row["distance"] is not None:
+                valid_candidates.append(row)
+            candidate_texts.append(
+                f"C{row['candidate']}:"
+                f"valid={_fmt(row['valid'])},"
+                f"viol={row['violations']},"
+                f"excess={_fmt(row['excess_sum'])},"
+                f"dist={_fmt(row['distance'])},"
+                f"gap={_fmt_gap(row['gap'])},"
+                f"cross={_fmt(row['crossings'])},"
+                f"reason={_fmt(row['reasons'])}"
+            )
+
+        oracle = min(valid_candidates, key=lambda row: float(row["distance"])) if valid_candidates else None
+
         if scorer:
             best_id = int(scorer.get("best_id") or 0)
             selected = by_id.get(best_id)
-            if selected and selected["valid"] is True and selected["distance"] is not None:
-                selected_distance = float(selected["distance"])
-                selected_gap = _gap(selected_distance, ref)
-                if oracle is not None:
-                    regret = selected_distance - float(oracle["distance"])
-            scorer_text = f"order={_fmt(scorer.get('display_order') or [])}; ranking={_fmt(scorer.get('ranking') or [])}; best=C{best_id}"
-        candidate_text = " | ".join(
-            f"C{r['candidate']}:valid={_fmt(r['valid'])},viol={r['violations']},excess={_fmt(r['excess_sum'])},dist={_fmt(r['distance'])},gap={_fmt_gap(r['gap'])},cross={_fmt(r['crossings'])},reason={_fmt(r['reasons'])}"
-            for r in candidates
-        ) or "-"
+            selected_valid = selected.get("valid") if selected else None
+            selected_distance = (
+                float(selected["distance"])
+                if selected and selected.get("valid") is True and selected.get("distance") is not None
+                else None
+            )
+            selected_gap = _gap(selected_distance, reference_optimum)
+            regret = None
+            if selected_valid is True and selected_distance is not None and oracle is not None and oracle.get("distance") is not None:
+                regret = selected_distance - float(oracle["distance"])
+            scorer_text = (
+                f"order={_fmt(scorer.get('display_order') or [])}; "
+                f"ranking={_fmt(scorer.get('ranking') or [])}; "
+                f"best=C{best_id}; selected_valid={_fmt(selected_valid)}"
+            )
+        else:
+            selected_distance = None
+            selected_gap = None
+            regret = None
+            scorer_text = "NOT REACHED"
+
+        iter_best = float(oracle["distance"]) if oracle else None
+        iter_gap = _gap(iter_best, reference_optimum)
         p = progress.get(iteration) or {}
         rows.append([
             iteration,
             len(candidates),
-            len(valid),
-            float(oracle["distance"]) if oracle else None,
-            _fmt_gap(_gap(oracle["distance"], ref)) if oracle else "-",
+            sum(row["valid"] is True for row in candidates),
+            iter_best,
+            _fmt_gap(iter_gap),
             selected_distance,
             _fmt_gap(selected_gap),
-            p.get("observed"),
-            p.get("selected"),
+            p.get("observed_gbest"),
+            p.get("selected_gbest"),
             regret,
-            candidate_text,
+            " | ".join(candidate_texts) if candidate_texts else "-",
             scorer_text,
         ])
     return rows
 
 
-def _recovery_rows(events: list[dict[str, Any]]) -> list[list[Any]]:
-    rows = []
+def _search_recovery_rows(events: list[dict[str, Any]]) -> list[list[Any]]:
+    rows: list[list[Any]] = []
     for event in events:
         kind = event.get("event")
         scope = str(event.get("scope") or "")
-        if scope.startswith("initializer") or kind not in {"repair_result", "diversity_result", "hybrid_result", "restart_exhausted"}:
+        if scope.startswith("initializer"):
             continue
-        m = _metrics(event.get("evaluation") if isinstance(event.get("evaluation"), dict) else {})
-        rows.append([event.get("seq"), kind, scope or "-", _event_iteration(event), event.get("attempt"), event.get("restart_attempt"), m["valid"], m["violations"], m["excess_sum"], m["distance"], event.get("fallback_action")])
+        if kind not in {"repair_result", "diversity_result", "hybrid_result", "restart_exhausted"}:
+            continue
+        evaluation = event.get("evaluation")
+        metrics = _eval_metrics(evaluation) if isinstance(evaluation, dict) else {}
+        rows.append([
+            event.get("seq"), kind, scope or "-", _event_iteration(event),
+            event.get("attempt"), event.get("restart_attempt"),
+            metrics.get("valid"), metrics.get("violations"), metrics.get("excess_sum"),
+            metrics.get("distance"), event.get("fallback_action"),
+        ])
     return rows
 
 
 def _error_rows(events: list[dict[str, Any]]) -> list[list[Any]]:
-    rows = []
+    rows: list[list[Any]] = []
     for event in events:
-        if event.get("event") in {"provider_error", "model_output_failure", "recoverable_agent_failure"}:
-            rows.append([event.get("seq"), event.get("event"), event.get("phase"), event.get("scope"), _event_iteration(event), event.get("status_code"), event.get("error_type"), event.get("message") or event.get("error_message")])
+        if event.get("event") not in {"provider_error", "model_output_failure", "recoverable_agent_failure"}:
+            continue
+        rows.append([
+            event.get("seq"), event.get("event"), event.get("phase"), event.get("scope"),
+            _event_iteration(event), event.get("status_code"), event.get("error_type"),
+            event.get("message") or event.get("error_message"),
+        ])
     return rows
 
 
 def _agent_cost_rows(calls: list[dict[str, Any]]) -> list[list[Any]]:
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in calls:
-        grouped[str(row["agent"])].append(row)
-    return [[agent, len(items), sum(x["prompt"] for x in items), sum(x["output"] for x in items), sum(x["thought"] for x in items), sum(x["total"] for x in items), sum(x["latency"] for x in items)] for agent, items in sorted(grouped.items())]
+        grouped[str(row.get("agent") or "unknown")].append(row)
+    rows: list[list[Any]] = []
+    for agent in sorted(grouped):
+        items = grouped[agent]
+        rows.append([
+            agent,
+            len(items),
+            sum(int(x.get("prompt_tokens") or 0) for x in items),
+            sum(int(x.get("candidate_tokens") or 0) for x in items),
+            sum(int(x.get("thought_tokens") or 0) for x in items),
+            sum(int(x.get("total_tokens") or 0) for x in items),
+            sum(float(x.get("latency") or 0.0) for x in items),
+        ])
+    return rows
 
 
-def _build_report(run_root: Path, model_dir: Path, ref_override: float | None) -> tuple[str, list[dict[str, Any]], float | None]:
+def _total_cost(calls: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "calls": len(calls),
+        "prompt_tokens": sum(int(x.get("prompt_tokens") or 0) for x in calls),
+        "candidate_tokens": sum(int(x.get("candidate_tokens") or 0) for x in calls),
+        "thought_tokens": sum(int(x.get("thought_tokens") or 0) for x in calls),
+        "total_tokens": sum(int(x.get("total_tokens") or 0) for x in calls),
+        "latency": sum(float(x.get("latency") or 0.0) for x in calls),
+    }
+
+
+def _best_failed_initializer(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
+    candidates = [row for row in rows if row["stage"] != "ACCEPTED" and row["valid"] is not True]
+    if not candidates:
+        return None
+    def key(row: dict[str, Any]) -> tuple[float, float, int]:
+        violations = row.get("violations")
+        excess = row.get("excess_sum")
+        return (
+            float(violations) if violations is not None else 1e9,
+            float(excess) if excess is not None else 1e9,
+            int(row.get("seq") or 0),
+        )
+    return min(candidates, key=key)
+
+
+def _final_distance(state: dict[str, Any], events: list[dict[str, Any]]) -> float | None:
+    if state.get("status") != "completed":
+        return None
+    summary = state.get("summary") or {}
+    final_eval = summary.get("final_working_evaluation") or {}
+    metrics = _eval_metrics(final_eval)
+    if metrics["valid"] is True and metrics["distance"] is not None:
+        return float(metrics["distance"])
+    for event in reversed(events):
+        if event.get("event") != "iteration_result":
+            continue
+        payload = event.get("result") or {}
+        metrics = _eval_metrics(payload.get("working_evaluation"))
+        if metrics["valid"] is True and metrics["distance"] is not None:
+            return float(metrics["distance"])
+    return None
+
+
+def _build_report(
+    run_root: Path,
+    model_dir: Path,
+    reference_optimum_override: float | None,
+) -> tuple[str, list[dict[str, Any]], float | None]:
     manifest = _read_json(run_root / "run.json")
     state = _read_json(model_dir / "state.json")
     events = _read_trace(model_dir / "trace.jsonl")
-    calls = _calls(events)
+    calls = _call_rows(events)
+
     problem = manifest.get("problem") or {}
-    manifest_ref = problem.get("reference_optimum")
-    ref = float(ref_override) if ref_override is not None else (float(manifest_ref) if manifest_ref is not None else None)
-    init_rows = _initializer_rows(events, ref)
-    progress = _progress(events, ref)
-    last = progress[-1] if progress else {}
-    observer_gbest = last.get("observed")
-    selected_gbest = last.get("selected")
+    manifest_reference = problem.get("reference_optimum")
+    reference_optimum = (
+        float(reference_optimum_override)
+        if reference_optimum_override is not None
+        else (float(manifest_reference) if manifest_reference is not None else None)
+    )
+
+    init_rows = _initializer_rows(events, reference_optimum)
+    critic_scorer = _critic_scorer_rows(events, reference_optimum)
+    recovery = _search_recovery_rows(events)
+    errors = _error_rows(events)
+    progress = _progress_rows(events, reference_optimum)
+
     config = manifest.get("config") or {}
     experiment = config.get("experiment") or {}
     render_policy = manifest.get("render_policy") or {}
     provider_policy = manifest.get("provider_policy") or {}
+
+    initializer_accepted = any(event.get("event") == "initializer_result" for event in events)
     first_initializer = next((row for row in init_rows if row["stage"] == "Initializer"), None)
-    best_failed = min((row for row in init_rows if row["stage"] != "ACCEPTED" and row["valid"] is not True), key=lambda r: (r["violations"], r["excess_sum"] if r["excess_sum"] is not None else 1e9, r["seq"] or 0), default=None)
-    final_distance = selected_gbest if state.get("status") == "completed" else None
-    total = {
-        "calls": len(calls),
-        "prompt": sum(x["prompt"] for x in calls),
-        "output": sum(x["output"] for x in calls),
-        "thought": sum(x["thought"] for x in calls),
-        "tokens": sum(x["total"] for x in calls),
-        "latency": sum(x["latency"] for x in calls),
-    }
-    lines = [
-        "AVMA-CVRP ANALYSIS REPORT", "=" * 140, "", "RUN SUMMARY", "-" * 140,
+    best_failed = _best_failed_initializer(init_rows)
+
+    last_progress = progress[-1] if progress else {}
+    observer_gbest = last_progress.get("observed_gbest")
+    selected_gbest = last_progress.get("selected_gbest")
+    final_distance = _final_distance(state, events)
+    total = _total_cost(calls)
+
+    lines: list[str] = [
+        "AVMA-CVRP ANALYSIS REPORT",
+        "=" * 140,
+        "",
+        "RUN SUMMARY",
+        "-" * 140,
         f"Run ID                 : {run_root.name}",
         f"Instance               : {_fmt(problem.get('name'))}",
         f"Dimension              : {_fmt(problem.get('dimension'))}",
@@ -361,66 +622,137 @@ def _build_report(run_root: Path, model_dir: Path, ref_override: float | None) -
         f"Completed iterations   : {_fmt(state.get('completed_iterations') or 0)}",
         f"State status           : {_fmt(state.get('status'))}",
         f"Current phase          : {_fmt(state.get('current'))}",
-        f"Reference optimum/BKS  : {_fmt(ref)}",
+        f"Reference optimum/BKS  : {_fmt(reference_optimum)}",
         f"Demand encoding        : {_fmt(render_policy.get('demand_encoding_mode'))}",
         f"Bar layout             : {_fmt(render_policy.get('bar_layout'))}",
-        f"Media resolution       : {_fmt(provider_policy.get('media_resolution'))}", "",
+        f"Media resolution       : {_fmt(provider_policy.get('media_resolution'))}",
+        "",
         f"Observer GBest         : {_fmt(observer_gbest)}",
-        f"Observer GBest gap     : {_fmt_gap(_gap(observer_gbest, ref))}",
+        f"Observer GBest gap     : {_fmt_gap(_gap(observer_gbest, reference_optimum))}",
         f"Selected GBest         : {_fmt(selected_gbest)}",
-        f"Selected GBest gap     : {_fmt_gap(_gap(selected_gbest, ref))}",
+        f"Selected GBest gap     : {_fmt_gap(_gap(selected_gbest, reference_optimum))}",
         f"Final distance         : {_fmt(final_distance)}",
-        f"Final gap              : {_fmt_gap(_gap(final_distance, ref))}",
-        f"Run completed          : {_fmt(state.get('status') == 'completed')}", "",
-        "INITIALIZER SUMMARY", "-" * 140,
-        f"Accepted               : {_fmt(any(e.get('event') == 'initializer_result' for e in events))}",
+        f"Final gap              : {_fmt_gap(_gap(final_distance, reference_optimum))}",
+        f"Run completed          : {_fmt(state.get('status') == 'completed')}",
+        "",
+        "INITIALIZER SUMMARY",
+        "-" * 140,
+        f"Accepted               : {_fmt(initializer_accepted)}",
         f"First-shot valid       : {_fmt(first_initializer.get('valid') if first_initializer else None)}",
-        f"Direct repairs         : {sum(r['stage'].startswith('Initializer Repair') for r in init_rows)}",
-        f"Fallback restarts      : {sum(r['stage'].startswith('Fallback Restart') for r in init_rows)}",
+        f"Direct repairs         : {sum(row['stage'].startswith('Initializer Repair') for row in init_rows)}",
+        f"Fallback restarts      : {sum(row['stage'].startswith('Fallback Restart') for row in init_rows)}",
+        f"Fallback repairs       : {sum(row['stage'].startswith('Restart ') and ' Repair ' in row['stage'] for row in init_rows)}",
     ]
+
     if best_failed:
-        lines.append(f"Best failed attempt    : seq={best_failed['seq']} / {best_failed['stage']} / violations={best_failed['violations']} / excess_sum={_fmt(best_failed['excess_sum'])} / loads={_fmt(best_failed['loads'])}")
-    lines += [
+        lines.append(
+            "Best failed attempt    : "
+            f"seq={best_failed['seq']} / {best_failed['stage']} / "
+            f"violations={best_failed['violations']} / "
+            f"excess_sum={_fmt(best_failed['excess_sum'])} / "
+            f"loads={_fmt(best_failed['loads'])}"
+        )
+
+    lines.extend([
         "",
-        _table("INITIALIZER OUTPUTS — chronological", ["Seq", "Stage", "Valid", "Viol", "ExcessΣ", "ExcessMax", "Route loads", "Capacity ratios", "Distance", "Gap %", "Cross", "Reasons", "Route"], [[r["seq"], r["stage"], r["valid"], r["violations"], r["excess_sum"], r["excess_max"], r["loads"], r["ratios"], r["distance"], _fmt_gap(r["gap"]), r["crossings"], r["reasons"], r["route"]] for r in init_rows], max_widths={1: 28, 6: 34, 7: 52, 11: 30, 12: 100}),
+        _table(
+            "INITIALIZER OUTPUTS — chronological",
+            ["Seq", "Stage", "Valid", "Viol", "ExcessΣ", "ExcessMax", "Route loads", "Capacity ratios", "Distance", "Gap %", "Cross", "Reasons", "Route"],
+            [[
+                row["seq"], row["stage"], row["valid"], row["violations"],
+                row["excess_sum"], row["excess_max"], row["loads"], row["ratios"],
+                row["distance"], _fmt_gap(row["gap"]), row["crossings"], row["reasons"], row["route"]
+            ] for row in init_rows],
+            max_widths={1: 28, 6: 34, 7: 52, 11: 30, 12: 100},
+        ),
         "",
-        _table("CRITIC + SCORER — per iteration", ["Iter", "Critic N", "Valid N", "Iter Best", "Iter Gap %", "Selected", "Sel Gap %", "Observer GBest", "Selected GBest", "Regret", "Critic candidates", "Scorer"], _critic_table(events, ref), max_widths={10: 120, 11: 85}),
+        _table(
+            "CRITIC + SCORER — per iteration",
+            ["Iter", "Critic N", "Valid N", "Iter Best", "Iter Gap %", "Selected", "Sel Gap %", "Observer GBest", "Selected GBest", "Regret", "Critic candidates", "Scorer"],
+            critic_scorer,
+            max_widths={10: 120, 11: 85},
+        ),
         "",
-        _table("SEARCH RECOVERY / ADAPTIVE EVENTS", ["Seq", "Event", "Scope", "Iter", "Attempt", "Restart", "Valid", "Viol", "ExcessΣ", "Distance", "Fallback"], _recovery_rows(events), max_widths={2: 55}),
+        _table(
+            "SEARCH RECOVERY / ADAPTIVE EVENTS",
+            ["Seq", "Event", "Scope", "Iter", "Attempt", "Restart", "Valid", "Viol", "ExcessΣ", "Distance", "Fallback"],
+            recovery,
+            max_widths={2: 55},
+        ),
         "",
-        _table("AGENT COST", ["Agent", "Calls", "Prompt tok", "Output tok", "Thought tok", "Total tok", "Latency s"], _agent_cost_rows(calls)),
-        "", "TOTAL COST / USAGE", "-" * 140,
-        f"Total API calls        : {total['calls']}", f"Prompt tokens          : {total['prompt']}", f"Output tokens          : {total['output']}", f"Thinking tokens        : {total['thought']}", f"Total tokens           : {total['tokens']}", f"Total API latency      : {total['latency']:.4f} s", "",
-        _table("ERRORS / INTERRUPTIONS", ["Seq", "Event", "Phase", "Scope", "Iter", "Status", "Type", "Message"], _error_rows(events), max_widths={2: 32, 3: 48, 7: 110}),
-        "", "STATUS FLAGS", "-" * 140,
-        f"Initializer reached : {_fmt(bool(init_rows))}", f"Initializer accepted: {_fmt(any(e.get('event') == 'initializer_result' for e in events))}", f"Critic reached      : {_fmt(bool(_critics(events, ref)))}", f"Scorer reached      : {_fmt(bool(_scorers(events)))}", f"Run completed       : {_fmt(state.get('status') == 'completed')}", "",
-    ]
-    return "\n".join(lines), progress, ref
+        _table(
+            "AGENT COST",
+            ["Agent", "Calls", "Prompt tok", "Output tok", "Thought tok", "Total tok", "Latency s"],
+            _agent_cost_rows(calls),
+        ),
+        "",
+        "TOTAL COST / USAGE",
+        "-" * 140,
+        f"Total API calls        : {total['calls']}",
+        f"Prompt tokens          : {total['prompt_tokens']}",
+        f"Output tokens          : {total['candidate_tokens']}",
+        f"Thinking tokens        : {total['thought_tokens']}",
+        f"Total tokens           : {total['total_tokens']}",
+        f"Total API latency      : {total['latency']:.4f} s",
+        "",
+        _table(
+            "ERRORS / INTERRUPTIONS",
+            ["Seq", "Event", "Phase", "Scope", "Iter", "Status", "Type", "Message"],
+            errors,
+            max_widths={2: 32, 3: 48, 7: 110},
+        ),
+        "",
+        "STATUS FLAGS",
+        "-" * 140,
+        f"Initializer reached : {_fmt(bool(init_rows))}",
+        f"Initializer accepted: {_fmt(initializer_accepted)}",
+        f"Critic reached      : {_fmt(bool(_critic_by_iteration(events, reference_optimum)))}",
+        f"Scorer reached      : {_fmt(bool(_scorer_by_iteration(events)))}",
+        f"Run completed       : {_fmt(state.get('status') == 'completed')}",
+        "",
+    ])
+
+    return "\n".join(lines), progress, reference_optimum
 
 
-def _write_chart(analysis_dir: Path, progress: list[dict[str, Any]], ref: float | None, run_id: str) -> Path:
+def _write_progress_chart(
+    analysis_dir: Path,
+    progress: list[dict[str, Any]],
+    reference_optimum: float | None,
+    *,
+    run_id: str,
+) -> Path:
     try:
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
     except ImportError as exc:
         raise SystemExit("Grafik üretmek için matplotlib gerekli: pip install matplotlib") from exc
-    usable = [row for row in progress if row.get("observed") is not None or row.get("selected") is not None]
+
+    usable = [
+        row for row in progress
+        if row.get("observed_gbest") is not None or row.get("selected_gbest") is not None
+    ]
     if not usable:
-        raise SystemExit("Grafik için geçerli distance kaydı bulunamadı")
+        raise SystemExit("Grafik için geçerli distance kaydı bulunamadı.")
+
     labels = [str(row["stage"]) for row in usable]
     x = list(range(len(labels)))
+    observed = [row.get("observed_gbest") for row in usable]
+    selected = [row.get("selected_gbest") for row in usable]
+
     plt.figure(figsize=(11, 6))
-    plt.plot(x, [row.get("observed") for row in usable], marker="o", label="Observer GBest")
-    plt.plot(x, [row.get("selected") for row in usable], marker="o", label="Selected GBest")
-    if ref is not None:
-        plt.axhline(ref, linestyle="--", label=f"BKS / optimum = {ref:g}")
+    plt.plot(x, observed, marker="o", label="Observer GBest")
+    plt.plot(x, selected, marker="o", label="Selected GBest")
+    if reference_optimum is not None:
+        plt.axhline(reference_optimum, linestyle="--", label=f"BKS / optimum = {reference_optimum:g}")
     plt.xticks(x, labels)
     plt.xlabel("Search stage")
     plt.ylabel("CVRP distance")
     plt.title(f"{run_id} — search progress")
     plt.legend()
     plt.tight_layout()
+
     path = analysis_dir / "search_progress.png"
     plt.savefig(path, dpi=180)
     plt.close()
@@ -428,38 +760,62 @@ def _write_chart(analysis_dir: Path, progress: list[dict[str, Any]], ref: float 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="AVMA-CVRP report + GBest/gap progress chart")
+    parser = argparse.ArgumentParser(
+        description="AVMA-CVRP compact analysis with GBest/gap metrics and automatic progress chart."
+    )
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--output-dir", type=Path, default=Path("output"))
     parser.add_argument("--provider", default=None)
     parser.add_argument("--model", default=None)
-    parser.add_argument("--reference-optimum", type=float, default=None, help="Analysis-only BKS/optimum override")
+    parser.add_argument(
+        "--reference-optimum",
+        type=float,
+        default=None,
+        help=(
+            "Observer-only BKS/optimum override for report and gap calculation. "
+            "Does not modify run.json, state.json, or trace.jsonl."
+        ),
+    )
     args = parser.parse_args()
+
     if args.reference_optimum is not None and args.reference_optimum <= 0:
         raise SystemExit("--reference-optimum pozitif olmalıdır")
+
     project = _find_project()
-    output_dir = args.output_dir if args.output_dir.is_absolute() else project / args.output_dir
+    output_dir = args.output_dir
+    if not output_dir.is_absolute():
+        output_dir = project / output_dir
+
     run_root = output_dir / "runs" / args.run_id
     if not run_root.is_dir():
         raise SystemExit(f"Run bulunamadı: {run_root}")
+
     model_dirs = sorted(path.parent for path in (run_root / "providers").glob("*/*/trace.jsonl"))
     if not model_dirs:
         model_dirs = sorted(path.parent for path in (run_root / "providers").glob("*/*/state.json"))
+
     if args.provider:
         model_dirs = [path for path in model_dirs if path.parent.name == args.provider]
     if args.model:
         model_dirs = [path for path in model_dirs if path.name == args.model]
     if not model_dirs:
-        raise SystemExit("Filtreye uyan provider/model run klasörü bulunamadı")
+        raise SystemExit("Filtreye uyan provider/model run klasörü bulunamadı.")
+
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
+
     for model_dir in model_dirs:
-        report, progress, ref = _build_report(run_root, model_dir, args.reference_optimum)
+        report, progress, reference_optimum = _build_report(run_root, model_dir, args.reference_optimum)
         analysis_dir = model_dir / "analysis"
         analysis_dir.mkdir(parents=True, exist_ok=True)
         report_path = analysis_dir / "report.txt"
         report_path.write_text(report, encoding="utf-8")
-        chart_path = _write_chart(analysis_dir, progress, ref, run_root.name)
+        chart_path = _write_progress_chart(
+            analysis_dir,
+            progress,
+            reference_optimum,
+            run_id=run_root.name,
+        )
         print(f"OK: {model_dir.parent.name}/{model_dir.name}")
         print(f"  Report : {report_path}")
         print(f"  Chart  : {chart_path}")

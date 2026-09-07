@@ -1,0 +1,269 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "shared_run_id": "a37-token-probe-collision",
+  "status": "running",
+  "config_sha256": "c5cf938ba6b58a10275f3f1786cbb7441b0ed0f9a128a53ee4719ba2e99e1637",
+  "seed": 42,
+  "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36",
+  "max_vehicles": 5,
+  "demand_encoding_mode": "bar",
+  "checkpoint": {
+    "completed_iteration": 0,
+    "working_routes": [
+      [
+        1,
+        16,
+        35,
+        37,
+        30,
+        33,
+        29,
+        32,
+        31,
+        27,
+        1
+      ],
+      [
+        1,
+        26,
+        36,
+        19,
+        9,
+        28,
+        12,
+        10,
+        25,
+        1
+      ],
+      [
+        1,
+        4,
+        24,
+        21,
+        20,
+        3,
+        13,
+        15,
+        18,
+        1
+      ],
+      [
+        1,
+        23,
+        11,
+        7,
+        6,
+        34,
+        14,
+        1
+      ],
+      [
+        1,
+        2,
+        22,
+        17,
+        8,
+        5,
+        1
+      ]
+    ],
+    "structural_history": [
+      [
+        [
+          1,
+          16,
+          35,
+          37,
+          30,
+          33,
+          29,
+          32,
+          31,
+          27,
+          1
+        ],
+        [
+          1,
+          26,
+          36,
+          19,
+          9,
+          28,
+          12,
+          10,
+          25,
+          1
+        ],
+        [
+          1,
+          4,
+          24,
+          21,
+          20,
+          3,
+          13,
+          15,
+          18,
+          1
+        ],
+        [
+          1,
+          23,
+          11,
+          7,
+          6,
+          34,
+          14,
+          1
+        ],
+        [
+          1,
+          2,
+          22,
+          17,
+          8,
+          5,
+          1
+        ]
+      ]
+    ],
+    "hybrid_used_since_restart": false,
+    "restart_count": 0,
+    "observed_oracle_best_distance": 790.0,
+    "observed_oracle_best_routes": [
+      [
+        1,
+        16,
+        35,
+        37,
+        30,
+        33,
+        29,
+        32,
+        31,
+        27,
+        1
+      ],
+      [
+        1,
+        26,
+        36,
+        19,
+        9,
+        28,
+        12,
+        10,
+        25,
+        1
+      ],
+      [
+        1,
+        4,
+        24,
+        21,
+        20,
+        3,
+        13,
+        15,
+        18,
+        1
+      ],
+      [
+        1,
+        23,
+        11,
+        7,
+        6,
+        34,
+        14,
+        1
+      ],
+      [
+        1,
+        2,
+        22,
+        17,
+        8,
+        5,
+        1
+      ]
+    ],
+    "selected_best_distance": 790.0,
+    "selected_best_routes": [
+      [
+        1,
+        16,
+        35,
+        37,
+        30,
+        33,
+        29,
+        32,
+        31,
+        27,
+        1
+      ],
+      [
+        1,
+        26,
+        36,
+        19,
+        9,
+        28,
+        12,
+        10,
+        25,
+        1
+      ],
+      [
+        1,
+        4,
+        24,
+        21,
+        20,
+        3,
+        13,
+        15,
+        18,
+        1
+      ],
+      [
+        1,
+        23,
+        11,
+        7,
+        6,
+        34,
+        14,
+        1
+      ],
+      [
+        1,
+        2,
+        22,
+        17,
+        8,
+        5,
+        1
+      ]
+    ],
+    "config_sha256": "c5cf938ba6b58a10275f3f1786cbb7441b0ed0f9a128a53ee4719ba2e99e1637",
+    "instance_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36"
+  },
+  "working_image": "routes/initializer/repair_01.png",
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "critic_candidate_01",
+    "iteration": 1,
+    "candidate": 1
+  },
+  "completed_iterations": 0
+}

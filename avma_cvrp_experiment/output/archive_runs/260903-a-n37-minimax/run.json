@@ -1,0 +1,170 @@
+{
+  "architecture_version": "avma-cvrp-v1",
+  "information_policy": "visual_only_llm_passive_numeric_observer",
+  "created_at_utc": "2026-09-02T18:09:40.118648+00:00",
+  "git_commit_sha": "2d7ece3eac6735858dbcba03f410b639a6a4467c",
+  "config": {
+    "experiment": {
+      "name": "cvrp_pilot10_bar_v1",
+      "run_label": "p10_bar",
+      "iterations": 10,
+      "prompt_set": "cvrp_capacity_v1",
+      "output_dir": "output/runs",
+      "strict_euc_2d": true,
+      "max_restart_attempts": 3
+    },
+    "provider": {
+      "candidate_strategy": "independent_calls",
+      "timeout_seconds": 120,
+      "request_retries": 3
+    },
+    "agents": {
+      "initializer": {
+        "temperature": null,
+        "thinking_level": "low",
+        "max_output_retries": 2
+      },
+      "critic": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "candidates": 3,
+        "max_output_retries": 2
+      },
+      "scorer": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_output_retries": 2
+      },
+      "repair": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_attempts": 2,
+        "max_output_retries": 2
+      },
+      "hybrid": {
+        "temperature": null,
+        "thinking_level": "high",
+        "max_output_retries": 2
+      },
+      "diversity": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_output_retries": 2
+      }
+    },
+    "stagnation": {
+      "window": 5,
+      "similarity_threshold": 0.9,
+      "max_unique_routes": 2
+    },
+    "render": {
+      "figure_size_inches": 8.0,
+      "dpi": 180,
+      "padding_ratio": 0.1,
+      "node_size": 440,
+      "font_size": 9,
+      "route_line_width": 1.8
+    },
+    "demand_encoding": {
+      "mode": "bar",
+      "show_visual_legend": true,
+      "show_vehicle_icons": true,
+      "size_min_factor": 0.42,
+      "size_max_factor": 1.0,
+      "bar_width_points": 30,
+      "bar_height_points": 5,
+      "dot_grid_size": 7,
+      "dot_radius_points": 1.2,
+      "color_stops": [
+        "#FFFFFF",
+        "#C6DBEF",
+        "#6BAED6",
+        "#DE2D26",
+        "#111111"
+      ]
+    },
+    "route_rendering": {
+      "palette": [
+        "#E15759",
+        "#4E79A7",
+        "#59A14F",
+        "#B07AA1",
+        "#F28E2B",
+        "#76B7B2"
+      ]
+    }
+  },
+  "config_sha256": "c73d86c543ff413ff036570835c3c7349f03b9e22b9ef7560d80957d3a7b97eb",
+  "run_parameters": {
+    "seed": 42,
+    "protocol_name": "cvrp_pilot10_bar_v1",
+    "run_label": "p10_bar"
+  },
+  "prompt_set": "cvrp_capacity_v1",
+  "prompt_sha256": {
+    "common_policy.txt": "b2c88db996a913da5ae69a9f883880105d395d1f33bcf8a75966c62deeac50f1",
+    "critic.txt": "588753f735703c5b0d2f50df980f0760120ad58d34c4ddaa70a41cbe89fa9e32",
+    "diversity.txt": "263cd39a0c69ba12b83f8bcacc21fb8fb67e1210c5a6ab99130f0780e05ceb6e",
+    "hybrid.txt": "1fe29c3862e4be17a186c2b25fd94adc391ab00c9674d0c5c266e4b06b5a588d",
+    "initializer.txt": "88f882be17b17b3e7a4239e89d5e8a09c0ee259b138589edf15baf8191aaf974",
+    "repair.txt": "7e4aaf4d7d189969bf9cc834630a81651d897d12005a0f30346f10af8dd21fc3",
+    "scorer.txt": "bc9a8be28b312804111b8746fc71f5be6c7383599c9bbbcee9277104edd80ff0"
+  },
+  "problem": {
+    "name": "A-n37-k5",
+    "dimension": 37,
+    "depot": 1,
+    "capacity": 100,
+    "max_vehicles": 5,
+    "edge_weight_type": "EUC_2D",
+    "source_path": "/Users/aysenihalkaymak/Desktop/visual-tsp-mllm-experiment/avma_cvrp_experiment/data/cvrplib/A-n37-k5.vrp",
+    "source_sha256": "413d348da98e97c081fa793e941ed07b35e23e1a96db6563e74a409346ca5f36",
+    "reference_optimum": null
+  },
+  "llm_input_policy": {
+    "allowed": [
+      "problem images",
+      "route images",
+      "candidate images",
+      "visible node labels",
+      "visible depot marker",
+      "agent task instructions"
+    ],
+    "forbidden": [
+      "coordinates",
+      "distance matrix",
+      "numeric edge lengths",
+      "numeric route length",
+      "capacity constraints",
+      "gap",
+      "known optimum",
+      "optimal route",
+      "GBest",
+      "textual current routes as model input",
+      "missing-node list",
+      "validation reason"
+    ]
+  },
+  "layout_version": "compact_v3",
+  "prompts": {
+    "common_policy": "VISUAL-ONLY CVRP POLICY\n\nSolve the Capacitated Vehicle Routing Problem using only the visual information shown in the provided images.\n\nThe images may contain:\n- customer locations,\n- visible customer node IDs,\n- the depot marker,\n- route connections,\n- visual customer-demand markers,\n- a visual full-capacity reference marker,\n- visual vehicle-availability markers when they are present.\n\nThe visual demand marker on each customer represents that customer's relative share of one vehicle's full carrying capacity. Use the visual legend and the full-capacity reference to reason qualitatively about whether the customers assigned to the same vehicle fit together.\n\nTreat vehicle capacity as a hard feasibility constraint. A route must not visually appear to exceed the full-capacity reference.\n\nIf vehicle-availability markers are visible, do not use more routes than the available vehicle markers.\n\nDo not request, assume, invent, estimate, or use:\n- numerical customer demands,\n- numerical vehicle capacity,\n- numerical route loads,\n- capacity percentages,\n- numerical vehicle limits,\n- coordinates,\n- a distance matrix,\n- numerical edge lengths,\n- numerical route lengths,\n- a reference solution,\n- an optimum,\n- an optimality gap,\n- hidden validation results,\n- a missing-node list,\n- a textual representation of an earlier route.\n\nReason only from visible node positions, visible node labels, the depot marker, visual demand markers, visual capacity reference markers, vehicle-availability markers, route geometry, and visible route connections.\n\nDo not invent node IDs that are not visible in the image.\n\nReturn only the requested JSON object. Do not include explanations, calculations, markdown fences, or any additional text.",
+    "initializer": "ROLE: INITIALIZER AGENT\n\nYou are given an image of a Capacitated Vehicle Routing Problem.\n\nConstruct one complete set of vehicle routes using only the visual information in the image.\n\nYour first priority is feasibility.\n\nRequirements:\n1. Every route must start at the visually marked depot.\n2. Every route must return to the same depot.\n3. Every visible customer node must be visited exactly once across all routes.\n4. Preserve every visible node ID exactly as shown.\n5. Do not invent or omit nodes.\n6. Use the visual demand markers and the visual full-capacity reference to keep each vehicle route within capacity.\n7. If vehicle-availability markers are visible, do not use more routes than the available vehicles.\n8. Do not create empty routes.\n9. Prefer visually coherent geographic clusters.\n10. Avoid unnecessary crossings, backtracking, zigzagging, and visually obvious long detours when feasibility is preserved.\n\nConstruct routes by grouping customers whose visible demand markers appear to fit together within one vehicle's full-capacity reference.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "critic": "ROLE: VISUAL CRITIC AGENT\n\nYou are given an image showing the current routes for a Capacitated Vehicle Routing Problem.\n\nProduce one complete alternative set of routes that is visually better while preserving feasibility.\n\nFeasibility has priority over route improvement.\n\nInspect the current routes for visible problems such as:\n- edge crossings,\n- unnecessary backtracking,\n- strong zigzags,\n- visually obvious detours,\n- poor geographic clustering,\n- abrupt jumps between distant regions,\n- route groups whose combined visual demand markers appear too large for one vehicle.\n\nRequirements:\n1. Every route must start and end at the visually marked depot.\n2. Every visible customer must appear exactly once across all routes.\n3. Preserve every visible node ID.\n4. Do not invent or omit nodes.\n5. Use the visual demand markers and the full-capacity reference to keep every route within capacity.\n6. If vehicle-availability markers are visible, do not use more routes than the available vehicles.\n7. Do not create empty routes.\n8. Prefer a meaningful structural improvement instead of arbitrary reordering.\n9. Do not merely reverse the direction of the same routes.\n10. If a meaningful improvement would make capacity or customer bookkeeping uncertain, preserve the current route structure rather than forcing a risky change.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "scorer": "ROLE: VISUAL CVRP SCORER AGENT\n\nThe first image is the original Capacitated Vehicle Routing Problem. The remaining labeled images are candidate route sets for the same problem.\n\nRank all candidate solutions from best to worst using only visual evidence.\n\nUse this priority order:\n\n1. CAPACITY AND VEHICLE FEASIBILITY\n- Prefer candidates in which every route appears to stay within the visual full-capacity reference.\n- Use the visual demand markers to judge whether customers assigned to the same vehicle visually fit together.\n- If vehicle-availability markers are visible, prefer candidates that do not appear to use more vehicles than available.\n\n2. CUSTOMER COVERAGE AND ROUTE STRUCTURE\n- Prefer candidates that appear to visit every visible customer exactly once.\n- Prefer candidates whose routes start and end at the depot.\n- Penalize visible omissions, duplicated visits, disconnected route fragments, empty routes, or suspicious depot usage.\n\n3. ROUTE GEOMETRY\n- Prefer fewer crossings.\n- Prefer less backtracking and line overlap.\n- Prefer fewer unnecessary zigzags.\n- Prefer fewer visually obvious detours and long-looking jumps.\n\n4. GEOGRAPHIC COHERENCE\n- Prefer customer clusters that are visually compact and locally continuous.\n- Prefer routes with smooth regional flow rather than abrupt direction changes.\n\nDo not estimate or invent numerical capacity, customer demand, route load, distance, gap, or optimum information.\n\nRank every candidate ID exactly once. The best candidate ID must be first in the ranking.\n\nReturn only:\n{\"ranking\":[candidate_id_1,candidate_id_2,...],\"best_id\":candidate_id_1}",
+    "repair": "ROLE: VISUAL REPAIR AGENT\n\nThe first image is the original Capacitated Vehicle Routing Problem. The second image is a proposed route set for the same problem.\n\nThe proposed route set has failed an external feasibility check. No reason for the failure is provided.\n\nYour only objective is to restore feasibility using only the visual information in the images.\n\nDo not assume that the failure is caused by any particular issue. Inspect the images yourself.\n\nCheck the proposed route set in this order:\n1. Does every route start at the visually marked depot?\n2. Does every route return to the same depot?\n3. Does every visible customer appear exactly once across all routes?\n4. Is any visible customer missing?\n5. Is any customer visibly repeated?\n6. Is any node ID invented?\n7. Does any route visually appear to exceed the full-capacity reference when its customer-demand markers are considered together?\n8. If vehicle-availability markers are visible, does the route set appear to use no more vehicles than available?\n9. Are there any empty routes or depot fragments?\n\nMake the smallest possible correction that restores feasibility.\n\nPreserve existing route structure whenever possible. Do not redesign the entire solution unless it is necessary to restore feasibility.\n\nAfter repairing, perform a silent final audit:\n- every route starts and ends at the depot;\n- every visible customer is included exactly once;\n- no node ID is invented;\n- every route visually fits within capacity;\n- no empty route is present;\n- the visible vehicle availability is respected when shown.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "hybrid": "ROLE: VISUAL HYBRID AGENT\n\nYou are given an image of a Capacitated Vehicle Routing Problem route set that has become structurally stagnant.\n\nPerform exactly one visual route-internal 2-opt modification.\n\nStep 1:\nInspect the geometry of each vehicle route and identify two distinct, non-adjacent edges within the same vehicle route that appear most promising for improvement.\n\nGive priority to edges that appear relatively long in the visual representation, especially when they also exhibit visible inefficiencies such as:\n- an edge crossing,\n- unnecessary backtracking,\n- a strong zigzag,\n- an obvious detour,\n- poor geometric continuity,\n- or an unnecessarily long-looking connection.\n\nThe objective is to prioritize visually long and structurally inefficient connections because replacing such edges may produce a more efficient vehicle route.\n\nDo not calculate numerical distances and do not use explicit edge-length values. Estimate relative edge length only from the image.\n\nStep 2:\nChoose exactly two distinct, non-adjacent existing edges from the SAME vehicle route.\n\nPrefer the longest-looking promising edges within that route, but consider the geometry of the resulting 2-opt reconnection. Do not select an edge solely because it appears long if the resulting reconnection is clearly geometrically unfavorable.\n\nStep 3:\nApply a standard intra-route 2-opt transformation: remove the two selected edges, reverse the route segment between the cuts, and reconnect the same vehicle route.\n\nDo not move any customer between vehicle routes.\n\nPreserve:\n- the route partition,\n- the number of vehicle routes,\n- the customer assignment of each vehicle,\n- the depot at the beginning and end of every route,\n- and the visible demand encoding of the customers.\n\nRequirements:\n1. Perform exactly one route-internal 2-opt modification.\n2. Select exactly two existing, non-adjacent edges from the same vehicle route.\n3. Preserve every visible customer exactly once.\n4. Preserve all route start and end depot markers.\n5. Do not invent or omit nodes.\n6. Do not add or remove routes.\n7. Do not move customers between vehicles.\n8. Do not perform arbitrary additional rearrangements.\n9. Do not use numerical distance calculations.\n10. Do not receive or infer explicit edge-length values from external information.\n11. Prefer visually long and structurally inefficient edges as the 2-opt candidates.\n12. Avoid creating an obviously longer or more inefficient connection when reconnecting the selected edges.\n\nReturn only:\n{\"selected_edges\":[[a,b],[c,d]],\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "diversity": "ROLE: DIVERSITY RESTART AGENT\n\nYou are given the original image of a Capacitated Vehicle Routing Problem.\n\nConstruct a fresh complete set of vehicle routes from scratch using only the visual information in the image.\n\nThis is a diversification step. Do not attempt to preserve or reconstruct earlier route structures.\n\nUse this priority order:\n1. Feasibility.\n2. Correct customer bookkeeping.\n3. Capacity feasibility from visual demand markers.\n4. Respect for visible vehicle availability, when shown.\n5. Structural diversity.\n6. Visual route efficiency.\n\nRequirements:\n1. Every route must start at the visually marked depot.\n2. Every route must end at the same depot.\n3. Every visible customer must appear exactly once across all routes.\n4. Preserve every visible node ID exactly as shown.\n5. Do not invent or omit nodes.\n6. Use the visual demand markers and full-capacity reference to keep each route within capacity.\n7. If vehicle-availability markers are visible, do not use more routes than the available vehicles.\n8. Do not create empty routes.\n9. Prefer fresh geographic clusters and a traversal that is visibly different from a stagnant solution.\n10. Avoid unnecessary crossings, backtracking, zigzagging, and obvious detours after feasibility is secure.\n\nBefore returning, silently audit customer coverage, depot placement, visual capacity feasibility, and vehicle availability.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}"
+  },
+  "provider_policy": {
+    "candidate_strategy": "independent_calls",
+    "timeout_seconds": 120,
+    "request_retries": 3
+  },
+  "supported_providers": [
+    "gemini",
+    "groq",
+    "mistral",
+    "openrouter",
+    "cohere"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "shared_run_id": "260901-e-n_51_k_5_size_test02",
+  "status": "partial",
+  "config_sha256": "45699d26dbb7138caa6e6c24341297aa80093b6236ceeac3dc94490e1acdc9cd",
+  "seed": 42,
+  "instance_sha256": "e47343ac4259f0b752793be02087e2ffdbcbb62ef65b808d03a6488fec1422bc",
+  "max_vehicles": 5,
+  "demand_encoding_mode": "size",
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": {
+    "phase": "repair_attempt_02",
+    "scope": "initializer",
+    "attempt": 2,
+    "provider": "gemini",
+    "model": "gemini-3.6-flash",
+    "error_type": "ServerError",
+    "status_code": 503,
+    "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+    "transient_http_status": true,
+    "request_delay_wait_seconds": 0.0,
+    "retry_backoff_wait_seconds": 0.0,
+    "provider_wait_seconds": 0.0
+  },
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "repair_attempt_02",
+    "scope": "initializer",
+    "attempt": 2
+  }
+}

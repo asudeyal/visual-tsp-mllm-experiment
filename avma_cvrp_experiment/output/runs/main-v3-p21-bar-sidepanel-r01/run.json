@@ -1,0 +1,192 @@
+{
+  "architecture_version": "avma-cvrp-v1",
+  "information_policy": "visual_only_llm_passive_numeric_observer",
+  "created_at_utc": "2026-09-07T03:34:13.800961+00:00",
+  "git_commit_sha": "f4439531e8a3911184be8caba3990266038c1ec3",
+  "config": {
+    "experiment": {
+      "name": "cvrp_main_8method",
+      "run_label": "bar_sidepanel",
+      "iterations": 10,
+      "seed": 42,
+      "prompt_set": "cvrp_capacity_v3",
+      "output_dir": "output/runs",
+      "strict_euc_2d": true,
+      "max_restart_attempts": 3
+    },
+    "provider": {
+      "name": "gemini",
+      "model": "gemini-3.8-flash",
+      "media_resolution": "high",
+      "candidate_strategy": "independent_calls",
+      "timeout_seconds": 120,
+      "request_retries": 3
+    },
+    "agents": {
+      "initializer": {
+        "temperature": null,
+        "thinking_level": "low",
+        "max_output_retries": 2
+      },
+      "critic": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "candidates": 3,
+        "max_output_retries": 2
+      },
+      "scorer": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_output_retries": 2
+      },
+      "repair": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_attempts": 2,
+        "max_output_retries": 2
+      },
+      "hybrid": {
+        "temperature": null,
+        "thinking_level": "high",
+        "max_output_retries": 2
+      },
+      "diversity": {
+        "temperature": null,
+        "thinking_level": "medium",
+        "max_output_retries": 2
+      }
+    },
+    "stagnation": {
+      "window": 5,
+      "similarity_threshold": 0.9,
+      "max_unique_routes": 2
+    },
+    "render": {
+      "figure_size_inches": 8.0,
+      "dpi": 180,
+      "padding_ratio": 0.1,
+      "node_size": 440,
+      "font_size": 9,
+      "route_line_width": 1.8,
+      "fixed_canvas": true,
+      "canvas_width_px": 1920,
+      "canvas_height_px": 1280,
+      "map_width_px": 1280,
+      "panel_width_px": 640,
+      "panel_header_height_px": 120
+    },
+    "demand_encoding": {
+      "mode": "bar",
+      "bar_layout": "side_panel",
+      "show_visual_legend": true,
+      "show_vehicle_icons": true,
+      "bar_width_points": 30,
+      "bar_height_points": 5,
+      "side_panel_width_inches": 3.0,
+      "side_panel_columns": 0,
+      "side_bar_width_points": 48,
+      "side_bar_height_points": 7,
+      "placement": "side_panel"
+    },
+    "route_rendering": {
+      "palette": [
+        "#E15759",
+        "#4E79A7",
+        "#59A14F",
+        "#B07AA1",
+        "#F28E2B",
+        "#76B7B2"
+      ]
+    }
+  },
+  "config_sha256": "a3d523b0a4ede2339d6bffb4d67382c8462cc5f535bd028f99a187c0061aa3c3",
+  "run_parameters": {
+    "seed": 42,
+    "protocol_name": "cvrp_main_8method",
+    "run_label": "bar_sidepanel"
+  },
+  "prompt_set": "cvrp_capacity_v3",
+  "prompt_sha256": {
+    "common_policy.txt": "97678f463e6570ffe4573048ce16cd47b31d8421feec0b2ac9df0a6e8650b581",
+    "critic.txt": "0988660473af500c033c7d9519bd4d7bbf484eeb40ae7173c921305f3cdff642",
+    "diversity.txt": "3519944f6bc2a04d9348bf3c9fdc50f043867fba8fb092d815ee3d45704de7da",
+    "hybrid.txt": "cfe38c9351075d22dc0176accf026f129bbd84b27ca651bf79feea7f28ce74f4",
+    "initializer.txt": "a63bb96de55bb7c6f202909ff7dfa5fa4924bea1e5532f70ff8ff30946ac981a",
+    "repair.txt": "610d192b9a8911b32cbffc8236024ed8d24e7b2b3dda357ee15d8b6f3bcb1d77",
+    "scorer.txt": "6ff24ea5abee23ddc89f8a5c596251a89aa0b6735dff21863a611410449388fd"
+  },
+  "problem": {
+    "name": "P-n21-k2",
+    "dimension": 21,
+    "depot": 1,
+    "capacity": 160,
+    "max_vehicles": 2,
+    "edge_weight_type": "EUC_2D",
+    "source_path": "D:\\Projects\\visual-tsp-mllm-experiment\\avma_cvrp_experiment\\data\\cvrplib\\P-n21-k2.vrp",
+    "source_sha256": "4c073b909e6a7baca9edaebc7de3a205580e3b71809d2d3e301361efd65d7985",
+    "reference_optimum": 211.0
+  },
+  "render_policy": {
+    "demand_encoding_mode": "bar",
+    "bar_layout": "side_panel",
+    "fixed_canvas": true,
+    "dpi": 180,
+    "scale_policy_name": "benchmark_scale_v1",
+    "scale_policy_path": "data/cvrplib/scale_policies/benchmark_scale_v1.json",
+    "scale_policy_sha256": "27b2c5da40ddc0c90e7d8b209a3de1e296f4f7505c9122adff2feaf013477068",
+    "scale_instance_key": "P-n21-k2.vrp",
+    "workspace_scale": 1.0,
+    "canvas_width_px": 1920,
+    "canvas_height_px": 1280,
+    "map_width_px": 1280,
+    "panel_width_px": 640,
+    "panel_header_height_px": 120
+  },
+  "llm_input_policy": {
+    "allowed": [
+      "problem images",
+      "route images",
+      "candidate images",
+      "visible node labels",
+      "visible depot marker",
+      "agent task instructions"
+    ],
+    "forbidden": [
+      "coordinates",
+      "distance matrix",
+      "numeric edge lengths",
+      "numeric route length",
+      "capacity constraints",
+      "gap",
+      "known optimum",
+      "optimal route",
+      "GBest",
+      "textual current routes as model input",
+      "missing-node list",
+      "validation reason"
+    ]
+  },
+  "layout_version": "compact_v3",
+  "prompts": {
+    "common_policy": "VISUAL-ONLY CVRP POLICY\n\nSolve the Capacitated Vehicle Routing Problem using only information visible in the provided images.\n\nYou may use:\n- visible customer positions and node IDs,\n- the visually marked depot,\n- visible route connections,\n- visual customer-demand markers,\n- the visual empty/full capacity reference,\n- and the vehicle-availability count when it is visibly shown in the image.\n\nA customer's demand marker may appear directly with the customer or in a labeled side panel. When a side panel is present, associate each demand marker with its customer only by the visible node ID.\n\nInterpret each demand marker qualitatively as that customer's share of one vehicle's full carrying capacity. For every route, mentally combine the assigned customers' visual demands and keep the total within the full-capacity reference. Do not convert visual demands into numerical values or percentages.\n\nTreat these as hard constraints:\n- every visible customer exactly once,\n- every route starts and ends at the depot,\n- every route remains within visual capacity,\n- visible vehicle availability is respected,\n- no invented customers and no empty routes.\n\nDo not use or infer hidden numerical demands, numerical capacity or loads, coordinates, distance matrices, numerical edge lengths, route lengths, reference solutions, optimums, gaps, hidden validation results, or externally supplied missing/duplicate-node information.\n\nVisible node IDs and a visibly displayed vehicle count are permitted visual information.\n\nReason only from the images.\n\nReturn only the JSON object requested by the role prompt, with no explanation, calculations, markdown, or additional text.",
+    "initializer": "ROLE: INITIALIZER AGENT\n\nConstruct one complete feasible route set for the CVRP shown in the image.\n\nFeasibility comes before route length.\n\nFirst form capacity-safe customer groups:\n- identify the visually higher-demand customers and distribute them across routes;\n- add remaining customers while repeatedly comparing each route's combined visual demand with the full-capacity reference;\n- when a route looks close to full, place the customer in a route with clearer visual headroom instead.\n\nThen order the customers within each route geographically. Prefer compact local flow and avoid obvious crossings, backtracking, zigzags, and long-looking detours.\n\nBefore returning, silently verify:\nevery visible customer appears exactly once, every route starts and ends at the depot, no route looks overloaded, visible vehicle availability is respected, and no route is empty.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "critic": "ROLE: VISUAL CRITIC AGENT\n\nThe image shows the current CVRP route set.\n\nProduce one complete candidate route set that improves the visible route structure without sacrificing feasibility.\n\nLook for meaningful problems such as crossings, backtracking, zigzags, long-looking detours, abrupt jumps between regions, poor geographic grouping, or routes whose combined visual demand appears unsafe.\n\nPrefer targeted structural changes over rebuilding the entire solution. Preserve good parts of the current routes. Do not return a candidate that differs only by reversing route direction.\n\nIf customers are moved between routes, re-check the visual capacity of every affected route. If an improvement would make feasibility uncertain, keep the safer structure.\n\nSilently verify complete customer coverage, depot closure, capacity, and visible vehicle availability before returning.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "scorer": "ROLE: VISUAL CVRP SCORER AGENT\n\nThe first image is the original CVRP problem. The remaining labeled images are candidate route sets for that same problem.\n\nRank every candidate from best to worst using only visual evidence.\n\nUse this strict priority:\n\n1. FEASIBILITY\nPrefer candidates that appear to:\n- keep every route within the visual full-capacity reference,\n- respect visible vehicle availability,\n- visit every visible customer exactly once,\n- and start and end every route at the depot.\n\nA candidate with a likely feasibility violation should rank below a candidate that appears feasible, even if its geometry looks shorter.\n\n2. ROUTE GEOMETRY\nAmong candidates that appear similarly feasible, prefer fewer crossings, less backtracking, fewer zigzags, fewer long-looking detours, and smoother route flow.\n\n3. GEOGRAPHIC COHERENCE\nPrefer compact, locally continuous customer groups and fewer abrupt jumps between distant regions.\n\nRank every candidate ID exactly once.\n\nReturn only:\n{\"ranking\":[candidate_id_1,candidate_id_2,...],\"best_id\":candidate_id_1}",
+    "repair": "ROLE: VISUAL REPAIR AGENT\n\nThe first image is the original CVRP problem. The second image is a proposed route set that failed an external feasibility check. The failure reason is intentionally hidden.\n\nRestore feasibility using only the images.\n\nInspect the proposal for:\ncustomer omission or duplication, incorrect depot structure, excessive vehicle use, empty routes, and visually overloaded routes.\n\nMake the smallest correction that restores feasibility and preserve as much of the existing route structure as possible.\n\nFor a visually overloaded route, changing only customer order cannot reduce its load. Move one or more customers to a visibly lighter route instead, then re-check the visual capacity of every affected route. Prefer clear capacity headroom over borderline assignments.\n\nAfter the correction, silently audit all visible customers, depot closure, vehicle availability, and every route's visual capacity.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "hybrid": "ROLE: VISUAL HYBRID AGENT\n\nThe image shows a feasible CVRP route set that has become structurally stagnant.\n\nPerform exactly one standard intra-route 2-opt modification.\n\nChoose two distinct non-adjacent existing edges from the SAME vehicle route. Prefer a pair involving visually inefficient geometry such as a crossing, backtracking, strong zigzag, long-looking detour, or poor continuity.\n\nRemove those two edges, reverse the route segment between the cuts, and reconnect the route.\n\nDo not move customers between routes, add or remove routes, change route membership, invent or omit customers, or make any additional rearrangement. Preserve the depot at both ends of every route.\n\nDo not calculate numerical distances; judge geometry only from the image.\n\nReturn only:\n{\"selected_edges\":[[a,b],[c,d]],\"routes\":[[depot,...,depot],[depot,...,depot]]}",
+    "diversity": "ROLE: DIVERSITY RESTART AGENT\n\nConstruct a fresh complete CVRP route set from the original problem image.\n\nStart from scratch. Do not try to preserve or reconstruct an earlier route structure.\n\nFeasibility is mandatory. Form capacity-safe customer groups first, using the visual demand markers and full-capacity reference, and respect visible vehicle availability.\n\nWithin those constraints, seek a fresh geographic partition and route ordering rather than a trivial variation of an obvious construction. Prefer compact groups, smooth local flow, and fewer crossings, zigzags, backtracking, and long-looking detours.\n\nSilently verify complete customer coverage, depot closure, visual capacity feasibility, vehicle availability, and absence of empty routes.\n\nReturn only:\n{\"routes\":[[depot,...,depot],[depot,...,depot]]}"
+  },
+  "provider_policy": {
+    "candidate_strategy": "independent_calls",
+    "timeout_seconds": 120,
+    "request_retries": 3,
+    "media_resolution": "high"
+  },
+  "supported_providers": [
+    "gemini",
+    "groq",
+    "mistral",
+    "openrouter",
+    "cohere"
+  ]
+}

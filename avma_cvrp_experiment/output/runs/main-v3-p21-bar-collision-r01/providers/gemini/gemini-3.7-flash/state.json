@@ -1,0 +1,277 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.7-flash",
+  "shared_run_id": "main-v3-p21-bar-collision-r01",
+  "status": "running",
+  "config_sha256": "aab11c445cf0d76d3ef4dce84c2b25d9d8e5a4a39ac9b10f69d9564ed7e852e0",
+  "seed": 42,
+  "instance_sha256": "4c073b909e6a7baca9edaebc7de3a205580e3b71809d2d3e301361efd65d7985",
+  "max_vehicles": 2,
+  "demand_encoding_mode": "bar",
+  "checkpoint": {
+    "completed_iteration": 4,
+    "working_routes": [
+      [
+        1,
+        17,
+        2,
+        11,
+        9,
+        19,
+        20,
+        4,
+        13,
+        16,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        7,
+        8,
+        3,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        1
+      ]
+    ],
+    "structural_history": [
+      [
+        [
+          1,
+          17,
+          2,
+          11,
+          9,
+          4,
+          19,
+          20,
+          13,
+          16,
+          12,
+          5,
+          1
+        ],
+        [
+          1,
+          3,
+          8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          7,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          9,
+          4,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          3,
+          8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          7,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          9,
+          4,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          7,
+          3,
+          14,
+          10,
+          18,
+          15,
+          6,
+          8,
+          21,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          17,
+          2,
+          11,
+          9,
+          19,
+          20,
+          4,
+          13,
+          16,
+          12,
+          5,
+          1
+        ],
+        [
+          1,
+          7,
+          3,
+          14,
+          10,
+          18,
+          15,
+          6,
+          8,
+          21,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          17,
+          2,
+          11,
+          9,
+          19,
+          20,
+          4,
+          13,
+          16,
+          12,
+          5,
+          1
+        ],
+        [
+          1,
+          7,
+          8,
+          3,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          1
+        ]
+      ]
+    ],
+    "hybrid_used_since_restart": false,
+    "restart_count": 0,
+    "observed_oracle_best_distance": 211.0,
+    "observed_oracle_best_routes": [
+      [
+        1,
+        17,
+        2,
+        11,
+        9,
+        19,
+        20,
+        4,
+        13,
+        16,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        7,
+        8,
+        3,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        1
+      ]
+    ],
+    "selected_best_distance": 211.0,
+    "selected_best_routes": [
+      [
+        1,
+        17,
+        2,
+        11,
+        9,
+        19,
+        20,
+        4,
+        13,
+        16,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        7,
+        8,
+        3,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        1
+      ]
+    ],
+    "config_sha256": "aab11c445cf0d76d3ef4dce84c2b25d9d8e5a4a39ac9b10f69d9564ed7e852e0",
+    "instance_sha256": "4c073b909e6a7baca9edaebc7de3a205580e3b71809d2d3e301361efd65d7985"
+  },
+  "working_image": "routes/iteration_004/C2.png",
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "critic_candidate_01",
+    "iteration": 5,
+    "candidate": 1
+  },
+  "completed_iterations": 4
+}
