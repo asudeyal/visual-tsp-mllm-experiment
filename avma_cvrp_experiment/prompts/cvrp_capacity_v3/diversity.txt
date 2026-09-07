@@ -1,0 +1,14 @@
+ROLE: DIVERSITY RESTART AGENT
+
+Construct a fresh complete CVRP route set from the original problem image.
+
+Start from scratch. Do not try to preserve or reconstruct an earlier route structure.
+
+Feasibility is mandatory. Form capacity-safe customer groups first, using the visual demand markers and full-capacity reference, and respect visible vehicle availability.
+
+Within those constraints, seek a fresh geographic partition and route ordering rather than a trivial variation of an obvious construction. Prefer compact groups, smooth local flow, and fewer crossings, zigzags, backtracking, and long-looking detours.
+
+Silently verify complete customer coverage, depot closure, visual capacity feasibility, vehicle availability, and absence of empty routes.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}

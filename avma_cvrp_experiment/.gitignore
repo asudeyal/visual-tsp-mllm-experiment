@@ -8,3 +8,4 @@ analysis/
 __pycache__/
 *.pyc
 .DS_Store
+.avma_backups/

@@ -1,201 +1,387 @@
 # Adaptive Visual Multi-Agent CVRP (AVMA-CVRP)
 
-AVMA-CVRP is a visual-only multi-agent research pipeline for Capacitated Vehicle Routing Problems (CVRP). The MLLM creates, critiques, scores, repairs and perturbs routes from rendered images containing demand encodings. Python is the deterministic experiment/controller layer: it renders images with visual demand encodings (size, bar, dot density, or color), checks capacity and tour feasibility, detects structural stagnation, audits the Hybrid 2-opt claim and records objective metrics. Numeric objective information is never returned to the model.
+AVMA-CVRP is a visual-only multi-agent research pipeline for Capacitated Vehicle Routing Problems (CVRP). The multimodal model constructs, critiques, scores, repairs, and perturbs routes from rendered images. Python is the deterministic controller and observer layer: it renders the visual problem, checks feasibility and capacity, detects structural stagnation, audits Hybrid 2-opt behavior, and records metrics without exposing hidden numeric problem data to the model.
 
-## Architecture
+## Research question
+
+The main experiment compares **4 visual demand encodings × 2 placements**:
+
+| Encoding | Collision/map placement | Side-panel placement |
+|---|---|---|
+| Size | `size_collision` | `size_sidepanel` |
+| Bar | `bar_collision` | `bar_sidepanel` |
+| Dot density | `dotdensity_collision` | `dotdensity_sidepanel` |
+| Color | `color_collision` | `color_sidepanel` |
+
+The side-panel condition changes the **placement** of the demand encoding, not its semantic meaning.
+
+Final visual-condition configs are under:
 
 ```text
-CVRP problem image (with demand encoding)
-      |
-      v
+configs/main_8method/
+├── size_collision.yaml
+├── size_sidepanel.yaml
+├── bar_collision.yaml
+├── bar_sidepanel.yaml
+├── dotdensity_collision.yaml
+├── dotdensity_sidepanel.yaml
+├── color_collision.yaml
+└── color_sidepanel.yaml
+```
+
+## Information firewall
+
+The model may use only information visible in the provided images and the agent instructions, including:
+
+- visible customer positions and node IDs,
+- the visually marked depot,
+- visible route connections,
+- visual demand encodings,
+- the visual empty/full capacity reference,
+- and the visibly displayed vehicle count.
+
+The model must not receive hidden numeric problem information such as:
+
+- coordinates,
+- distance matrices,
+- numerical demands,
+- numerical vehicle capacity or route loads,
+- numerical edge or route lengths,
+- known optimums or optimal routes,
+- optimality gaps,
+- GBest,
+- textual current-route input,
+- missing-node lists,
+- or validation reasons.
+
+Python may compute these values for validation and analysis, but they are not returned to the model.
+
+## Multi-agent protocol
+
+```text
+Problem image
+    |
+    v
 Initializer
-      |
-      v
+    |
+    v
 Current route image
-      |
-      v
-Critic -> 3 candidate route images
-      |
-      v
-Visual Scorer  (no pre-scorer validity filtering)
-      |
-      v
+    |
+    v
+Critic -> 3 independent candidate calls
+    |
+    v
+Candidate route images
+    |
+    v
+Visual Scorer
+(no pre-scorer validity filtering)
+    |
+    v
 Selected route
-      |
-      v
-Python capacity & feasibility audit
-   |             |
- valid         invalid
-   |             |
-   |          Visual Repair (max 2)
-   |             |
-   +------> valid working route
-                 |
-                 v
-        Structural stagnation?
-          |             |
-          no            yes
-          |              |
-        Critic       Hybrid Agent
-                     one LLM 2-opt
-                          |
-                          v
-                        Critic
-                          |
-                  stagnation again
-                          |
-                          v
-                  Diversity Restart
-Information firewall
-The model may receive only problem/route/candidate images, visible node labels, demand encodings and agent instructions. It must not receive coordinates, distance matrices, numerical demands, vehicle capacities, numerical edge/tour lengths, gaps, known optimums, GBest, textual current-route input, missing-node lists or validation reasons.
+    |
+    v
+Python feasibility/capacity audit
+   |                    |
+ valid                invalid
+   |                    |
+   |             Visual Repair (max 2)
+   |                    |
+   +------------> valid working route
+                        |
+                        v
+              structural stagnation?
+                 |             |
+                 no            yes
+                 |              |
+               Critic       Hybrid
+                            one LLM 2-opt
+                                 |
+                                 v
+                               Critic
+                                 |
+                       later stagnation
+                                 |
+                                 v
+                         Diversity Restart
+```
 
-Python may calculate those values for observer/audit purposes. Distance, demand, capacity, or gap never selects a candidate or triggers an agent. Feasibility or capacity violation may trigger Repair; structural route repetition/similarity may trigger Hybrid/Restart.
+Frozen protocol behavior:
 
-Frozen v1 behavior
-Critic: 3 independent candidate calls.
+- Critic produces **3 independent candidates**.
+- Renderable invalid candidates are still shown to the Scorer.
+- Unparseable or unrenderable outputs may be retried because no candidate image can be produced.
+- Selected invalid routes go to visual Repair.
+- Repair uses at most **2 attempts**, then falls back to Diversity Restart.
+- Structural stagnation uses a **5-route window** with exact repetition and/or mean edge-set similarity `>= 0.90`.
+- First stagnation triggers Hybrid.
+- Hybrid performs exactly one intra-route LLM 2-opt; Python audits but does not repair the claim.
+- Later stagnation triggers Diversity Restart.
+- Primary benchmark scope is CVRPLIB `EUC_2D`.
 
-Renderable invalid candidates (including capacity violations) are not filtered before Scorer.
+## Prompt versions
 
-Unparseable or unrenderable outputs are retried because no candidate image can be produced from them.
+Prompt sets are versioned independently from the visual condition:
 
-Scorer sees the original problem image plus every candidate image; candidate display order is shuffled deterministically.
+```text
+prompts/
+├── cvrp_capacity_v1/
+├── cvrp_capacity_v2/
+└── cvrp_capacity_v3/
+```
 
-Selected invalid route -> strict visual Repair using only original problem + invalid route images.
+All main configs default to:
 
-Repair: maximum 2 attempts; then Diversity Restart.
+```text
+cvrp_capacity_v3
+```
 
-Structural stagnation: 5-route window, exact-repeat signal and/or mean edge-set similarity >= 0.90.
+A different prompt version can be selected without changing the visual config:
 
-First structural stagnation -> Hybrid.
+```powershell
+--prompt-set cvrp_capacity_v1
+--prompt-set cvrp_capacity_v2
+--prompt-set cvrp_capacity_v3
+```
 
-Hybrid performs exactly one 2-opt inside the LLM and returns one route.
+The effective prompt version and prompt hashes are recorded in run provenance.
 
-Python audits whether the claimed Hybrid output is truly a single 2-opt but does not fix or replace it.
+## Versioned scale policies
 
-A later structural stagnation after Hybrid -> Diversity Restart.
+Image workspace scale is also independent from the visual condition and prompt version.
 
-Primary validation scope: CVRPLIB EUC_2D.
+Default policy:
 
-Protocol configs and providers
-Protocol YAML files are reusable across instances and models:
+```text
+data/cvrplib/scale_policies/benchmark_scale_v1.json
+```
 
-Plaintext
-configs/
-├── cvrp_pilot10_size_v1.yaml
-├── cvrp_pilot10_bar_v1.yaml
-├── cvrp_pilot10_dot_density_v1.yaml
-└── cvrp_pilot10_color_v1.yaml
-YAML stores the experimental protocol and demand encoding method (size, bar, dot_density, or color). Provider, model and seed are run-specific CLI parameters. Included providers are gemini, groq, mistral and openrouter. The chosen model must support image input.
+Frozen V1 values:
 
-Environment variables:
+| Instance | Workspace scale |
+|---|---:|
+| `P-n21-k2.vrp` | `1.000x` |
+| `A-n37-k5.vrp` | `1.000x` |
+| `E-n51-k5.vrp` | `1.000x` |
+| `X-n110-k13.vrp` | `2.092x` |
+| `X-n204-k19.vrp` | `3.000x` |
+| `X-n298-k31.vrp` | `3.000x` |
+| `X-n393-k38.vrp` | `3.000x` |
 
-Plaintext
+The same instance scale is applied across:
+
+- all 8 visual conditions,
+- all prompt versions,
+- the shared problem image,
+- route images,
+- Critic candidates,
+- Scorer images,
+- Repair images,
+- and Hybrid images.
+
+Future scale policies can be added without changing code, for example:
+
+```text
+data/cvrplib/scale_policies/benchmark_scale_v2.json
+```
+
+and selected with:
+
+```powershell
+--scale-policy data/cvrplib/scale_policies/benchmark_scale_v2.json
+```
+
+A missing instance entry is treated as an error; there is no silent fallback to `1x`.
+
+## Current benchmark instances
+
+```text
+data/cvrplib/
+├── P-n21-k2.vrp
+├── A-n37-k5.vrp
+├── E-n51-k5.vrp
+├── X-n110-k13.vrp
+├── X-n204-k19.vrp
+├── X-n298-k31.vrp
+├── X-n393-k38.vrp
+└── scale_policies/
+    └── benchmark_scale_v1.json
+```
+
+The 500-customer level is currently held out.
+
+## Setup
+
+PowerShell:
+
+```powershell
+cd .\avma_cvrp_experiment
+
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+python -m pip install -r requirements.txt
+python -m pytest -q
+```
+
+Only the API key for the selected provider is required in `.env`.
+
+Example:
+
+```text
 GEMINI_API_KEY=
 GROQ_API_KEY=
 MISTRAL_API_KEY=
 OPENROUTER_API_KEY=
-Only the key for the active provider is required.
+```
 
-Setup (PowerShell)
-PowerShell
-cd .\avma_cvrp_experiment
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python -m pytest -q
-Place official CVRPLIB EUC_2D instances under data/cvrplib/.
+## API-free validation
 
-Shared multi-provider run
-A new run gets a compact id such as:
+Validate the full config / prompt / instance / render path without making an API call:
 
-Plaintext
-260831-e-n_51-k_5_p10_size
-The date, instance, encoding and protocol identify the shared experiment. Provider/model names live below that run instead of being repeated in the run id.
-
-First model:
-
-PowerShell
+```powershell
 python run_adaptive_multi_agent.py `
-  --config configs/cvrp_pilot10_size_v1.yaml `
+  --instance data/cvrplib/P-n21-k2.vrp `
+  --config configs/main_8method/bar_collision.yaml `
   --provider gemini `
   --model gemini-3.6-flash `
-  --instance data/cvrplib/E-n51-k5.vrp
-A second provider/model can use the same run id and therefore the exact same shared problem.png:
-
-PowerShell
-python run_adaptive_multi_agent.py `
-  --run-id 260831-e-n_51-k_5_p10_size `
-  --config configs/cvrp_pilot10_size_v1.yaml `
-  --provider groq `
-  --model <vision-model> `
-  --instance data/cvrplib/E-n51-k5.vrp
-The runner rejects a reused run id if the instance, protocol config, prompts or seed differ. To make a replicate with different conditions, choose a different --run-id.
-
-API-free validation uses the same shared run/input policy:
-
-PowerShell
-python run_adaptive_multi_agent.py `
-  --config configs/cvrp_pilot10_size_v1.yaml `
-  --provider gemini `
-  --model gemini-3.6-flash `
-  --instance data/cvrplib/E-n51-k5.vrp `
+  --max-vehicles 2 `
   --validate-only
-Resume one provider/model:
+```
 
-PowerShell
+Use V2 prompts with the exact same visual condition:
+
+```powershell
 python run_adaptive_multi_agent.py `
-  --run-id 260831-e-n_51-k_5_p10_size `
-  --config configs/cvrp_pilot10_size_v1.yaml `
+  --instance data/cvrplib/P-n21-k2.vrp `
+  --config configs/main_8method/bar_collision.yaml `
+  --prompt-set cvrp_capacity_v2 `
   --provider gemini `
   --model gemini-3.6-flash `
-  --instance data/cvrplib/E-n51-k5.vrp `
+  --max-vehicles 2 `
+  --validate-only
+```
+
+## Main run
+
+Default prompt set: `cvrp_capacity_v3`
+Default scale policy: `benchmark_scale_v1`
+
+Example:
+
+```powershell
+python run_adaptive_multi_agent.py `
+  --instance data/cvrplib/P-n21-k2.vrp `
+  --config configs/main_8method/bar_collision.yaml `
+  --provider gemini `
+  --model gemini-3.6-flash `
+  --max-vehicles 2
+```
+
+For reproducible named runs, use `--run-id`.
+
+Resume an interrupted provider/model run with the same frozen conditions:
+
+```powershell
+python run_adaptive_multi_agent.py `
+  --run-id <existing-run-id> `
+  --instance data/cvrplib/P-n21-k2.vrp `
+  --config configs/main_8method/bar_collision.yaml `
+  --provider gemini `
+  --model gemini-3.6-flash `
+  --max-vehicles 2 `
   --resume
-Outputs
-New runs use:
+```
 
-Plaintext
-output/runs/260831-e-n_51-k_5_p10_size/
-├── run_manifest.json
-├── inputs/
-│   └── problem.png
-└── providers/
-    ├── gemini/
-    │   └── gemini-3.6-flash/
-    │       ├── run_manifest.json
-    │       ├── initializer/
-    │       ├── iterations/
-    │       ├── checkpoint.json
-    │       ├── summary.json
-    │       └── analysis/
-    └── <provider>/
-        └── <model>/
-inputs/problem.png is rendered once at the shared-run level with the chosen demand encoding. All compared models therefore receive the same physical problem image file. Route/candidate images remain provider/model-specific outputs but use the same frozen rendering protocol.
+The runner rejects incompatible reuse of a run when frozen experiment conditions change.
 
-Analysis
-For a shared run with one completed model, this is enough:
+## Outputs
 
-PowerShell
-python run_analysis.py --run-dir output/runs/260831-e-n_51-k_5_p10_size
-When multiple models exist, select one:
+New active benchmark runs are written under:
 
-PowerShell
+```text
+output/runs/<run-id>/
+```
+
+The shared run records:
+
+- `run.json` provenance,
+- the model-facing `problem.png`,
+- prompt/config/problem hashes and metadata,
+- effective render policy,
+- scale-policy name/hash,
+- and effective pixel dimensions.
+
+Provider/model-specific state, traces, route images, and analysis artifacts live below the shared run directory.
+
+Historical pre-main runs can be kept separately under:
+
+```text
+output/archive_runs/
+```
+
+Classical solver outputs can be kept under:
+
+```text
+output/baseline/
+```
+
+## Analysis
+
+Generate the compact run report with:
+
+```powershell
+python run_analysis.py --run-dir output/runs/<run-id>
+```
+
+When a shared run contains multiple provider/model results:
+
+```powershell
 python run_analysis.py `
-  --run-dir output/runs/260831-e-n_51-k_5_p10_size `
+  --run-dir output/runs/<run-id> `
   --provider gemini `
   --model gemini-3.6-flash
-Each provider/model keeps exactly four analysis outputs:
+```
 
-Plaintext
-analysis/
-├── summary.json
-├── iterations.csv
-├── selected_vs_oracle.png
-└── analysis_report.txt
-observed_oracle_best means the best valid distance Python happened to observe among generated candidates. It is analysis-only and never changes the model's search path.
+Primary reported metrics include:
 
-Baseline
-PowerShell
+- initializer first-shot feasibility,
+- capacity violation count,
+- capacity excess severity,
+- repair rate / attempts / success,
+- valid Critic candidate rate,
+- final valid rate,
+- Scorer oracle agreement,
+- selection regret,
+- valid-only distance / gap / crossings,
+- tokens,
+- latency,
+- calls,
+- and estimated cost.
+
+`observed_oracle_best` is analysis-only: it means the best valid objective value Python happened to observe among generated candidates. It never changes the model's search path.
+
+## Baseline
+
+A deterministic classical CVRP baseline can be run with:
+
+```powershell
 python run_baseline.py `
   --instance data/cvrplib/<instance>.vrp
-Prompt lifecycle
-Prompts are versioned under prompts/cvrp_capacity_v1/. Pilot prompt/parameter changes must create an explicit new prompt/config version. Once the main benchmark phase starts, prompts and experiment parameters should be frozen rather than tuned per benchmark instance.
+```
+
+## Experimental freeze
+
+For a main benchmark batch, freeze together:
+
+- visual-condition configs,
+- prompt version,
+- scale-policy version,
+- model,
+- media resolution,
+- repair / Critic counts,
+- restart and stagnation policy,
+- seed / replicate policy,
+- and benchmark instance set.
+
+New prompt or scale experiments should create a new version instead of modifying an already-used frozen version.

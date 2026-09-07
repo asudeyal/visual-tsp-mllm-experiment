@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -17,6 +18,13 @@ from src.experiment.manifest import (
 )
 from src.problem import load_cvrplib
 from src.prompts import PromptSet
+from src.scale_policy import (
+    DEFAULT_SCALE_POLICY_NAME,
+    DEFAULT_SCALE_POLICY_PATH,
+    load_scale_policy,
+    scale_manifest_context,
+    scale_render_config,
+)
 from src.providers import create_provider, supported_providers
 from src.rendering import render_problem
 
@@ -34,7 +42,24 @@ def parse_args() -> argparse.Namespace:
         description="Run AVMA-CVRP visual-only multi-agent search"
     )
     parser.add_argument("--instance", required=True, help="CVRP .vrp file")
-    parser.add_argument("--config", default="configs/cvrp_pilot10_size_v1.yaml")
+    parser.add_argument("--config", default="configs/main_8method/size_collision.yaml")
+    parser.add_argument(
+        "--prompt-set",
+        default=None,
+        help=(
+            "Optional prompt-set override, e.g. cvrp_capacity_v1, "
+            "cvrp_capacity_v2, or cvrp_capacity_v3. "
+            "If omitted, experiment.prompt_set from the YAML is used."
+        ),
+    )
+    parser.add_argument(
+        "--scale-policy",
+        default=DEFAULT_SCALE_POLICY_PATH,
+        help=(
+            "Versioned instance workspace-scale policy JSON. "
+            "Default: data/cvrplib/scale_policies/benchmark_scale_v1.json"
+        ),
+    )
     parser.add_argument(
         "--provider",
         required=True,
@@ -99,6 +124,7 @@ def _resolve_run_root(
     args: argparse.Namespace,
     config,
     problem,
+    scale_policy_name: str,
 ) -> Path:
     if args.run_dir and args.run_id:
         raise SystemExit("--run-dir ve --run-id birlikte kullanılamaz")
@@ -112,10 +138,19 @@ def _resolve_run_root(
     if args.resume:
         raise SystemExit("--resume için --run-id veya --run-dir verilmelidir")
 
+    effective_prompt_set = args.prompt_set or config.prompt_set
+    prompt_tag = effective_prompt_set.removeprefix("cvrp_capacity_")
+    run_label = f"{config.run_label}-{prompt_tag}"
+
+    if scale_policy_name != DEFAULT_SCALE_POLICY_NAME:
+        scale_tag = scale_policy_name.removeprefix("benchmark_scale_")
+        run_label = f"{run_label}-{scale_tag}"
+
     return _resolve_from_root(config.output_dir) / automatic_run_id(
         problem.name,
-        config.run_label,
+        run_label,
     )
+
 
 
 def _prepare_shared_run(
@@ -124,6 +159,7 @@ def _prepare_shared_run(
     config,
     problem,
     prompts,
+    scale_context: dict[str, object],
 ) -> Path:
     run_root.mkdir(parents=True, exist_ok=True)
 
@@ -141,6 +177,7 @@ def _prepare_shared_run(
         problem=problem,
         prompts=prompts,
         project_root=PROJECT_ROOT,
+        scale_policy=scale_context,
     )
     expected["supported_providers"] = list(supported_providers())
 
@@ -167,6 +204,7 @@ def _prepare_shared_run(
         )
 
     return problem_image
+
 
 
 def _prepare_model_state(
@@ -269,8 +307,34 @@ def main() -> None:
         max_vehicles=args.max_vehicles,
     )
 
-    prompts = PromptSet(PROJECT_ROOT / "prompts", config.prompt_set)
-    run_root = _resolve_run_root(args, config, problem)
+    effective_prompt_set = args.prompt_set or config.prompt_set
+    prompts = PromptSet(PROJECT_ROOT / "prompts", effective_prompt_set)
+    scale_policy_path = _resolve_from_root(args.scale_policy)
+    scale_policy = load_scale_policy(scale_policy_path)
+    instance_key = _resolve_from_root(args.instance).name
+    workspace_scale = scale_policy.scale_for_instance(instance_key)
+    effective_render = scale_render_config(
+        config.render,
+        workspace_scale,
+    )
+    config = replace(
+        config,
+        render=effective_render,
+    )
+    scale_context = scale_manifest_context(
+        policy=scale_policy,
+        instance_name=instance_key,
+        workspace_scale=workspace_scale,
+        render=config.render,
+        project_root=PROJECT_ROOT,
+    )
+
+    run_root = _resolve_run_root(
+        args,
+        config,
+        problem,
+        scale_policy.name,
+    )
 
     if run_root.exists() and is_legacy_run(run_root):
         if not args.run_dir:
@@ -289,6 +353,7 @@ def main() -> None:
         config=config,
         problem=problem,
         prompts=prompts,
+        scale_context=scale_context,
     )
 
     if args.validate_only:
@@ -304,7 +369,14 @@ def main() -> None:
             f"({problem.dimension} nodes, capacity={problem.capacity}, "
             f"max_vehicles={vehicle_limit_text}, "
             f"encoding={config.demand_encoding.mode}, "
+            f"workspace_scale={workspace_scale:.3f}x, "
+            f"prompt_set={prompts.version}, "
             f"{problem.edge_weight_type})"
+        )
+        print(
+            f"Scale policy: {scale_policy.name} "
+            f"(sha256={scale_policy.sha256[:12]}..., "
+            f"scale={workspace_scale:.3f}x)"
         )
         print(f"Shared run: {run_root}")
         print(f"Shared model-facing problem image: {problem_image}")

@@ -1,0 +1,16 @@
+ROLE: VISUAL CRITIC AGENT
+
+The image shows the current CVRP route set.
+
+Produce one complete candidate route set that improves the visible route structure without sacrificing feasibility.
+
+Look for meaningful problems such as crossings, backtracking, zigzags, long-looking detours, abrupt jumps between regions, poor geographic grouping, or routes whose combined visual demand appears unsafe.
+
+Prefer targeted structural changes over rebuilding the entire solution. Preserve good parts of the current routes. Do not return a candidate that differs only by reversing route direction.
+
+If customers are moved between routes, re-check the visual capacity of every affected route. If an improvement would make feasibility uncertain, keep the safer structure.
+
+Silently verify complete customer coverage, depot closure, capacity, and visible vehicle availability before returning.
+
+Return only:
+{"routes":[[depot,...,depot],[depot,...,depot]]}

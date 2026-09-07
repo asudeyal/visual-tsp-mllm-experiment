@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import pytest
+
 import hashlib
-import json
 from pathlib import Path
 
 from PIL import Image
@@ -43,6 +44,11 @@ def _cfg() -> RenderConfig:
         font_size=8,
         route_line_width=1.4,
         fixed_canvas=True,
+        canvas_width_px=600,
+        canvas_height_px=400,
+        map_width_px=400,
+        panel_width_px=200,
+        panel_header_height_px=50,
     )
 
 
@@ -72,10 +78,7 @@ def test_all_bar_layouts_render(tmp_path: Path) -> None:
         path = tmp_path / f"{layout}.png"
         render_problem(problem, path, cfg, demand_encoding=_encoding(layout))
         assert path.exists()
-        metadata = json.loads((tmp_path / f"{layout}.render.json").read_text(encoding="utf-8"))
-        assert metadata["bar_layout"] == layout
-        assert metadata["fixed_canvas"] is True
-        assert metadata["sha256"] == _sha(path)
+        assert not (tmp_path / f"{layout}.render.json").exists()
 
 
 def test_fixed_canvas_is_deterministic(tmp_path: Path) -> None:
@@ -89,17 +92,41 @@ def test_fixed_canvas_is_deterministic(tmp_path: Path) -> None:
     assert _sha(first) == _sha(second)
 
 
-def test_side_panel_keeps_map_height_and_adds_width(tmp_path: Path) -> None:
+def test_fixed_canvas_is_layout_specific(tmp_path: Path) -> None:
     problem = _problem()
     cfg = _cfg()
-    local = tmp_path / "local.png"
-    side = tmp_path / "side.png"
-    render_problem(problem, local, cfg, demand_encoding=_encoding("local"))
-    render_problem(problem, side, cfg, demand_encoding=_encoding("side_panel"))
-    with Image.open(local) as local_image, Image.open(side) as side_image:
-        assert side_image.height == local_image.height
-        assert side_image.width > local_image.width
 
+    local = tmp_path / "local.png"
+    collision = tmp_path / "collision_aware.png"
+    side = tmp_path / "side_panel.png"
+
+    render_problem(
+        problem,
+        local,
+        cfg,
+        demand_encoding=_encoding("local"),
+    )
+    render_problem(
+        problem,
+        collision,
+        cfg,
+        demand_encoding=_encoding("collision_aware"),
+    )
+    render_problem(
+        problem,
+        side,
+        cfg,
+        demand_encoding=_encoding("side_panel"),
+    )
+
+    with Image.open(local) as image:
+        assert image.size == (400, 400)
+
+    with Image.open(collision) as image:
+        assert image.size == (400, 400)
+
+    with Image.open(side) as image:
+        assert image.size == (600, 400)
 
 def test_side_panel_route_image_matches_problem_dimensions(tmp_path: Path) -> None:
     problem = _problem()
@@ -112,3 +139,72 @@ def test_side_panel_route_image_matches_problem_dimensions(tmp_path: Path) -> No
     render_routes(problem, routes, route_path, cfg, demand_encoding=encoding)
     with Image.open(problem_path) as problem_image, Image.open(route_path) as route_image:
         assert problem_image.size == route_image.size
+
+# BEGIN 8METHOD_RENDERER_V3_RENDER_TESTS
+
+@pytest.mark.parametrize("mode", ["size", "bar", "dot_density", "color"])
+@pytest.mark.parametrize("placement", ["collision_aware", "side_panel"])
+def test_v3_all_eight_variants_render_deterministically(
+    tmp_path: Path,
+    mode: str,
+    placement: str,
+) -> None:
+    problem = _problem()
+    cfg = _cfg()
+    encoding = DemandEncodingConfig(
+        mode=mode,
+        placement=placement,
+        bar_layout=(
+            "side_panel"
+            if placement == "side_panel"
+            else "collision_aware"
+        ),
+        show_visual_legend=True,
+        show_vehicle_icons=True,
+        side_panel_width_inches=2.0,
+        side_panel_columns=2,
+        side_bar_width_points=38,
+        side_bar_height_points=7,
+    )
+    first = tmp_path / f"{mode}-{placement}-first.png"
+    second = tmp_path / f"{mode}-{placement}-second.png"
+    render_problem(problem, first, cfg, demand_encoding=encoding)
+    render_problem(problem, second, cfg, demand_encoding=encoding)
+    assert first.exists()
+    assert second.exists()
+    assert _sha(first) == _sha(second)
+
+
+@pytest.mark.parametrize("mode", ["size", "bar", "dot_density", "color"])
+def test_v3_side_panel_adds_width_for_every_encoding(
+    tmp_path: Path,
+    mode: str,
+) -> None:
+    problem = _problem()
+    cfg = _cfg()
+    collision = DemandEncodingConfig(
+        mode=mode,
+        placement="collision_aware",
+        bar_layout="collision_aware",
+        side_panel_width_inches=2.0,
+        side_panel_columns=2,
+    )
+    side = DemandEncodingConfig(
+        mode=mode,
+        placement="side_panel",
+        bar_layout="side_panel",
+        side_panel_width_inches=2.0,
+        side_panel_columns=2,
+    )
+    collision_path = tmp_path / f"{mode}-collision.png"
+    side_path = tmp_path / f"{mode}-side.png"
+    render_problem(problem, collision_path, cfg, demand_encoding=collision)
+    render_problem(problem, side_path, cfg, demand_encoding=side)
+    with Image.open(collision_path) as collision_image:
+        collision_size = collision_image.size
+    with Image.open(side_path) as side_image:
+        side_size = side_image.size
+    assert side_size[1] == collision_size[1]
+    assert side_size[0] > collision_size[0]
+
+# END 8METHOD_RENDERER_V3_RENDER_TESTS

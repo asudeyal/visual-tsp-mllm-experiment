@@ -11,6 +11,7 @@ import yaml
 
 DEMAND_ENCODING_MODES = frozenset({"none", "size", "bar", "dot_density", "color"})
 BAR_LAYOUT_MODES = frozenset({"local", "collision_aware", "side_panel"})
+DEMAND_PLACEMENT_MODES = frozenset({"collision_aware", "side_panel"})
 MEDIA_RESOLUTION_LEVELS = frozenset({"low", "medium", "high"})
 
 DEFAULT_COLOR_STOPS = ("#FFFFFF", "#C6DBEF", "#6BAED6", "#DE2D26", "#111111")
@@ -41,13 +42,20 @@ class StagnationConfig:
 
 @dataclass(frozen=True)
 class RenderConfig:
-    figure_size_inches: float = 8.0
-    dpi: int = 150
-    padding_ratio: float = 0.08
+    figure_size_inches: float = 8.0  # legacy/non-fixed rendering only
+    dpi: int = 180
+    padding_ratio: float = 0.10
     node_size: int = 440
     font_size: int = 9
     route_line_width: float = 1.8
     fixed_canvas: bool = False
+
+    # Frozen model-facing visual budget.
+    canvas_width_px: int = 1920
+    canvas_height_px: int = 1280
+    map_width_px: int = 1280
+    panel_width_px: int = 640
+    panel_header_height_px: int = 120
 
 @dataclass(frozen=True)
 class DemandEncodingConfig:
@@ -59,8 +67,9 @@ class DemandEncodingConfig:
     bar_width_points: float = 30.0
     bar_height_points: float = 5.0
     bar_layout: str = "local"
+    placement: str | None = None
     side_panel_width_inches: float = 3.0
-    side_panel_columns: int = 2
+    side_panel_columns: int = 0  # 0 = deterministic auto layout
     side_bar_width_points: float = 48.0
     side_bar_height_points: float = 7.0
     dot_grid_size: int = 7
@@ -181,12 +190,17 @@ def load_config(path: str | Path, *, provider_name: str | None = None, model: st
         ),
         render=RenderConfig(
             figure_size_inches=float(render_raw.get("figure_size_inches", 8.0)),
-            dpi=int(render_raw.get("dpi", 150)),
-            padding_ratio=float(render_raw.get("padding_ratio", 0.08)),
+            dpi=int(render_raw.get("dpi", 180)),
+            padding_ratio=float(render_raw.get("padding_ratio", 0.10)),
             node_size=int(render_raw.get("node_size", 440)),
             font_size=int(render_raw.get("font_size", 9)),
             route_line_width=float(render_raw.get("route_line_width", 1.8)),
             fixed_canvas=bool(render_raw.get("fixed_canvas", False)),
+            canvas_width_px=int(render_raw.get("canvas_width_px", 1920)),
+            canvas_height_px=int(render_raw.get("canvas_height_px", 1280)),
+            map_width_px=int(render_raw.get("map_width_px", 1280)),
+            panel_width_px=int(render_raw.get("panel_width_px", 640)),
+            panel_header_height_px=int(render_raw.get("panel_header_height_px", 120)),
         ),
         demand_encoding=DemandEncodingConfig(
             mode=str(demand_raw.get("mode", "none")).strip().lower(),
@@ -197,8 +211,9 @@ def load_config(path: str | Path, *, provider_name: str | None = None, model: st
             bar_width_points=float(demand_raw.get("bar_width_points", 30.0)),
             bar_height_points=float(demand_raw.get("bar_height_points", 5.0)),
             bar_layout=str(demand_raw.get("bar_layout", "local")).strip().lower(),
+            placement=_optional_lower_string(demand_raw.get("placement")),
             side_panel_width_inches=float(demand_raw.get("side_panel_width_inches", 3.0)),
-            side_panel_columns=int(demand_raw.get("side_panel_columns", 2)),
+            side_panel_columns=int(demand_raw.get("side_panel_columns", 0)),
             side_bar_width_points=float(demand_raw.get("side_bar_width_points", 48.0)),
             side_bar_height_points=float(demand_raw.get("side_bar_height_points", 7.0)),
             dot_grid_size=int(demand_raw.get("dot_grid_size", 7)),
@@ -260,16 +275,35 @@ def validate_config(config: ExperimentConfig) -> None:
         raise ValueError("render.padding_ratio 0 ile 1 arasında olmalıdır")
     if config.render.node_size < 1 or config.render.font_size <= 0 or config.render.route_line_width <= 0:
         raise ValueError("render boyut değerleri pozitif olmalıdır")
+    if (
+        config.render.canvas_width_px < 1
+        or config.render.canvas_height_px < 1
+        or config.render.map_width_px < 1
+        or config.render.panel_width_px < 1
+        or config.render.panel_header_height_px < 1
+    ):
+        raise ValueError("fixed visual budget piksel değerleri pozitif olmalıdır")
+    if config.render.map_width_px + config.render.panel_width_px != config.render.canvas_width_px:
+        raise ValueError("map_width_px + panel_width_px, canvas_width_px değerine eşit olmalıdır")
+    if config.render.map_width_px != config.render.canvas_height_px:
+        raise ValueError("frozen protocol için map viewport kare olmalıdır: map_width_px == canvas_height_px")
+    if config.render.panel_header_height_px >= config.render.canvas_height_px:
+        raise ValueError("panel_header_height_px canvas yüksekliğinden küçük olmalıdır")
     encoding = config.demand_encoding
     if encoding.mode not in DEMAND_ENCODING_MODES:
         raise ValueError(f"demand_encoding.mode bilinmiyor: {encoding.mode}")
     if encoding.bar_layout not in BAR_LAYOUT_MODES:
         raise ValueError(f"demand_encoding.bar_layout bilinmiyor: {encoding.bar_layout}. İzin verilenler: {', '.join(sorted(BAR_LAYOUT_MODES))}")
+    if encoding.placement is not None and encoding.placement not in DEMAND_PLACEMENT_MODES:
+        raise ValueError(
+            f"demand_encoding.placement bilinmiyor: {encoding.placement}. "
+            f"İzin verilenler: {', '.join(sorted(DEMAND_PLACEMENT_MODES))}"
+        )
     if encoding.size_min_factor <= 0 or encoding.size_max_factor <= 0 or encoding.size_min_factor > encoding.size_max_factor:
         raise ValueError("demand_encoding size factor değerleri geçersiz")
     if encoding.bar_width_points <= 0 or encoding.bar_height_points <= 0:
         raise ValueError("demand_encoding bar boyutları pozitif olmalıdır")
-    if encoding.side_panel_width_inches <= 0 or encoding.side_panel_columns < 1:
+    if encoding.side_panel_width_inches <= 0 or encoding.side_panel_columns < 0:
         raise ValueError("demand_encoding side panel ayarları geçersiz")
     if encoding.side_bar_width_points <= 0 or encoding.side_bar_height_points <= 0:
         raise ValueError("demand_encoding side bar boyutları pozitif olmalıdır")

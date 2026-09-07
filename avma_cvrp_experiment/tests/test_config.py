@@ -48,3 +48,23 @@ def test_unknown_media_resolution_is_rejected(tmp_path: Path) -> None:
     _write_config(path, layout="local", media_resolution="ultra_high")
     with pytest.raises(ValueError, match="media_resolution"):
         load_config(path)
+
+# BEGIN 8METHOD_RENDERER_V3_CONFIG_TESTS
+
+@pytest.mark.parametrize("mode", ["size", "bar", "dot_density", "color"])
+@pytest.mark.parametrize("placement", ["collision_aware", "side_panel"])
+def test_main_8method_configs_load(
+    mode: str,
+    placement: str,
+) -> None:
+    project_root = Path(__file__).resolve().parents[1]
+    short_mode = "dotdensity" if mode == "dot_density" else mode
+    short_place = "sidepanel" if placement == "side_panel" else "collision"
+    filename = f"{short_mode}_{short_place}.yaml"
+    config = load_config(
+        project_root / "configs" / "main_8method" / filename
+    )
+    assert config.demand_encoding.mode == mode
+    assert config.demand_encoding.placement == placement
+
+# END 8METHOD_RENDERER_V3_CONFIG_TESTS

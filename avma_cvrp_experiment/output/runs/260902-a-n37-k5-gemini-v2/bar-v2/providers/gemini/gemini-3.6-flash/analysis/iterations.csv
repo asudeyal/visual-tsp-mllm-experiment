@@ -1,2 +1,0 @@
-﻿iteration,valid_candidates,total_candidates,critic_best_distance,selected_candidate,selected_valid,working_distance,working_gap_percent,observed_oracle_best_so_far,working_regret,selection_regret,api_calls,total_tokens,active_seconds,wait_seconds,total_seconds,output_failures,provider_failures
-1,0,3,,1,False,746.0,11.509715994020926,746.0,0.0,,7,62989,441.0299692004919,0.0,441.0299692004919,0,0

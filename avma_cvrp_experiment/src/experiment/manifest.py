@@ -22,7 +22,7 @@ def _git_sha(project_root: Path) -> str | None:
     except Exception:
         return None
 
-def _base_manifest(*, config: ExperimentConfig, problem: ProblemInstance, prompts: PromptSet, project_root: Path) -> dict[str, Any]:
+def _base_manifest(*, config: ExperimentConfig, problem: ProblemInstance, prompts: PromptSet, project_root: Path, scale_policy: dict[str, Any] | None = None) -> dict[str, Any]:
     return {
         "architecture_version": ARCHITECTURE_VERSION,
         "information_policy": INFORMATION_POLICY,
@@ -39,6 +39,7 @@ def _base_manifest(*, config: ExperimentConfig, problem: ProblemInstance, prompt
             "bar_layout": config.demand_encoding.bar_layout if config.demand_encoding.mode == "bar" else None,
             "fixed_canvas": config.render.fixed_canvas,
             "dpi": config.render.dpi,
+            **(scale_policy or {}),
         },
         "llm_input_policy": {
             "allowed": ["problem images", "route images", "candidate images", "visible node labels", "visible depot marker", "agent task instructions"],
@@ -46,10 +47,36 @@ def _base_manifest(*, config: ExperimentConfig, problem: ProblemInstance, prompt
         },
     }
 
-def build_shared_manifest(*, config: ExperimentConfig, problem: ProblemInstance, prompts: PromptSet, project_root: Path) -> dict[str, Any]:
-    manifest = _base_manifest(config=config, problem=problem, prompts=prompts, project_root=project_root)
+def build_shared_manifest(
+    *,
+    config: ExperimentConfig,
+    problem: ProblemInstance,
+    prompts: PromptSet,
+    project_root: Path,
+    scale_policy: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    manifest = _base_manifest(
+        config=config,
+        problem=problem,
+        prompts=prompts,
+        project_root=project_root,
+        scale_policy=scale_policy,
+    )
     manifest["layout_version"] = MULTI_PROVIDER_LAYOUT
-    manifest["prompts"] = {"common_policy": prompts.common, **{role: prompts.role(role) for role in ("initializer", "critic", "scorer", "repair", "hybrid", "diversity")}}
+    manifest["prompts"] = {
+        "common_policy": prompts.common,
+        **{
+            role: prompts.role(role)
+            for role in (
+                "initializer",
+                "critic",
+                "scorer",
+                "repair",
+                "hybrid",
+                "diversity",
+            )
+        },
+    }
     manifest["provider_policy"] = {
         "candidate_strategy": config.provider.candidate_strategy,
         "timeout_seconds": config.provider.timeout_seconds,
@@ -57,6 +84,7 @@ def build_shared_manifest(*, config: ExperimentConfig, problem: ProblemInstance,
         "media_resolution": config.provider.media_resolution,
     }
     return manifest
+
 
 def build_manifest(*, config: ExperimentConfig, problem: ProblemInstance, prompts: PromptSet, project_root: Path) -> dict[str, Any]:
     manifest = _base_manifest(config=config, problem=problem, prompts=prompts, project_root=project_root)

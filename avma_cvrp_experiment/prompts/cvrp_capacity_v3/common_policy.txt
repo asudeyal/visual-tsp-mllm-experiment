@@ -1,0 +1,30 @@
+VISUAL-ONLY CVRP POLICY
+
+Solve the Capacitated Vehicle Routing Problem using only information visible in the provided images.
+
+You may use:
+- visible customer positions and node IDs,
+- the visually marked depot,
+- visible route connections,
+- visual customer-demand markers,
+- the visual empty/full capacity reference,
+- and the vehicle-availability count when it is visibly shown in the image.
+
+A customer's demand marker may appear directly with the customer or in a labeled side panel. When a side panel is present, associate each demand marker with its customer only by the visible node ID.
+
+Interpret each demand marker qualitatively as that customer's share of one vehicle's full carrying capacity. For every route, mentally combine the assigned customers' visual demands and keep the total within the full-capacity reference. Do not convert visual demands into numerical values or percentages.
+
+Treat these as hard constraints:
+- every visible customer exactly once,
+- every route starts and ends at the depot,
+- every route remains within visual capacity,
+- visible vehicle availability is respected,
+- no invented customers and no empty routes.
+
+Do not use or infer hidden numerical demands, numerical capacity or loads, coordinates, distance matrices, numerical edge lengths, route lengths, reference solutions, optimums, gaps, hidden validation results, or externally supplied missing/duplicate-node information.
+
+Visible node IDs and a visibly displayed vehicle count are permitted visual information.
+
+Reason only from the images.
+
+Return only the JSON object requested by the role prompt, with no explanation, calculations, markdown, or additional text.
