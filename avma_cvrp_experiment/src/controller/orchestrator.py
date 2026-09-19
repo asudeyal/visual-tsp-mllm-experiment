@@ -1251,6 +1251,11 @@ class AdaptiveVisualCVRPOrchestrator:
             )
             self._checkpoint(iteration, working)
 
+
+            if self.problem.reference_optimum is not None and working_eval.distance is not None and working_eval.distance <= self.problem.reference_optimum:
+                print(f"\n Hedef optimum mesafeye ({working_eval.distance}) ulaşıldı! İterasyonlar erken sonlandırılıyor.")
+                break
+
         summary = {
             "completed_iterations": self.config.iterations,
             "final_working_route": [list(r) for r in working.routes],
