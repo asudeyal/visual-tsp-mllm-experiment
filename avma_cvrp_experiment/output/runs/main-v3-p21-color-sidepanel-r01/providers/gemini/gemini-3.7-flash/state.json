@@ -1,0 +1,186 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.7-flash",
+  "shared_run_id": "main-v3-p21-color-sidepanel-r01",
+  "status": "running",
+  "config_sha256": "a810ae6ec46455c4aa0018c89278528bd9782216318f7e6e5dd116613e5e407b",
+  "seed": 42,
+  "instance_sha256": "1e7b84d0baad8993033ecf3df233b5297fb0dfe43c60ec49bd4f384b2955d774",
+  "max_vehicles": 2,
+  "demand_encoding_mode": "color",
+  "checkpoint": {
+    "completed_iteration": 1,
+    "working_routes": [
+      [
+        1,
+        17,
+        2,
+        5,
+        12,
+        16,
+        13,
+        4,
+        11,
+        3,
+        7,
+        1
+      ],
+      [
+        1,
+        20,
+        19,
+        9,
+        8,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        1
+      ]
+    ],
+    "structural_history": [
+      [
+        [
+          1,
+          7,
+          3,
+          11,
+          4,
+          13,
+          16,
+          12,
+          5,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          21,
+          6,
+          15,
+          18,
+          10,
+          14,
+          8,
+          9,
+          19,
+          20,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          17,
+          2,
+          5,
+          12,
+          16,
+          13,
+          4,
+          11,
+          3,
+          7,
+          1
+        ],
+        [
+          1,
+          20,
+          19,
+          9,
+          8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          1
+        ]
+      ]
+    ],
+    "hybrid_used_since_restart": false,
+    "restart_count": 0,
+    "observed_oracle_best_distance": 244.0,
+    "observed_oracle_best_routes": [
+      [
+        1,
+        7,
+        3,
+        11,
+        4,
+        13,
+        16,
+        12,
+        5,
+        2,
+        17,
+        1
+      ],
+      [
+        1,
+        21,
+        6,
+        15,
+        18,
+        10,
+        14,
+        8,
+        9,
+        19,
+        20,
+        1
+      ]
+    ],
+    "selected_best_distance": 244.0,
+    "selected_best_routes": [
+      [
+        1,
+        7,
+        3,
+        11,
+        4,
+        13,
+        16,
+        12,
+        5,
+        2,
+        17,
+        1
+      ],
+      [
+        1,
+        21,
+        6,
+        15,
+        18,
+        10,
+        14,
+        8,
+        9,
+        19,
+        20,
+        1
+      ]
+    ],
+    "config_sha256": "a810ae6ec46455c4aa0018c89278528bd9782216318f7e6e5dd116613e5e407b",
+    "instance_sha256": "1e7b84d0baad8993033ecf3df233b5297fb0dfe43c60ec49bd4f384b2955d774"
+  },
+  "working_image": "routes/iteration_001/C1.png",
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "visual_scorer",
+    "iteration": 2
+  },
+  "completed_iterations": 1
+}
