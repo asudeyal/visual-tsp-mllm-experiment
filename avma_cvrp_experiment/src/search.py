@@ -2,7 +2,15 @@
 
 from __future__ import annotations
 
-from itertools import pairwise
+try:
+    from itertools import pairwise
+except ImportError:
+    def pairwise(iterable):
+        iterator = iter(iterable)
+        a = next(iterator, None)
+        for b in iterator:
+            yield a, b
+            a = b
 from typing import Iterable
 
 from .schemas import StructuralStagnationResult

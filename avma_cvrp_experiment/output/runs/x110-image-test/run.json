@@ -1,12 +1,12 @@
 {
   "architecture_version": "avma-cvrp-v1",
   "information_policy": "visual_only_llm_passive_numeric_observer",
-  "created_at_utc": "2026-09-19T14:15:46.531163+00:00",
+  "created_at_utc": "2026-09-21T07:04:06.785534+00:00",
   "git_commit_sha": "72f9692b940609a574062ad8d72d00c51221921c",
   "config": {
     "experiment": {
       "name": "cvrp_main_8method",
-      "run_label": "size_sidepanel",
+      "run_label": "size_collision",
       "iterations": 10,
       "seed": 42,
       "prompt_set": "cvrp_capacity_v3",
@@ -77,7 +77,7 @@
     },
     "demand_encoding": {
       "mode": "size",
-      "bar_layout": "side_panel",
+      "bar_layout": "collision_aware",
       "show_visual_legend": true,
       "show_vehicle_icons": true,
       "bar_width_points": 30,
@@ -86,7 +86,7 @@
       "side_panel_columns": 0,
       "side_bar_width_points": 48,
       "side_bar_height_points": 7,
-      "placement": "side_panel"
+      "placement": "collision_aware"
     },
     "route_rendering": {
       "palette": [
@@ -99,11 +99,11 @@
       ]
     }
   },
-  "config_sha256": "c3ef9842ce0cf438a678c0d5d4b4c87b3f4698af746613bd13b3f448d91fcefb",
+  "config_sha256": "4acf333636bc2984f0818dd776354b609d059eaf97ec96d88cd2ed0b944fc38e",
   "run_parameters": {
     "seed": 42,
     "protocol_name": "cvrp_main_8method",
-    "run_label": "size_sidepanel"
+    "run_label": "size_collision"
   },
   "prompt_set": "cvrp_capacity_v3",
   "prompt_sha256": {
@@ -116,15 +116,15 @@
     "scorer.txt": "2a3318c6ce70dff1f0d94ee8223daa0400bbce5724d8676f33728992d3ccdcd9"
   },
   "problem": {
-    "name": "P-n21-k2",
-    "dimension": 21,
+    "name": "X-n110-k13",
+    "dimension": 110,
     "depot": 1,
-    "capacity": 160,
-    "max_vehicles": 2,
+    "capacity": 66,
+    "max_vehicles": 13,
     "edge_weight_type": "EUC_2D",
-    "source_path": "/Users/aysenihalkaymak/Desktop/visual-tsp-mllm-experiment/avma_cvrp_experiment/data/cvrplib/P-n21-k2.vrp",
-    "source_sha256": "1e7b84d0baad8993033ecf3df233b5297fb0dfe43c60ec49bd4f384b2955d774",
-    "reference_optimum": 211.0
+    "source_path": "/Users/aysenihalkaymak/Desktop/visual-tsp-mllm-experiment/avma_cvrp_experiment/data/cvrplib/X-n110-k13.vrp",
+    "source_sha256": "a622b8507a458e2b7549267c4916800b7182016c02edeb4b02fd8b422c95ec23",
+    "reference_optimum": null
   },
   "render_policy": {
     "demand_encoding_mode": "size",
@@ -134,13 +134,13 @@
     "scale_policy_name": "benchmark_scale_v1",
     "scale_policy_path": "data/cvrplib/scale_policies/benchmark_scale_v1.json",
     "scale_policy_sha256": "7679ab72f5b8f432f5b211951f94b34f4f15df612049169a11ce3a8699c40add",
-    "scale_instance_key": "P-n21-k2.vrp",
-    "workspace_scale": 1.0,
-    "canvas_width_px": 1920,
-    "canvas_height_px": 1280,
-    "map_width_px": 1280,
-    "panel_width_px": 640,
-    "panel_header_height_px": 120
+    "scale_instance_key": "X-n110-k13.vrp",
+    "workspace_scale": 2.092,
+    "canvas_width_px": 4017,
+    "canvas_height_px": 2678,
+    "map_width_px": 2678,
+    "panel_width_px": 1339,
+    "panel_header_height_px": 251
   },
   "llm_input_policy": {
     "allowed": [
