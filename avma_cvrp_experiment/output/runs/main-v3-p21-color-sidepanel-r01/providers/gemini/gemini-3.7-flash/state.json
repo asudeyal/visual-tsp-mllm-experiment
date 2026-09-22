@@ -2,35 +2,35 @@
   "provider": "gemini",
   "model": "gemini-3.7-flash",
   "shared_run_id": "main-v3-p21-color-sidepanel-r01",
-  "status": "running",
+  "status": "completed",
   "config_sha256": "a810ae6ec46455c4aa0018c89278528bd9782216318f7e6e5dd116613e5e407b",
   "seed": 42,
   "instance_sha256": "1e7b84d0baad8993033ecf3df233b5297fb0dfe43c60ec49bd4f384b2955d774",
   "max_vehicles": 2,
   "demand_encoding_mode": "color",
   "checkpoint": {
-    "completed_iteration": 1,
+    "completed_iteration": 10,
     "working_routes": [
       [
         1,
-        17,
-        2,
         5,
         12,
         16,
         13,
+        20,
+        19,
         4,
+        9,
         11,
-        3,
-        7,
+        2,
+        17,
         1
       ],
       [
         1,
-        20,
-        19,
-        9,
+        7,
         8,
+        3,
         14,
         10,
         18,
@@ -44,9 +44,160 @@
       [
         [
           1,
-          7,
-          3,
+          17,
+          2,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          4,
+          9,
           11,
+          1
+        ],
+        [
+          1,
+          7,
+          21,
+          6,
+          15,
+          18,
+          10,
+          14,
+          8,
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          4,
+          9,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          7,
+          21,
+          6,
+          15,
+          18,
+          10,
+          14,
+          8,
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          4,
+          20,
+          19,
+          9,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          3,
+          8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          7,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          4,
+          20,
+          19,
+          9,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          7,
+          21,
+          6,
+          15,
+          18,
+          10,
+          14,
+          8,
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          9,
+          4,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          7,
+          21,
+          6,
+          15,
+          18,
+          10,
+          14,
+          8,
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          11,
+          9,
+          19,
+          20,
           4,
           13,
           16,
@@ -58,6 +209,7 @@
         ],
         [
           1,
+          7,
           21,
           6,
           15,
@@ -65,9 +217,67 @@
           10,
           14,
           8,
-          9,
-          19,
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          5,
+          12,
+          16,
+          13,
+          4,
           20,
+          19,
+          9,
+          11,
+          17,
+          1
+        ],
+        [
+          1,
+          3,
+          8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          7,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          4,
+          9,
+          11,
+          17,
+          1
+        ],
+        [
+          1,
+          3,
+          8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          7,
           1
         ]
       ],
@@ -80,18 +290,78 @@
           12,
           16,
           13,
+          20,
+          19,
           4,
+          9,
           11,
-          3,
-          7,
           1
         ],
         [
           1,
+          7,
+          21,
+          6,
+          15,
+          18,
+          10,
+          14,
+          8,
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
           20,
           19,
+          4,
           9,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          3,
           8,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          7,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          4,
+          9,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          7,
+          8,
+          3,
           14,
           10,
           18,
@@ -103,74 +373,227 @@
       ]
     ],
     "hybrid_used_since_restart": false,
-    "restart_count": 0,
-    "observed_oracle_best_distance": 244.0,
+    "restart_count": 1,
+    "observed_oracle_best_distance": 213.0,
     "observed_oracle_best_routes": [
       [
         1,
-        7,
-        3,
-        11,
-        4,
-        13,
-        16,
-        12,
         5,
+        12,
+        16,
+        13,
+        4,
+        20,
+        19,
+        9,
+        11,
         2,
         17,
         1
       ],
       [
         1,
-        21,
-        6,
-        15,
-        18,
-        10,
-        14,
+        3,
         8,
-        9,
-        19,
-        20,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        7,
         1
       ]
     ],
-    "selected_best_distance": 244.0,
+    "selected_best_distance": 213.0,
     "selected_best_routes": [
       [
         1,
-        7,
-        3,
-        11,
-        4,
-        13,
-        16,
-        12,
         5,
+        12,
+        16,
+        13,
+        4,
+        20,
+        19,
+        9,
+        11,
         2,
         17,
         1
       ],
       [
         1,
-        21,
-        6,
-        15,
-        18,
-        10,
-        14,
+        3,
         8,
-        9,
-        19,
-        20,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        7,
         1
       ]
     ],
     "config_sha256": "a810ae6ec46455c4aa0018c89278528bd9782216318f7e6e5dd116613e5e407b",
     "instance_sha256": "1e7b84d0baad8993033ecf3df233b5297fb0dfe43c60ec49bd4f384b2955d774"
   },
-  "working_image": "routes/iteration_001/C1.png",
-  "summary": null,
+  "working_image": "routes/iteration_010/C3.png",
+  "summary": {
+    "completed_iterations": 10,
+    "final_working_route": [
+      [
+        1,
+        5,
+        12,
+        16,
+        13,
+        20,
+        19,
+        4,
+        9,
+        11,
+        2,
+        17,
+        1
+      ],
+      [
+        1,
+        7,
+        8,
+        3,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        1
+      ]
+    ],
+    "final_working_evaluation": {
+      "validation": {
+        "valid": true,
+        "renderable": true,
+        "missing_nodes": [],
+        "duplicate_nodes": [],
+        "unknown_nodes": [],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "closed_cycle": true,
+        "expected_route_length": 23,
+        "observed_route_length": 24,
+        "reasons": [],
+        "route_loads": [
+          149,
+          149
+        ],
+        "route_capacity_ratios": [
+          0.93125,
+          0.93125
+        ],
+        "vehicle_count": 2,
+        "capacity_exceeded_route_indices": []
+      },
+      "distance": 221.0,
+      "gap_percent": 4.739336492890995,
+      "crossings": 0,
+      "canonical_routes": [
+        [
+          1,
+          5,
+          12,
+          16,
+          13,
+          20,
+          19,
+          4,
+          9,
+          11,
+          2,
+          17,
+          1
+        ],
+        [
+          1,
+          7,
+          8,
+          3,
+          14,
+          10,
+          18,
+          15,
+          6,
+          21,
+          1
+        ]
+      ]
+    },
+    "selected_best_distance": 213.0,
+    "selected_best_route": [
+      [
+        1,
+        5,
+        12,
+        16,
+        13,
+        4,
+        20,
+        19,
+        9,
+        11,
+        2,
+        17,
+        1
+      ],
+      [
+        1,
+        3,
+        8,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        7,
+        1
+      ]
+    ],
+    "observed_oracle_best_distance": 213.0,
+    "observed_oracle_best_route": [
+      [
+        1,
+        5,
+        12,
+        16,
+        13,
+        4,
+        20,
+        19,
+        9,
+        11,
+        2,
+        17,
+        1
+      ],
+      [
+        1,
+        3,
+        8,
+        14,
+        10,
+        18,
+        15,
+        6,
+        21,
+        7,
+        1
+      ]
+    ],
+    "restart_count": 1
+  },
   "last_error": null,
   "layout_version": "compact_v3",
   "runtime_request_policy": {
@@ -179,8 +602,8 @@
     "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
   },
   "current": {
-    "phase": "visual_scorer",
-    "iteration": 2
+    "phase": "completed",
+    "iteration": 10
   },
-  "completed_iterations": 1
+  "completed_iterations": 10
 }

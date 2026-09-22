@@ -1,8 +1,8 @@
 {
   "architecture_version": "avma-cvrp-v1",
   "information_policy": "visual_only_llm_passive_numeric_observer",
-  "created_at_utc": "2026-09-08T19:10:59.633131+00:00",
-  "git_commit_sha": "3e2985475f1ddfe07c9b2ea09130e4eaecbfc470",
+  "created_at_utc": "2026-09-21T16:09:48.362324+00:00",
+  "git_commit_sha": "758793ca93fc25281d55e5a4817240539ecbf554",
   "config": {
     "experiment": {
       "name": "cvrp_main_8method",
@@ -133,7 +133,7 @@
     "dpi": 180,
     "scale_policy_name": "benchmark_scale_v1",
     "scale_policy_path": "data/cvrplib/scale_policies/benchmark_scale_v1.json",
-    "scale_policy_sha256": "cd5acb13b2dace7403ae88799b3099d14edf33b19123177bb35064250e3d3511",
+    "scale_policy_sha256": "7679ab72f5b8f432f5b211951f94b34f4f15df612049169a11ce3a8699c40add",
     "scale_instance_key": "P-n21-k2.vrp",
     "workspace_scale": 1.0,
     "canvas_width_px": 1920,

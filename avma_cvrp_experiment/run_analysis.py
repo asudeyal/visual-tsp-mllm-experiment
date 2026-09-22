@@ -362,6 +362,7 @@ def _progress_rows(
         "partial": False,
         "observed_gbest": observed_best,
         "selected_gbest": selected_best,
+        "current_selected": initializer_distance,
         "observed_gap": _gap(observed_best, reference_optimum),
         "selected_gap": _gap(selected_best, reference_optimum),
     })
@@ -376,6 +377,8 @@ def _progress_rows(
         if observed_distances:
             iteration_best = min(observed_distances)
             observed_best = iteration_best if observed_best is None else min(observed_best, iteration_best)
+        
+        current_val = working.get(iteration)
         if iteration in working:
             selected_best = working[iteration] if selected_best is None else min(selected_best, working[iteration])
         partial = iteration not in completed_iterations
@@ -385,6 +388,7 @@ def _progress_rows(
             "partial": partial,
             "observed_gbest": observed_best,
             "selected_gbest": selected_best,
+            "current_selected": current_val,
             "observed_gap": _gap(observed_best, reference_optimum),
             "selected_gap": _gap(selected_best, reference_optimum),
         })
@@ -740,17 +744,31 @@ def _write_progress_chart(
     x = list(range(len(labels)))
     observed = [row.get("observed_gbest") for row in usable]
     selected = [row.get("selected_gbest") for row in usable]
+    
+    # Anlık seçim değerleri
+    current = [row.get("current_selected") if row.get("current_selected") is not None else float('nan') for row in usable]
 
     plt.figure(figsize=(11, 6))
-    plt.plot(x, observed, marker="o", label="Observer GBest")
-    plt.plot(x, selected, marker="o", label="Selected GBest")
+    
+    # 1. Katman (En Alt): Observer GBest. Kalın (lw=5), şeffaf (alpha=0.4) ve büyük işaretçi.
+    plt.plot(x, observed, color="#1f77b4", marker="o", markersize=12, linewidth=5, alpha=0.4, label="Observer GBest (Tarihi Rekor)")
+    
+    # 2. Katman (Orta): Selected GBest. Normal kalınlık (lw=2), içi dolu kare işaretçi. Mavi ile aynıysa içinde kalır.
+    plt.plot(x, selected, color="#ff7f0e", marker="s", markersize=6, linewidth=2, label="Selected GBest (Seçilen Rekor)")
+    
+    # 3. Katman (En Üst): Current Selected. Dalgalanmaları gösteren kırmızı kesik çizgi.
+    plt.plot(x, current, color="#d62728", marker="x", linestyle="--", markersize=8, linewidth=2, alpha=0.9, label="Current Selected (Bu İterasyondaki Seçim)")
+
     if reference_optimum is not None:
-        plt.axhline(reference_optimum, linestyle="--", label=f"BKS / optimum = {reference_optimum:g}")
+        plt.axhline(reference_optimum, linestyle=":", color="black", alpha=0.6, label=f"BKS / optimum = {reference_optimum:g}")
+        
     plt.xticks(x, labels)
     plt.xlabel("Search stage")
     plt.ylabel("CVRP distance")
     plt.title(f"{run_id} — search progress")
-    plt.legend()
+    
+    # Lejantı grafiğin dışına veya uygun bir köşeye alalım ki çizgileri kapatmasın
+    plt.legend(loc='upper right')
     plt.tight_layout()
 
     path = analysis_dir / "search_progress.png"
