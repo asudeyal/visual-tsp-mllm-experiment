@@ -25,6 +25,18 @@ class PromptSet:
 
     def hashes(self) -> dict[str, str]:
         result: dict[str, str] = {}
+
         for path in sorted(self.root.glob("*.txt")):
-            result[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+            raw = path.read_bytes()
+
+            normalized = (
+                raw
+                .replace(b"\r\n", b"\n")
+                .replace(b"\r", b"\n")
+            )
+
+            result[path.name] = hashlib.sha256(
+                normalized
+            ).hexdigest()
+
         return result

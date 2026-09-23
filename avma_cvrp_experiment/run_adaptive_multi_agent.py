@@ -95,6 +95,16 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument(
+        "--iterations",
+        type=int,
+        default=None,
+        help=(
+            "Resume sırasında toplam hedef iterasyon sayısını artırır. "
+            "Örneğin 10 iterasyonluk mevcut bir run için "
+            "--resume --iterations 20."
+        ),
+    )
+    parser.add_argument(
         "--validate-only",
         action="store_true",
         help="No API calls; validate config, instance, and model-facing rendering",
@@ -238,6 +248,16 @@ def _prepare_model_state(
     model_dir.mkdir(parents=True, exist_ok=True)
     state = read_state(state_path)
 
+    if resume and state:
+        completed = int(state.get("completed_iterations") or 0)
+
+        if config.iterations <= completed:
+            raise ValueError(
+                "Resume hedef iterasyonu mevcut checkpoint'ten "
+                f"büyük olmalıdır. completed={completed}, "
+                f"target={config.iterations}"
+            )
+
     if state:
         if (
             state.get("provider") != config.provider.name
@@ -299,6 +319,22 @@ def main() -> None:
         model=args.model,
         seed=args.seed,
     )
+
+    if args.iterations is not None:
+        if not args.resume:
+            raise SystemExit(
+                "--iterations yalnız --resume ile kullanılabilir"
+            )
+
+        if args.iterations < 1:
+            raise SystemExit(
+                "--iterations en az 1 olmalıdır"
+            )
+
+        config = replace(
+            config,
+            iterations=args.iterations,
+        )
 
     problem = load_cvrplib(
         _resolve_from_root(args.instance),
@@ -401,6 +437,7 @@ def main() -> None:
         instance_sha256=problem.source_sha256,
         max_vehicles=problem.max_vehicles,
         demand_encoding_mode=config.demand_encoding.mode,
+        target_iterations=config.iterations,
         status="running",
         last_error=None,
     )

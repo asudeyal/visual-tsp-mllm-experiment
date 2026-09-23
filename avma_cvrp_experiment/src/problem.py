@@ -82,6 +82,12 @@ def load_cvrplib(
 
     raw_bytes = path.read_bytes()
 
+    normalized_bytes = (
+        raw_bytes
+        .replace(b"\r\n", b"\n")
+        .replace(b"\r", b"\n")
+    )
+
     text = raw_bytes.decode(
         "utf-8",
         errors="replace",
@@ -388,7 +394,7 @@ def load_cvrplib(
         edge_weight_type=edge_weight_type,
         source_path=str(path),
         source_sha256=hashlib.sha256(
-            raw_bytes
+            normalized_bytes
         ).hexdigest(),
         reference_optimum=reference_optimum,
     )
