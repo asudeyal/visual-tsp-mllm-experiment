@@ -2,7 +2,7 @@
   "provider": "gemini",
   "model": "gemini-3.7-flash",
   "shared_run_id": "main-v3-a32-bar-collision-r01",
-  "status": "completed",
+  "status": "running",
   "config_sha256": "aab11c445cf0d76d3ef4dce84c2b25d9d8e5a4a39ac9b10f69d9564ed7e852e0",
   "seed": 42,
   "instance_sha256": "2ebedd0631c4c56c08ba3b1476ac874a7d54cc448bd3795de534f43b2c099ce2",

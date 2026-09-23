@@ -1,0 +1,431 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.7-flash",
+  "shared_run_id": "main-v3-e23-bar-sidepanel-r01",
+  "status": "completed",
+  "config_sha256": "3adcabb723100448f604ef6d5fb5231aef3540022ddfb0b4d86158cd272fbccf",
+  "seed": 42,
+  "instance_sha256": "2cd6462d45784c5f0654165d701f86415e9e33ad6413d70388925adcaa8939e4",
+  "max_vehicles": 3,
+  "demand_encoding_mode": "bar",
+  "checkpoint": {
+    "completed_iteration": 10,
+    "working_routes": [
+      [
+        1,
+        11,
+        1
+      ],
+      [
+        1,
+        12,
+        14,
+        10,
+        6,
+        5,
+        9,
+        8,
+        22,
+        1
+      ],
+      [
+        1,
+        13,
+        7,
+        2,
+        3,
+        4,
+        17,
+        16,
+        15,
+        18,
+        23,
+        21,
+        20,
+        19,
+        1
+      ]
+    ],
+    "structural_history": [
+      [
+        [
+          1,
+          11,
+          1
+        ],
+        [
+          1,
+          22,
+          8,
+          9,
+          5,
+          6,
+          10,
+          14,
+          12,
+          1
+        ],
+        [
+          1,
+          13,
+          7,
+          2,
+          3,
+          4,
+          17,
+          16,
+          15,
+          18,
+          21,
+          23,
+          20,
+          19,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          12,
+          14,
+          10,
+          6,
+          5,
+          9,
+          8,
+          22,
+          1
+        ],
+        [
+          1,
+          11,
+          1
+        ],
+        [
+          1,
+          13,
+          7,
+          2,
+          3,
+          4,
+          17,
+          15,
+          16,
+          18,
+          23,
+          21,
+          20,
+          19,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          11,
+          1
+        ],
+        [
+          1,
+          12,
+          14,
+          10,
+          6,
+          5,
+          9,
+          8,
+          22,
+          1
+        ],
+        [
+          1,
+          13,
+          7,
+          2,
+          3,
+          4,
+          17,
+          16,
+          15,
+          18,
+          23,
+          21,
+          20,
+          19,
+          1
+        ]
+      ]
+    ],
+    "hybrid_used_since_restart": true,
+    "restart_count": 1,
+    "observed_oracle_best_distance": 574.0,
+    "observed_oracle_best_routes": [
+      [
+        1,
+        11,
+        1
+      ],
+      [
+        1,
+        13,
+        12,
+        14,
+        10,
+        6,
+        5,
+        9,
+        8,
+        22,
+        1
+      ],
+      [
+        1,
+        7,
+        2,
+        3,
+        4,
+        17,
+        16,
+        15,
+        18,
+        23,
+        21,
+        20,
+        19,
+        1
+      ]
+    ],
+    "selected_best_distance": 574.0,
+    "selected_best_routes": [
+      [
+        1,
+        11,
+        1
+      ],
+      [
+        1,
+        13,
+        12,
+        14,
+        10,
+        6,
+        5,
+        9,
+        8,
+        22,
+        1
+      ],
+      [
+        1,
+        7,
+        2,
+        3,
+        4,
+        17,
+        16,
+        15,
+        18,
+        23,
+        21,
+        20,
+        19,
+        1
+      ]
+    ],
+    "config_sha256": "3adcabb723100448f604ef6d5fb5231aef3540022ddfb0b4d86158cd272fbccf",
+    "instance_sha256": "2cd6462d45784c5f0654165d701f86415e9e33ad6413d70388925adcaa8939e4"
+  },
+  "working_image": "routes/iteration_010/C3.png",
+  "summary": {
+    "completed_iterations": 10,
+    "final_working_route": [
+      [
+        1,
+        11,
+        1
+      ],
+      [
+        1,
+        12,
+        14,
+        10,
+        6,
+        5,
+        9,
+        8,
+        22,
+        1
+      ],
+      [
+        1,
+        13,
+        7,
+        2,
+        3,
+        4,
+        17,
+        16,
+        15,
+        18,
+        23,
+        21,
+        20,
+        19,
+        1
+      ]
+    ],
+    "final_working_evaluation": {
+      "validation": {
+        "valid": true,
+        "renderable": true,
+        "missing_nodes": [],
+        "duplicate_nodes": [],
+        "unknown_nodes": [],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "closed_cycle": true,
+        "expected_route_length": 26,
+        "observed_route_length": 28,
+        "reasons": [],
+        "route_loads": [
+          4100,
+          3050,
+          3039
+        ],
+        "route_capacity_ratios": [
+          0.9111111111111111,
+          0.6777777777777778,
+          0.6753333333333333
+        ],
+        "vehicle_count": 3,
+        "capacity_exceeded_route_indices": []
+      },
+      "distance": 574.0,
+      "gap_percent": 0.8787346221441126,
+      "crossings": 2,
+      "canonical_routes": [
+        [
+          1,
+          11,
+          1
+        ],
+        [
+          1,
+          12,
+          14,
+          10,
+          6,
+          5,
+          9,
+          8,
+          22,
+          1
+        ],
+        [
+          1,
+          13,
+          7,
+          2,
+          3,
+          4,
+          17,
+          16,
+          15,
+          18,
+          23,
+          21,
+          20,
+          19,
+          1
+        ]
+      ]
+    },
+    "selected_best_distance": 574.0,
+    "selected_best_route": [
+      [
+        1,
+        11,
+        1
+      ],
+      [
+        1,
+        13,
+        12,
+        14,
+        10,
+        6,
+        5,
+        9,
+        8,
+        22,
+        1
+      ],
+      [
+        1,
+        7,
+        2,
+        3,
+        4,
+        17,
+        16,
+        15,
+        18,
+        23,
+        21,
+        20,
+        19,
+        1
+      ]
+    ],
+    "observed_oracle_best_distance": 574.0,
+    "observed_oracle_best_route": [
+      [
+        1,
+        11,
+        1
+      ],
+      [
+        1,
+        13,
+        12,
+        14,
+        10,
+        6,
+        5,
+        9,
+        8,
+        22,
+        1
+      ],
+      [
+        1,
+        7,
+        2,
+        3,
+        4,
+        17,
+        16,
+        15,
+        18,
+        23,
+        21,
+        20,
+        19,
+        1
+      ]
+    ],
+    "restart_count": 1
+  },
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "completed",
+    "iteration": 10
+  },
+  "completed_iterations": 10
+}

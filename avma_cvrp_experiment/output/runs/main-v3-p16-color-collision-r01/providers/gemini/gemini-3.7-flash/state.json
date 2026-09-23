@@ -1,0 +1,571 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.7-flash",
+  "shared_run_id": "main-v3-p16-color-collision-r01",
+  "status": "completed",
+  "config_sha256": "46774b673d0c89a92d93773f8604f277b2c2f15ae5a7655e74f525db9f3d3c9a",
+  "seed": 42,
+  "instance_sha256": "122bf4349112f700d351def4ffee143f146346f2ec6e5618af07513d5cf8be7b",
+  "max_vehicles": 8,
+  "demand_encoding_mode": "color",
+  "checkpoint": {
+    "completed_iteration": 2,
+    "working_routes": [
+      [
+        1,
+        5,
+        12,
+        1
+      ],
+      [
+        1,
+        16,
+        13,
+        11,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        9,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        7,
+        1
+      ],
+      [
+        1,
+        8,
+        10,
+        14,
+        1
+      ],
+      [
+        1,
+        6,
+        15,
+        1
+      ]
+    ],
+    "structural_history": [
+      [
+        [
+          1,
+          12,
+          5,
+          1
+        ],
+        [
+          1,
+          16,
+          13,
+          11,
+          1
+        ],
+        [
+          1,
+          2,
+          4,
+          1
+        ],
+        [
+          1,
+          9,
+          1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          1,
+          7,
+          1
+        ],
+        [
+          1,
+          8,
+          10,
+          14,
+          1
+        ],
+        [
+          1,
+          6,
+          15,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          12,
+          16,
+          13,
+          1
+        ],
+        [
+          1,
+          5,
+          11,
+          1
+        ],
+        [
+          1,
+          2,
+          4,
+          1
+        ],
+        [
+          1,
+          9,
+          1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          1,
+          7,
+          1
+        ],
+        [
+          1,
+          8,
+          10,
+          14,
+          1
+        ],
+        [
+          1,
+          6,
+          15,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          5,
+          12,
+          1
+        ],
+        [
+          1,
+          16,
+          13,
+          11,
+          1
+        ],
+        [
+          1,
+          2,
+          4,
+          1
+        ],
+        [
+          1,
+          9,
+          1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          1,
+          7,
+          1
+        ],
+        [
+          1,
+          8,
+          10,
+          14,
+          1
+        ],
+        [
+          1,
+          6,
+          15,
+          1
+        ]
+      ]
+    ],
+    "hybrid_used_since_restart": false,
+    "restart_count": 4,
+    "observed_oracle_best_distance": 450.0,
+    "observed_oracle_best_routes": [
+      [
+        1,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        16,
+        13,
+        11,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        9,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        7,
+        1
+      ],
+      [
+        1,
+        8,
+        10,
+        14,
+        1
+      ],
+      [
+        1,
+        6,
+        15,
+        1
+      ]
+    ],
+    "selected_best_distance": 450.0,
+    "selected_best_routes": [
+      [
+        1,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        16,
+        13,
+        11,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        9,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        7,
+        1
+      ],
+      [
+        1,
+        8,
+        10,
+        14,
+        1
+      ],
+      [
+        1,
+        6,
+        15,
+        1
+      ]
+    ],
+    "config_sha256": "46774b673d0c89a92d93773f8604f277b2c2f15ae5a7655e74f525db9f3d3c9a",
+    "instance_sha256": "122bf4349112f700d351def4ffee143f146346f2ec6e5618af07513d5cf8be7b"
+  },
+  "working_image": "routes/iteration_002/restart_03_repair_02.png",
+  "summary": {
+    "completed_iterations": 10,
+    "final_working_route": [
+      [
+        1,
+        5,
+        12,
+        1
+      ],
+      [
+        1,
+        16,
+        13,
+        11,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        9,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        7,
+        1
+      ],
+      [
+        1,
+        8,
+        10,
+        14,
+        1
+      ],
+      [
+        1,
+        6,
+        15,
+        1
+      ]
+    ],
+    "final_working_evaluation": {
+      "validation": {
+        "valid": true,
+        "renderable": true,
+        "missing_nodes": [],
+        "duplicate_nodes": [],
+        "unknown_nodes": [],
+        "starts_at_depot": true,
+        "ends_at_depot": true,
+        "closed_cycle": true,
+        "expected_route_length": 24,
+        "observed_route_length": 31,
+        "reasons": [],
+        "route_loads": [
+          30,
+          33,
+          35,
+          28,
+          30,
+          31,
+          29,
+          30
+        ],
+        "route_capacity_ratios": [
+          0.8571428571428571,
+          0.9428571428571428,
+          1.0,
+          0.8,
+          0.8571428571428571,
+          0.8857142857142857,
+          0.8285714285714286,
+          0.8571428571428571
+        ],
+        "vehicle_count": 8,
+        "capacity_exceeded_route_indices": []
+      },
+      "distance": 450.0,
+      "gap_percent": 0.0,
+      "crossings": 1,
+      "canonical_routes": [
+        [
+          1,
+          5,
+          12,
+          1
+        ],
+        [
+          1,
+          11,
+          13,
+          16,
+          1
+        ],
+        [
+          1,
+          2,
+          4,
+          1
+        ],
+        [
+          1,
+          9,
+          1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          1,
+          7,
+          1
+        ],
+        [
+          1,
+          8,
+          10,
+          14,
+          1
+        ],
+        [
+          1,
+          6,
+          15,
+          1
+        ]
+      ]
+    },
+    "selected_best_distance": 450.0,
+    "selected_best_route": [
+      [
+        1,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        16,
+        13,
+        11,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        9,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        7,
+        1
+      ],
+      [
+        1,
+        8,
+        10,
+        14,
+        1
+      ],
+      [
+        1,
+        6,
+        15,
+        1
+      ]
+    ],
+    "observed_oracle_best_distance": 450.0,
+    "observed_oracle_best_route": [
+      [
+        1,
+        12,
+        5,
+        1
+      ],
+      [
+        1,
+        16,
+        13,
+        11,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        9,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        7,
+        1
+      ],
+      [
+        1,
+        8,
+        10,
+        14,
+        1
+      ],
+      [
+        1,
+        6,
+        15,
+        1
+      ]
+    ],
+    "restart_count": 4
+  },
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "completed",
+    "iteration": 10
+  },
+  "completed_iterations": 10
+}

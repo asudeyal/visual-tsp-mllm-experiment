@@ -1,0 +1,26 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.7-flash",
+  "shared_run_id": "main-v3-p16-size-collision-r01",
+  "status": "running",
+  "config_sha256": "b81121f0fc3a9bd6e18c355d4d37283b11768fdb67202670da90d191a5291aa7",
+  "seed": 42,
+  "instance_sha256": "122bf4349112f700d351def4ffee143f146346f2ec6e5618af07513d5cf8be7b",
+  "max_vehicles": 8,
+  "demand_encoding_mode": "size",
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "repair_attempt_02",
+    "scope": "initializer.fallback.restart_03",
+    "attempt": 2
+  }
+}
