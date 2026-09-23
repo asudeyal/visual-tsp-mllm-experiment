@@ -8,10 +8,10 @@ Instance               : A-n32-k5
 Dimension              : 32
 Provider / Model       : gemini / gemini-3.7-flash
 Experiment             : cvrp_main_8method
-Target iterations      : 10
-Completed iterations   : 10
+Target iterations      : 20
+Completed iterations   : 20
 State status           : completed
-Current phase          : {"phase":"completed","iteration":10}
+Current phase          : {"phase":"completed","iteration":20}
 Reference optimum/BKS  : 784.0000
 Demand encoding        : size
 Bar layout             : -
@@ -21,8 +21,8 @@ Observer GBest         : 841.0000
 Observer GBest gap     : 7.2704%
 Selected GBest         : 843.0000
 Selected GBest gap     : 7.5255%
-Final distance         : 857.0000
-Final gap              : 9.3112%
+Final distance         : 926.0000
+Final gap              : 18.1122%
 Run completed          : yes
 
 INITIALIZER SUMMARY
@@ -42,20 +42,30 @@ INITIALIZER OUTPUTS — chronological
 └─────┴─────────────┴───────┴──────┴─────────┴───────────┴──────────────────┴──────────────────────────┴──────────┴──────────┴───────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 CRITIC + SCORER — per iteration
-┌──────┬──────────┬─────────┬───────────┬────────────┬──────────┬───────────┬────────────────┬────────────────┬────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────┐
-│ Iter │ Critic N │ Valid N │ Iter Best │ Iter Gap % │ Selected │ Sel Gap % │ Observer GBest │ Selected GBest │ Regret │ Critic candidates                                                                                                        │ Scorer                                                      │
-├──────┼──────────┼─────────┼───────────┼────────────┼──────────┼───────────┼────────────────┼────────────────┼────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────────────────────────────────────────────────────────┤
-│ 1    │ 3        │ 3       │ 887.0000  │ 13.1378%   │ 895.0000 │ 14.1582%  │ 887.0000       │ 895.0000       │ 8.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=895.0000,gap=14.1582%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[2,1,3]; best=C2; selected_valid=yes │
-│ 2    │ 3        │ 3       │ 890.0000  │ 13.5204%   │ 890.0000 │ 13.5204%  │ 887.0000       │ 890.0000       │ 0.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=916.0000,gap=16.8367%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
-│ 3    │ 3        │ 3       │ 869.0000  │ 10.8418%   │ 869.0000 │ 10.8418%  │ 869.0000       │ 869.0000       │ 0.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=869.0000,gap=10.8418%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[1,3,2]; best=C1; selected_valid=yes │
-│ 4    │ 3        │ 3       │ 869.0000  │ 10.8418%   │ 869.0000 │ 10.8418%  │ 869.0000       │ 869.0000       │ 0.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=869.0000,gap=10.8418%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[1,3,2]; best=C1; selected_valid=yes │
-│ 5    │ 3        │ 3       │ 865.0000  │ 10.3316%   │ 869.0000 │ 10.8418%  │ 859.0000       │ 869.0000       │ 4.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=865.0000,gap=10.3316%,cross=2,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[3,2,1]; best=C3; selected_valid=yes │
-│ 6    │ 3        │ 3       │ 850.0000  │ 8.4184%    │ 856.0000 │ 9.1837%   │ 850.0000       │ 856.0000       │ 6.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=856.0000,gap=9.1837%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[1,2,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
-│ 7    │ 3        │ 3       │ 856.0000  │ 9.1837%    │ 856.0000 │ 9.1837%   │ 850.0000       │ 856.0000       │ 0.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=856.0000,gap=9.1837%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,2,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
-│ 8    │ 3        │ 3       │ 843.0000  │ 7.5255%    │ 843.0000 │ 7.5255%   │ 843.0000       │ 843.0000       │ 0.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=867.0000,gap=10.5867%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[2,3,1]; best=C2; selected_valid=yes │
-│ 9    │ 3        │ 3       │ 843.0000  │ 7.5255%    │ 843.0000 │ 7.5255%   │ 841.0000       │ 843.0000       │ 0.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=843.0000,gap=7.5255%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
-│ 10   │ 3        │ 3       │ 850.0000  │ 8.4184%    │ 857.0000 │ 9.3112%   │ 841.0000       │ 843.0000       │ 7.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=850.0000,gap=8.4184%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,1,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
-└──────┴──────────┴─────────┴───────────┴────────────┴──────────┴───────────┴────────────────┴────────────────┴────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
+┌──────┬──────────┬─────────┬───────────┬────────────┬──────────┬───────────┬────────────────┬────────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────┐
+│ Iter │ Critic N │ Valid N │ Iter Best │ Iter Gap % │ Selected │ Sel Gap % │ Observer GBest │ Selected GBest │ Regret  │ Critic candidates                                                                                                        │ Scorer                                                      │
+├──────┼──────────┼─────────┼───────────┼────────────┼──────────┼───────────┼────────────────┼────────────────┼─────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 1    │ 3        │ 3       │ 887.0000  │ 13.1378%   │ 895.0000 │ 14.1582%  │ 887.0000       │ 895.0000       │ 8.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=895.0000,gap=14.1582%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[2,1,3]; best=C2; selected_valid=yes │
+│ 2    │ 3        │ 3       │ 890.0000  │ 13.5204%   │ 890.0000 │ 13.5204%  │ 887.0000       │ 890.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=916.0000,gap=16.8367%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 3    │ 3        │ 3       │ 869.0000  │ 10.8418%   │ 869.0000 │ 10.8418%  │ 869.0000       │ 869.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=869.0000,gap=10.8418%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 4    │ 3        │ 3       │ 869.0000  │ 10.8418%   │ 869.0000 │ 10.8418%  │ 869.0000       │ 869.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=869.0000,gap=10.8418%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 5    │ 3        │ 3       │ 865.0000  │ 10.3316%   │ 869.0000 │ 10.8418%  │ 859.0000       │ 869.0000       │ 4.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=865.0000,gap=10.3316%,cross=2,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 6    │ 3        │ 3       │ 850.0000  │ 8.4184%    │ 856.0000 │ 9.1837%   │ 850.0000       │ 856.0000       │ 6.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=856.0000,gap=9.1837%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[1,2,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 7    │ 3        │ 3       │ 856.0000  │ 9.1837%    │ 856.0000 │ 9.1837%   │ 850.0000       │ 856.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=856.0000,gap=9.1837%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,2,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 8    │ 3        │ 3       │ 843.0000  │ 7.5255%    │ 843.0000 │ 7.5255%   │ 843.0000       │ 843.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=867.0000,gap=10.5867%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[2,3,1]; best=C2; selected_valid=yes │
+│ 9    │ 3        │ 3       │ 843.0000  │ 7.5255%    │ 843.0000 │ 7.5255%   │ 841.0000       │ 843.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=843.0000,gap=7.5255%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 10   │ 3        │ 3       │ 850.0000  │ 8.4184%    │ 857.0000 │ 9.3112%   │ 841.0000       │ 843.0000       │ 7.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=850.0000,gap=8.4184%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,1,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 11   │ 3        │ 3       │ 857.0000  │ 9.3112%    │ 857.0000 │ 9.3112%   │ 841.0000       │ 843.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=857.0000,gap=9.3112%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 12   │ 3        │ 3       │ 857.0000  │ 9.3112%    │ 865.0000 │ 10.3316%  │ 841.0000       │ 843.0000       │ 8.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=857.0000,gap=9.3112%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,2,1]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 13   │ 3        │ 3       │ 853.0000  │ 8.8010%    │ 865.0000 │ 10.3316%  │ 841.0000       │ 843.0000       │ 12.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=853.0000,gap=8.8010%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[2,3,1]; best=C2; selected_valid=yes │
+│ 14   │ 3        │ 3       │ 870.0000  │ 10.9694%   │ 884.0000 │ 12.7551%  │ 841.0000       │ 843.0000       │ 14.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=870.0000,gap=10.9694%,cross=7,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 15   │ 3        │ 3       │ 882.0000  │ 12.5000%   │ 884.0000 │ 12.7551%  │ 841.0000       │ 843.0000       │ 2.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=882.0000,gap=12.5000%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 16   │ 3        │ 3       │ 879.0000  │ 12.1173%   │ 884.0000 │ 12.7551%  │ 841.0000       │ 843.0000       │ 5.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=879.0000,gap=12.1173%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 17   │ 3        │ 3       │ 870.0000  │ 10.9694%   │ 875.0000 │ 11.6071%  │ 841.0000       │ 843.0000       │ 5.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=870.0000,gap=10.9694%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,3,1]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 18   │ 3        │ 3       │ 873.0000  │ 11.3520%   │ 873.0000 │ 11.3520%  │ 841.0000       │ 843.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=875.0000,gap=11.6071%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 19   │ 3        │ 3       │ 868.0000  │ 10.7143%   │ 912.0000 │ 16.3265%  │ 841.0000       │ 843.0000       │ 44.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=868.0000,gap=10.7143%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 20   │ 3        │ 3       │ 926.0000  │ 18.1122%   │ 926.0000 │ 18.1122%  │ 841.0000       │ 843.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=926.0000,gap=18.1122%,cross=3,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+└──────┴──────────┴─────────┴───────────┴────────────┴──────────┴───────────┴────────────────┴────────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
 
 SEARCH RECOVERY / ADAPTIVE EVENTS
 ┌─────┬──────────────────┬──────────────────────────────────────────┬──────┬─────────┬─────────┬───────┬──────┬─────────┬──────────┬──────────┐
@@ -68,28 +78,31 @@ SEARCH RECOVERY / ADAPTIVE EVENTS
 │ 93  │ repair_result    │ iteration_009.hybrid.fallback.restart_01 │ 9    │ 1       │ -       │ no    │ 1    │ 0.1700  │ -        │ -        │
 │ 95  │ repair_result    │ iteration_009.hybrid.fallback.restart_01 │ 9    │ 2       │ -       │ no    │ 1    │ 0.1500  │ -        │ -        │
 │ 97  │ diversity_result │ iteration_009.hybrid.fallback            │ 9    │ -       │ 2       │ yes   │ 0    │ 0.0000  │ 867.0000 │ -        │
+│ 135 │ hybrid_result    │ iteration_013.hybrid                     │ 13   │ -       │ -       │ yes   │ 0    │ 0.0000  │ 863.0000 │ -        │
+│ 137 │ diversity_result │ iteration_013.hybrid.fallback            │ 13   │ -       │ 1       │ yes   │ 0    │ 0.0000  │ 894.0000 │ -        │
+│ 184 │ hybrid_result    │ iteration_018.hybrid                     │ 18   │ -       │ -       │ yes   │ 0    │ 0.0000  │ 868.0000 │ -        │
 └─────┴──────────────────┴──────────────────────────────────────────┴──────┴─────────┴─────────┴───────┴──────┴─────────┴──────────┴──────────┘
 
 AGENT COST
 ┌─────────────┬───────┬────────────┬────────────┬─────────────┬───────────┬───────────┐
 │ Agent       │ Calls │ Prompt tok │ Output tok │ Thought tok │ Total tok │ Latency s │
 ├─────────────┼───────┼────────────┼────────────┼─────────────┼───────────┼───────────┤
-│ critic      │ 30    │ 48240      │ 5040       │ 122718      │ 175998    │ 411.3146  │
-│ diversity   │ 3     │ 4776       │ 504        │ 5870        │ 11150     │ 20.8844   │
-│ hybrid      │ 2     │ 3236       │ 253        │ 14931       │ 18420     │ 46.1694   │
+│ critic      │ 60    │ 96480      │ 9963       │ 204855      │ 311298    │ 750.7281  │
+│ diversity   │ 4     │ 6368       │ 672        │ 8663        │ 15703     │ 31.0593   │
+│ hybrid      │ 4     │ 6472       │ 577        │ 28325       │ 35374     │ 91.1475   │
 │ initializer │ 1     │ 1620       │ 168        │ 2212        │ 4000      │ 8.5126    │
 │ repair      │ 2     │ 5436       │ 278        │ 12509       │ 18223     │ 42.0421   │
-│ scorer      │ 10    │ 49500      │ 180        │ 21684       │ 71364     │ 86.7366   │
+│ scorer      │ 20    │ 99000      │ 391        │ 34157       │ 133548    │ 161.8274  │
 └─────────────┴───────┴────────────┴────────────┴─────────────┴───────────┴───────────┘
 
 TOTAL COST / USAGE
 --------------------------------------------------------------------------------------------------------------------------------------------
-Total API calls        : 48
-Prompt tokens          : 112808
-Output tokens          : 6423
-Thinking tokens        : 179924
-Total tokens           : 299155
-Total API latency      : 615.6596 s
+Total API calls        : 91
+Prompt tokens          : 215376
+Output tokens          : 12049
+Thinking tokens        : 290721
+Total tokens           : 518146
+Total API latency      : 1085.3169 s
 
 ERRORS / INTERRUPTIONS
 ┌─────┬───────┬───────┬───────┬──────┬────────┬──────┬─────────┐

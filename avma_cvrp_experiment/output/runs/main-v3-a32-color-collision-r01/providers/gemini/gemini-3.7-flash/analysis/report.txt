@@ -8,10 +8,10 @@ Instance               : A-n32-k5
 Dimension              : 32
 Provider / Model       : gemini / gemini-3.7-flash
 Experiment             : cvrp_main_8method
-Target iterations      : 10
-Completed iterations   : 10
+Target iterations      : 20
+Completed iterations   : 20
 State status           : completed
-Current phase          : {"phase":"completed","iteration":10}
+Current phase          : {"phase":"completed","iteration":20}
 Reference optimum/BKS  : 784.0000
 Demand encoding        : color
 Bar layout             : -
@@ -21,8 +21,8 @@ Observer GBest         : 860.0000
 Observer GBest gap     : 9.6939%
 Selected GBest         : 860.0000
 Selected GBest gap     : 9.6939%
-Final distance         : 880.0000
-Final gap              : 12.2449%
+Final distance         : 879.0000
+Final gap              : 12.1173%
 Run completed          : yes
 
 INITIALIZER SUMMARY
@@ -58,39 +58,61 @@ CRITIC + SCORER — per iteration
 │ 8    │ 3        │ 3       │ 865.0000  │ 10.3316%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 15.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[1,2,3]; best=C1; selected_valid=yes │
 │ 9    │ 3        │ 3       │ 880.0000  │ 12.2449%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
 │ 10   │ 3        │ 3       │ 880.0000  │ 12.2449%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 11   │ 3        │ 3       │ 880.0000  │ 12.2449%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 12   │ 3        │ 3       │ 865.0000  │ 10.3316%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 15.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 13   │ 3        │ 3       │ 865.0000  │ 10.3316%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 15.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 14   │ 3        │ 3       │ 880.0000  │ 12.2449%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 15   │ 3        │ 3       │ 886.0000  │ 13.0102%   │ 908.0000 │ 15.8163%  │ 860.0000       │ 860.0000       │ 22.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=916.0000,gap=16.8367%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 16   │ 3        │ 3       │ 905.0000  │ 15.4337%   │ 905.0000 │ 15.4337%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=905.0000,gap=15.4337%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 17   │ 3        │ 3       │ 900.0000  │ 14.7959%   │ 900.0000 │ 14.7959%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=907.0000,gap=15.6888%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,3,1]; ranking=[2,3,1]; best=C2; selected_valid=yes │
+│ 18   │ 3        │ 3       │ 877.0000  │ 11.8622%   │ 880.0000 │ 12.2449%  │ 860.0000       │ 860.0000       │ 3.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=880.0000,gap=12.2449%,cross=4,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 19   │ 3        │ 3       │ 879.0000  │ 12.1173%   │ 879.0000 │ 12.1173%  │ 860.0000       │ 860.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=879.0000,gap=12.1173%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,1,2]; ranking=[2,1,3]; best=C2; selected_valid=yes │
+│ 20   │ 3        │ 3       │ 877.0000  │ 11.8622%   │ 879.0000 │ 12.1173%  │ 860.0000       │ 860.0000       │ 2.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=879.0000,gap=12.1173%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[2,1,3]; best=C2; selected_valid=yes │
 └──────┴──────────┴─────────┴───────────┴────────────┴──────────┴───────────┴────────────────┴────────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
 
 SEARCH RECOVERY / ADAPTIVE EVENTS
-┌─────┬──────────────────┬──────────────────────────────────────────┬──────┬─────────┬─────────┬───────┬──────┬─────────┬──────────┬──────────┐
-│ Seq │ Event            │ Scope                                    │ Iter │ Attempt │ Restart │ Valid │ Viol │ ExcessΣ │ Distance │ Fallback │
-├─────┼──────────────────┼──────────────────────────────────────────┼──────┼─────────┼─────────┼───────┼──────┼─────────┼──────────┼──────────┤
-│ 71  │ hybrid_result    │ iteration_007.hybrid                     │ 7    │ -       │ -       │ yes   │ 0    │ 0.0000  │ 860.0000 │ -        │
-│ 73  │ diversity_result │ iteration_007.hybrid.fallback            │ 7    │ -       │ 1       │ no    │ 1    │ 0.0700  │ -        │ -        │
-│ 75  │ repair_result    │ iteration_007.hybrid.fallback.restart_01 │ 7    │ 1       │ -       │ no    │ 1    │ 0.0700  │ -        │ -        │
-│ 77  │ repair_result    │ iteration_007.hybrid.fallback.restart_01 │ 7    │ 2       │ -       │ no    │ 2    │ 0.0900  │ -        │ -        │
-│ 79  │ diversity_result │ iteration_007.hybrid.fallback            │ 7    │ -       │ 2       │ yes   │ 0    │ 0.0000  │ 880.0000 │ -        │
-└─────┴──────────────────┴──────────────────────────────────────────┴──────┴─────────┴─────────┴───────┴──────┴─────────┴──────────┴──────────┘
+┌─────┬───────────────────┬──────────────────────────────────────────┬──────┬─────────┬─────────┬───────┬──────┬─────────┬──────────┬──────────────────┐
+│ Seq │ Event             │ Scope                                    │ Iter │ Attempt │ Restart │ Valid │ Viol │ ExcessΣ │ Distance │ Fallback         │
+├─────┼───────────────────┼──────────────────────────────────────────┼──────┼─────────┼─────────┼───────┼──────┼─────────┼──────────┼──────────────────┤
+│ 71  │ hybrid_result     │ iteration_007.hybrid                     │ 7    │ -       │ -       │ yes   │ 0    │ 0.0000  │ 860.0000 │ -                │
+│ 73  │ diversity_result  │ iteration_007.hybrid.fallback            │ 7    │ -       │ 1       │ no    │ 1    │ 0.0700  │ -        │ -                │
+│ 75  │ repair_result     │ iteration_007.hybrid.fallback.restart_01 │ 7    │ 1       │ -       │ no    │ 1    │ 0.0700  │ -        │ -                │
+│ 77  │ repair_result     │ iteration_007.hybrid.fallback.restart_01 │ 7    │ 2       │ -       │ no    │ 2    │ 0.0900  │ -        │ -                │
+│ 79  │ diversity_result  │ iteration_007.hybrid.fallback            │ 7    │ -       │ 2       │ yes   │ 0    │ 0.0000  │ 880.0000 │ -                │
+│ 135 │ hybrid_result     │ iteration_013.hybrid                     │ 13   │ -       │ -       │ yes   │ 0    │ 0.0000  │ 878.0000 │ -                │
+│ 137 │ diversity_result  │ iteration_013.hybrid.fallback            │ 13   │ -       │ 1       │ no    │ 1    │ 0.2100  │ -        │ -                │
+│ 139 │ repair_result     │ iteration_013.hybrid.fallback.restart_01 │ 13   │ 1       │ -       │ no    │ 1    │ 0.1400  │ -        │ -                │
+│ 141 │ repair_result     │ iteration_013.hybrid.fallback.restart_01 │ 13   │ 2       │ -       │ no    │ 2    │ 0.1700  │ -        │ -                │
+│ 143 │ diversity_result  │ iteration_013.hybrid.fallback            │ 13   │ -       │ 2       │ no    │ 2    │ 0.1700  │ -        │ -                │
+│ 145 │ repair_result     │ iteration_013.hybrid.fallback.restart_02 │ 13   │ 1       │ -       │ no    │ 1    │ 0.2900  │ -        │ -                │
+│ 147 │ repair_result     │ iteration_013.hybrid.fallback.restart_02 │ 13   │ 2       │ -       │ no    │ 2    │ 0.1700  │ -        │ -                │
+│ 149 │ diversity_result  │ iteration_013.hybrid.fallback            │ 13   │ -       │ 3       │ no    │ 1    │ 0.0100  │ -        │ -                │
+│ 151 │ repair_result     │ iteration_013.hybrid.fallback.restart_03 │ 13   │ 1       │ -       │ no    │ 1    │ 0.1400  │ -        │ -                │
+│ 153 │ repair_result     │ iteration_013.hybrid.fallback.restart_03 │ 13   │ 2       │ -       │ no    │ 1    │ 0.0100  │ -        │ -                │
+│ 154 │ restart_exhausted │ iteration_013.hybrid.fallback            │ 13   │ -       │ -       │ -     │ -    │ -       │ -        │ retain_incumbent │
+│ 165 │ diversity_result  │ iteration_014.escape_restart             │ 14   │ -       │ 1       │ yes   │ 0    │ 0.0000  │ 891.0000 │ -                │
+└─────┴───────────────────┴──────────────────────────────────────────┴──────┴─────────┴─────────┴───────┴──────┴─────────┴──────────┴──────────────────┘
 
 AGENT COST
 ┌─────────────┬───────┬────────────┬────────────┬─────────────┬───────────┬───────────┐
 │ Agent       │ Calls │ Prompt tok │ Output tok │ Thought tok │ Total tok │ Latency s │
 ├─────────────┼───────┼────────────┼────────────┼─────────────┼───────────┼───────────┤
-│ critic      │ 30    │ 48240      │ 4924       │ 96975       │ 150139    │ 325.2011  │
-│ diversity   │ 2     │ 3184       │ 336        │ 5082        │ 8602      │ 18.9060   │
-│ hybrid      │ 1     │ 1618       │ 198        │ 17911       │ 19727     │ 51.8139   │
+│ critic      │ 60    │ 96480      │ 9557       │ 189569      │ 295606    │ 710.0707  │
+│ diversity   │ 6     │ 9552       │ 1008       │ 14278       │ 24838     │ 56.9706   │
+│ hybrid      │ 2     │ 3236       │ 324        │ 39365       │ 42925     │ 118.4856  │
 │ initializer │ 1     │ 1620       │ 168        │ 879         │ 2667      │ 5.2632    │
-│ repair      │ 4     │ 10872      │ 614        │ 17819       │ 29305     │ 60.2266   │
-│ scorer      │ 10    │ 49500      │ 202        │ 11908       │ 61610     │ 63.8450   │
+│ repair      │ 10    │ 27180      │ 1546       │ 42136       │ 70862     │ 151.1671  │
+│ scorer      │ 20    │ 99000      │ 459        │ 21090       │ 120549    │ 145.1444  │
 └─────────────┴───────┴────────────┴────────────┴─────────────┴───────────┴───────────┘
 
 TOTAL COST / USAGE
 --------------------------------------------------------------------------------------------------------------------------------------------
-Total API calls        : 48
-Prompt tokens          : 115034
-Output tokens          : 6442
-Thinking tokens        : 150574
-Total tokens           : 272050
-Total API latency      : 525.2559 s
+Total API calls        : 99
+Prompt tokens          : 237068
+Output tokens          : 13062
+Thinking tokens        : 307317
+Total tokens           : 557447
+Total API latency      : 1187.1017 s
 
 ERRORS / INTERRUPTIONS
 ┌─────┬───────┬───────┬───────┬──────┬────────┬──────┬─────────┐

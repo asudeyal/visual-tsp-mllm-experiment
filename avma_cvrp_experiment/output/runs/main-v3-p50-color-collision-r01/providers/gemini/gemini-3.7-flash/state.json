@@ -1,0 +1,27 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.7-flash",
+  "shared_run_id": "main-v3-p50-color-collision-r01",
+  "status": "running",
+  "config_sha256": "31b99665faf043fc15595aca8eba596cc0404b33fc7577c83c36d93bc2fd31b5",
+  "seed": 42,
+  "instance_sha256": "9d013b40badea107147c8ef7414a699a7282305b6e6726bc925a69ae8aeaaebc",
+  "max_vehicles": 8,
+  "demand_encoding_mode": "color",
+  "checkpoint": null,
+  "working_image": null,
+  "summary": null,
+  "last_error": null,
+  "layout_version": "compact_v3",
+  "target_iterations": 10,
+  "runtime_request_policy": {
+    "request_delay_seconds": 0.0,
+    "timeout_seconds": 120,
+    "retry_backoff": "Retry-After or 30/60/120 seconds for transient HTTP errors"
+  },
+  "current": {
+    "phase": "repair_attempt_02",
+    "scope": "initializer.fallback.restart_03",
+    "attempt": 2
+  }
+}

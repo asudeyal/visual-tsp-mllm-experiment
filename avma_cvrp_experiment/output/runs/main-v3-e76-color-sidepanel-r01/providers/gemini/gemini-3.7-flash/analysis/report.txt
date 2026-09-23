@@ -1,0 +1,153 @@
+AVMA-CVRP ANALYSIS REPORT
+============================================================================================================================================
+
+RUN SUMMARY
+--------------------------------------------------------------------------------------------------------------------------------------------
+Run ID                 : main-v3-e76-color-sidepanel-r01
+Instance               : E-n76-k7
+Dimension              : 76
+Provider / Model       : gemini / gemini-3.7-flash
+Experiment             : cvrp_main_8method
+Target iterations      : 20
+Completed iterations   : 19
+State status           : running
+Current phase          : {"phase":"repair_attempt_01","scope":"iteration_020.escape_restart.restart_01","attempt":1}
+Reference optimum/BKS  : 682.0000
+Demand encoding        : color
+Bar layout             : -
+Media resolution       : high
+
+Observer GBest         : 709.0000
+Observer GBest gap     : 3.9589%
+Selected GBest         : 709.0000
+Selected GBest gap     : 3.9589%
+Final distance         : -
+Final gap              : -
+Run completed          : no
+
+INITIALIZER SUMMARY
+--------------------------------------------------------------------------------------------------------------------------------------------
+Accepted               : yes
+First-shot valid       : no
+Direct repairs         : 2
+Fallback restarts      : 1
+Fallback repairs       : 0
+Best failed attempt    : seq=6 / Initializer Repair 2 / violations=1 / excess_sum=0.0045 / loads=[174,217,181,188,178,221,205]
+
+INITIALIZER OUTPUTS — chronological
+┌─────┬──────────────────────┬───────┬──────┬─────────┬───────────┬───────────────────────────────┬──────────────────────────────────────────────────────┬──────────┬──────────┬───────┬───────────────────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Seq │ Stage                │ Valid │ Viol │ ExcessΣ │ ExcessMax │ Route loads                   │ Capacity ratios                                      │ Distance │ Gap %    │ Cross │ Reasons               │ Route                                                                                                │
+├─────┼──────────────────────┼───────┼──────┼─────────┼───────────┼───────────────────────────────┼──────────────────────────────────────────────────────┼──────────┼──────────┼───────┼───────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 2   │ Initializer          │ no    │ 1    │ 0.0273  │ 0.0273    │ [174,188,196,200,178,226,202] │ [0.7909090909090909,0.8545454545454545,0.8909090909… │ -        │ -        │ 8     │ ["capacity_exceeded"] │ [[1,59,11,32,56,26,19,51,10,40,73,1],[1,18,41,13,33,45,4,25,50,17,52,1],[1,64,34,74,2,44,65,43,42,5… │
+│ 4   │ Initializer Repair 1 │ no    │ 1    │ 0.0955  │ 0.0955    │ [174,202,188,196,185,178,241] │ [0.7909090909090909,0.9181818181818182,0.8545454545… │ -        │ -        │ 7     │ ["capacity_exceeded"] │ [[1,59,11,32,56,26,19,51,10,40,73,1],[1,27,39,66,67,12,60,15,54,1],[1,18,41,13,33,45,4,25,50,17,52,… │
+│ 6   │ Initializer Repair 2 │ no    │ 1    │ 0.0045  │ 0.0045    │ [174,217,181,188,178,221,205] │ [0.7909090909090909,0.9863636363636363,0.8227272727… │ -        │ -        │ 2     │ ["capacity_exceeded"] │ [[1,59,11,32,56,26,19,51,10,40,73,1],[1,27,39,66,67,12,60,15,54,8,1],[1,68,47,9,36,20,55,14,28,53,3… │
+│ 8   │ Fallback Restart 1   │ yes   │ 0    │ 0.0000  │ 0.0000    │ [219,176,182,197,201,199,190] │ [0.9954545454545455,0.8,0.8272727272727273,0.895454… │ 782.0000 │ 14.6628% │ 6     │ []                    │ [[1,27,8,36,54,12,67,66,39,11,59,1],[1,13,41,10,19,51,26,56,32,40,73,1],[1,18,52,4,45,33,50,25,57,2… │
+│ 9   │ ACCEPTED             │ yes   │ 0    │ 0.0000  │ 0.0000    │ [219,176,182,197,201,199,190] │ [0.9954545454545455,0.8,0.8272727272727273,0.895454… │ 782.0000 │ 14.6628% │ 6     │ []                    │ [[1,27,8,36,54,12,67,66,39,11,59,1],[1,13,41,10,19,51,26,56,32,40,73,1],[1,18,52,4,45,33,50,25,57,2… │
+└─────┴──────────────────────┴───────┴──────┴─────────┴───────────┴───────────────────────────────┴──────────────────────────────────────────────────────┴──────────┴──────────┴───────┴───────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+CRITIC + SCORER — per iteration
+┌──────┬──────────┬─────────┬───────────┬────────────┬──────────┬───────────┬────────────────┬────────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────┐
+│ Iter │ Critic N │ Valid N │ Iter Best │ Iter Gap % │ Selected │ Sel Gap % │ Observer GBest │ Selected GBest │ Regret  │ Critic candidates                                                                                                        │ Scorer                                                      │
+├──────┼──────────┼─────────┼───────────┼────────────┼──────────┼───────────┼────────────────┼────────────────┼─────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 1    │ 3        │ 2       │ 759.0000  │ 11.2903%   │ 759.0000 │ 11.2903%  │ 759.0000       │ 759.0000       │ 0.0000  │ C1:valid=no,viol=1,excess=0.1636,dist=-,gap=-,cross=2,reason=["capacity_exceeded"] | C2:valid=yes,viol=0,excess=0.0000,… │ order=[3,2,1]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 2    │ 3        │ 0       │ -         │ -          │ -        │ -         │ 759.0000       │ 759.0000       │ -       │ C1:valid=no,viol=1,excess=0.0773,dist=-,gap=-,cross=6,reason=["capacity_exceeded"] | C2:valid=no,viol=1,excess=0.0773,d… │ order=[3,1,2]; ranking=[1,3,2]; best=C1; selected_valid=no  │
+│ 3    │ 3        │ 2       │ 747.0000  │ 9.5308%    │ 747.0000 │ 9.5308%   │ 747.0000       │ 747.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=747.0000,gap=9.5308%,cross=5,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[1,3,2]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 4    │ 3        │ 0       │ -         │ -          │ -        │ -         │ 739.0000       │ 739.0000       │ -       │ C1:valid=no,viol=1,excess=0.0773,dist=-,gap=-,cross=5,reason=["capacity_exceeded"] | C2:valid=no,viol=1,excess=0.0182,d… │ order=[3,2,1]; ranking=[3,1,2]; best=C3; selected_valid=no  │
+│ 5    │ 3        │ 0       │ -         │ -          │ -        │ -         │ 739.0000       │ 739.0000       │ -       │ C1:valid=no,viol=1,excess=0.0273,dist=-,gap=-,cross=0,reason=["capacity_exceeded"] | C2:valid=no,viol=1,excess=0.0273,d… │ order=[3,1,2]; ranking=[1,2,3]; best=C1; selected_valid=no  │
+│ 6    │ 3        │ 0       │ -         │ -          │ -        │ -         │ 739.0000       │ 739.0000       │ -       │ C1:valid=no,viol=1,excess=0.0273,dist=-,gap=-,cross=5,reason=["capacity_exceeded"] | C2:valid=no,viol=1,excess=0.0273,d… │ order=[1,2,3]; ranking=[3,1,2]; best=C3; selected_valid=no  │
+│ 7    │ 3        │ 3       │ 761.0000  │ 11.5836%   │ 764.0000 │ 12.0235%  │ 739.0000       │ 739.0000       │ 3.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=764.0000,gap=12.0235%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[3,2,1]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 8    │ 3        │ 3       │ 744.0000  │ 9.0909%    │ 761.0000 │ 11.5836%  │ 739.0000       │ 739.0000       │ 17.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=761.0000,gap=11.5836%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[1,3,2]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 9    │ 3        │ 3       │ 738.0000  │ 8.2111%    │ 751.0000 │ 10.1173%  │ 738.0000       │ 739.0000       │ 13.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=751.0000,gap=10.1173%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,3,1]; ranking=[2,3,1]; best=C2; selected_valid=yes │
+│ 10   │ 3        │ 3       │ 744.0000  │ 9.0909%    │ 750.0000 │ 9.9707%   │ 738.0000       │ 739.0000       │ 6.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=744.0000,gap=9.0909%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,1,2]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 11   │ 3        │ 1       │ 750.0000  │ 9.9707%    │ -        │ -         │ 733.0000       │ 733.0000       │ -       │ C1:valid=no,viol=1,excess=0.0273,dist=-,gap=-,cross=3,reason=["capacity_exceeded"] | C2:valid=yes,viol=0,excess=0.0000,… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=no  │
+│ 12   │ 3        │ 0       │ -         │ -          │ -        │ -         │ 716.0000       │ 716.0000       │ -       │ C1:valid=no,viol=1,excess=0.0545,dist=-,gap=-,cross=4,reason=["capacity_exceeded"] | C2:valid=no,viol=1,excess=0.0545,d… │ order=[3,2,1]; ranking=[3,2,1]; best=C3; selected_valid=no  │
+│ 13   │ 3        │ 2       │ 715.0000  │ 4.8387%    │ 715.0000 │ 4.8387%   │ 715.0000       │ 715.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=715.0000,gap=4.8387%,cross=1,reason=[] | C2:valid=no,viol=1,excess=0.0091,dist=-… │ order=[2,3,1]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 14   │ 3        │ 3       │ 715.0000  │ 4.8387%    │ 716.0000 │ 4.9853%   │ 715.0000       │ 715.0000       │ 1.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=716.0000,gap=4.9853%,cross=2,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 15   │ 3        │ 3       │ 715.0000  │ 4.8387%    │ 715.0000 │ 4.8387%   │ 715.0000       │ 715.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=715.0000,gap=4.8387%,cross=1,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,2,1]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 16   │ 3        │ 3       │ 715.0000  │ 4.8387%    │ 715.0000 │ 4.8387%   │ 709.0000       │ 709.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=715.0000,gap=4.8387%,cross=1,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,1,3]; ranking=[2,3,1]; best=C2; selected_valid=yes │
+│ 17   │ 3        │ 3       │ 709.0000  │ 3.9589%    │ 709.0000 │ 3.9589%   │ 709.0000       │ 709.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=709.0000,gap=3.9589%,cross=1,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 18   │ 3        │ 3       │ 709.0000  │ 3.9589%    │ 710.0000 │ 4.1056%   │ 709.0000       │ 709.0000       │ 1.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=710.0000,gap=4.1056%,cross=2,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[1,3,2]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 19   │ 3        │ 3       │ 709.0000  │ 3.9589%    │ 709.0000 │ 3.9589%   │ 709.0000       │ 709.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=709.0000,gap=3.9589%,cross=1,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,1,2]; ranking=[2,1,3]; best=C2; selected_valid=yes │
+│ 20   │ 3        │ 3       │ 710.0000  │ 4.1056%    │ 710.0000 │ 4.1056%   │ 709.0000       │ 709.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=710.0000,gap=4.1056%,cross=2,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,1,3]; ranking=[2,3,1]; best=C2; selected_valid=yes │
+└──────┴──────────┴─────────┴───────────┴────────────┴──────────┴───────────┴────────────────┴────────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
+
+SEARCH RECOVERY / ADAPTIVE EVENTS
+┌─────┬───────────────────┬───────────────────────────────────────────┬──────┬─────────┬─────────┬───────┬──────┬─────────┬──────────┬──────────────────┐
+│ Seq │ Event             │ Scope                                     │ Iter │ Attempt │ Restart │ Valid │ Viol │ ExcessΣ │ Distance │ Fallback         │
+├─────┼───────────────────┼───────────────────────────────────────────┼──────┼─────────┼─────────┼───────┼──────┼─────────┼──────────┼──────────────────┤
+│ 28  │ repair_result     │ iteration_002.selected                    │ 2    │ 1       │ -       │ no    │ 2    │ 0.2455  │ -        │ -                │
+│ 30  │ repair_result     │ iteration_002.selected                    │ 2    │ 2       │ -       │ no    │ 3    │ 0.3273  │ -        │ -                │
+│ 32  │ diversity_result  │ iteration_002.selected_restart            │ 2    │ -       │ 1       │ no    │ 2    │ 0.1818  │ -        │ -                │
+│ 34  │ repair_result     │ iteration_002.selected_restart.restart_01 │ 2    │ 1       │ -       │ no    │ 3    │ 0.0773  │ -        │ -                │
+│ 36  │ repair_result     │ iteration_002.selected_restart.restart_01 │ 2    │ 2       │ -       │ no    │ 3    │ 0.0773  │ -        │ -                │
+│ 38  │ diversity_result  │ iteration_002.selected_restart            │ 2    │ -       │ 2       │ no    │ 1    │ 0.1045  │ -        │ -                │
+│ 40  │ repair_result     │ iteration_002.selected_restart.restart_02 │ 2    │ 1       │ -       │ no    │ 1    │ 0.0318  │ -        │ -                │
+│ 42  │ repair_result     │ iteration_002.selected_restart.restart_02 │ 2    │ 2       │ -       │ no    │ 2    │ 0.3136  │ -        │ -                │
+│ 44  │ diversity_result  │ iteration_002.selected_restart            │ 2    │ -       │ 3       │ no    │ 1    │ 0.2636  │ -        │ -                │
+│ 46  │ repair_result     │ iteration_002.selected_restart.restart_03 │ 2    │ 1       │ -       │ no    │ 1    │ 0.3409  │ -        │ -                │
+│ 48  │ repair_result     │ iteration_002.selected_restart.restart_03 │ 2    │ 2       │ -       │ no    │ 2    │ 0.5273  │ -        │ -                │
+│ 49  │ restart_exhausted │ iteration_002.selected_restart            │ 2    │ -       │ -       │ -     │ -    │ -       │ -        │ retain_incumbent │
+│ 69  │ repair_result     │ iteration_004.selected                    │ 4    │ 1       │ -       │ no    │ 1    │ 0.0273  │ -        │ -                │
+│ 71  │ repair_result     │ iteration_004.selected                    │ 4    │ 2       │ -       │ yes   │ 0    │ 0.0000  │ 739.0000 │ -                │
+│ 82  │ repair_result     │ iteration_005.selected                    │ 5    │ 1       │ -       │ no    │ 1    │ 0.0273  │ -        │ -                │
+│ 84  │ repair_result     │ iteration_005.selected                    │ 5    │ 2       │ -       │ no    │ 1    │ 0.0273  │ -        │ -                │
+│ 86  │ diversity_result  │ iteration_005.selected_restart            │ 5    │ -       │ 1       │ no    │ 2    │ 0.0864  │ -        │ -                │
+│ 88  │ repair_result     │ iteration_005.selected_restart.restart_01 │ 5    │ 1       │ -       │ no    │ 2    │ 0.1955  │ -        │ -                │
+│ 90  │ repair_result     │ iteration_005.selected_restart.restart_01 │ 5    │ 2       │ -       │ no    │ 2    │ 0.1955  │ -        │ -                │
+│ 92  │ diversity_result  │ iteration_005.selected_restart            │ 5    │ -       │ 2       │ no    │ 1    │ 0.2182  │ -        │ -                │
+│ 94  │ repair_result     │ iteration_005.selected_restart.restart_02 │ 5    │ 1       │ -       │ no    │ 1    │ 0.0682  │ -        │ -                │
+│ 96  │ repair_result     │ iteration_005.selected_restart.restart_02 │ 5    │ 2       │ -       │ no    │ 2    │ 0.2455  │ -        │ -                │
+│ 98  │ diversity_result  │ iteration_005.selected_restart            │ 5    │ -       │ 3       │ no    │ 1    │ 0.0455  │ -        │ -                │
+│ 100 │ repair_result     │ iteration_005.selected_restart.restart_03 │ 5    │ 1       │ -       │ no    │ 1    │ 0.0682  │ -        │ -                │
+│ 102 │ repair_result     │ iteration_005.selected_restart.restart_03 │ 5    │ 2       │ -       │ no    │ 1    │ 0.0682  │ -        │ -                │
+│ 103 │ restart_exhausted │ iteration_005.selected_restart            │ 5    │ -       │ -       │ -     │ -    │ -       │ -        │ retain_incumbent │
+│ 114 │ repair_result     │ iteration_006.selected                    │ 6    │ 1       │ -       │ no    │ 1    │ 0.0273  │ -        │ -                │
+│ 116 │ repair_result     │ iteration_006.selected                    │ 6    │ 2       │ -       │ no    │ 1    │ 0.0273  │ -        │ -                │
+│ 118 │ diversity_result  │ iteration_006.selected_restart            │ 6    │ -       │ 1       │ no    │ 3    │ 0.4091  │ -        │ -                │
+│ 120 │ repair_result     │ iteration_006.selected_restart.restart_01 │ 6    │ 1       │ -       │ no    │ 3    │ 0.4545  │ -        │ -                │
+│ 122 │ repair_result     │ iteration_006.selected_restart.restart_01 │ 6    │ 2       │ -       │ no    │ 3    │ 0.5000  │ -        │ -                │
+│ 124 │ diversity_result  │ iteration_006.selected_restart            │ 6    │ -       │ 2       │ no    │ 2    │ 0.2182  │ -        │ -                │
+│ 126 │ repair_result     │ iteration_006.selected_restart.restart_02 │ 6    │ 1       │ -       │ no    │ 3    │ 0.2091  │ -        │ -                │
+│ 128 │ repair_result     │ iteration_006.selected_restart.restart_02 │ 6    │ 2       │ -       │ no    │ 3    │ 0.3000  │ -        │ -                │
+│ 130 │ diversity_result  │ iteration_006.selected_restart            │ 6    │ -       │ 3       │ yes   │ 0    │ 0.0000  │ 765.0000 │ -                │
+│ 177 │ repair_result     │ iteration_011.selected                    │ 11   │ 1       │ -       │ yes   │ 0    │ 0.0000  │ 733.0000 │ -                │
+│ 188 │ repair_result     │ iteration_012.selected                    │ 12   │ 1       │ -       │ yes   │ 0    │ 0.0000  │ 716.0000 │ -                │
+│ 226 │ hybrid_result     │ iteration_016.hybrid                      │ 16   │ -       │ -       │ yes   │ 0    │ 0.0000  │ 709.0000 │ -                │
+│ 264 │ diversity_result  │ iteration_020.escape_restart              │ 20   │ -       │ 1       │ no    │ 2    │ 0.3182  │ -        │ -                │
+└─────┴───────────────────┴───────────────────────────────────────────┴──────┴─────────┴─────────┴───────┴──────┴─────────┴──────────┴──────────────────┘
+
+AGENT COST
+┌─────────────┬───────┬────────────┬────────────┬─────────────┬───────────┬───────────┐
+│ Agent       │ Calls │ Prompt tok │ Output tok │ Thought tok │ Total tok │ Latency s │
+├─────────────┼───────┼────────────┼────────────┼─────────────┼───────────┼───────────┤
+│ critic      │ 60    │ 95940      │ 19838      │ 179157      │ 294935    │ 730.0192  │
+│ diversity   │ 11    │ 17413      │ 3960       │ 36014       │ 57387     │ 119.2642  │
+│ hybrid      │ 1     │ 1609       │ 267        │ 16205       │ 18081     │ 45.4037   │
+│ initializer │ 1     │ 1611       │ 360        │ 2929        │ 4900      │ 10.2741   │
+│ repair      │ 28    │ 75600      │ 9394       │ 154853      │ 239847    │ 531.4117  │
+│ scorer      │ 20    │ 98280      │ 483        │ 46401       │ 145164    │ 242.2511  │
+└─────────────┴───────┴────────────┴────────────┴─────────────┴───────────┴───────────┘
+
+TOTAL COST / USAGE
+--------------------------------------------------------------------------------------------------------------------------------------------
+Total API calls        : 121
+Prompt tokens          : 290453
+Output tokens          : 34302
+Thinking tokens        : 435559
+Total tokens           : 760314
+Total API latency      : 1678.6240 s
+
+ERRORS / INTERRUPTIONS
+┌─────┬───────┬───────┬───────┬──────┬────────┬──────┬─────────┐
+│ Seq │ Event │ Phase │ Scope │ Iter │ Status │ Type │ Message │
+├─────┼───────┼───────┼───────┼──────┼────────┼──────┼─────────┤
+│ (no records) │       │       │       │      │        │      │         │
+└─────┴───────┴───────┴───────┴──────┴────────┴──────┴─────────┘
+
+STATUS FLAGS
+--------------------------------------------------------------------------------------------------------------------------------------------
+Initializer reached : yes
+Initializer accepted: yes
+Critic reached      : yes
+Scorer reached      : yes
+Run completed       : no

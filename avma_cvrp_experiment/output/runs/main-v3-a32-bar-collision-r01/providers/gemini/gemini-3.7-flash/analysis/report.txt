@@ -8,10 +8,10 @@ Instance               : A-n32-k5
 Dimension              : 32
 Provider / Model       : gemini / gemini-3.7-flash
 Experiment             : cvrp_main_8method
-Target iterations      : 10
-Completed iterations   : 10
+Target iterations      : 20
+Completed iterations   : 20
 State status           : completed
-Current phase          : {"phase":"completed","iteration":10}
+Current phase          : {"phase":"completed","iteration":20}
 Reference optimum/BKS  : 784.0000
 Demand encoding        : bar
 Bar layout             : collision_aware
@@ -21,8 +21,8 @@ Observer GBest         : 847.0000
 Observer GBest gap     : 8.0357%
 Selected GBest         : 847.0000
 Selected GBest gap     : 8.0357%
-Final distance         : 849.0000
-Final gap              : 8.2908%
+Final distance         : 886.0000
+Final gap              : 13.0102%
 Run completed          : yes
 
 INITIALIZER SUMMARY
@@ -59,6 +59,16 @@ CRITIC + SCORER — per iteration
 │ 8    │ 3        │ 1       │ 847.0000  │ 8.0357%    │ -        │ -         │ 847.0000       │ 847.0000       │ -       │ C1:valid=yes,viol=0,excess=0.0000,dist=847.0000,gap=8.0357%,cross=6,reason=[] | C2:valid=no,viol=1,excess=0.1000,dist=-… │ order=[1,3,2]; ranking=[3,2,1]; best=C3; selected_valid=no  │
 │ 9    │ 3        │ 3       │ 861.0000  │ 9.8214%    │ 861.0000 │ 9.8214%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=861.0000,gap=9.8214%,cross=7,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
 │ 10   │ 3        │ 3       │ 849.0000  │ 8.2908%    │ 849.0000 │ 8.2908%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=849.0000,gap=8.2908%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,1,2]; ranking=[1,3,2]; best=C1; selected_valid=yes │
+│ 11   │ 3        │ 3       │ 849.0000  │ 8.2908%    │ 849.0000 │ 8.2908%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=849.0000,gap=8.2908%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 12   │ 3        │ 3       │ 849.0000  │ 8.2908%    │ 849.0000 │ 8.2908%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=849.0000,gap=8.2908%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[3,2,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 13   │ 3        │ 3       │ 849.0000  │ 8.2908%    │ 849.0000 │ 8.2908%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=849.0000,gap=8.2908%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[1,2,3]; best=C1; selected_valid=yes │
+│ 14   │ 3        │ 3       │ 852.0000  │ 8.6735%    │ 857.0000 │ 9.3112%   │ 847.0000       │ 847.0000       │ 5.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=852.0000,gap=8.6735%,cross=6,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,1,3]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 15   │ 3        │ 2       │ 859.0000  │ 9.5663%    │ 859.0000 │ 9.5663%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=859.0000,gap=9.5663%,cross=8,reason=[] | C2:valid=no,viol=1,excess=0.1400,dist=-… │ order=[3,2,1]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 16   │ 3        │ 2       │ 859.0000  │ 9.5663%    │ 859.0000 │ 9.5663%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=859.0000,gap=9.5663%,cross=8,reason=[] | C2:valid=no,viol=1,excess=0.1400,dist=-… │ order=[2,1,3]; ranking=[3,1,2]; best=C3; selected_valid=yes │
+│ 17   │ 3        │ 3       │ 854.0000  │ 8.9286%    │ 854.0000 │ 8.9286%   │ 847.0000       │ 847.0000       │ 0.0000  │ C1:valid=yes,viol=0,excess=0.0000,dist=859.0000,gap=9.5663%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist=… │ order=[2,3,1]; ranking=[3,2,1]; best=C3; selected_valid=yes │
+│ 18   │ 3        │ 1       │ 849.0000  │ 8.2908%    │ -        │ -         │ 847.0000       │ 847.0000       │ -       │ C1:valid=yes,viol=0,excess=0.0000,dist=849.0000,gap=8.2908%,cross=6,reason=[] | C2:valid=no,viol=1,excess=0.1000,dist=-… │ order=[1,3,2]; ranking=[2,1,3]; best=C2; selected_valid=no  │
+│ 19   │ 3        │ 0       │ -         │ -          │ -        │ -         │ 847.0000       │ 847.0000       │ -       │ C1:valid=no,viol=1,excess=0.1000,dist=-,gap=-,cross=7,reason=["capacity_exceeded"] | C2:valid=no,viol=1,excess=0.1000,d… │ order=[3,1,2]; ranking=[1,2,3]; best=C1; selected_valid=no  │
+│ 20   │ 3        │ 3       │ 862.0000  │ 9.9490%    │ 886.0000 │ 13.0102%  │ 847.0000       │ 847.0000       │ 24.0000 │ C1:valid=yes,viol=0,excess=0.0000,dist=886.0000,gap=13.0102%,cross=8,reason=[] | C2:valid=yes,viol=0,excess=0.0000,dist… │ order=[2,1,3]; ranking=[1,2,3]; best=C1; selected_valid=yes │
 └──────┴──────────┴─────────┴───────────┴────────────┴──────────┴───────────┴────────────────┴────────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
 
 SEARCH RECOVERY / ADAPTIVE EVENTS
@@ -71,27 +81,35 @@ SEARCH RECOVERY / ADAPTIVE EVENTS
 │ 89  │ repair_result    │ iteration_008.selected         │ 8    │ 1       │ -       │ no    │ 1    │ 0.1000  │ -        │ -        │
 │ 91  │ repair_result    │ iteration_008.selected         │ 8    │ 2       │ -       │ no    │ 1    │ 0.1000  │ -        │ -        │
 │ 93  │ diversity_result │ iteration_008.selected_restart │ 8    │ -       │ 1       │ yes   │ 0    │ 0.0000  │ 863.0000 │ -        │
+│ 140 │ hybrid_result    │ iteration_013.hybrid           │ 13   │ -       │ -       │ no    │ 1    │ 0.0200  │ -        │ -        │
+│ 142 │ repair_result    │ iteration_013.hybrid           │ 13   │ 1       │ -       │ no    │ 1    │ 0.0200  │ -        │ -        │
+│ 144 │ repair_result    │ iteration_013.hybrid           │ 13   │ 2       │ -       │ yes   │ 0    │ 0.0000  │ 859.0000 │ -        │
+│ 191 │ repair_result    │ iteration_018.selected         │ 18   │ 1       │ -       │ yes   │ 0    │ 0.0000  │ 856.0000 │ -        │
+│ 202 │ repair_result    │ iteration_019.selected         │ 19   │ 1       │ -       │ no    │ 1    │ 0.1000  │ -        │ -        │
+│ 204 │ repair_result    │ iteration_019.selected         │ 19   │ 2       │ -       │ no    │ 1    │ 0.1000  │ -        │ -        │
+│ 206 │ diversity_result │ iteration_019.selected_restart │ 19   │ -       │ 1       │ yes   │ 0    │ 0.0000  │ 886.0000 │ -        │
 └─────┴──────────────────┴────────────────────────────────┴──────┴─────────┴─────────┴───────┴──────┴─────────┴──────────┴──────────┘
 
 AGENT COST
 ┌─────────────┬───────┬────────────┬────────────┬─────────────┬───────────┬───────────┐
 │ Agent       │ Calls │ Prompt tok │ Output tok │ Thought tok │ Total tok │ Latency s │
 ├─────────────┼───────┼────────────┼────────────┼─────────────┼───────────┼───────────┤
-│ critic      │ 30    │ 48240      │ 4750       │ 86067       │ 139057    │ 357.8196  │
-│ diversity   │ 2     │ 3184       │ 336        │ 3389        │ 6909      │ 13.4152   │
+│ critic      │ 60    │ 96480      │ 9732       │ 165616      │ 271828    │ 689.3797  │
+│ diversity   │ 3     │ 4776       │ 504        │ 6260        │ 11540     │ 23.0635   │
+│ hybrid      │ 1     │ 1618       │ 198        │ 12692       │ 14508     │ 40.2776   │
 │ initializer │ 1     │ 1620       │ 168        │ 1368        │ 3156      │ 82.7879   │
-│ repair      │ 7     │ 19026      │ 1176       │ 26921       │ 47123     │ 98.8554   │
-│ scorer      │ 10    │ 49500      │ 260        │ 13898       │ 63658     │ 81.8104   │
+│ repair      │ 12    │ 32616      │ 2016       │ 43069       │ 77701     │ 157.5717  │
+│ scorer      │ 20    │ 99000      │ 469        │ 28169       │ 127638    │ 172.9212  │
 └─────────────┴───────┴────────────┴────────────┴─────────────┴───────────┴───────────┘
 
 TOTAL COST / USAGE
 --------------------------------------------------------------------------------------------------------------------------------------------
-Total API calls        : 50
-Prompt tokens          : 121570
-Output tokens          : 6690
-Thinking tokens        : 131643
-Total tokens           : 259903
-Total API latency      : 634.6885 s
+Total API calls        : 97
+Prompt tokens          : 236110
+Output tokens          : 13087
+Thinking tokens        : 257174
+Total tokens           : 506371
+Total API latency      : 1166.0016 s
 
 ERRORS / INTERRUPTIONS
 ┌─────┬────────────────┬───────────────────┬─────────────┬──────┬────────┬─────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
