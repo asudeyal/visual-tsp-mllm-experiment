@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or its experimental artifacts, please cite the associated AVMA-CVRP manuscript."
-title: "AVMA-CVRP: Adaptive Visual Multi-Agent CVRP"
+title: "AVMA-CVRP: An Adaptive Visual Multi-Agent System for the Capacitated Vehicle Routing Problem"
 type: software
 authors:
   - family-names: "Yalçın"
@@ -11,5 +11,3 @@ authors:
     given-names: "Furkan"
 repository-code: "https://github.com/asudeyal/visual-tsp-mllm-experiment/tree/main/avma_cvrp_experiment"
 url: "https://github.com/asudeyal/visual-tsp-mllm-experiment/tree/main/avma_cvrp_experiment"
-version: "1.0-mdpi-submission"
-date-released: "2026-09-28"
