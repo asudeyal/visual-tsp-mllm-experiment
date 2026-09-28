@@ -1,5 +1,7 @@
 # Visual TSP & CVRP with Multimodal LLMs
 
+> **AVMA-CVRP manuscript:** The implementation and final manuscript artifacts for *AVMA-CVRP: An Adaptive Visual Multi-Agent System for the Capacitated Vehicle Routing Problem* are under [`avma_cvrp_experiment/`](avma_cvrp_experiment/).
+
 Bu depo, kombinatoryal rotalama problemlerinin çok modlu dil modelleriyle (MLLM)
 görsel girdiler üzerinden çözülmesini inceleyen deneysel çalışmaları içerir.
 
@@ -20,15 +22,17 @@ genişletmedir.
 |---|---|
 | [`dynamic_tsp_experiment/`](dynamic_tsp_experiment/) | Güncel TSP deney sistemi; rastgele problemler ve TSPLIB örnekleri, zero-shot, Multi-Agent 1 ve Multi-Agent 2 |
 | [`tsp10_experiment/`](tsp10_experiment/) | Sabit 10 düğümlü ilk TSP/Gemini deneyinin tarihsel ve yeniden üretilebilir kaydı |
-| [`visual_cvrp_experiment/`](visual_cvrp_experiment/) | Aktif CVRP araştırma alanı; kapasite/talep görselleştirmeleri, refinement ve analiz |
+| [`avma_cvrp_experiment/`](avma_cvrp_experiment/) | AVMA-CVRP makale uygulaması, final deney konfigürasyonları ve 64 makale koşumunun artifact'ları |
+| [`visual_cvrp_experiment/`](visual_cvrp_experiment/) | Tarihsel/erken CVRP geliştirme alanı; kapasite/talep görselleştirmeleri, refinement ve analiz |
 | [`upstream_reference/`](upstream_reference/) | Özgün çalışmadan alınan referans notebook, çıktılar ve belgeler |
 
-TSP çalışmaları için `dynamic_tsp_experiment/`, CVRP çalışmaları için
-`visual_cvrp_experiment/` kullanılmalıdır.
+TSP çalışmaları için `dynamic_tsp_experiment/`; AVMA-CVRP makale çalışması için `avma_cvrp_experiment/` kullanılmalıdır. `visual_cvrp_experiment/` daha önceki CVRP geliştirme çalışmalarını korur.
 
-## CVRP çalışmasının güncel durumu
+## Tarihsel CVRP geliştirme kolu
 
-CVRP tarafında sabit 10 düğümlü `capacity_demo_10` problemi kullanılmaktadır:
+Aşağıdaki bölüm, `visual_cvrp_experiment/` altında korunan daha önceki CVRP geliştirme çalışmalarını açıklar. Bu bölüm AVMA-CVRP makalesinin final deney protokolünü temsil etmez.
+
+Bu tarihsel kolda sabit 10 düğümlü `capacity_demo_10` problemi kullanılmaktadır:
 
 - 1 depo + 9 müşteri
 - toplam talep: 18
@@ -62,9 +66,9 @@ Ayrıntılı kullanım için
 [`visual_cvrp_experiment/README.md`](visual_cvrp_experiment/README.md)
 dosyasına bakın.
 
-## CVRP hızlı başlangıç
+## Tarihsel CVRP hızlı başlangıç
 
-Aktif çalışma kolu:
+Eski geliştirme kolu:
 
 ```powershell
 git switch research/visual-cvrp-capacity
