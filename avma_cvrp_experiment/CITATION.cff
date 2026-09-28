@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software or its experimental artifacts, please cite the associated AVMA-CVRP manuscript."
+title: "AVMA-CVRP: Adaptive Visual Multi-Agent CVRP"
+type: software
+authors:
+  - family-names: "Yalçın"
+    given-names: "Nimet Asude"
+  - family-names: "Kaymak"
+    given-names: "Ayşe Nihal"
+  - family-names: "Yener"
+    given-names: "Furkan"
+repository-code: "https://github.com/asudeyal/visual-tsp-mllm-experiment/tree/main/avma_cvrp_experiment"
+url: "https://github.com/asudeyal/visual-tsp-mllm-experiment/tree/main/avma_cvrp_experiment"
+version: "1.0-mdpi-submission"
+date-released: "2026-09-28"
