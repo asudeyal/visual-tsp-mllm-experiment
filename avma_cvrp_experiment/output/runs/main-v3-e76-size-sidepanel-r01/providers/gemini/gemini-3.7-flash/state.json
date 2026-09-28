@@ -2,7 +2,7 @@
   "provider": "gemini",
   "model": "gemini-3.7-flash",
   "shared_run_id": "main-v3-e76-size-sidepanel-r01",
-  "status": "running",
+  "status": "partial",
   "config_sha256": "c3ef9842ce0cf438a678c0d5d4b4c87b3f4698af746613bd13b3f448d91fcefb",
   "seed": 42,
   "instance_sha256": "9daf17f43fc8a05315fcb157bc9aa8b73a38e72ff62bd468d169db74dc8a5f42",
@@ -1429,7 +1429,20 @@
     ],
     "restart_count": 3
   },
-  "last_error": null,
+  "last_error": {
+    "phase": "repair_attempt_02",
+    "scope": "iteration_020.escape_restart.restart_01",
+    "attempt": 2,
+    "provider": "gemini",
+    "model": "gemini-3.7-flash",
+    "error_type": "ClientError",
+    "status_code": 402,
+    "message": "402 RESOURCE_EXHAUSTED. {'error': {'code': 402, 'message': 'Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. ', 'status': 'RESOURCE_EXHAUSTED'}}",
+    "transient_http_status": false,
+    "request_delay_wait_seconds": 0.0,
+    "retry_backoff_wait_seconds": 0.0,
+    "provider_wait_seconds": 0.0
+  },
   "layout_version": "compact_v3",
   "target_iterations": 20,
   "runtime_request_policy": {
