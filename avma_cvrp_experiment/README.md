@@ -82,7 +82,7 @@ main-v3-p21-size-collision-r01
 main-v3-p19-bar-sidepanel-r01
 ```
 
-Each run directory contains the model-facing problem image, provenance metadata, route/candidate images, state and trace records, and generated analysis artifacts.
+Each run directory contains the core model-facing problem image, provenance metadata, route/candidate images, and state and trace records. Derived analysis artifacts are included where generated and can be regenerated with `run_analysis.py`.
 
 Historical pilot and development runs that are **not part of the final manuscript results** are stored separately under:
 
@@ -114,6 +114,10 @@ The manuscript experiments use the following frozen settings:
 | Media resolution | `high` |
 
 The effective prompt text, prompt hashes, configuration hash, instance hash, render policy, and run metadata are recorded in each run's provenance.
+
+The manuscript runs were executed with the required CLI override `--model gemini-3.7-flash`. The model recorded in each provider's `state.json` and `trace.jsonl` is authoritative for the executed API calls, even where a YAML configuration retains a different model value.
+
+The base YAML configurations specify 10 iterations. Runs extended beyond that base horizon were continued with `--resume --iterations <target>`. The executed target and completed iteration counts are recorded in each run's `state.json`.
 
 ## Information Firewall
 
@@ -212,7 +216,7 @@ avma_cvrp_experiment/
 
 ## Setup
 
-The experiments were developed with Python 3.11.
+The experimental pipeline is Python-based. Dependency requirements are defined in `requirements.txt`.
 
 PowerShell example:
 
