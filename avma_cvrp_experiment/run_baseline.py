@@ -2,11 +2,19 @@
 
 import argparse
 import json
+import platform
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 
+import ortools
 from ortools.constraint_solver import pywrapcp, routing_enums_pb2
 
 from src.problem import euc_2d_distance, load_cvrplib
+
+
+FIRST_SOLUTION_STRATEGY = "PATH_CHEAPEST_ARC"
+LOCAL_SEARCH_METAHEURISTIC = "GUIDED_LOCAL_SEARCH"
 
 
 def parse_args() -> argparse.Namespace:
@@ -24,11 +32,14 @@ def parse_args() -> argparse.Namespace:
         "--max-vehicles",
         type=int,
         default=None,
-        help=(
-            "Maximum number of vehicles. "
-            "If omitted, the value supplied by the instance/configuration "
-            "is used when available."
-        ),
+        help="Maximum number of vehicles.",
+    )
+
+    parser.add_argument(
+        "--reference-optimum",
+        type=float,
+        default=None,
+        help="Reference BKS/optimum used only for post-run gap calculation.",
     )
 
     parser.add_argument(
@@ -51,8 +62,6 @@ def solve_cvrp(
     time_limit_seconds: int,
 ) -> dict[str, object]:
 
-    # Vehicle count must be explicitly constrained for benchmark instances
-    # such as E-n51-k5. load_cvrplib() stores this in problem.max_vehicles.
     num_vehicles = problem.max_vehicles
 
     if num_vehicles is None:
@@ -72,59 +81,55 @@ def solve_cvrp(
 
     routing = pywrapcp.RoutingModel(manager)
 
-    def distance_callback(
-        from_index: int,
-        to_index: int,
-    ) -> int:
-
-        from_node = node_list[
-            manager.IndexToNode(from_index)
+    # ---------------------------------------------------------
+    # Distance matrix
+    # ---------------------------------------------------------
+    distance_matrix = [
+        [
+            int(
+                euc_2d_distance(
+                    problem,
+                    from_node,
+                    to_node,
+                )
+            )
+            for to_node in node_list
         ]
+        for from_node in node_list
+    ]
 
-        to_node = node_list[
-            manager.IndexToNode(to_index)
-        ]
-
-        return euc_2d_distance(
-            problem,
-            from_node,
-            to_node,
-        )
-
-    transit_callback_index = routing.RegisterTransitCallback(
-        distance_callback
+    transit_callback_index = routing.RegisterTransitMatrix(
+        distance_matrix
     )
 
     routing.SetArcCostEvaluatorOfAllVehicles(
         transit_callback_index
     )
 
-    def demand_callback(from_index: int) -> int:
+    # ---------------------------------------------------------
+    # Demand vector
+    # ---------------------------------------------------------
+    demand_vector = [
+        int(problem.demands.get(node, 0))
+        for node in node_list
+    ]
 
-        from_node = node_list[
-            manager.IndexToNode(from_index)
-        ]
-
-        return problem.demands.get(
-            from_node,
-            0,
-        )
-
-    demand_callback_index = routing.RegisterUnaryTransitCallback(
-        demand_callback
+    demand_callback_index = routing.RegisterUnaryTransitVector(
+        demand_vector
     )
 
     routing.AddDimension(
         demand_callback_index,
         0,
-        problem.capacity,
+        int(problem.capacity),
         True,
         "Capacity",
     )
 
-    search_parameters = (
-        pywrapcp.DefaultRoutingSearchParameters()
-    )
+    # ---------------------------------------------------------
+    # Search parameters
+    # ---------------------------------------------------------
+    search_parameters = pywrapcp.DefaultRoutingSearchParameters()
 
     search_parameters.first_solution_strategy = (
         routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
@@ -135,7 +140,7 @@ def solve_cvrp(
     )
 
     search_parameters.time_limit.FromSeconds(
-        time_limit_seconds
+        int(time_limit_seconds)
     )
 
     print(
@@ -144,19 +149,45 @@ def solve_cvrp(
         f"Vehicles: {num_vehicles})..."
     )
 
+    start_time = time.perf_counter()
+
     solution = routing.SolveWithParameters(
         search_parameters
     )
 
+    elapsed_seconds = time.perf_counter() - start_time
+
+    base_metadata = {
+        "solver": "Google OR-Tools Routing Solver",
+        "ortools_version": ortools.__version__,
+        "python_version": platform.python_version(),
+        "first_solution_strategy": FIRST_SOLUTION_STRATEGY,
+        "local_search_metaheuristic": LOCAL_SEARCH_METAHEURISTIC,
+        "time_limit_seconds": int(time_limit_seconds),
+        "elapsed_seconds": round(elapsed_seconds, 6),
+        "run_timestamp_utc": datetime.now(
+            timezone.utc
+        ).isoformat(),
+    }
+
     if not solution:
         return {
             "status": "failed",
+            "instance": problem.name,
+            "dimension": problem.dimension,
+            "capacity": problem.capacity,
+            "max_vehicles": num_vehicles,
+            "reference_optimum": problem.reference_optimum,
+            **base_metadata,
             "message": "No solution found within time limit.",
         }
 
     routes = []
     total_distance = 0
 
+    # ---------------------------------------------------------
+    # Extract routes
+    # ---------------------------------------------------------
     for vehicle_id in range(num_vehicles):
 
         index = routing.Start(vehicle_id)
@@ -166,9 +197,8 @@ def solve_cvrp(
 
         while not routing.IsEnd(index):
 
-            node = node_list[
-                manager.IndexToNode(index)
-            ]
+            node_index = manager.IndexToNode(index)
+            node = node_list[node_index]
 
             route.append(node)
 
@@ -178,7 +208,7 @@ def solve_cvrp(
                 routing.NextVar(index)
             )
 
-            route_distance += (
+            route_distance += int(
                 routing.GetArcCostForVehicle(
                     previous_index,
                     index,
@@ -186,17 +216,26 @@ def solve_cvrp(
                 )
             )
 
-        node = node_list[
-            manager.IndexToNode(index)
-        ]
+        node_index = manager.IndexToNode(index)
+        node = node_list[node_index]
 
         route.append(node)
 
         # Ignore unused vehicles whose route is simply depot -> depot.
         if len(route) > 2:
-
             routes.append(route)
             total_distance += route_distance
+
+    reference_optimum = problem.reference_optimum
+
+    if reference_optimum is not None:
+        gap_percent = (
+            (float(total_distance) - float(reference_optimum))
+            / float(reference_optimum)
+            * 100.0
+        )
+    else:
+        gap_percent = None
 
     return {
         "status": "success",
@@ -205,7 +244,14 @@ def solve_cvrp(
         "capacity": problem.capacity,
         "max_vehicles": num_vehicles,
         "vehicles_used": len(routes),
-        "total_distance": total_distance,
+        "total_distance": int(total_distance),
+        "reference_optimum": reference_optimum,
+        "gap_percent": (
+            round(gap_percent, 6)
+            if gap_percent is not None
+            else None
+        ),
+        **base_metadata,
         "routes": routes,
     }
 
@@ -217,11 +263,27 @@ def main() -> None:
     problem = load_cvrplib(
         args.instance,
         max_vehicles=args.max_vehicles,
+        reference_optimum=args.reference_optimum,
     )
 
     result = solve_cvrp(
         problem,
         args.time_limit,
+    )
+
+    output_path = Path(args.output)
+
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    output_path.write_text(
+        json.dumps(
+            result,
+            indent=2,
+        ),
+        encoding="utf-8",
     )
 
     if result["status"] == "success":
@@ -241,19 +303,20 @@ def main() -> None:
             f"{result['max_vehicles']}"
         )
 
-        output_path = Path(args.output)
+        if result["reference_optimum"] is not None:
+            print(
+                f"Reference BKS: "
+                f"{result['reference_optimum']}"
+            )
 
-        output_path.parent.mkdir(
-            parents=True,
-            exist_ok=True,
-        )
+            print(
+                f"Gap to BKS: "
+                f"{result['gap_percent']:.4f}%"
+            )
 
-        output_path.write_text(
-            json.dumps(
-                result,
-                indent=2,
-            ),
-            encoding="utf-8",
+        print(
+            f"Elapsed Time: "
+            f"{result['elapsed_seconds']:.3f}s"
         )
 
         print(
@@ -263,7 +326,12 @@ def main() -> None:
     else:
 
         print(
-            "Failed to find a solution."
+            f"Failed to find a solution for "
+            f"{result.get('instance', 'unknown instance')}."
+        )
+
+        print(
+            f"Results saved to {output_path}"
         )
 
 
